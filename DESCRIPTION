@@ -1,0 +1,10 @@
+Package: SingleCaseES
+Type: Package
+Title: Calculate effect size indices for single-case designs
+Version: 0.1
+Date: 2016-06-22
+Authors@R: person("James", "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre"))
+Description: More about what it does (maybe more than one line)
+License: GPL-3
+LazyData: TRUE
+RoxygenNote: 5.0.1
