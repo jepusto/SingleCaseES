@@ -4,13 +4,13 @@
 \alias{NAP}
 \title{Non-overlap of all pairs}
 \usage{
-NAP(A_data, B_data, improvement = "increase", SE = TRUE,
+NAP(A_data, B_data, improvement = "increase", SE = TRUE, CI = TRUE,
   confidence = 0.95)
 }
 \arguments{
-\item{A_data}{vector of numeric data for A phase}
+\item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
-\item{B_data}{vector of numeric data for B phase}
+\item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase"}
@@ -18,32 +18,58 @@ Default is "increase"}
 \item{SE}{logical value indicating whether to report the standard error of 
 NAP}
 
-\item{confidence}{confidence level for the reported interval estimate of NAP.
-If \code{NULL} then no confidence interval is calculated.}
+\item{CI}{logical value indicating whether to report a confidence interval 
+for NAP}
+
+\item{confidence}{confidence level for the reported interval estimate of NAP}
 }
 \value{
-Numeric value. The range of NAP is [0,1], with a null value of 0.5.
+If \code{SE = FALSE} and \code{CI = FALSE}, a numeric value.
+  Otherwise, a list containing the estimate, standard error, and/or confidence
+  interval.
 }
 \description{
 Calculates the non-overlap of all pairs index (Parker & Vannest,
   2009).
 }
 \details{
-NAP is calculated as the proportion of all pairs of one observation
-  from each phase in which the measurement from the B phase exceeds the
-  measurement from the A phase, with pairs of data points that are exactly
-  tied being given a weight of 0.5.
+NAP is calculated as the proportion of all pairs of one observation 
+  from each phase in which the measurement from the B phase exceeds the 
+  measurement from the A phase, with pairs of data points that are exactly 
+  tied being given a weight of 0.5. The range of NAP is [0,1], with a null
+  value of 0.5.
+  
+  The standard error of NAP is calculated based on the method of Hanley and 
+  McNeil (1982).
+  
+  The confidence interval for NAP is calculated based on the symmetrized 
+  score-inversion method (Method 5) proposed by Newcombe (2006).
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
 B <- c(28, 25, 24, 27, 30, 30, 29)
 NAP(A_data = A, B_data = B)
 
+# Example from Parker & Vannest (2009)
+yA <- c(4, 3, 4, 3, 4, 7, 5, 2, 3, 2)
+yB <- c(5, 9, 7, 9, 7, 5, 9, 11, 11, 10, 9)
+NAP(yA, yB)
+
 }
 \references{
-Parker, R. I., & Vannest, K. J. (2009). An improved effect size 
-  for single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy,
-  40}(4), 357--67.
-  doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
+Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under 
+a receiver operating characteristic (ROC) curve. \emph{Radiology, 143}, 
+29--36. 
+doi:\href{http://dx.doi.org/10.1148/radiology.143.1.7063747}{10.1148/radiology.143.1.7063747}
+
+Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
+on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation. 
+\emph{Statistics in Medicine, 25}(4), 559--573. 
+doi:\href{http://dx.doi.org/10.1002/sim.2324}{10.1002/sim.2324}
+
+Parker, R. I., & Vannest, K. J. (2009). An improved effect size for 
+single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy, 
+40}(4), 357--67. 
+doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
 }
 

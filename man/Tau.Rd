@@ -4,13 +4,13 @@
 \alias{Tau}
 \title{Tau (non-overlap)}
 \usage{
-Tau(A_data, B_data, improvement = "increase", SE = TRUE,
-  confidence = 0.05)
+Tau(A_data, B_data, improvement = "increase", SE = TRUE, CI = TRUE,
+  confidence = 0.95)
 }
 \arguments{
-\item{A_data}{vector of numeric data for A phase}
+\item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
-\item{B_data}{vector of numeric data for B phase}
+\item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase"}
@@ -18,11 +18,15 @@ Default is "increase"}
 \item{SE}{logical value indicating whether to report the standard error of 
 Tau}
 
-\item{confidence}{confidence level for the reported interval estimate of Tau.
-If \code{NULL} then no confidence interval is calculated.}
+\item{CI}{logical value indicating whether to report a confidence interval 
+for Tau}
+
+\item{confidence}{confidence level for the reported interval estimate of Tau}
 }
 \value{
-Numeric value. The range of Tau is [-1,1], with a null value of 0.
+If \code{SE = FALSE} and \code{CI = FALSE}, a numeric value.
+  Otherwise, a list containing the estimate, standard error, and/or confidence
+  interval.
 }
 \description{
 Calculates the Tau (non-overlap) index (Parker, Vannest, Davis, 
@@ -30,8 +34,12 @@ Calculates the Tau (non-overlap) index (Parker, Vannest, Davis,
 }
 \details{
 Tau (non-overlap) is calculated as the Spearman rank-correlation 
-  between the outcome observations and a binary variable indicating phase B. Tau
-  is a linear re-scaling of NAP to the range [-1,1].
+  between the outcome observations and a binary variable indicating phase B. 
+  Tau is a linear re-scaling of \code{\link{NAP}} to the range [-1,1], with a
+  null value of 0.
+  
+  Standard errors and confidence intervals for Tau are based on 
+  transformations of the corresponding SEs and CIs for \code{\link{NAP}}
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)

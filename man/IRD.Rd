@@ -7,20 +7,20 @@
 IRD(A_data, B_data, improvement = "increase")
 }
 \arguments{
-\item{A_data}{vector of numeric data for A phase}
+\item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
-\item{B_data}{vector of numeric data for B phase}
+\item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase"}
 }
 \value{
-Numeric value. The range of IRD depends on the number of 
-  observations in each phase.
+Numeric value
 }
 \description{
 Calculates the robust improvement rate difference index (Parker,
-  Vannest, & Brown, 2009).
+  Vannest, & Brown, 2009). The range of IRD depends on the number of 
+  observations in each phase.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)

@@ -7,16 +7,15 @@
 PAND(A_data, B_data, improvement = "increase")
 }
 \arguments{
-\item{A_data}{vector of numeric data for A phase}
+\item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
-\item{B_data}{vector of numeric data for B phase}
+\item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase"}
 }
 \value{
-Numeric value. The range of PAND depends on the number of 
-  observations in each phase.
+Numeric value
 }
 \description{
 Calculates the percentage of all non-overlapping data index 
@@ -26,7 +25,8 @@ Calculates the percentage of all non-overlapping data index
 PAND is calculated as the proportion of observations remaining after
   removing (instead of swapping) the fewest possible number of observations 
   from either phase so that the highest remaining point from the baseline 
-  phase is less than the lowest remaining point from the treatment phase
+  phase is less than the lowest remaining point from the treatment phase. The
+  range of PAND depends on the number of observations in each phase.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
@@ -39,6 +39,7 @@ Parker, R. I., Hagan-Burke, S., & Vannest, K. J. (2007).
   Percentage of all non-overlapping data (PAND): An alternative to PND. 
   \emph{The Journal of Special Education, 40}(4), 194--204. 
   doi:\href{http://dx.doi.org/10.1177/00224669070400040101}{10.1177/00224669070400040101}
+  
   
   Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in 
   single-case research: A review of nine nonoverlap techniques. 

@@ -7,15 +7,15 @@
 PND(A_data, B_data, improvement = c("increase", "decrease"))
 }
 \arguments{
-\item{A_data}{vector of numeric data for A phase}
+\item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
-\item{B_data}{vector of numeric data for B phase}
+\item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase"}
 }
 \value{
-Numeric value. The range of PND is [0,1].
+Numeric value
 }
 \description{
 Calculates the percentage of non-overlapping data index 
@@ -23,7 +23,7 @@ Calculates the percentage of non-overlapping data index
 }
 \details{
 PND is calculated as the proportion of observations in the B phase 
-  that exceed the highest observation from the A phase.
+  that exceed the highest observation from the A phase. The range of PND is [0,1].
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)

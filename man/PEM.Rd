@@ -7,15 +7,15 @@
 PEM(A_data, B_data, improvement = "increase")
 }
 \arguments{
-\item{A_data}{vector of numeric data for A phase}
+\item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
-\item{B_data}{vector of numeric data for B phase}
+\item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase"}
 }
 \value{
-Numeric value. The range of PEM is [0,1].
+Numeric value
 }
 \description{
 Calculates the percentage exceeding the median (PEM) index (Ma, 
@@ -24,7 +24,7 @@ Calculates the percentage exceeding the median (PEM) index (Ma,
 \details{
 PEM is calculated as the proportion of observations in the B phase 
   that exceed the median observation from the A phase. Ties are counted with
-  a weight of 0.5.
+  a weight of 0.5. The range of PEM is [0,1].
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
