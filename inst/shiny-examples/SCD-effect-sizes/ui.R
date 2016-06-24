@@ -2,44 +2,50 @@ library(shiny)
 
 ui <- navbarPage(title = "Single-case effect size calculator",
                  tabPanel("Calculator",
-                          
-                          fluidRow(
-                            column(2),
-                            column(4, 
-                                   textInput("A_dat", label = h3("Phase A"), value = "Enter data values...")
-                            ),
-                            column(4, 
-                                   textInput("B_dat", label = h3("Phase B"), value = "Enter data values...")
-                            ),
-                            column(2)
-                          ),
-                          fluidRow(
-                            column(4),
-                            column(4,
-                                   selectInput("improvement", label = "Direction of improvement", 
-                                               choices = c("increase", "decrease"))
+                          fluidRow(column(12,
+                                          h3("Data input"),
+                                          h5("Enter data values, separated by commas, spaces, or tabs.")
+                                          )
                                    ),
-                            column(4)
-                            
+                          fluidRow(
+                            column(4, 
+                                   textInput("A_dat", label = "Phase A", value = "")
+                            ),
+                            column(4, 
+                                   textInput("B_dat", label = "Phase B", value = "")
+                            )
                           ),
-                          tabsetPanel(id = "ES_family", type = "tabs",
-                                      tabPanel("Non-overlap",
-                                               tabsetPanel(id = "ES_panel", type = "tabs",
-                                                           tabPanel("IRD"),
-                                                           tabPanel("NAP"),
-                                                           tabPanel("PND"),
-                                                           tabPanel("PEM"),
-                                                           tabPanel("PAND"),
-                                                           tabPanel("Tau")
-                                                          )
-                                               ),
-                                      tabPanel("Parametric",
-                                               tabsetPanel(id = "ES_panel", type = "tabs",
-                                                           tabPanel("SMD"),
-                                                           tabPanel("LRR")
-                                                          )
-                                               )
+                          fluidRow(column(12, 
+                            hr(),
+                            h3("Effect sizes"))),
+                          sidebarLayout(
+                            sidebarPanel(width = 4,
+                                         tabsetPanel(id = "ES_family", type = "pills",
+                                                     tabPanel("Non-overlap", 
+                                                              hr(),
+                                                              selectInput("NOM_ES", label = "Effect size index",
+                                                                          choices = c("IRD","NAP","PND","PEM","PAND","Tau"), 
+                                                                          selected = "NAP"),
+                                                              selectInput("improvement", label = "Direction of improvement", 
+                                                                          choices = c("increase", "decrease"))
+                                                     ),
+                                                     tabPanel("Parametric", 
+                                                              hr(),
+                                                              selectInput("parametric_ES", label = "Effect size index", 
+                                                                          choices = c("LRR","SMD"), selected = "LRR"),
+                                                              conditionalPanel(condition = "input.parametric_ES == 'SMD'",
+                                                                               radioButtons("SMD_denom", label = "Standardized by", 
+                                                                                            choices = c("baseline SD","pooled SD"))
+                                                                               )
+                                                     )
+                                         ),
+                                         htmlOutput("confidence")
+                            ),
+                            mainPanel(width = 8,
+                                      verbatimTextOutput("ES")
+                            )
                           )
+                          
                  ),
                  tabPanel("About",
                           includeMarkdown("markdown/About.md")
