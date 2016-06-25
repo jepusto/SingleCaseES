@@ -13,7 +13,14 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                             ),
                             column(4, 
                                    textInput("B_dat", label = "Phase B", value = "")
-                            )
+                            ),
+                            column(2,
+                                   checkboxInput("plot","Show graph",value = TRUE))
+                          ),
+                          fluidRow(
+                            column(12,
+                                   plotOutput('SCDplot', height = "auto")
+                                   )
                           ),
                           fluidRow(column(12, 
                             hr(),
@@ -41,10 +48,12 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          ),
                                          conditionalPanel(condition = "input.ES_family=='Parametric'|input.NOM_ES=='NAP'|input.NOM_ES=='Tau'",
                                                           numericInput("confidence", label = "Confidence level", value = 95, min = 0, max = 100)
-                                                          )
+                                                          ),
+                                         numericInput("digits","Digits",value = 3, min = 1, max = 16, step = 1)
                             ),
                             mainPanel(width = 8,
-                                      verbatimTextOutput("ES")
+                                      h3(textOutput("ES_name")),
+                                      htmlOutput("result")
                             )
                           )
                           
