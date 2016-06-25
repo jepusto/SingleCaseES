@@ -10,31 +10,31 @@ summary_stats <- function(A_data, B_data) {
 #' @description Calculates the log-response ratio effect size index, with or
 #'   without bias correction (Pustejovsky, 2015)
 #'   
-#' @inheritParams PND
-#' @param SE logical value indicating whether to report the standard error
-#' @param CI logical value indicating whether to report a confidence interval
-#' @param confidence confidence level for the reported interval estimate
+#' @inheritParams NAP
 #' @param bias_correct  logical value indicating whether to use bias-correction.
 #'   Default is \code{TRUE}
 #'   
 #' @details
-#' 
-#' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes 
-#'   for single-case studies of free-operant behavior. \emph{Psychological
-#'   Methods, 20}(3), 342--359.
-#'   doi:\href{http://dx.doi.org/10.1037/met0000019}{10.1037/met0000019}
 #'   
-#' @return If \code{SE = FALSE} and \code{CI = FALSE}, a numeric value. 
-#'   Otherwise, a list containing the estimate, standard error, and/or confidence 
+#' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes 
+#'   for single-case studies of free-operant behavior. \emph{Psychological 
+#'   Methods, 20}(3), 342--359. 
+#'   doi:\href{http://dx.doi.org/10.1037/met0000019}{10.1037/met0000019}
+
+#' @return A list containing the estimate, standard error, and confidence 
 #'   interval.
 #'   
 #' @examples 
+#' A <- c(20, 20, 26, 25, 22, 23)
+#' B <- c(28, 25, 24, 27, 30, 30, 29)
+#' LRR(A_data = A, B_data = B, bias_correct = FALSE)
+#' LRR(A_data = A, B_data = B)
 #' 
 #' @export
 
 # Check against calculations in Pustejovsky (2015)!
 
-LRR <- function(A_data, B_data, SE = TRUE, CI = TRUE, confidence = .95, bias_correct = TRUE) {
+LRR <- function(A_data, B_data, bias_correct = TRUE, confidence = .95) {
   
   dat <- summary_stats(A_data, B_data)
   
@@ -48,12 +48,61 @@ LRR <- function(A_data, B_data, SE = TRUE, CI = TRUE, confidence = .95, bias_cor
   }
   
   SE <- with(dat, sqrt(sum(V / (n * M^2))))
+  CI <- lRR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
   
-  res <- list(Est = lRR)
-  
-  if (SE) res$SE <- SE
-  
-  if (CI) res$CI <- lRR + c(-1, 1) * qnorm(1-(1-conf_level)/2) * SE
+  list(Est = lRR, SE = SE, CI = CI)
+}
 
-  if (length(res) > 1) res else res[[1]]
+
+#' @title Within-case standardized mean difference
+#'   
+#' @description Calculates the within-case standardized mean difference effect 
+#'   size index
+#'   
+#' @inheritParams NAP
+#' @param std_dev character string controlling how to calculate the standard 
+#'   deviation in the denominator of the effect size. Set to \code{"baseline"} 
+#'   (the default) to use the baseline standard deviation. Set to \code{"pool"}
+#'   to use the pooled standard deviation.
+#' @param bias_correct logical value indicating whether to use bias-correction.
+#'   Default is \code{TRUE}
+#'   
+#' @details
+#'   
+#' @return A list containing the estimate, standard error, and confidence 
+#'   interval.
+#'   
+#' @examples 
+#' A <- c(20, 20, 26, 25, 22, 23)
+#' B <- c(28, 25, 24, 27, 30, 30, 29)
+#' SMD(A_data = A, B_data = B, bias_correct = FALSE)
+#' SMD(A_data = A, B_data = B)
+#' SMD(A_data = A, B_data = B, std_dev = "pool")
+#' 
+#' @export
+
+# Check against calculations in Pustejovsky (2015)!
+
+SMD <- function(A_data, B_data, std_dev = "baseline", 
+                bias_correct = TRUE, confidence = .95) {
+  
+  dat <- summary_stats(A_data, B_data)
+  
+  if (std_dev == "baseline") {
+    df <- dat$n[1]
+    s_sq <- dat$V[1]
+    SV1 <- with(dat, 1 / n[1] + V[2] / (n[2] * V[1]))
+  } else {
+    df <- sum(dat$n - 1)
+    s_sq <-  with(dat, sum((n - 1) * V) / df)
+    SV1 <- sum(1 / dat$n)
+  }
+  
+  J <- if (bias_correct) 1  - 3 / (4 * df - 1) else 1
+  
+  d <- J * diff(dat$M) / sqrt(s_sq) 
+  SE <- J * sqrt(SV1 + d^2 / (2 * df))
+  CI <- d + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
+  
+  list(Est = d, SE = SE, CI = CI)
 }

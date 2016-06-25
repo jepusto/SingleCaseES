@@ -15,17 +15,14 @@ NAP(A_data, B_data, improvement = "increase", SE = TRUE, CI = TRUE,
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase"}
 
-\item{SE}{logical value indicating whether to report the standard error of 
-NAP}
+\item{SE}{logical value indicating whether to report the standard error}
 
-\item{CI}{logical value indicating whether to report a confidence interval 
-for NAP}
+\item{CI}{logical value indicating whether to report a confidence interval}
 
-\item{confidence}{confidence level for the reported interval estimate of NAP}
+\item{confidence}{confidence level for the reported interval estimate}
 }
 \value{
-If \code{SE = FALSE} and \code{CI = FALSE}, a numeric value.
-  Otherwise, a list containing the estimate, standard error, and/or confidence
+A list containing the estimate, standard error, and/or confidence
   interval.
 }
 \description{

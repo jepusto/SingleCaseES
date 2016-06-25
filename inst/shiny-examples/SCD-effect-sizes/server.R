@@ -1,3 +1,4 @@
+library(ggplot2)
 devtools::load_all()
 
 statistical_indices <- c("NAP","Tau","SMD","LRR")
@@ -13,23 +14,20 @@ shinyServer(function(input, output) {
   
   ES <- reactive({
     index <- c("Non-overlap" = input$NOM_ES, "Parametric" = input$parametric_ES)[[input$ES_family]]
-    arg_vals <- list(A_data = dat()$A, B_data = dat()$B, improvement = input$improvement)
+    arg_vals <- list(A_data = dat()$A, B_data = dat()$B)
+    if (input$ES_family == "Non-overlap") {
+      arg_vals$improvement <- input$improvement
+    }
+    if (index == "SMD") {
+      arg_vals$std_dev <- substr(input$SMD_denom, 1, nchar(input$SMD_denom) - 3)
+    }
     if (index %in% statistical_indices) {
-      conf <- c("Non-overlap" = input$conf_NOM, "Parametric" = input$conf_parametric)[[input$ES_family]]
-      arg_vals$confidence <- conf
+      arg_vals$confidence <- input$confidence / 100
     }
     
     est <- tryCatch(do.call(index, arg_vals), warning = function(w) w, error = function(e) e)
     
     list(index = index, est = est)
-  })
-  
-  output$confidence <- renderUI({
-    if (ES()$index %in% statistical_indices) {
-      numericInput("confidence", label = "Confidence level", value = 95, min = 0, max = 100)  
-    } else {
-      NULL
-    }
   })
   
   output$ES <- renderPrint({

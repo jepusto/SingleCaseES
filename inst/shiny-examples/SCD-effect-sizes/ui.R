@@ -24,7 +24,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                      tabPanel("Non-overlap", 
                                                               hr(),
                                                               selectInput("NOM_ES", label = "Effect size index",
-                                                                          choices = c("IRD","NAP","PND","PEM","PAND","Tau"), 
+                                                                          choices = c("IRD","NAP","PAND","PEM","PND","Tau"), 
                                                                           selected = "NAP"),
                                                               selectInput("improvement", label = "Direction of improvement", 
                                                                           choices = c("increase", "decrease"))
@@ -39,7 +39,9 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                                )
                                                      )
                                          ),
-                                         htmlOutput("confidence")
+                                         conditionalPanel(condition = "input.ES_family=='Parametric'|input.NOM_ES=='NAP'|input.NOM_ES=='Tau'",
+                                                          numericInput("confidence", label = "Confidence level", value = 95, min = 0, max = 100)
+                                                          )
                             ),
                             mainPanel(width = 8,
                                       verbatimTextOutput("ES")

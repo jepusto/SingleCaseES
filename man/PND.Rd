@@ -4,7 +4,7 @@
 \alias{PND}
 \title{Percentage of non-overlapping data}
 \usage{
-PND(A_data, B_data, improvement = c("increase", "decrease"))
+PND(A_data, B_data, improvement = "increase")
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}

@@ -1,13 +1,149 @@
-
-#' @title Percentage of non-overlapping data
+#' @title Non-overlap of all pairs
 #'   
-#' @description Calculates the percentage of non-overlapping data index 
-#'   (Scruggs, Mastropieri, & Castro, 1987).
+#' @description Calculates the non-overlap of all pairs index (Parker & Vannest,
+#'   2009).
 #'   
 #' @param A_data vector of numeric data for A phase. Missing values are dropped.
 #' @param B_data vector of numeric data for B phase. Missing values are dropped.
 #' @param improvement character string indicating direction of improvement.
 #'   Default is "increase"
+#' @param SE logical value indicating whether to report the standard error
+#' @param CI logical value indicating whether to report a confidence interval
+#' @param confidence confidence level for the reported interval estimate
+#'   
+#' @details NAP is calculated as the proportion of all pairs of one observation 
+#'   from each phase in which the measurement from the B phase exceeds the 
+#'   measurement from the A phase, with pairs of data points that are exactly 
+#'   tied being given a weight of 0.5. The range of NAP is [0,1], with a null
+#'   value of 0.5.
+#'   
+#'   The standard error of NAP is calculated based on the method of Hanley and 
+#'   McNeil (1982).
+#'   
+#'   The confidence interval for NAP is calculated based on the symmetrized 
+#'   score-inversion method (Method 5) proposed by Newcombe (2006).
+#'   
+#' @references
+#' 
+#' Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under 
+#' a receiver operating characteristic (ROC) curve. \emph{Radiology, 143}, 
+#' 29--36. 
+#' doi:\href{http://dx.doi.org/10.1148/radiology.143.1.7063747}{10.1148/radiology.143.1.7063747}
+#' 
+#' Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
+#' on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation. 
+#' \emph{Statistics in Medicine, 25}(4), 559--573. 
+#' doi:\href{http://dx.doi.org/10.1002/sim.2324}{10.1002/sim.2324}
+#' 
+#' Parker, R. I., & Vannest, K. J. (2009). An improved effect size for 
+#' single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy, 
+#' 40}(4), 357--67. 
+#' doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
+#' 
+#' @export
+#' 
+#' @return A list containing the estimate, standard error, and/or confidence
+#'   interval.
+#'   
+#' @examples
+#' A <- c(20, 20, 26, 25, 22, 23)
+#' B <- c(28, 25, 24, 27, 30, 30, 29)
+#' NAP(A_data = A, B_data = B)
+#' 
+#' # Example from Parker & Vannest (2009)
+#' yA <- c(4, 3, 4, 3, 4, 7, 5, 2, 3, 2)
+#' yB <- c(5, 9, 7, 9, 7, 5, 9, 11, 11, 10, 9)
+#' NAP(yA, yB)
+#' 
+
+NAP <- function(A_data, B_data, improvement = "increase", 
+                SE = TRUE, CI = TRUE, confidence = .95) {
+  
+  if (improvement=="decrease") {
+    A_data <- -1 * A_data
+    B_data <- -1 * B_data
+  }
+  A_data <- A_data[!is.na(A_data)]
+  B_data <- B_data[!is.na(B_data)]
+  m <- length(A_data)
+  n <- length(B_data)
+  
+  Q_mat <- sapply(B_data, function(j) (j > A_data) + 0.5 * (j == A_data))
+  NAP <- mean(Q_mat)
+  
+  res <- list(Est = NAP)
+  
+  if (SE) {
+    Q1 <- sum(rowSums(Q_mat)^2) / (m * n^2)
+    Q2 <- sum(colSums(Q_mat)^2) / (m^2 * n)
+    V <- (NAP * (1 - NAP) + (n - 1) * (Q1 - NAP^2) + (m - 1) * (Q2 - NAP^2)) / (m * n)  
+    res$SE <- sqrt(V)  
+  }
+  
+  if (CI) {
+    h <- (m + n) / 2 - 1
+    z <- qnorm(1 - (1 - confidence) / 2)
+    f <- function(x) m * n * (NAP - x)^2 * (2 - x) * (1 + x) - 
+      z^2 * x * (1 - x) * (2 + h + (1 + 2 * h) * x * (1 - x))
+    lower <- if (NAP > 0) uniroot(f, c(0, NAP))$root else 0
+    upper <- if (NAP < 1) uniroot(f, c(NAP, 1))$root else 1
+    res$CI <- c(lower = lower, upper = upper)
+  }
+  
+  res
+}
+
+
+#' @title Tau (non-overlap)
+#'   
+#' @description Calculates the Tau (non-overlap) index (Parker, Vannest, Davis, 
+#'   & Sauber 2011).
+#'   
+#' @inheritParams NAP
+#'   
+#' @details Tau (non-overlap) is calculated as the Spearman rank-correlation 
+#'   between the outcome observations and a binary variable indicating phase B. 
+#'   Tau is a linear re-scaling of \code{\link{NAP}} to the range [-1,1], with a
+#'   null value of 0.
+#'   
+#'   Standard errors and confidence intervals for Tau are based on 
+#'   transformations of the corresponding SEs and CIs for \code{\link{NAP}}
+#'   
+#' @references Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. 
+#'   (2011). Combining nonoverlap and trend for single-case research: Tau-U. 
+#'   \emph{Behavior Therapy, 42}(2), 284--299. 
+#'   doi:\href{http://dx.doi.org/10.1016/j.beth.2010.08.006}{10.1016/j.beth.2010.08.006}
+#'   
+#' @export
+#' 
+#' @return A list containing the estimate, standard error, and/or confidence 
+#'   interval.
+#'   
+#' @examples
+#' A <- c(20, 20, 26, 25, 22, 23)
+#' B <- c(28, 25, 24, 27, 30, 30, 29)
+#' Tau(A_data = A, B_data = B)
+#' 
+
+Tau <- function(A_data, B_data, improvement = "increase", 
+                SE = TRUE, CI = TRUE, confidence = .95) {
+  nap <- NAP(A_data = A_data, B_data = B_data, improvement = improvement, 
+             SE = SE, CI = CI, confidence = confidence)
+  
+  res <- list(Est = 2 * nap$Est - 1)
+  if (SE) res$SE <- 2 * nap$SE
+  if (CI) res$CI <- 2 * nap$CI - 1
+  
+  res
+}
+
+
+#' @title Percentage of non-overlapping data
+#'   
+#' @description Calculates the percentage of non-overlapping data index 
+#'   (Scruggs, Mastropieri, & Castro, 1987).
+#'
+#' @inheritParams NAP
 #'   
 #' @details PND is calculated as the proportion of observations in the B phase 
 #'   that exceed the highest observation from the A phase. The range of PND is [0,1].
@@ -27,7 +163,7 @@
 #' PND(A_data = A, B_data = B)
 #' 
 
-PND <- function(A_data, B_data, improvement = c("increase","decrease")) {
+PND <- function(A_data, B_data, improvement = "increase") {
   if (improvement=="decrease") {
     A_data <- -1 * A_data
     B_data <- -1 * B_data
@@ -40,7 +176,7 @@ PND <- function(A_data, B_data, improvement = c("increase","decrease")) {
 #' @description Calculates the percentage exceeding the median (PEM) index (Ma, 
 #'   2006).
 #'   
-#' @inheritParams PND
+#' @inheritParams NAP
 #' 
 #' @details PEM is calculated as the proportion of observations in the B phase 
 #'   that exceed the median observation from the A phase. Ties are counted with
@@ -75,7 +211,7 @@ PEM <- function(A_data, B_data, improvement = "increase") {
 #' @description Calculates the percentage of all non-overlapping data index 
 #'   (Parker, Hagan-Burke, & Vannest, 2007; Parker, Vannest, & Davis, 2011).
 #'   
-#' @inheritParams PND
+#' @inheritParams NAP
 #'   
 #' @details PAND is calculated as the proportion of observations remaining after
 #'   removing (instead of swapping) the fewest possible number of observations 
@@ -131,7 +267,7 @@ PAND <- function(A_data, B_data, improvement = "increase") {
 #'   Vannest, & Brown, 2009). The range of IRD depends on the number of 
 #'   observations in each phase.
 #'   
-#' @inheritParams PND
+#' @inheritParams NAP
 #'   
 #' @seealso \code{\link{PAND}}
 #'   
@@ -155,148 +291,4 @@ IRD <- function(A_data, B_data, improvement = "increase") {
   n <- sum(!is.na(B_data))
   
   ((m+n)^2 * pand - m^2 - n^2) / (2 * m * n)
-}
-
-#' @title Non-overlap of all pairs
-#'   
-#' @description Calculates the non-overlap of all pairs index (Parker & Vannest,
-#'   2009).
-#'   
-#' @inheritParams PND
-#' @param SE logical value indicating whether to report the standard error of 
-#'   NAP
-#' @param CI logical value indicating whether to report a confidence interval 
-#'   for NAP
-#' @param confidence confidence level for the reported interval estimate of NAP
-#'   
-#' @details NAP is calculated as the proportion of all pairs of one observation 
-#'   from each phase in which the measurement from the B phase exceeds the 
-#'   measurement from the A phase, with pairs of data points that are exactly 
-#'   tied being given a weight of 0.5. The range of NAP is [0,1], with a null
-#'   value of 0.5.
-#'   
-#'   The standard error of NAP is calculated based on the method of Hanley and 
-#'   McNeil (1982).
-#'   
-#'   The confidence interval for NAP is calculated based on the symmetrized 
-#'   score-inversion method (Method 5) proposed by Newcombe (2006).
-#'   
-#' @references
-#' 
-#' Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under 
-#' a receiver operating characteristic (ROC) curve. \emph{Radiology, 143}, 
-#' 29--36. 
-#' doi:\href{http://dx.doi.org/10.1148/radiology.143.1.7063747}{10.1148/radiology.143.1.7063747}
-#' 
-#' Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
-#' on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation. 
-#' \emph{Statistics in Medicine, 25}(4), 559--573. 
-#' doi:\href{http://dx.doi.org/10.1002/sim.2324}{10.1002/sim.2324}
-#' 
-#' Parker, R. I., & Vannest, K. J. (2009). An improved effect size for 
-#' single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy, 
-#' 40}(4), 357--67. 
-#' doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
-#' 
-#' @export
-#' 
-#' @return If \code{SE = FALSE} and \code{CI = FALSE}, a numeric value.
-#'   Otherwise, a list containing the estimate, standard error, and/or confidence
-#'   interval.
-#'   
-#' @examples
-#' A <- c(20, 20, 26, 25, 22, 23)
-#' B <- c(28, 25, 24, 27, 30, 30, 29)
-#' NAP(A_data = A, B_data = B)
-#' 
-#' # Example from Parker & Vannest (2009)
-#' yA <- c(4, 3, 4, 3, 4, 7, 5, 2, 3, 2)
-#' yB <- c(5, 9, 7, 9, 7, 5, 9, 11, 11, 10, 9)
-#' NAP(yA, yB)
-#' 
-
-NAP <- function(A_data, B_data, improvement = "increase", SE = TRUE, CI = TRUE, confidence = .95) {
-  
-  if (improvement=="decrease") {
-    A_data <- -1 * A_data
-    B_data <- -1 * B_data
-  }
-  A_data <- A_data[!is.na(A_data)]
-  B_data <- B_data[!is.na(B_data)]
-  m <- length(A_data)
-  n <- length(B_data)
-  
-  Q_mat <- sapply(B_data, function(j) (j > A_data) + 0.5 * (j == A_data))
-  NAP <- mean(Q_mat)
-  
-  res <- list(Est = NAP)
-  
-  if (SE) {
-    Q1 <- sum(rowSums(Q_mat)^2) / (m * n^2)
-    Q2 <- sum(colSums(Q_mat)^2) / (m^2 * n)
-    V <- (NAP * (1 - NAP) + (n - 1) * (Q1 - NAP^2) + (m - 1) * (Q2 - NAP^2)) / (m * n)  
-    res$SE <- sqrt(V)  
-  }
-  
-  if (CI) {
-    h <- (m + n) / 2 - 1
-    z <- qnorm(1 - (1 - confidence) / 2)
-    f <- function(x) m * n * (NAP - x)^2 * (2 - x) * (1 + x) - 
-      z^2 * x * (1 - x) * (2 + h + (1 + 2 * h) * x * (1 - x))
-    lower <- if (NAP > 0) uniroot(f, c(0, NAP))$root else 0
-    upper <- if (NAP < 1) uniroot(f, c(NAP, 1))$root else 1
-    res$CI <- c(lower = lower, upper = upper)
-  }
-  
-  if (length(res) > 1) res else res[[1]]
-}
-
-
-#' @title Tau (non-overlap)
-#'   
-#' @description Calculates the Tau (non-overlap) index (Parker, Vannest, Davis, 
-#'   & Sauber 2011).
-#'   
-#' @inheritParams PND
-#' @param SE logical value indicating whether to report the standard error of 
-#'   Tau
-#' @param CI logical value indicating whether to report a confidence interval 
-#'   for Tau
-#' @param confidence confidence level for the reported interval estimate of Tau
-#'   
-#' @details Tau (non-overlap) is calculated as the Spearman rank-correlation 
-#'   between the outcome observations and a binary variable indicating phase B. 
-#'   Tau is a linear re-scaling of \code{\link{NAP}} to the range [-1,1], with a
-#'   null value of 0.
-#'   
-#'   Standard errors and confidence intervals for Tau are based on 
-#'   transformations of the corresponding SEs and CIs for \code{\link{NAP}}
-#'   
-#' @references Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. 
-#'   (2011). Combining nonoverlap and trend for single-case research: Tau-U. 
-#'   \emph{Behavior Therapy, 42}(2), 284--299. 
-#'   doi:\href{http://dx.doi.org/10.1016/j.beth.2010.08.006}{10.1016/j.beth.2010.08.006}
-#'   
-#'   
-#' @export
-#' 
-#' @return If \code{SE = FALSE} and \code{CI = FALSE}, a numeric value.
-#'   Otherwise, a list containing the estimate, standard error, and/or confidence
-#'   interval.
-#'   
-#' @examples
-#' A <- c(20, 20, 26, 25, 22, 23)
-#' B <- c(28, 25, 24, 27, 30, 30, 29)
-#' Tau(A_data = A, B_data = B)
-#' 
-
-Tau <- function(A_data, B_data, improvement = "increase", SE = TRUE, CI = TRUE, confidence = .95) {
-  nap <- NAP(A_data = A_data, B_data = B_data, improvement = improvement, 
-             SE = SE, CI = CI, confidence = confidence)
-  
-  res <- list(Est = 2 * nap$Est - 1)
-  if (SE) res$SE <- 2 * nap$SE
-  if (CI) res$CI <- 2 * nap$CI - 1
-  
-  if (length(res) > 1) res else res[[1]]
 }
