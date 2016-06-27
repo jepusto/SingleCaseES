@@ -1,5 +1,5 @@
 library(ggplot2)
-devtools::load_all()
+library(SingleCaseES)
 
 statistical_indices <- c("NAP","Tau","SMD","LRR")
 
