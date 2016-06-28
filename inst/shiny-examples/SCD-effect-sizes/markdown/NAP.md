@@ -2,7 +2,7 @@
 
 $\theta = \text{Pr}(Y^B > Y^A) + 0.5 \times \text{Pr}(Y^B = Y^A)$
 
-#### Estimator
+#### Estimation
 
 Let $y^A_1,...,y^A_m$ denote the observations from phase A. Let $y^B_1,...,y^B_n$ denote the observations from phase B. Let $q_{ij} = I(y^B_j > y^A_i) + 0.5 I(y^B_j = y^A_i)$. The NAP effect size index is calculated as
 

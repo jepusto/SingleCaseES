@@ -22,14 +22,20 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                    plotOutput('SCDplot', height = "auto")
                                    )
                           ),
-                          fluidRow(column(12, 
+                          fluidRow(
                             hr(),
-                            h3("Effect sizes"))),
+                            column(4, 
+                              h3("Effect sizes")
+                            ),
+                            column(8,
+                              h3(textOutput("ES_name"))
+                            )
+                          ),
                           sidebarLayout(
                             sidebarPanel(width = 4,
                                          tabsetPanel(id = "ES_family", type = "pills",
                                                      tabPanel("Non-overlap", 
-                                                              hr(),
+                                                              br(),
                                                               selectInput("NOM_ES", label = "Effect size index",
                                                                           choices = c("IRD","NAP","PAND","PEM","PND","Tau"), 
                                                                           selected = "NAP"),
@@ -37,7 +43,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                           choices = c("increase", "decrease"))
                                                      ),
                                                      tabPanel("Parametric", 
-                                                              hr(),
+                                                              br(),
                                                               selectInput("parametric_ES", label = "Effect size index", 
                                                                           choices = c("LRR","SMD"), selected = "LRR"),
                                                               conditionalPanel(condition = "input.parametric_ES == 'SMD'",
@@ -52,8 +58,23 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          numericInput("digits","Digits",value = 3, min = 1, max = 16, step = 1)
                             ),
                             mainPanel(width = 8,
-                                      h3(textOutput("ES_name")),
-                                      htmlOutput("result")
+                                      htmlOutput("result"),
+                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'IRD'",
+                                                       withMathJax(includeMarkdown("markdown/IRD.md"))),
+                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'NAP'",
+                                                       withMathJax(includeMarkdown("markdown/NAP.md"))),
+                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'PAND'",
+                                                       withMathJax(includeMarkdown("markdown/PAND.md"))),
+                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'PEM'",
+                                                       withMathJax(includeMarkdown("markdown/PEM.md"))),
+                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'PND'",
+                                                       withMathJax(includeMarkdown("markdown/PND.md"))),
+                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'Tau'",
+                                                       withMathJax(includeMarkdown("markdown/Tau.md"))),
+                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'LRR'",
+                                                       withMathJax(includeMarkdown("markdown/LRR.md"))),
+                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'SMD'",
+                                                       withMathJax(includeMarkdown("markdown/SMD.md")))
                             )
                           )
                           

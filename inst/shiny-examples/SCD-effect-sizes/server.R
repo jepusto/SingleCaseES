@@ -57,9 +57,7 @@ shinyServer(function(input, output) {
   })
   
   output$ES_name <- renderText({
-    if (dat()$compute) {
-      full_names[[ES()$index]] 
-    }
+    full_names[[ES()$index]] 
   })
   
   output$result <- renderUI({
