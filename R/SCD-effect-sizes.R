@@ -6,7 +6,7 @@
 #' @export
 #' 
 
-SCD_effect_sizes <- function() {
+SCD_effect_sizes <- function(browser = TRUE) {
   if (!requireNamespace("shiny", quietly = TRUE)) {
     stop("The simulator requires the shiny package. Please install it.", call. = FALSE)
   }
@@ -19,5 +19,5 @@ SCD_effect_sizes <- function() {
     stop("Could not find the application directory. Try re-installing SingleCaseES.", call. = FALSE)
   }
   
-  shiny::runApp(appDir, display.mode = "normal")
+  shiny::runApp(appDir, display.mode = "normal", launch.browser = browser)
 }
