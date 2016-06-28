@@ -14,8 +14,9 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                             column(4, 
                                    textInput("B_dat", label = "Phase B", value = "")
                             ),
-                            column(2,
-                                   checkboxInput("plot","Show graph",value = TRUE))
+                            column(4,
+                                   checkboxInput("plot","Show graph", value = FALSE)
+                            )
                           ),
                           fluidRow(
                             column(12,
@@ -59,25 +60,24 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                             ),
                             mainPanel(width = 8,
                                       htmlOutput("result"),
-                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'IRD'",
-                                                       withMathJax(includeMarkdown("markdown/IRD.md"))),
-                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'NAP'",
-                                                       withMathJax(includeMarkdown("markdown/NAP.md"))),
-                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'PAND'",
-                                                       withMathJax(includeMarkdown("markdown/PAND.md"))),
-                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'PEM'",
-                                                       withMathJax(includeMarkdown("markdown/PEM.md"))),
-                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'PND'",
-                                                       withMathJax(includeMarkdown("markdown/PND.md"))),
-                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'Tau'",
-                                                       withMathJax(includeMarkdown("markdown/Tau.md"))),
-                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'LRR'",
-                                                       withMathJax(includeMarkdown("markdown/LRR.md"))),
-                                      conditionalPanel("input.ES_family=='Non-overlap' & input.NOM_ES == 'SMD'",
-                                                       withMathJax(includeMarkdown("markdown/SMD.md")))
-                            )
+                                      checkboxInput("explanation", label = "Show methods and references", value = FALSE),
+                                      conditionalPanel("input.explanation==true", 
+                                        conditionalPanel("input.ES_family=='Non-overlap'",
+                                          conditionalPanel("input.NOM_ES == 'IRD'", withMathJax(includeMarkdown("markdown/IRD.md"))),
+                                          conditionalPanel("input.NOM_ES == 'NAP'", withMathJax(includeMarkdown("markdown/NAP.md"))),
+                                          conditionalPanel("input.NOM_ES == 'PAND'", withMathJax(includeMarkdown("markdown/PAND.md"))),
+                                          conditionalPanel("input.NOM_ES == 'PEM'", withMathJax(includeMarkdown("markdown/PEM.md"))),
+                                          conditionalPanel("input.NOM_ES == 'PND'", withMathJax(includeMarkdown("markdown/PND.md"))),
+                                          conditionalPanel("input.NOM_ES == 'Tau'", withMathJax(includeMarkdown("markdown/Tau.md")))
+                                        ),
+                                        conditionalPanel("input.ES_family=='Parametric'",
+                                          conditionalPanel("input.parametric_ES == 'LRR'", withMathJax(includeMarkdown("markdown/LRR.md"))),
+                                          conditionalPanel("input.parametric_ES == 'SMD'", withMathJax(includeMarkdown("markdown/SMD.md")))
+                                        )
+                                      )
                           )
                           
+                    )
                  ),
                  tabPanel("About",
                           includeMarkdown("markdown/About.md")

@@ -17,7 +17,7 @@ _Your comments, suggestions, and feedback are welcome._
 
 ### Accessing the calculator
 
-There are two ways to access this tool: via a website or on your own computer, using the RStudio software. Since you are reading this now, you have presumably already figure out at least one of these. Read on to learn more about both options.
+There are two ways to access this tool: via a website or on your own computer, using the RStudio software. Since you are reading this now, you have presumably already figured out at least one of these. Read on to learn more about both options.
 
 #### Access through the shinyapps.io website
 
