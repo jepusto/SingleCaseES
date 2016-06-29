@@ -12,7 +12,7 @@
 #' @param confidence confidence level for the reported interval estimate
 #'   
 #' @details NAP is calculated as the proportion of all pairs of one observation 
-#'   from each phase in which the measurement from the B phase exceeds the 
+#'   from each phase in which the measurement from the B phase improves upon the 
 #'   measurement from the A phase, with pairs of data points that are exactly 
 #'   tied being given a weight of 0.5. The range of NAP is [0,1], with a null
 #'   value of 0.5.
@@ -142,16 +142,21 @@ Tau <- function(A_data, B_data, improvement = "increase",
 #'   
 #' @description Calculates the percentage of non-overlapping data index 
 #'   (Scruggs, Mastropieri, & Castro, 1987).
-#'
+#'   
 #' @inheritParams NAP
 #'   
-#' @details PND is calculated as the proportion of observations in the B phase 
-#'   that exceed the highest observation from the A phase. The range of PND is [0,1].
+#' @details For an outcome where increase is desirable, PND is calculated as the
+#'   proportion of observations in the B phase that exceed the highest 
+#'   observation from the A phase. For an outcome where decrease is desirable, 
+#'   PND is the proportion of observations in the B phase that are less than the
+#'   lowest observation from the A phase. The range of PND is [0,1].
 #'   
 #' @references Scruggs, T. E., Mastropieri, M. A., & Casto, G. (1987). The 
 #'   quantitative synthesis of single-subject research: Methodology and 
 #'   validation. \emph{Remedial and Special Education, 8}(2), 24--43. 
 #'   doi:\href{http://dx.doi.org/10.1177/074193258700800206}{10.1177/074193258700800206}
+#'   
+#'   
 #'   
 #' @export
 #' 
@@ -177,19 +182,24 @@ PND <- function(A_data, B_data, improvement = "increase") {
 #'   2006).
 #'   
 #' @inheritParams NAP
-#' 
-#' @details PEM is calculated as the proportion of observations in the B phase 
-#'   that exceed the median observation from the A phase. Ties are counted with
-#'   a weight of 0.5. The range of PEM is [0,1].
+#'   
+#' @details For an outcome where increase is desirable, PEM is calculated as the
+#'   proportion of observations in the B phase that exceed the median 
+#'   observation from the A phase. For an outcome where decrease is desirable, 
+#'   PEM is calculated as the proportion of observations in the B phase that are
+#'   less than the median observation from the A phase. Ties are counted with a
+#'   weight of 0.5. The range of PEM is [0,1].
 #'   
 #' @references Ma, H.-H. (2006). An alternative method for quantitative 
 #'   synthesis of single-subject researches: Percentage of data points exceeding
 #'   the median. \emph{Behavior Modification, 30}(5), 598--617. 
 #'   doi:\href{http://dx.doi.org/10.1177/0145445504272974}{10.1177/0145445504272974}
 #'   
+#'   
+#'   
 #' @export
 #' 
-#' @return Numeric value 
+#' @return Numeric value
 #'   
 #' @examples
 #' A <- c(20, 20, 26, 25, 22, 23)
@@ -213,11 +223,16 @@ PEM <- function(A_data, B_data, improvement = "increase") {
 #'   
 #' @inheritParams NAP
 #'   
-#' @details PAND is calculated as the proportion of observations remaining after
-#'   removing (instead of swapping) the fewest possible number of observations 
-#'   from either phase so that the highest remaining point from the baseline 
-#'   phase is less than the lowest remaining point from the treatment phase. The
-#'   range of PAND depends on the number of observations in each phase.
+#' @details For an outcome where increase is desirable, PAND is calculated as
+#'   the proportion of observations remaining after removing the fewest possible
+#'   number of observations from either phase so that the highest remaining
+#'   point from the baseline phase is less than the lowest remaining point from
+#'   the treatment phase. For an outcome where decrease is desirable, PAND is calculated as
+#'   the proportion of observations remaining after removing the fewest possible
+#'   number of observations from either phase so that the lowest remaining
+#'   point from the baseline phase is greater than the highest remaining point from
+#'   the treatment phase. The range of PAND depends on the number of
+#'   observations in each phase.
 #'   
 #' @references Parker, R. I., Hagan-Burke, S., & Vannest, K. J. (2007). 
 #'   Percentage of all non-overlapping data (PAND): An alternative to PND. 
@@ -225,10 +240,12 @@ PEM <- function(A_data, B_data, improvement = "increase") {
 #'   doi:\href{http://dx.doi.org/10.1177/00224669070400040101}{10.1177/00224669070400040101}
 #'   
 #'   
+#'   
 #'   Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in 
 #'   single-case research: A review of nine nonoverlap techniques. 
 #'   \emph{Behavior Modification, 35}(4), 303--22. 
 #'   doi:\href{http://dx.doi.org/10.1177/0145445511399147}{10.1177/0145445511399147}
+#'   
 #'   
 #'   
 #' @export

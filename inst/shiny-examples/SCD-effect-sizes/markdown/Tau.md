@@ -32,13 +32,12 @@ where $L_{\theta}$ and $U_{\theta}$ are the lower and upper bounds of the CI for
 
 #### Primary reference
 
-Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. (2011). Combining nonoverlap and trend for single-case research: Tau-U. _Behavior Therapy, 42_(2), 284--299. doi:[10.1016/j.beth.2010.08.006](http://dx.doi.org/10.1016/j.beth.2010.08.006)
+Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. (2011). Combining nonoverlap and trend for single-case research: Tau-U. _Behavior Therapy, 42_(2), 284--299. doi: [10.1016/j.beth.2010.08.006](http://dx.doi.org/10.1016/j.beth.2010.08.006)
 
 #### Additional references
 
-Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. _Radiology, 143_, 29--36. doi:[10.1148/radiology.143.1.7063747](http://dx.doi/org/10.1148/radiology.143.1.7063747)
+Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. _Radiology, 143_, 29--36. doi: [10.1148/radiology.143.1.7063747](http://dx.doi/org/10.1148/radiology.143.1.7063747)
 
 Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
 on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation. 
-_Statistics in Medicine, 25_(4), 559--573. 
-doi:[10.1002/sim.2324](http://dx.doi.org/10.1002/sim.2324)
+_Statistics in Medicine, 25_(4), 559--573. doi: [10.1002/sim.2324](http://dx.doi.org/10.1002/sim.2324)

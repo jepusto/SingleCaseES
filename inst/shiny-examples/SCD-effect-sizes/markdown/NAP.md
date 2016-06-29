@@ -49,9 +49,8 @@ Parker, R. I., & Vannest, K. J. (2009). An improved effect size for single-case 
 
 #### Additional references
 
-Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. _Radiology, 143_, 29--36. doi:[10.1148/radiology.143.1.7063747](http://dx.doi/org/10.1148/radiology.143.1.7063747)
+Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. _Radiology, 143_, 29--36. doi: [10.1148/radiology.143.1.7063747](http://dx.doi/org/10.1148/radiology.143.1.7063747)
 
 Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
 on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation. 
-_Statistics in Medicine, 25_(4), 559--573. 
-doi:[10.1002/sim.2324](http://dx.doi.org/10.1002/sim.2324)
+_Statistics in Medicine, 25_(4), 559--573. doi: [10.1002/sim.2324](http://dx.doi.org/10.1002/sim.2324)
