@@ -21,7 +21,7 @@ $$
 \text{NAP} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n q_{ij}.
 $$
 
-The standard error for NAP is calculated based on a non-parametric method proposed by Hanley and McNeil (1982), which assumes that the observations are mutually independent and are identically distributed within each phase. Let 
+__Standard error.__ The standard error for NAP is calculated based on a non-parametric method proposed by Hanley and McNeil (1982), which assumes that the observations are mutually independent and are identically distributed within each phase. Let 
 
 $$
 Q_1 = \frac{1}{m n^2} \sum_{i=1}^m \left(\sum_{j=1}^n q_{ij}\right)^2 
@@ -35,7 +35,7 @@ $$
 SE_{\text{NAP}} = \sqrt{\frac{1}{mn}\left(\text{NAP}(1 - \text{NAP}) + (n - 1)(Q_1 - \text{NAP}^2) + (m - 1)(Q_2 - \text{NAP}^2)\right)}.
 $$
 
-The confidence interval for $\theta$ is calculated based on a method proposed by Newcombe (2006; Method 5), which assumes that the observations are mutually independent and are identically distributed within each phase. Using a confidence level of $100\% \times (1 - \alpha)$, the endpoints of the confidence interval are defined as the values of $\theta$ that satisfy the equality 
+__Confidence interval.__ The confidence interval for $\theta$ is calculated based on a method proposed by Newcombe (2006; Method 5), which assumes that the observations are mutually independent and are identically distributed within each phase. Using a confidence level of $100\% \times (1 - \alpha)$, the endpoints of the confidence interval are defined as the values of $\theta$ that satisfy the equality 
 
 $$
 (\text{NAP} - \theta)^2 = \frac{z^2_{\alpha / 2} h \theta (1 - \theta)}{mn}\left[\frac{1}{h} + \frac{1 - \theta}{2 - \theta} + \frac{\theta}{1 + \theta}\right],

@@ -19,5 +19,7 @@ SCD_effect_sizes <- function(browser = TRUE) {
     stop("Could not find the application directory. Try re-installing SingleCaseES.", call. = FALSE)
   }
   
+  if (!browser) browser <- getOption("shiny.launch.browser", interactive())
+  
   shiny::runApp(appDir, display.mode = "normal", launch.browser = browser)
 }
