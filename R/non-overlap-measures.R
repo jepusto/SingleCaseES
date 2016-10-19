@@ -137,6 +137,51 @@ Tau <- function(A_data, B_data, improvement = "increase",
   res
 }
 
+#' @title Tau-U
+#'   
+#' @description Calculates the Tau-U index with baseline trend correction 
+#'   (Parker, Vannest, Davis, & Sauber 2011).
+#'   
+#' @inheritParams NAP
+#'   
+#' @details Tau-U is an elaboration of the \code{\link{Tau}} that includes a 
+#'   correction for baseline trend. It is calculated as the the Spearman 
+#'   rank-correlation between the outcome observations and a binary variable 
+#'   indicating phase B, minus \deqn{(m - 1) / n}{(m - 1) / n} times the 
+#'   Spearman rank-correlation between the outcome observations and the session
+#'   numbers within the baseline phase.
+#'   
+#' @references Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. 
+#'   (2011). Combining nonoverlap and trend for single-case research: Tau-U. 
+#'   \emph{Behavior Therapy, 42}(2), 284--299. 
+#'   doi:\href{http://dx.doi.org/10.1016/j.beth.2010.08.006}{10.1016/j.beth.2010.08.006}
+#'   
+#' @export
+#' 
+#' @return Numeric value
+#'   
+#' @examples
+#' A <- c(20, 20, 26, 25, 22, 23)
+#' B <- c(28, 25, 24, 27, 30, 30, 29)
+#' Tau_U(A_data = A, B_data = B)
+#' 
+
+Tau_U <- function(A_data, B_data, improvement = "increase") {
+  
+  if (improvement=="decrease") {
+    A_data <- -1 * A_data
+    B_data <- -1 * B_data
+  }
+  A_data <- A_data[!is.na(A_data)]
+  B_data <- B_data[!is.na(B_data)]
+  m <- length(A_data)
+  n <- length(B_data)
+  
+  Q_P <- sapply(B_data, function(j) (j > A_data) - (j < A_data))
+  Q_B <- sapply(A_data, function(j) (j > A_data) - (j < A_data))
+  
+  (Q_P + Q_B) / (m * n)
+}
 
 #' @title Percentage of non-overlapping data
 #'   
