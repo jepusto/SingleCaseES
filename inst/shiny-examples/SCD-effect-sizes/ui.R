@@ -38,7 +38,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                      tabPanel("Non-overlap", 
                                                               br(),
                                                               selectInput("NOM_ES", label = "Effect size index",
-                                                                          choices = c("IRD","NAP","PAND","PEM","PND","Tau"), 
+                                                                          choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), 
                                                                           selected = "NAP"),
                                                               selectInput("improvement", label = "Direction of improvement", 
                                                                           choices = c("increase", "decrease"))
@@ -68,7 +68,8 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                           conditionalPanel("input.NOM_ES == 'PAND'", withMathJax(includeMarkdown("markdown/PAND.md"))),
                                           conditionalPanel("input.NOM_ES == 'PEM'", withMathJax(includeMarkdown("markdown/PEM.md"))),
                                           conditionalPanel("input.NOM_ES == 'PND'", withMathJax(includeMarkdown("markdown/PND.md"))),
-                                          conditionalPanel("input.NOM_ES == 'Tau'", withMathJax(includeMarkdown("markdown/Tau.md")))
+                                          conditionalPanel("input.NOM_ES == 'Tau'", withMathJax(includeMarkdown("markdown/Tau.md"))),
+                                          conditionalPanel("input.NOM_ES == 'Tau_U'", withMathJax(includeMarkdown("markdown/Tau-U.md")))
                                         ),
                                         conditionalPanel("input.ES_family=='Parametric'",
                                           conditionalPanel("input.parametric_ES == 'LRR'", withMathJax(includeMarkdown("markdown/LRR.md"))),

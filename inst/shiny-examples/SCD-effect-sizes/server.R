@@ -9,6 +9,7 @@ full_names <- list(IRD = "Robust Improvement Rate Difference",
                    PEM = "Percent Exceeding the Median",
                    PND = "Percentage of Non-overlapping Data",
                    Tau = "Tau",
+                   Tau_U = "Tau-U",
                    LRR = "Log Response Ratio",
                    SMD = "Standardized Mean Difference (within-case)")
 
