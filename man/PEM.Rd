@@ -22,9 +22,12 @@ Calculates the percentage exceeding the median (PEM) index (Ma,
   2006).
 }
 \details{
-PEM is calculated as the proportion of observations in the B phase 
-  that exceed the median observation from the A phase. Ties are counted with
-  a weight of 0.5. The range of PEM is [0,1].
+For an outcome where increase is desirable, PEM is calculated as the
+  proportion of observations in the B phase that exceed the median 
+  observation from the A phase. For an outcome where decrease is desirable, 
+  PEM is calculated as the proportion of observations in the B phase that are
+  less than the median observation from the A phase. Ties are counted with a
+  weight of 0.5. The range of PEM is [0,1].
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)

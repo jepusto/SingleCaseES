@@ -4,9 +4,14 @@
 \alias{SCD_effect_sizes}
 \title{SCD effect size calculator}
 \usage{
-SCD_effect_sizes()
+SCD_effect_sizes(browser = TRUE)
+}
+\arguments{
+\item{browser}{logical value indicating whether to launch the app in the
+system's default web-browser. Defaults to \code{TRUE}.}
 }
 \description{
-An interactive tool for calculating effect size indices for single-case designs.
+An interactive tool for calculating effect size indices for
+single-case designs.
 }
 

@@ -22,8 +22,11 @@ Calculates the percentage of non-overlapping data index
   (Scruggs, Mastropieri, & Castro, 1987).
 }
 \details{
-PND is calculated as the proportion of observations in the B phase 
-  that exceed the highest observation from the A phase. The range of PND is [0,1].
+For an outcome where increase is desirable, PND is calculated as the
+  proportion of observations in the B phase that exceed the highest 
+  observation from the A phase. For an outcome where decrease is desirable, 
+  PND is the proportion of observations in the B phase that are less than the
+  lowest observation from the A phase. The range of PND is [0,1].
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)

@@ -22,11 +22,16 @@ Calculates the percentage of all non-overlapping data index
   (Parker, Hagan-Burke, & Vannest, 2007; Parker, Vannest, & Davis, 2011).
 }
 \details{
-PAND is calculated as the proportion of observations remaining after
-  removing (instead of swapping) the fewest possible number of observations 
-  from either phase so that the highest remaining point from the baseline 
-  phase is less than the lowest remaining point from the treatment phase. The
-  range of PAND depends on the number of observations in each phase.
+For an outcome where increase is desirable, PAND is calculated as
+  the proportion of observations remaining after removing the fewest possible
+  number of observations from either phase so that the highest remaining
+  point from the baseline phase is less than the lowest remaining point from
+  the treatment phase. For an outcome where decrease is desirable, PAND is calculated as
+  the proportion of observations remaining after removing the fewest possible
+  number of observations from either phase so that the lowest remaining
+  point from the baseline phase is greater than the highest remaining point from
+  the treatment phase. The range of PAND depends on the number of
+  observations in each phase.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
@@ -39,6 +44,7 @@ Parker, R. I., Hagan-Burke, S., & Vannest, K. J. (2007).
   Percentage of all non-overlapping data (PAND): An alternative to PND. 
   \emph{The Journal of Special Education, 40}(4), 194--204. 
   doi:\href{http://dx.doi.org/10.1177/00224669070400040101}{10.1177/00224669070400040101}
+  
   
   
   Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in 

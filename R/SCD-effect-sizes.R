@@ -1,10 +1,14 @@
 #' @title SCD effect size calculator
+#'   
+#' @description An interactive tool for calculating effect size indices for
+#' single-case designs.
 #' 
-#' @description
-#' An interactive tool for calculating effect size indices for single-case designs. 
-#' 
+#' @param browser logical value indicating whether to launch the app in the
+#'   system's default web-browser. Defaults to \code{TRUE}.
+#'   
 #' @export
-#' 
+#' @import stats
+
 
 SCD_effect_sizes <- function(browser = TRUE) {
   if (!requireNamespace("shiny", quietly = TRUE)) {

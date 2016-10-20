@@ -31,7 +31,7 @@ Calculates the non-overlap of all pairs index (Parker & Vannest,
 }
 \details{
 NAP is calculated as the proportion of all pairs of one observation 
-  from each phase in which the measurement from the B phase exceeds the 
+  from each phase in which the measurement from the B phase improves upon the 
   measurement from the A phase, with pairs of data points that are exactly 
   tied being given a weight of 0.5. The range of NAP is [0,1], with a null
   value of 0.5.
