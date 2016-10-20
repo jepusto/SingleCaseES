@@ -1,0 +1,10 @@
+score	phase
+3	A
+3	A
+4	A
+5	A
+4	B
+5	B
+6	B
+7	B
+7	B
