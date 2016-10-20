@@ -7,14 +7,25 @@ summary_stats <- function(A_data, B_data) {
 
 #' @title Log-response ratio
 #'   
-#' @description Calculates the log-response ratio effect size index, with or
+#' @description Calculates the log-response ratio effect size index, with or 
 #'   without bias correction (Pustejovsky, 2015)
 #'   
 #' @inheritParams NAP
 #' @param bias_correct  logical value indicating whether to use bias-correction.
 #'   Default is \code{TRUE}
 #'   
-#' @details
+#' @details The response ratio parameter is the ratio of the mean level of the 
+#'   outcome during phase B to the mean level of the outcome during phase A. The
+#'   log response ratio is the natural logarithm of the response ratio. Without 
+#'   bias correction, the log response ratio is estimated as the natural 
+#'   logarithm of the phase B sample mean, minus the natural logarithm of the 
+#'   phase A sample mean. A delta-method bias correction to the estimator is 
+#'   used by default.
+#'   
+#'   The standard error of LRR is calculated based on a delta-method 
+#'   approximation, allowing for the possibility of different degrees of 
+#'   dispersion in each phase. The confidence interval for LRR is based on a
+#'   large-sample (z) approximation.
 #'   
 #' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes 
 #'   for single-case studies of free-operant behavior. \emph{Psychological 
@@ -62,12 +73,22 @@ LRR <- function(A_data, B_data, bias_correct = TRUE, confidence = .95) {
 #' @inheritParams NAP
 #' @param std_dev character string controlling how to calculate the standard 
 #'   deviation in the denominator of the effect size. Set to \code{"baseline"} 
-#'   (the default) to use the baseline standard deviation. Set to \code{"pool"}
+#'   (the default) to use the baseline standard deviation. Set to \code{"pool"} 
 #'   to use the pooled standard deviation.
-#' @param bias_correct logical value indicating whether to use bias-correction.
+#' @param bias_correct logical value indicating whether to use bias-correction. 
 #'   Default is \code{TRUE}
 #'   
-#' @details
+#' @details The standardized mean difference parameter is defined as the 
+#'   difference between the mean level of the outcome in phase B and the mean 
+#'   level of the outcome in phase A, scaled by the within-case standard 
+#'   deviation of the outcome in phase A. The parameter is estimated using 
+#'   sample means and sample standard deviations and (optionally) making a 
+#'   small-sample correction. 
+#'   
+#'   By default, the scaling factor is estimated using 
+#'   the sample standard deviation in phase A (the baseline phase) only. Set
+#'   \code{std_dev = "pool"} to use the sample standard deviation pooled across
+#'   both phases. Hedges' (1981) small-sample bias correction is applied by default. 
 #'   
 #' @return A list containing the estimate, standard error, and confidence 
 #'   interval.

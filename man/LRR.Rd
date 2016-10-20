@@ -21,11 +21,22 @@ A list containing the estimate, standard error, and confidence
   interval.
 }
 \description{
-Calculates the log-response ratio effect size index, with or
+Calculates the log-response ratio effect size index, with or 
   without bias correction (Pustejovsky, 2015)
 }
 \details{
-
+The response ratio parameter is the ratio of the mean level of the 
+  outcome during phase B to the mean level of the outcome during phase A. The
+  log response ratio is the natural logarithm of the response ratio. Without 
+  bias correction, the log response ratio is estimated as the natural 
+  logarithm of the phase B sample mean, minus the natural logarithm of the 
+  phase A sample mean. A delta-method bias correction to the estimator is 
+  used by default.
+  
+  The standard error of LRR is calculated based on a delta-method 
+  approximation, allowing for the possibility of different degrees of 
+  dispersion in each phase. The confidence interval for LRR is based on a
+  large-sample (z) approximation.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)

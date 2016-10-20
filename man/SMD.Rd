@@ -14,10 +14,10 @@ SMD(A_data, B_data, std_dev = "baseline", bias_correct = TRUE,
 
 \item{std_dev}{character string controlling how to calculate the standard 
 deviation in the denominator of the effect size. Set to \code{"baseline"} 
-(the default) to use the baseline standard deviation. Set to \code{"pool"}
+(the default) to use the baseline standard deviation. Set to \code{"pool"} 
 to use the pooled standard deviation.}
 
-\item{bias_correct}{logical value indicating whether to use bias-correction.
+\item{bias_correct}{logical value indicating whether to use bias-correction. 
 Default is \code{TRUE}}
 
 \item{confidence}{confidence level for the reported interval estimate}
@@ -31,7 +31,17 @@ Calculates the within-case standardized mean difference effect
   size index
 }
 \details{
-
+The standardized mean difference parameter is defined as the 
+  difference between the mean level of the outcome in phase B and the mean 
+  level of the outcome in phase A, scaled by the within-case standard 
+  deviation of the outcome in phase A. The parameter is estimated using 
+  sample means and sample standard deviations and (optionally) making a 
+  small-sample correction. 
+  
+  By default, the scaling factor is estimated using 
+  the sample standard deviation in phase A (the baseline phase) only. Set
+  \code{std_dev = "pool"} to use the sample standard deviation pooled across
+  both phases. Hedges' (1981) small-sample bias correction is applied by default.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
