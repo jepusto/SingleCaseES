@@ -20,8 +20,6 @@ $$
 \text{Tau} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w_{ij} = 2 \times \text{NAP} - 1.
 $$
 
-This estimator is equivalent to the Spearman rank-correlation between the outcome observations $(y^A_1,...,y^A_m,y^B_1,...,y^B_n)$ and a binary variable that indicates phase B. 
-
 Standard errors and confidence intervals for Tau are calculated using transformations of the corresponding SEs and CIs for NAP. All of the methods assume that the observations are mutually independent and are identically distributed within each phase. The standard error for Tau is calculated as $SE_{\text{Tau}} = 2 SE_{\text{NAP}}$, where $SE_{\text{NAP}}$ is the standard error for NAP from Hanley and McNeil (1982). The CI for $\tau$ is calculated as 
 
 $$

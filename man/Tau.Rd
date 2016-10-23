@@ -30,10 +30,8 @@ Calculates the Tau (non-overlap) index (Parker, Vannest, Davis,
   & Sauber 2011).
 }
 \details{
-Tau (non-overlap) is calculated as the Spearman rank-correlation 
-  between the outcome observations and a binary variable indicating phase B. 
-  Tau is a linear re-scaling of \code{\link{NAP}} to the range [-1,1], with a
-  null value of 0.
+Tau (non-overlap) a linear re-scaling of \code{\link{NAP}} to the
+  range [-1,1], with a null value of 0.
   
   Standard errors and confidence intervals for Tau are based on 
   transformations of the corresponding SEs and CIs for \code{\link{NAP}}

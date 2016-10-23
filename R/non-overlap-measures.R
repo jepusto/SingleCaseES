@@ -101,10 +101,8 @@ NAP <- function(A_data, B_data, improvement = "increase",
 #'   
 #' @inheritParams NAP
 #'   
-#' @details Tau (non-overlap) is calculated as the Spearman rank-correlation 
-#'   between the outcome observations and a binary variable indicating phase B. 
-#'   Tau is a linear re-scaling of \code{\link{NAP}} to the range [-1,1], with a
-#'   null value of 0.
+#' @details Tau (non-overlap) a linear re-scaling of \code{\link{NAP}} to the
+#'   range [-1,1], with a null value of 0.
 #'   
 #'   Standard errors and confidence intervals for Tau are based on 
 #'   transformations of the corresponding SEs and CIs for \code{\link{NAP}}
@@ -113,6 +111,7 @@ NAP <- function(A_data, B_data, improvement = "increase",
 #'   (2011). Combining nonoverlap and trend for single-case research: Tau-U. 
 #'   \emph{Behavior Therapy, 42}(2), 284--299. 
 #'   doi:\href{http://dx.doi.org/10.1016/j.beth.2010.08.006}{10.1016/j.beth.2010.08.006}
+#'   
 #'   
 #' @export
 #' 
