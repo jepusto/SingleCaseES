@@ -2,12 +2,23 @@ library(tidyr)
 library(dplyr, warn.conflicts = FALSE)
 library(multidplyr)
 library(ggplot2)
+library(SingleCaseES)
 
 m <- 10
 n <- 10
 beta <- 0.05
 delta <- 0.5
 iterations <- 1000
+
+yA <- rnorm(m) + beta * (1:m)
+yB <- rnorm(n, mean = delta) + beta * (m + 1:n)
+y <- c(yA, yB)
+x <- c(m + 1 - (1:m), rep(m + 1, n))
+cor(x, y, method = "kendall")
+Tau_U(yA, yB)
+Tau_U(yA, yB) * (m * n) / (m * (2 * n + m - 1) / 2)
+m * n
+m * (m - 1) / 2
 
 sample_TauU <- function(beta, delta, m, n, iterations) {
   Tau_Us <- replicate(iterations, {
@@ -17,6 +28,7 @@ sample_TauU <- function(beta, delta, m, n, iterations) {
   })
   data.frame(sd = sd(Tau_Us))
 }
+
 
 cluster <- create_cluster(parallel::detectCores() - 1)
 set_default_cluster(cluster)

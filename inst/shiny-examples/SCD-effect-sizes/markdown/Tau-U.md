@@ -20,8 +20,6 @@ $$
 \text{Tau-U} = \frac{1}{m n} \left(\sum_{i=1}^m \sum_{j=1}^n w^{AB}_{ij} - \sum_{i=1}^{m - 1} \sum_{j=i + 1}^m w^{AA}_{ij}\right). 
 $$
 
-This estimator is equivalent to the Spearman rank-correlation between the outcome observations $(y^A_1,...,y^A_m,y^B_1,...,y^B_n)$ and the sequence $x_1,...,x_{m + n}$, where $x_i = m + 1 - i$ for $i = 1,...,m$ and $x_i = m + 1$ for $i = m + 1,..., m + n$. 
-
 #### Primary reference
 
 Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. (2011). Combining nonoverlap and trend for single-case research: Tau-U. _Behavior Therapy, 42_(2), 284--299. doi: [10.1016/j.beth.2010.08.006](http://dx.doi.org/10.1016/j.beth.2010.08.006)
