@@ -141,24 +141,22 @@ Tau <- function(A_data, B_data, improvement = "increase",
 #' @description Calculates the Tau-U index with baseline trend correction 
 #'   (Parker, Vannest, Davis, & Sauber 2011).
 #'   
-#' @param A_data vector of numeric data for A phase, sorted in order of session
+#' @param A_data vector of numeric data for A phase, sorted in order of session 
 #'   number. Missing values are dropped.
 #' @inheritParams NAP
 #'   
 #' @details Tau-U is an elaboration of the \code{\link{Tau}} that includes a 
-#'   correction for baseline trend. It is calculated as the Kendall 
-#'   rank-correlation coefficient between the outcome observations and a binary variable 
-#'   indicating phase B, minus \deqn{(m - 1) / (2n)}{(m - 1) / (2n)} times the 
-#'   Kendall rank-correlation coefficient between the outcome observations and the session 
-#'   numbers within the baseline phase. 
+#'   correction for baseline trend. It is calculated as Kendall's $S$ statistic
+#'   for the comparison between the phase B data and the phase A data, plus
+#'   Kendall's $S$ statistic for the A phase observations, scaled by the product
+#'   of the number of observations in each phase.
 #'   
-#'   Note that \code{A_data} must be ordered by session number. 
+#'   Note that \code{A_data} must be ordered by session number.
 #'   
 #' @references Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. 
 #'   (2011). Combining nonoverlap and trend for single-case research: Tau-U. 
 #'   \emph{Behavior Therapy, 42}(2), 284--299. 
 #'   doi:\href{http://dx.doi.org/10.1016/j.beth.2010.08.006}{10.1016/j.beth.2010.08.006}
-#'   
 #'   
 #' @export
 #' 

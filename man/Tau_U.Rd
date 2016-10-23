@@ -7,7 +7,7 @@
 Tau_U(A_data, B_data, improvement = "increase")
 }
 \arguments{
-\item{A_data}{vector of numeric data for A phase, sorted in order of session
+\item{A_data}{vector of numeric data for A phase, sorted in order of session 
 number. Missing values are dropped.}
 
 \item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
@@ -24,11 +24,10 @@ Calculates the Tau-U index with baseline trend correction
 }
 \details{
 Tau-U is an elaboration of the \code{\link{Tau}} that includes a 
-  correction for baseline trend. It is calculated as the Kendall 
-  rank-correlation coefficient between the outcome observations and a binary variable 
-  indicating phase B, minus \deqn{(m - 1) / (2n)}{(m - 1) / (2n)} times the 
-  Kendall rank-correlation coefficient between the outcome observations and the session 
-  numbers within the baseline phase. 
+  correction for baseline trend. It is calculated as Kendall's $S$ statistic
+  for the comparison between the phase B data and the phase A data, plus
+  Kendall's $S$ statistic for the A phase observations, scaled by the product
+  of the number of observations in each phase.
   
   Note that \code{A_data} must be ordered by session number.
 }

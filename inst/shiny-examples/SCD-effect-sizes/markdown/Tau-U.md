@@ -1,6 +1,6 @@
 #### Definition 
 
-Tau-U is one of several effect sizes proposed by Parker, Vannest, Davis, and Sauber (2011). The Tau-U variant is similar to Tau, but includes an adjustment for baseline time trends. For an outcome where increase is desirable, the index is calculated as the Kendall rank-correlation coefficient between the outcome observations and a binary variable indicating phase B, minus $(m - 1) / (2n)$ times the Kendall rank-correlation coefficient between the outcome observations and the session numbers within the baseline phase. 
+Tau-U is one of several effect sizes proposed by Parker, Vannest, Davis, and Sauber (2011). The Tau-U variant is similar to Tau, but includes an adjustment for baseline time trends. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, plus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
 
 This effect size does not have a stable parameter definition. 
 
