@@ -15,6 +15,8 @@ yB <- rnorm(n, mean = delta) + beta * (m + 1:n)
 y <- c(yA, yB)
 x <- c(m + 1 - (1:m), rep(m + 1, n))
 cor(x, y, method = "kendall")
+cor(1:m, yA) * (m * (m - 1) / 2)
+Tau(yA, yB)$Est - cor(1:m, yA) * (m * (m - 1) / 2) / (m * n)
 Tau_U(yA, yB)
 Tau_U(yA, yB) * (m * n) / (m * (2 * n + m - 1) / 2)
 m * n
