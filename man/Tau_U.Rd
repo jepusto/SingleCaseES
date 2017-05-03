@@ -24,9 +24,9 @@ Calculates the Tau-U index with baseline trend correction
 }
 \details{
 Tau-U is an elaboration of the \code{\link{Tau}} that includes a 
-  correction for baseline trend. It is calculated as Kendall's $S$ statistic
+  correction for baseline trend. It is calculated as Kendall's S statistic
   for the comparison between the phase B data and the phase A data, plus
-  Kendall's $S$ statistic for the A phase observations, scaled by the product
+  Kendall's S statistic for the A phase observations, scaled by the product
   of the number of observations in each phase.
   
   Note that \code{A_data} must be ordered by session number.

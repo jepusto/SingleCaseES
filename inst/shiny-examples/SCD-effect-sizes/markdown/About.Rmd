@@ -46,4 +46,4 @@ In order to run the effect size calculator on your own computer, you will need t
     SCD_effect_sizes()
     ```
 
-6. To exit the calculator, simply close the window in which it appears or click the red "Stop" icon in the upper right-hand corner of the RStudio console window.
+6. To exit the calculator, close the window in which it appears and click the red "Stop" icon in the upper right-hand corner of the RStudio console window.

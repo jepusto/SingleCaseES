@@ -10,6 +10,7 @@ Imports:
   stats
 Suggests: 
   shiny,
-  ggplot2
+  ggplot2,
+  markdown
 LazyData: TRUE
 RoxygenNote: 5.0.1
