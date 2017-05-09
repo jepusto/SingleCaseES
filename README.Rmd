@@ -34,15 +34,17 @@ Once you have these programs installed, run the following commands at the RStudi
 
 ```{r, eval=FALSE}
 install.packages("devtools")
+install.packages("sourcetools")
 install.packages("shiny")
 install.packages("markdown")
+install.packages("ggplot2")
 devtools::install_github("jepusto/SingleCaseES")
 ```
 
 
 # Basic usage
 
-After installing the package, you will need to load its functionality as follows:
+After installing the package, you are ready to begin using it. Every time you open a fresh R/RStudio session, you will need to start by loading the package functionality as follows:
 ```{r}
 library(SingleCaseES)
 ```

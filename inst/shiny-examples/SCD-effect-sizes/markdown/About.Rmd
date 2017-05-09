@@ -34,8 +34,10 @@ In order to run the effect size calculator on your own computer, you will need t
 
     ```{r, eval=FALSE}
     install.packages("devtools")
+    install.packages("sourcetools")
     install.packages("shiny")
     install.packages("markdown")
+    install.packages("ggplot2")
     devtools::install_github("jepusto/SingleCaseES")
     ```
 
