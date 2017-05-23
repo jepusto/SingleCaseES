@@ -1,5 +1,5 @@
-SingleCaseES: Effect sizes for single-case designs
-==================================================
+SingleCaseES: A calculator for single-case effect size indices
+==============================================================
 
 This package provides R functions for calculating basic effect size indices for single-case designs, including several non-overlap measures and parametric effect size measures. Standard errors and confidence intervals for the effect sizes are provided for a subset of indices with known sampling distributions. However, it is important to note that all of the standard errors and confidence intervals are based on the assumption that the outcome measurements are mutually independent.
 
@@ -169,3 +169,14 @@ SCD_effect_sizes()
 The simulator should then open in your default web browser.
 
 To exit the calculator, close the window in which it appears and click the red "Stop" icon in the upper right-hand corner of the RStudio console window.
+
+Citation
+========
+
+Please cite this R package as follows:
+
+    Pustejovsky, J. E. (2017). SingleCaseES: A calculator for single-case effect size indices. R package version 0.2. Retrieved from https://github.com/jepusto/SingleCaseES
+
+Please cite the web application as follows:
+
+    Pustejovsky, J. E. (2017). Single-case effect size calculator (Version 0.2) [Web application]. Retrieved from https://jepusto.shinyapps.io/SCD-effect-sizes
