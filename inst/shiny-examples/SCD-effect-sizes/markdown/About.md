@@ -12,6 +12,12 @@ Github](https://github.com/jepusto/SingleCaseES)
 
 *Your comments, suggestions, and feedback are welcome.*
 
+### Citation
+
+Please cite this software as follows:
+
+    Pustejovsky, J. E. (2017). Single-case effect size calculator (Version 0.1) [Web application]. Retrieved from https://jepusto.shinyapps.io/SCD-effect-sizes/
+
 ### Accessing the calculator
 
 There are two ways to access this tool: via a website or on your own
@@ -49,8 +55,10 @@ as you want, at faster speeds than over the web.
     by typing the following commands at the console prompt:
 
         install.packages("devtools")
+        install.packages("sourcetools")
         install.packages("shiny")
         install.packages("markdown")
+        install.packages("ggplot2")
         devtools::install_github("jepusto/SingleCaseES")
 
 5.  After all of these packages are installed, type the following
@@ -60,6 +68,6 @@ as you want, at faster speeds than over the web.
         library(SingleCaseES)
         SCD_effect_sizes()
 
-6.  To exit the calculator, simply close the window in which it appears
-    or click the red "Stop" icon in the upper right-hand corner of the
+6.  To exit the calculator, close the window in which it appears and
+    click the red "Stop" icon in the upper right-hand corner of the
     RStudio console window.
