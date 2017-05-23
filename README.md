@@ -175,8 +175,8 @@ Citation
 
 Please cite this R package as follows:
 
-    Pustejovsky, J. E. (2017). SingleCaseES: A calculator for single-case effect size indices. R package version 0.2. Retrieved from https://github.com/jepusto/SingleCaseES
+> Pustejovsky, J. E. (2017). SingleCaseES: A calculator for single-case effect size indices. R package version 0.2. Retrieved from <https://github.com/jepusto/SingleCaseES>
 
 Please cite the web application as follows:
 
-    Pustejovsky, J. E. (2017). Single-case effect size calculator (Version 0.2) [Web application]. Retrieved from https://jepusto.shinyapps.io/SCD-effect-sizes
+> Pustejovsky, J. E. (2017). Single-case effect size calculator (Version 0.2) \[Web application\]. Retrieved from <https://jepusto.shinyapps.io/SCD-effect-sizes>

@@ -1,6 +1,6 @@
 ### Single-case effect size calculator
 
-Version 0.1
+Version 0.2
 
 Designed and built by James E. Pustejovsky
 
@@ -16,7 +16,9 @@ Github](https://github.com/jepusto/SingleCaseES)
 
 Please cite this software as follows:
 
-    Pustejovsky, J. E. (2017). Single-case effect size calculator (Version 0.1) [Web application]. Retrieved from https://jepusto.shinyapps.io/SCD-effect-sizes/
+> Pustejovsky, J. E. (2017). Single-case effect size calculator (Version
+> 0.2) \[Web application\]. Retrieved from
+> <https://jepusto.shinyapps.io/SCD-effect-sizes/>
 
 ### Accessing the calculator
 
