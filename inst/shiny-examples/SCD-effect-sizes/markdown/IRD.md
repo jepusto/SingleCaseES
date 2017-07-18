@@ -6,16 +6,15 @@ This effect size does not have a stable parameter definition because its magnitu
 
 #### Estimation
 
-Let $y^A_{(1)},y^A_{(2)},...,y^A_{(m)}$ denote the values of the baseline phase data, sorted in increasing order, and let $y^B_{(1)},y^B_{(2)},...,y^B_{(n)}$ denote the values of the sorted treatment phase data. For an outcome where increase is desirable, let $\tilde{i}$ and $\tilde{j}$ denote the values that maximize the quantity
+Let $y^A_{(1)},y^A_{(2)},...,y^A_{(m)}$ denote the values of the baseline phase data, sorted in increasing order, and let $y^B_{(1)},y^B_{(2)},...,y^B_{(n)}$ denote the values of the sorted treatment phase data. Let $y^A_{(0)} = y^B_{(0)} = -\infty$ and $y^A_{(m + 1)} = y^B_{(n + 1)} = \infty$. For an outcome where increase is desirable, let $\tilde{i}$ and $\tilde{j}$ denote the values that maximize the quantity
 
 $$
-\left(i + j\right) I\left(y^A_{(i)} < y^B_{(n + 1 - j)}\right).
+\left(i + j\right) I\left(y^A_{(i)} < y^B_{(n + 1 - j)}\right)
 $$
-
-For an outcome where decrease is desirable, let $\tilde{i}$ and $\tilde{j}$ instead denote the values that maximize the quantity
+for $0 \leq i \leq m$ and $0 \leq j \leq n$. For an outcome where decrease is desirable, let $\tilde{i}$ and $\tilde{j}$ instead denote the values that maximize the quantity
 
 $$
-\left(i + j\right) I\left(y^A_{(i)} > y^B_{(n + 1 - j)}\right).
+\left(i + j\right) I\left(y^A_{(m + 1 - i)} > y^B_{(j)}\right).
 $$
 
 Now calculate the $2 \times 2$ table

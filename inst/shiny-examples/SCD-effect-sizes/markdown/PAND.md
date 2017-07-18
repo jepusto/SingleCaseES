@@ -12,11 +12,13 @@ $$
 \text{PAND} = \frac{1}{m + n} \max \left\{\left(i + j\right) I\left(y^A_{(i)} < y^B_{(n + 1 - j)}\right)\right\},
 $$
 
-where the maximum is taken over the values $1\leq i \leq m$ and $1 \leq j \leq n$. For an outcome where decrease is desirable, PAND is calculated as 
+where $y^A_{(0)} = - \infty$, $y^B_{(n + 1)} = \infty$, and the maximum is taken over the values $0 \leq i \leq m$ and $0 \leq j \leq n$. For an outcome where decrease is desirable, PAND is calculated as 
 
 $$
-\text{PAND} = \frac{1}{m + n} \max \left\{\left(i + j\right) I\left(y^A_{(i)} > y^B_{(n + 1 - j)}\right)\right\}.
+\text{PAND} = \frac{1}{m + n} \max \left\{\left(i + j\right) I\left(y^A_{(m + 1 - i)} > y^B_{(j)}\right)\right\},
 $$
+
+where $y^A_{(m + 1)} = \infty$, $y^B_{(0)} = -\infty$, and the maximum is taken over the values $0 \leq i \leq m$ and $0 \leq j \leq n$.
 
 #### Primary reference
 

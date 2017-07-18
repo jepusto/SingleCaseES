@@ -286,8 +286,6 @@ PEM <- function(A_data, B_data, improvement = "increase") {
 #'   \emph{The Journal of Special Education, 40}(4), 194--204. 
 #'   doi:\href{http://dx.doi.org/10.1177/00224669070400040101}{10.1177/00224669070400040101}
 #'   
-#'   
-#'   
 #'   Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in 
 #'   single-case research: A review of nine nonoverlap techniques. 
 #'   \emph{Behavior Modification, 35}(4), 303--22. 
@@ -315,11 +313,12 @@ PAND <- function(A_data, B_data, improvement = "increase") {
   
   m <- length(A_data)
   n <- length(B_data)
-  X <- sort(A_data)
-  Y <- sort(B_data)
-  ij <- expand.grid(i = 1:m, j = 1:n)
+  
+  X <- c(-Inf, sort(A_data))
+  Y <- c(sort(B_data), Inf)
+  ij <- expand.grid(i = 1:(m + 1), j = 1:(n + 1))
   ij$no_overlap <- mapply(function(i, j) X[i] < Y[j], i = ij$i, j = ij$j)
-  ij$overlap <- with(ij, i + n - j + 1)
+  ij$overlap <- with(ij, i + n - j)
   overlaps <- with(ij, max(overlap * no_overlap))
   
   overlaps / (m + n)

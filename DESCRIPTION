@@ -1,7 +1,7 @@
 Package: SingleCaseES
 Type: Package
 Title: A calculator for single-case effect size indices
-Version: 0.2
+Version: 0.3
 Date: 2017-05-22
 Authors@R: person("James", "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre"))
 Description: Calculates effect size indices for single-case designs, including several non-overlap measures, the within-case standardized mean difference, and the log-response ratio.
