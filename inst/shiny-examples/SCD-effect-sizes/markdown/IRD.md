@@ -20,10 +20,10 @@ $$
 Now calculate the $2 \times 2$ table
 
 $$
-\begin{array}{|c|c|} \hline
-m - \tilde{i} & \tilde{j} \\ \hline
-\tilde{i} & n - \tilde{j} \\ \hline
-\end{array}
+\\begin{array}{|c|c|} \\hline
+m - \\tilde{i} & \\tilde{j} \\\\ \\hline
+\\tilde{i} & n - \\tilde{j} \\\\ \\hline
+\\end{array}
 $$
 
 Parker, Vannest, and Brown (2009) proposed the _non-robust_ improvement rate difference, which is equivalent to the phi coefficient for this table. Parker, Vannest, and Davis (2011) proposed to instead use the _robust_ phi coefficient, which involves modifying the table so that the row- and column-margins are equal. Robust IRD is thus equal to 
