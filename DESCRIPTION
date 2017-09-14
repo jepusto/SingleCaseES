@@ -13,6 +13,9 @@ Imports:
 Suggests: 
   shiny,
   ggplot2,
+  dplyr,
+  tidyr,
+  purrrlyr,
   markdown
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
