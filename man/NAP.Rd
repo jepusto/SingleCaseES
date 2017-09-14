@@ -69,4 +69,3 @@ single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy,
 40}(4), 357--67. 
 doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
 }
-

@@ -51,4 +51,3 @@ SMD(A_data = A, B_data = B)
 SMD(A_data = A, B_data = B, std_dev = "pool")
 
 }
-

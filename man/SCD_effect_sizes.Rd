@@ -14,4 +14,3 @@ system's default web-browser. Defaults to \code{TRUE}.}
 An interactive tool for calculating effect size indices for
 single-case designs.
 }
-

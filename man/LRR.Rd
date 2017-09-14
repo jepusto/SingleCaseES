@@ -51,4 +51,3 @@ Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
   Methods, 20}(3), 342--359. 
   doi:\href{http://dx.doi.org/10.1037/met0000019}{10.1037/met0000019}
 }
-

@@ -36,4 +36,3 @@ Parker, R. I., Vannest, K. J., & Brown, L. (2009). The
 \seealso{
 \code{\link{PAND}}
 }
-

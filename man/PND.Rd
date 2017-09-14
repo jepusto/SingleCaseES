@@ -40,4 +40,3 @@ Scruggs, T. E., Mastropieri, M. A., & Casto, G. (1987). The
   validation. \emph{Remedial and Special Education, 8}(2), 24--43. 
   doi:\href{http://dx.doi.org/10.1177/074193258700800206}{10.1177/074193258700800206}
 }
-

@@ -41,4 +41,3 @@ Ma, H.-H. (2006). An alternative method for quantitative
   the median. \emph{Behavior Modification, 30}(5), 598--617. 
   doi:\href{http://dx.doi.org/10.1177/0145445504272974}{10.1177/0145445504272974}
 }
-

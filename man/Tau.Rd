@@ -48,4 +48,3 @@ Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B.
   \emph{Behavior Therapy, 42}(2), 284--299. 
   doi:\href{http://dx.doi.org/10.1016/j.beth.2010.08.006}{10.1016/j.beth.2010.08.006}
 }
-
