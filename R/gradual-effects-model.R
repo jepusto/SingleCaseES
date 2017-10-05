@@ -59,19 +59,22 @@ D_linear_predictor_obs <- function(omega, Trt, m, n = length(Trt)) {
 }
 
 #' A function to estimate the gradual effects model for an SCD
-#'
-#' @param Trt A vector of treatment assignments where 0 = untreated and 1 = treated.
-#' @param outcome A vector of outcomes.
-#' @param m The number of treatment occasions to estimate a treatment effect for.
-#' @param fam A description of the error distribution and link function to be used in the model. 
-#' This can be supplied in any way that `glm` will accept. (See \code{\link[stats]{family}} 
-#' for details of family functions.)
-#'
-#' @return `greff_glm` returns an object of class "glm." In addition to containing what
-#' a glm normally contains, it also contains an estimate of `omega` and a variance
-#' covariance matrix called `varcov`.
 #' 
+#' @param Trt A vector of treatment assignments where 0 = untreated and 1 =
+#'   treated.
+#' @param outcome A vector of outcomes.
+#' @param m The number of treatment occasions to estimate a treatment effect
+#'   for.
+#' @param fam A description of the error distribution and link function to be
+#'   used in the model. This can be supplied in any way that `glm` will accept.
+#'   (See \code{\link[stats]{family}} for details of family functions.)
+#'   
+#' @return `gem_scd` returns an object of class \code{glm}. In addition to the
+#'   normal contents of a \code{glm} object, it also contains an estimate of
+#'   `omega` and a variance covariance matrix called `varcov`.
+#'   
 #' @export
+
 gem_scd <- function(Trt, outcome, m, fam){
   
   #calculate the number of observations
@@ -146,7 +149,7 @@ greff_glm_dev <- function(omega, Trt, outcome, m, fam){
 
 #' @title Gradual Effects Model SCD Calculator
 #'   
-#' @description An interactive tool for calculating the gradual effects model
+#' @description Open an interactive tool for calculating the gradual effects model
 #' for SCDs.
 #' 
 #' @param browser logical value indicating whether to launch the app in the
@@ -154,6 +157,12 @@ greff_glm_dev <- function(omega, Trt, outcome, m, fam){
 #'   
 #' @export
 #' @import stats
+#' 
+#' @example 
+#' \dontrun{
+#' shine_gem_scd()
+#' }
+#' 
 
 
 shine_gem_scd <- function(browser = TRUE) {
@@ -183,6 +192,7 @@ shine_gem_scd <- function(browser = TRUE) {
 #' Example from Swan and Pustejovsky (2017)
 #' 
 #' Data from an ABAB design conducted by Thorne and Kamps (2008). The variables are as follows:
+#' 
 #' \itemize{
 #'   \item \code{Measure}. Outcome measure description (academic engagement or inappropriate verbalizations).
 #'   \item \code{Case}. Participant identifier.  

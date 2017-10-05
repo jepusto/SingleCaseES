@@ -1,6 +1,9 @@
 library(shiny)
 
 ui <- navbarPage(title = "Single-case effect size calculator",
+                 tabPanel("About",
+                          includeMarkdown("markdown/About.md")
+                 ),
                  tabPanel("Calculator",
                           fluidRow(column(12,
                                           h3("Data input"),
@@ -79,8 +82,6 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                           )
                           
                     )
-                 ),
-                 tabPanel("About",
-                          includeMarkdown("markdown/About.md")
                  )
+                 
 )
