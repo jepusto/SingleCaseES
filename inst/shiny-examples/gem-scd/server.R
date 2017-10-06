@@ -36,13 +36,14 @@ shinyServer(function(input, output) {
   output$modelplot <- renderPlot(ggplot(plot_dat, aes(y = Outcome, x = time, color = type, group = typephase))+      
     geom_point() +
     geom_line() +
+    geom_errorbarh(#START HERE)
     expand_limits(y = 0) +
     geom_vline(xintercept = phase_lines, linetype = "dashed") +
     scale_color_brewer(type = "qual", palette = 6) + 
     labs(x = "Session Number", y = "Outcome") +
     theme_bw() + theme(legend.position = "bottom"))
   
-  output$single_table <- renderTable(data.frame("Effect Size" =  model$coefficients[2],  "Standard Error" = sqrt(diag(model$varCov)[2]), "Delay parameter (omega)" =  model$omega, "Dispersion" = summary(model)$dispersion, check.names = FALSE))
+  output$single_table <- renderTable(data.frame("Effect Size" =  model$coefficients[2],  "Standard Error" = sqrt(diag(model$varCov)[2]), "Delay parameter" =  model$omega, "Delay Parameter SE" = diag(model$varCov)[3], "Dispersion" = summary(model)$dispersion, check.names = FALSE))
   })
     
     # Read in data
@@ -74,14 +75,14 @@ output$variableMapping <- renderUI({
         var_names <- exampleMapping[[input$example]]$varnames
         n_var <- length(var_names)
         return(list(
-          selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = var_names[4:n_var], multiple = TRUE),
+          selectizeInput("b_clusters", label = "Select variables to uniquely identify each case (e.g. study, case, behavior).", choices = var_names, selected = var_names[4:n_var], multiple = TRUE),
+          selectInput("session_number", label = "Within-Case Session Number", choices = var_names, selected = var_names[3]),
+          helpText("Data will be ordered by session number", "within each case."),
           selectInput("b_treat", label = "Treatment Assignment", choices = var_names, selected = var_names[1]),
           selectInput("b_outcome", label = "Outcome", choices = var_names, selected = var_names[2]),
           checkboxInput("b_perctoprop", label = "Transform percent to proportion? (Necessary for binomial or quasi-binomial link)", value = exampleMapping[[input$example]]$transform),
-          selectInput("session_number", label = "Within-Case Session Number", choices = var_names, selected = var_names[3]),
-          helpText("Data will be ordered by session number", "within each case."),
           textInput("m_length", label = "m", value = exampleMapping[[input$example]]$m),
-          helpText("This is the number of treatment sessions the treatment effect is pegged to."),
+          helpText("This is the number of treatment sessions at which to estimate the treatment effect."),
           selectInput("b_family", label = "Variance Function",
                       choices = c("quasi-binomial" = "quasibinomial","quasi-Poisson" = "quasipoisson", "binomial", "guassian", "poisson"), 
                       selected = exampleMapping[[input$example]]$family),
@@ -126,9 +127,11 @@ batchModel <- eventReactive(input$batchest, {
       
     dat %>%  slice_rows(input$b_clusters) %>%
       by_slice(~model_params(dat = ., fam = do.call(input$b_family, args = list(link = input$b_link)), m = as.numeric(input$m_length)), .collate = "cols") %>%
-      rename(Intercept = .out1, `Intercept SE` = .out2, `Treatment Effect` = .out3,
-             `Treatment Effect SE` = .out4, Omega = .out5, `Omega SE` = .out6,
-             Dispersion = .out7)
+      rename(Intercept = .out1, `Intercept SE` = .out2, `Effect Size Estimate` = .out3,
+             `Effect Size SE` = .out4, `Delay Parameter` = .out5, `Delay Parameter SE` = .out6,
+             Dispersion = .out7) %>%
+      mutate(link = input$b_link,
+             variance_func = input$b_family)
     
   })
 

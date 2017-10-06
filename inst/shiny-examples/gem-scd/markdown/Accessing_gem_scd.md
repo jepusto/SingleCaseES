@@ -13,9 +13,9 @@ service called [shinyapps.io](https://www.shinyapps.io/), which imposes
 limitations on the number of concurrent users of the site and total
 hours of active use of the site. Consequently, you might find that the
 site is not always available. If you intend to use the tool extensively,
-we would encourage you to follow the steps below in order to install it
-on your own computer. Doing so has the further advantage that it will
-tend to run faster on your own machine than it does over the web.
+please follow the steps below in order to install it on your own computer. Doing
+so has the further advantage that it will tend to run faster on your own machine
+than it does over the web.
 
 #### Access through RStudio
 

@@ -5,8 +5,8 @@ ui <- navbarPage(title = "Gradual Effects Model Calculator",
                  tabPanel("GEM SCD",
                           navlistPanel(widths = c(3,9),
                                        tabPanel("About", includeMarkdown("markdown/gem_scd.md")),
-                                       tabPanel("Using the Calculator", includeMarkdown("markdown/using_gem_scd.md")),
                                        tabPanel("Accessing gem_scd", includeMarkdown("markdown/Accessing_gem_scd.md")),
+                                       tabPanel("Using the Calculator", includeMarkdown("markdown/using_gem_scd.md")),
                                        tabPanel("Example data", includeMarkdown("markdown/example-data.md"))
                           )
                  ),
@@ -22,7 +22,7 @@ ui <- navbarPage(title = "Gradual Effects Model Calculator",
                                        textInput("outcome", label = "Outcomes", value = "16.93 18.47 24.03 6.84 10.47 4.70 5.77 7.69 1.92 1.71 2.78 1.71 4.49 0.85 3.28 8.30 13.97 21.62 35.59 18.39 11.01 3.85 4.26 5.98 3.58 3.35 5.93 3.31 5.67 3.28 3.69"),
                                        checkboxInput("perctoprop", label = "Transform percent to proportion? (Necessary for binomial or quasi-binomial link)")),
                                 column(4,
-                                       textInput("m", label = "m (# of treat sessions to estimate effect for)", value = "10"))),
+                                       textInput("m", label = "m (number of treatment sessions at which to estimate effect)", value = "10"))),
                          hr(),
                           sidebarLayout(
                             sidebarPanel(width = 4,
@@ -66,7 +66,7 @@ ui <- navbarPage(title = "Gradual Effects Model Calculator",
                          sidebarLayout(
                            sidebarPanel(
                               uiOutput("variableMapping"),
-                              downloadButton("downcsv", "Download displayed results")
+                              downloadButton("downcsv", "Download results")
                            ),
                            mainPanel(tableOutput("batchTable"))))
                

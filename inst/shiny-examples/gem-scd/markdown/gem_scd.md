@@ -10,7 +10,7 @@ _Your comments, suggestions, and feedback are welcome._
 
 ### Suggested citation
 
-Swan, Daniel M. & Pustejovsky, James E. (2016). gem_scd: A web-based calculator for the Gradual Effects Model (Version 0.1.0) [Web application]. Retrieved from: https://jepusto.shinyapps.io/gem_scd
+Swan, D. M. & Pustejovsky, J. E. (2016). gem_scd: A web-based calculator for the Gradual Effects Model (Version 0.1.0) [Web application]. Retrieved from: https://jepusto.shinyapps.io/gem_scd
 
 ### Paper
 
