@@ -1,4 +1,5 @@
 library(shiny)
+
 source("mappings.R")
 
 ui <- navbarPage(title = "Gradual Effects Model Calculator",
