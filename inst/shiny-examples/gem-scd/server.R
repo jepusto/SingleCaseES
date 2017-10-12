@@ -10,6 +10,7 @@ model_params <- function(dat, fam, m){
   c(lm1$coefficients[1],diag(lm1$varCov)[1],lm1$coefficients[2],diag(lm1$varCov)[2], lm1$omega, diag(lm1$varCov)[3], summary(lm1)$dispersion)
 }
 
+expit <- function(x) 1/(1+exp(-x))
 
 shinyServer(function(input, output) {
   
@@ -20,10 +21,11 @@ shinyServer(function(input, output) {
     
    Trt <- Trt()
    Out <- Out()
+   m <- as.numeric(input$m)
    
    if(input$perctoprop) Out <- pmax(0, pmin(1, Out/100))
      
-   model <- gem_scd(outcome = Out, Trt = Trt, m = as.numeric(input$m) , fam = do.call(input$family, args = list(link = input$link)))
+   model <- gem_scd(outcome = Out, Trt = Trt, m = m , fam = do.call(input$family, args = list(link = input$link)))
    phase_lines <- cumsum(rle(Trt)$lengths) + .5
    phase_lines <- phase_lines[1:(length(phase_lines-1))]
    phase_lengths <- rle(Trt)$lengths
@@ -32,18 +34,60 @@ shinyServer(function(input, output) {
      mutate(phase_number = rep(1:length(phase_lengths), times = phase_lengths)) %>%
      gather(key = type, value = Outcome, fitted,observed) %>%
      mutate(typephase = paste0(type,phase_number))
+  
+ 
+  an_location_x <- phase_lines[1]+m + 0.5
+   
+   if(input$link == "log"){
+   if(model$coefficients[2] > 1){
+     ymax = model$fitted.values[phase_lines[1]+m]
+     ymin = model$fitted.values[1]
+     an_text = paste0((100 * (1 - round(exp(model$coefficients[2]), 2))), "% increase after ", m, " sessions.")
+   } else {
+     ymin = model$fitted.values[phase_lines[1]+m]
+     ymax = model$fitted.values[1]
+     an_text = paste0((100 * (1 - round(exp(model$coefficients[2]), 2))), "% reduction after ", m, " sessions.")
+   }
+   }
+   
+   if(input$link == "logit"){
+     if(expit(sum(model$coefficients[1:2])) > expit(model$coefficients[1])){
+       ymax = model$fitted.values[phase_lines[1]+m]
+       ymin = model$fitted.values[1]
+       an_text = paste0(round(expit(sum(model$coefficients[1:2])) - expit(model$coefficients[1]),2), " increase in prevalence after ", m, " sessions.")
+     } else {
+       ymin = model$fitted.values[phase_lines[1]+m]
+       ymax = model$fitted.values[1]
+       an_text = paste0(round(expit(model$coefficients[1]) - expit(sum(model$coefficients[1:2])),2), " decrease in prevalence after ", m, " sessions.")
+     }
+   }
+  
+  if(input$link == "identity"){
+    if(model$coefficients[2] > 0){
+      ymax = model$fitted.values[phase_lines[1]+m]
+      ymin = model$fitted.values[1]
+      an_text = paste0(round(model$coefficients[2],2), " increase after ", m, " sessions.")
+    } else {
+      ymin = model$fitted.values[phase_lines[1]+m]
+      ymax = model$fitted.values[1]
+      an_text = paste0(round(model$coefficients[2],2), " decrease after ", m, " sessions.")
+    }
+  }
+  
+  an_location_y <- ymax * 1.1 
    
   output$modelplot <- renderPlot(ggplot(plot_dat, aes(y = Outcome, x = time, color = type, group = typephase))+      
     geom_point() +
     geom_line() +
-    geom_errorbarh(#START HERE)
+    geom_errorbar(aes(ymax = ymax, ymin = ymin, x = (phase_lines[1]+m)), linetype = "dashed") +
+    annotate("text", label = an_text, x = an_location_x, y = an_location_y) +
     expand_limits(y = 0) +
     geom_vline(xintercept = phase_lines, linetype = "dashed") +
     scale_color_brewer(type = "qual", palette = 6) + 
     labs(x = "Session Number", y = "Outcome") +
     theme_bw() + theme(legend.position = "bottom"))
   
-  output$single_table <- renderTable(data.frame("Effect Size" =  model$coefficients[2],  "Standard Error" = sqrt(diag(model$varCov)[2]), "Delay parameter" =  model$omega, "Delay Parameter SE" = diag(model$varCov)[3], "Dispersion" = summary(model)$dispersion, check.names = FALSE))
+  output$single_table <- renderTable(data.frame("Effect Size Estimate" =  model$coefficients[2],  "Standard Error" = sqrt(diag(model$varCov)[2]), "Delay parameter" =  model$omega, "Delay Parameter SE" = diag(model$varCov)[3], "Dispersion" = summary(model)$dispersion, check.names = FALSE))
   })
     
     # Read in data
@@ -84,7 +128,7 @@ output$variableMapping <- renderUI({
           textInput("m_length", label = "m", value = exampleMapping[[input$example]]$m),
           helpText("This is the number of treatment sessions at which to estimate the treatment effect."),
           selectInput("b_family", label = "Variance Function",
-                      choices = c("quasi-binomial" = "quasibinomial","quasi-Poisson" = "quasipoisson", "binomial", "guassian", "poisson"), 
+                      choices = c("quasi-binomial" = "quasibinomial","quasi-Poisson" = "quasipoisson", "binomial", "Guassian" = "guassian", "poisson"), 
                       selected = exampleMapping[[input$example]]$family),
           selectInput("b_link", label = "Link Function",
                       choices = c("log", "logit", "identity"),
@@ -105,7 +149,7 @@ output$variableMapping <- renderUI({
         textInput("m_length", label = "m"),
         helpText("This is the number of treatment sessions the treatment effect is pegged to."),
         selectInput("b_family", label = "Variance Function",
-                    choices = c("quasi-binomial" = "quasibinomial","quasi-Poisson" = "quasipoisson", "binomial", "guassian", "poisson"), 
+                    choices = c("quasi-binomial" = "quasibinomial","quasi-Poisson" = "quasipoisson", "binomial", "Guassian" = "guassian", "poisson"), 
                     selected = "quasipoisson"),
         selectInput("b_link", label = "Link Function",
                     choices = c("log", "logit", "identity"),selected = "log"),

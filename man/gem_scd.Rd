@@ -7,21 +7,47 @@
 gem_scd(Trt, outcome, m, fam)
 }
 \arguments{
-\item{Trt}{A vector of treatment assignments where 0 = untreated and 1 = treated.}
+\item{Trt}{A vector of treatment assignments where 0 = untreated and 1 =
+treated.}
 
 \item{outcome}{A vector of outcomes.}
 
-\item{m}{The number of treatment occasions to estimate a treatment effect for.}
+\item{m}{The number of treatment occasions to estimate a treatment effect
+for.}
 
-\item{fam}{A description of the error distribution and link function to be used in the model. 
-This can be supplied in any way that `glm` will accept. (See \code{\link[stats]{family}} 
-for details of family functions.)}
+\item{fam}{A description of the error distribution and link function to be
+used in the model. This can be supplied in any way that `glm` will accept.
+(See \code{\link[stats]{family}} for details of family functions.)}
 }
 \value{
-`greff_glm` returns an object of class "glm." In addition to containing what
-a glm normally contains, it also contains an estimate of `omega` and a variance
-covariance matrix called `varcov`.
+`gem_scd` returns an object of class \code{glm}. In addition to the
+  normal contents of a \code{glm} object, it also contains an estimate of
+  `omega` and a variance covariance matrix called `varcov`.
 }
 \description{
 A function to estimate the gradual effects model for an SCD
+}
+\examples{
+ data(Thorne)
+ part1 <- Thorne[1:31,]
+ gem1 <- gem_scd(Trt = part1$Trt, outcome = part1$Outcome, m = 10, fam = quasipoisson())
+ #get effect size
+ gem1$coefficients[2]
+ #get standard error
+ sqrt(diag(gem1$varCov)[2])
+ #get delay parameter
+ gem1$omega
+ 
+ data(Schmidt)
+ #convert percentage to proportion, make sure min = 0 and max = 1
+ Schmidt$Outcome <- pmax(0, pmin(1, Schmidt$Outcome/100))
+ Jason_con <- Schmidt[1:20,]
+ gem_jas <- gem_scd(Trt = Jason_con$Trt, outcome = Jason_con$Outcome, m = 5, quasibinomial())
+ gem_jas$coefficients[2]
+ #get standard error
+ sqrt(diag(gem_jas$varCov)[2])
+ #get delay parameter
+ gem_jas$omega
+ 
+ 
 }

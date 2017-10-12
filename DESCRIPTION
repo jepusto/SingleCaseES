@@ -7,7 +7,7 @@ Authors@R: c(
   person("James", "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre")),
   person("Daniel", "Swan", email = "dswan@utexas.edu", role = "aut")
   )
-Description: Calculates effect size indices for single-case designs, including several non-overlap measures, the within-case standardized mean difference, and the log-response ratio.
+Description: Calculates effect size indices for single-case designs, including several non-overlap measures, the within-case standardized mean difference, the log-response ratio, and the gradual effects model.
 URL: https://github.com/jepusto/SingleCaseES
 BugReports: https://github.com/jepusto/SingleCaseES/issues
 License: GPL-3

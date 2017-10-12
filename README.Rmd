@@ -113,22 +113,48 @@ LRR(A, B)
 
 By default, the estimate is calculated using a small-sample correction proposed by Pustejovsky (2015). See `?LRR` for further details. The standard error and approximate confidence interval for the log response ratio estimate are based on the assumption that the outcome measurements are mutually independent.
 
-## Graphical user interface
+## Graphical user interfaces
 
-To use the graphical user interface, you must first ensure that the `SingleCaseES` package is installed (following the directions above). To start the simulator, type the following commands at the RStudio console prompt:
+To use the graphical user interface, you must first ensure that the `SingleCaseES` package is installed (following the directions above). 
+
+To start the general single-case calculator, type the following commands at the RStudio console prompt:
 
 ```{r, eval = FALSE}
 library(SingleCaseES)
 SCD_effect_sizes()
 ```
 
-The simulator should then open in your default web browser. 
+The calculator should then open in your default web browser. 
  
-To exit the calculator, close the window in which it appears and click the red "Stop" icon in the upper right-hand corner of the RStudio console window.
+To exit the  calculator, close the window in which it appears and click the red "Stop" icon in the upper right-hand corner of the RStudio console window.
 
 # Gradual effects model
 
+The function for estimating the gradual effects model has different syntax than the other functions.
+
+```{r}
+Trt <- c(0,0,0,0,0,0,1,1,1,1,1,1,1)
+outcome <- c(A,B)
+gem_glm <-gem_scd(Trt, outcome, 10, quasipoisson())
+
+#treatment effect estimate
+gem_glm$coefficients[2]
+#standard error
+sqrt(diag(gem_glm$varCov)[2])
+```
+
 ## Graphical user interface
+
+To start the gradual effects model calculator, type the following commands at the Rstudio console prompt:
+
+```{r, eval = FALSE}
+library(SingleCaseEs)
+shine_gem_scd()
+```
+
+The calculator should then open in your default web browser. 
+ 
+To exit the  calculator, close the window in which it appears and click the red "Stop" icon in the upper right-hand corner of the RStudio console window.
 
 # Citations
 

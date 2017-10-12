@@ -72,7 +72,30 @@ D_linear_predictor_obs <- function(omega, Trt, m, n = length(Trt)) {
 #' @return `gem_scd` returns an object of class \code{glm}. In addition to the
 #'   normal contents of a \code{glm} object, it also contains an estimate of
 #'   `omega` and a variance covariance matrix called `varcov`.
-#'   
+#' 
+#' @examples
+#'  data(Thorne)
+#'  part1 <- Thorne[1:31,]
+#'  gem1 <- gem_scd(Trt = part1$Trt, outcome = part1$Outcome, m = 10, fam = quasipoisson())
+#'  #get effect size
+#'  gem1$coefficients[2]
+#'  #get standard error
+#'  sqrt(diag(gem1$varCov)[2])
+#'  #get delay parameter
+#'  gem1$omega
+#'  
+#'  data(Schmidt)
+#'  #convert percentage to proportion, make sure min = 0 and max = 1
+#'  Schmidt$Outcome <- pmax(0, pmin(1, Schmidt$Outcome/100))
+#'  Jason_con <- Schmidt[1:20,]
+#'  gem_jas <- gem_scd(Trt = Jason_con$Trt, outcome = Jason_con$Outcome, m = 5, quasibinomial())
+#'  gem_jas$coefficients[2]
+#'  #get standard error
+#'  sqrt(diag(gem_jas$varCov)[2])
+#'  #get delay parameter
+#'  gem_jas$omega
+#'  
+#'  
 #' @export
 
 gem_scd <- function(Trt, outcome, m, fam){
@@ -158,7 +181,7 @@ greff_glm_dev <- function(omega, Trt, outcome, m, fam){
 #' @export
 #' @import stats
 #' 
-#' @example 
+#' @examples 
 #' \dontrun{
 #' shine_gem_scd()
 #' }
@@ -178,6 +201,10 @@ shine_gem_scd <- function(browser = TRUE) {
   if (!requireNamespace("dplyr", quietly = TRUE)) {
     stop("The simulator requires the dplyr package. Please install it.", call. = FALSE)
   }
+  if (!requireNamespace("purrrlyr", quietly = TRUE)) {
+    stop("The simulator requires the purrlyr package. Please install it.", call. = FALSE)
+  }
+  
   
   appDir <- system.file("shiny-examples", "gem-scd", package = "SingleCaseES")
   if (appDir == "") {
