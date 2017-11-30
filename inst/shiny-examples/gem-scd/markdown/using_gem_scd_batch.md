@@ -1,4 +1,4 @@
-### Batch Entry
+# Batch-entry calculator
 
 The batch-entry calculator will estimate the gradual effects model using data 
 from multiple series, distinguished by one or more series identifiers. This is 
@@ -40,7 +40,7 @@ specify the column names corresponding to each of the following variables:
   to sequentially order each case. For each case, number the first observation 1,
   the second 2, up through the final observation.
   
-You will also need to specify values for the following modeling options: 
+You will then need to specify values for the following modeling options: 
 
 - __m__: The number of treatment sessions for which you would like to estimate the
   treatment effect. You should pick a value that represents a treatment
@@ -70,7 +70,10 @@ You will also need to specify values for the following modeling options:
       for this variance function is the identity link.
 
 
-- __Link function__: The link 
+- __Link function__: The link function determines the form of the treatment effect size measure 
+estimated by the gradual effects model. The log link function corresponds to a log response ratio
+effect size measure; the logit link function corresponds to a log odds ratio; and the identity link 
+function corresponds to a raw difference in levels (without standardization). 
 
 Once you have selected the variance function and link function, click "Estimate Models" 
 to fit the model and examine the results. Click "Download displayed results" to obtain a 

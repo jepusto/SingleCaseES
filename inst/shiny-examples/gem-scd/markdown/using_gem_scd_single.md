@@ -1,4 +1,4 @@
-### Single-entry Calculator
+# Single-entry Calculator
 
 The single-entry calculator will estimate the gradual effects model using data 
 from a single series. It also provides a graphical representation of the data 

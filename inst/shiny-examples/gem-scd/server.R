@@ -16,33 +16,53 @@ shinyServer(function(input, output) {
   Trt <- reactive(as.numeric(unlist(strsplit(input$trt, split = "\\s|\\t|\\n|,"))))
   Out <- reactive(as.numeric(unlist(strsplit(input$outcome, split = "\\s|\\t|\\n|,"))))
   
-  observeEvent(input$Estimate,{
+  observeEvent(input$Estimate, {
     
    Trt <- Trt()
    Out <- Out()
    
    if(input$perctoprop) Out <- pmax(0, pmin(1, Out/100))
      
-   model <- gem_scd(outcome = Out, Trt = Trt, m = as.numeric(input$m) , fam = do.call(input$family, args = list(link = input$link)))
+   model <- gem_scd(outcome = Out, 
+                    Trt = Trt, 
+                    m = as.numeric(input$m), 
+                    fam = do.call(input$family, args = list(link = input$link))
+                    )
    phase_lines <- cumsum(rle(Trt)$lengths) + .5
-   phase_lines <- phase_lines[1:(length(phase_lines-1))]
+   phase_lines <- phase_lines[1:(length(phase_lines)-1)]
    phase_lengths <- rle(Trt)$lengths
    
-   plot_dat <- data.frame(fitted = model$fitted.values, observed = Out, phase = ifelse(Trt == Trt[1], "A", "B"), time = 1:length(Out)) %>%
+   plot_dat <- 
+     data.frame(
+       fitted = model$fitted.values, 
+       observed = Out, 
+       phase = ifelse(Trt == Trt[1], "A", "B"), 
+       time = 1:length(Out)
+     ) %>%
      mutate(phase_number = rep(1:length(phase_lengths), times = phase_lengths)) %>%
-     gather(key = type, value = Outcome, fitted,observed) %>%
-     mutate(typephase = paste0(type,phase_number))
+     gather(key = type, value = Outcome, fitted, observed) %>%
+     mutate(typephase = paste0(type, phase_number))
    
-  output$modelplot <- renderPlot(ggplot(plot_dat, aes(y = Outcome, x = time, color = type, group = typephase))+      
-    geom_point() +
-    geom_line() +
-    expand_limits(y = 0) +
-    geom_vline(xintercept = phase_lines, linetype = "dashed") +
-    scale_color_brewer(type = "qual", palette = 6) + 
-    labs(x = "Session Number", y = "Outcome") +
-    theme_bw() + theme(legend.position = "bottom"))
+  output$modelplot <- renderPlot(
+    ggplot(plot_dat, aes(y = Outcome, x = time, color = type, group = typephase)) + 
+      geom_point() +
+      geom_line() +
+      expand_limits(y = 0) +
+      geom_vline(xintercept = phase_lines, linetype = "dashed") +
+      scale_color_brewer(type = "qual", palette = 6) + 
+      labs(x = "Session Number", y = "Outcome") +
+      theme_bw() + 
+      theme(legend.position = "bottom")
+  )
   
-  output$single_table <- renderTable(data.frame("Effect Size" =  model$coefficients[2],  "Standard Error" = sqrt(diag(model$varCov)[2]), "Delay parameter (omega)" =  model$omega, "Dispersion" = summary(model)$dispersion, check.names = FALSE))
+  output$single_table <- renderTable(
+    data.frame(
+      "Effect Size" =  model$coefficients[2],
+      "Standard Error" = sqrt(diag(model$varCov)[2]), 
+      "Delay parameter (omega)" =  model$omega, 
+      "Dispersion" = summary(model)$dispersion, 
+    check.names = FALSE)
+  )
   })
     
     # Read in data
@@ -144,7 +164,4 @@ output$downcsv <- downloadHandler(
     write.csv(writeDat, file, row.names = FALSE)
     },
   contentType = "text/csv")
-
-  
-  
 })

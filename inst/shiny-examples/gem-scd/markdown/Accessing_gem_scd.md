@@ -1,4 +1,4 @@
-### Accessing gem_scd
+# Accessing gem_scd
 
 There are two ways to access this app: via a website or on your own
 computer, using the RStudio software. Since you are reading this now,
