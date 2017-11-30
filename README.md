@@ -1,7 +1,7 @@
 SingleCaseES: A calculator for single-case effect size indices
 ==============================================================
 
-This package provides R functions for calculating basic effect size indices for single-case designs, including several non-overlap measures and parametric effect size measures. Standard errors and confidence intervals for the effect sizes are provided for a subset of indices with known sampling distributions. However, it is important to note that all of the standard errors and confidence intervals are based on the assumption that the outcome measurements are mutually independent.
+This package provides R functions for calculating basic effect size indices for single-case designs, including several non-overlap measures and parametric effect size measures, and for estimating the gradual effects model developed by Swan and Pustejovsky (2017). Standard errors and confidence intervals for the effect sizes are provided for a subset of indices with known sampling distributions. However, it is important to note that all of the standard errors and confidence intervals are based on the assumption that the outcome measurements are mutually independent.
 
 The available **non-overlap indices** are:
 
@@ -17,8 +17,14 @@ The available **parametric effect sizes** are:
 
 -   Within-case standardized mean difference
 -   Log response ratio
+-   The gradual effects model, which can be used to estimate log response ratios in the presence of time trends during treatment and return-to-baseline phases.
 
-The package also includes a graphical user interface (designed using [Shiny](https://shiny.rstudio.com/)) for interactive use. The GUI is also available [as a web app](jepusto.shinyapps.io/SCD-effect-sizes), hosted through [shinyapps.io](https://www.shinyapps.io/). However, the web app should only be used for demonstration purposes. For research purposes, please install the R package and run the GUI through Rstudio.
+The package also includes two graphical user interfaces (designed using [Shiny](https://shiny.rstudio.com/)) for interactive use, both of which are also available as web apps hosted through [shinyapps.io](https://www.shinyapps.io/):
+
+-   `SCD_effect_sizes()` opens an interactive calculator for the basic non-overlap indices and parametric effect sizes. It is also available at <https://jepusto.shinyapps.io/SCD-effect-sizes>
+-   `shine_gem_scd()` opens an interactive calculator for the gradual effects model. It is also available at <https://jepusto.shinyapps.io/gem-scd>
+
+***Please note that the web apps should only be used for demonstration purposes***. For research purposes, please install the R package and run the GUI through Rstudio.
 
 Installation
 ============
@@ -157,26 +163,45 @@ LRR(A, B)
 By default, the estimate is calculated using a small-sample correction proposed by Pustejovsky (2015). See `?LRR` for further details. The standard error and approximate confidence interval for the log response ratio estimate are based on the assumption that the outcome measurements are mutually independent.
 
 Graphical user interface
-========================
+------------------------
 
-To use the graphical user interface, you must first ensure that the `SingleCaseES` package is installed (following the directions above). To start the simulator, type the following commands at the RStudio console prompt:
+To use the graphical user interface for basic effect sizes, you must first ensure that the `SingleCaseES` package is installed (following the directions above). To start the calculator, type the following commands at the RStudio console prompt:
 
 ``` r
 library(SingleCaseES)
 SCD_effect_sizes()
 ```
 
-The simulator should then open in your default web browser.
+The calculator should then open in your default web browser.
 
 To exit the calculator, close the window in which it appears and click the red "Stop" icon in the upper right-hand corner of the RStudio console window.
 
-Citation
-========
+Gradual effects model
+=====================
+
+Graphical user interface
+------------------------
+
+To use the graphical user interface for the gradual effects model, type the following commands at the RStudio console prompt:
+
+``` r
+library(SingleCaseES)
+shine_gem_scd()
+```
+
+The calculator should then open in your default web browser.
+
+To exit the calculator, close the window in which it appears and click the red "Stop" icon in the upper right-hand corner of the RStudio console window.
+
+Citations
+=========
 
 Please cite this R package as follows:
 
-> Pustejovsky, J. E. (2017). SingleCaseES: A calculator for single-case effect size indices. R package version 0.2. Retrieved from <https://github.com/jepusto/SingleCaseES>
+> Pustejovsky, J. E. & Swan, D. M. (2017). SingleCaseES: A calculator for single-case effect size indices. R package version 0.3. Retrieved from <https://github.com/jepusto/SingleCaseES>
 
-Please cite the web application as follows:
+Please cite the web applications as follows:
 
-> Pustejovsky, J. E. (2017). Single-case effect size calculator (Version 0.2) \[Web application\]. Retrieved from <https://jepusto.shinyapps.io/SCD-effect-sizes>
+> Pustejovsky, J. E. (2017). Single-case effect size calculator (Version 0.3.0) \[Web application\]. Retrieved from <https://jepusto.shinyapps.io/SCD-effect-sizes>
+
+> Swan, D. M. & Pustejovsky, J. E. (2017). gem\_scd: A web-based calculator for the Gradual Effects Model (Version 0.1.0) \[Web application\]. Retrieved from: <https://jepusto.shinyapps.io/gem-scd>
