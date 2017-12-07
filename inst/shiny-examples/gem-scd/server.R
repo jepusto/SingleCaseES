@@ -2,7 +2,7 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(purrrlyr)
-source("mappings.R")
+library(SingleCaseES)
 
 model_params <- function(dat, fam, m){
   lm1 <- gem_scd(outcome = dat$Outcome, Trt = dat$Trt, m = m, fam = fam)

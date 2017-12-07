@@ -8,7 +8,7 @@ learn more about both options.
 #### Access through the shinyapps.io website
 
 The simplest way to access the app is via the web, at
-<https://jepusto.shinyapps.io/gem_scd/>. This version is hosted by a
+<https://jepusto.shinyapps.io/gem-scd/>. This version is hosted by a
 service called [shinyapps.io](https://www.shinyapps.io/), which imposes
 limitations on the number of concurrent users of the site and total
 hours of active use of the site. Consequently, you might find that the

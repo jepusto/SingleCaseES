@@ -13,9 +13,7 @@ download the example output.
 
 To use the batch-entry calculator with your own data, you will need to save your data in a .csv
 or text file that uses semicolons, spaces or tabs as delimiters. On the "Batch Entry" screen, 
-select "Upload data from a file." By default, the app assumes the first row of the data is the column names. 
-If not, uncheck the box. You will need to specify what seperates columns (commas, semicolons, spaces, 
-or tabs), as well as whether or not the data includes quotations (it probably will not).
+select "Upload data from a file." By default, the app assumes the first row of the data is the column names. If not, uncheck the box. You will need to specify what seperates columns (commas, semicolons, spaces, or tabs), as well as whether or not the data includes quotations (it probably will not).
 
 Once you have uploaded a dataset, select the "Estimate" tab. In the left-hand panel, 
 specify the column names corresponding to each of the following variables:
@@ -78,5 +76,3 @@ function corresponds to a raw difference in levels (without standardization).
 Once you have selected the variance function and link function, click "Estimate Models" 
 to fit the model and examine the results. Click "Download displayed results" to obtain a 
 .csv file with the model estimates.
-
-

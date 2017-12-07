@@ -1,8 +1,8 @@
-#Pre-loaded data info
-#path describes where to find the data
-#varnames are the Treatment variable name, Outcome variable name, Session numbering, and then any numer of clustering variable names
-#family is the family for the GLM
-#Link is the link functions
+# Pre-loaded data info
+# path describes where to find the data
+# varnames are the Treatment variable name, Outcome variable name, Session numbering, and then any numer of clustering variable names
+# family is the family for the GLM
+# Link is the link functions
 
 example_list <- c("Thorne and Kamps (2008)" = "Thorne", "Schmidt and Stitcher (2012)" = "Schmidt")
 
