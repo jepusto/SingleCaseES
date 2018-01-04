@@ -1,4 +1,5 @@
 library(shiny)
+source("mappings.R")
 
 ui <- navbarPage(title = "Single-case effect size calculator",
                  tabPanel("About",
@@ -8,8 +9,8 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                           fluidRow(column(12,
                                           h3("Data input"),
                                           h5("Enter data values, separated by commas, spaces, or tabs.")
-                                          )
-                                   ),
+                          )
+                          ),
                           fluidRow(
                             column(4, 
                                    textInput("A_dat", label = "Phase A", value = "")
@@ -24,15 +25,15 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                           fluidRow(
                             column(12,
                                    plotOutput('SCDplot', height = "auto")
-                                   )
+                            )
                           ),
                           fluidRow(
                             hr(),
                             column(4, 
-                              h3("Effect sizes")
+                                   h3("Effect sizes")
                             ),
                             column(8,
-                              h3(textOutput("ES_name"))
+                                   h3(textOutput("ES_name"))
                             )
                           ),
                           sidebarLayout(
@@ -53,35 +54,64 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                               conditionalPanel(condition = "input.parametric_ES == 'SMD'",
                                                                                radioButtons("SMD_denom", label = "Standardized by", 
                                                                                             choices = c("baseline SD","pooled SD"))
-                                                                               )
+                                                              )
                                                      )
                                          ),
                                          conditionalPanel(condition = "input.ES_family=='Parametric'|input.NOM_ES=='NAP'|input.NOM_ES=='Tau'",
                                                           numericInput("confidence", label = "Confidence level", value = 95, min = 0, max = 100)
-                                                          ),
+                                         ),
                                          numericInput("digits","Digits",value = 3, min = 1, max = 16, step = 1)
                             ),
                             mainPanel(width = 8,
                                       htmlOutput("result"),
                                       checkboxInput("explanation", label = "Show methods and references", value = FALSE),
                                       conditionalPanel("input.explanation==true", 
-                                        conditionalPanel("input.ES_family=='Non-overlap'",
-                                          conditionalPanel("input.NOM_ES == 'IRD'", withMathJax(includeMarkdown("markdown/IRD.md"))),
-                                          conditionalPanel("input.NOM_ES == 'NAP'", withMathJax(includeMarkdown("markdown/NAP.md"))),
-                                          conditionalPanel("input.NOM_ES == 'PAND'", withMathJax(includeMarkdown("markdown/PAND.md"))),
-                                          conditionalPanel("input.NOM_ES == 'PEM'", withMathJax(includeMarkdown("markdown/PEM.md"))),
-                                          conditionalPanel("input.NOM_ES == 'PND'", withMathJax(includeMarkdown("markdown/PND.md"))),
-                                          conditionalPanel("input.NOM_ES == 'Tau'", withMathJax(includeMarkdown("markdown/Tau.md"))),
-                                          conditionalPanel("input.NOM_ES == 'Tau_U'", withMathJax(includeMarkdown("markdown/Tau-U.md")))
-                                        ),
-                                        conditionalPanel("input.ES_family=='Parametric'",
-                                          conditionalPanel("input.parametric_ES == 'LRR'", withMathJax(includeMarkdown("markdown/LRR.md"))),
-                                          conditionalPanel("input.parametric_ES == 'SMD'", withMathJax(includeMarkdown("markdown/SMD.md")))
-                                        )
+                                                       conditionalPanel("input.ES_family=='Non-overlap'",
+                                                                        conditionalPanel("input.NOM_ES == 'IRD'", withMathJax(includeMarkdown("markdown/IRD.md"))),
+                                                                        conditionalPanel("input.NOM_ES == 'NAP'", withMathJax(includeMarkdown("markdown/NAP.md"))),
+                                                                        conditionalPanel("input.NOM_ES == 'PAND'", withMathJax(includeMarkdown("markdown/PAND.md"))),
+                                                                        conditionalPanel("input.NOM_ES == 'PEM'", withMathJax(includeMarkdown("markdown/PEM.md"))),
+                                                                        conditionalPanel("input.NOM_ES == 'PND'", withMathJax(includeMarkdown("markdown/PND.md"))),
+                                                                        conditionalPanel("input.NOM_ES == 'Tau'", withMathJax(includeMarkdown("markdown/Tau.md"))),
+                                                                        conditionalPanel("input.NOM_ES == 'Tau_U'", withMathJax(includeMarkdown("markdown/Tau-U.md")))
+                                                       ),
+                                                       conditionalPanel("input.ES_family=='Parametric'",
+                                                                        conditionalPanel("input.parametric_ES == 'LRR'", withMathJax(includeMarkdown("markdown/LRR.md"))),
+                                                                        conditionalPanel("input.parametric_ES == 'SMD'", withMathJax(includeMarkdown("markdown/SMD.md")))
+                                                       )
                                       )
+                            )
+                            
+                          )
+                 ),
+                 tabPanel("Batch Entry",
+                          tabsetPanel(
+                            tabPanel("Data",
+                                     sidebarLayout(sidebarPanel(radioButtons('dat_type', 'What data do you want to use?', 
+                                                                             c("Use an example" = "example", "Upload data from a file" = "dat")),
+                                                                conditionalPanel(
+                                                                  condition = "input.dat_type == 'example'",
+                                                                  selectInput("example", label = "Choose an example", 
+                                                                              choices = example_list)
+                                                                ),
+                                                                conditionalPanel(
+                                                                  condition = "input.dat_type == 'dat'",
+                                       fileInput('dat', 'Upload a .csv or .txt file', accept=c('text/csv', 'text/comma-separated-values,text/plain', '.csv', '.txt')),
+                                       checkboxInput('header', 'File has a header?', TRUE),
+                                       radioButtons('sep', 'Data seperator', c(Commas=',', Semicolons=';', Tabs='\t', Spaces=' ')),
+                                       radioButtons('quote', 'Include quotes?', c('No'='', 'Double Quotes'='"', 'Single Quotes'="'"))
+                                     )),
+                                     mainPanel(tableOutput("datview")))),
+                            tabPanel("Estimate", 
+                                     sidebarLayout(
+                                       sidebarPanel(
+                                         uiOutput("indexMapping"),
+                                         actionButton("batchest", "Estimate Models"),
+                                         downloadButton("downcsv", "Download displayed results")
+                                       ),
+                                       mainPanel(tableOutput("batchTable")))
+                                     
+                            )
                           )
                           
-                    )
-                 )
-                 
-)
+                 ))

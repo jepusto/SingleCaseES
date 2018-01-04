@@ -11,6 +11,8 @@ behavior of at-risk students. \emph{Behavior Analysis in Practice, 1}(2), 12-18.
 }
 \description{
 Data from an ABAB design conducted by Thorne and Kamps (2008). The variables are as follows:
+}
+\details{
 \itemize{
   \item \code{Measure}. Outcome measure description (academic engagement or inappropriate verbalizations).
   \item \code{Case}. Participant identifier.  

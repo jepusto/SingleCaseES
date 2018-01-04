@@ -1,4 +1,7 @@
 library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(purrrlyr)
 library(SingleCaseES)
 
 statistical_indices <- c("NAP","Tau","SMD","LRR")
@@ -12,6 +15,23 @@ full_names <- list(IRD = "Robust Improvement Rate Difference",
                    Tau_U = "Tau-U",
                    LRR = "Log Response Ratio",
                    SMD = "Standardized Mean Difference (within-case)")
+
+call_index <- function(index, arg_vals, dat, dir = NULL){
+  arg_vals$A_data <- dat$Outcome[dat$phase == dat$phase[1]]
+  arg_vals$B_data <- dat$Outcome[dat$phase != dat$phase[1]]
+  
+  if(!is.null(dir)){
+    arg_vals$improvement <- dir
+  }
+  
+  if(index %in% statistical_indices){
+  unlist(do.call(index, arg_vals))
+  }else{
+    do.call(index, arg_vals)
+  }
+  }
+
+
 
 shinyServer(function(input, output) {
   
@@ -76,5 +96,130 @@ shinyServer(function(input, output) {
       }
     }
   })
+  
+  datFile <- reactive({
+    
+    if(input$dat_type == "example"){
+      dat <- get(input$example)
+      
+      return(dat)
+    }
+    
+    inFile <- input$dat
+    
+    if (is.null(inFile)) return(NULL)
+    
+    read.table(inFile$datapath, header=input$header, 
+               sep=input$sep, quote=input$quote,
+               stringsAsFactors = FALSE, check.names = FALSE)
+  })
+  
+  output$datview <- renderTable(datFile())
+  
+  output$indexMapping <- renderUI({
+    
+    if(input$dat_type == "dat"){
+    var_names <- names(datFile())
+    list(selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = NULL, multiple = TRUE),
+    selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = var_names[3]),
+    selectInput("b_out", label = "Outcome", choices = var_names, selected = var_names[4]),
+    hr(),
+    h4("Select Effect Size"),
+    tabsetPanel(id = "bES_family", type = "pills",
+                tabPanel("Non-overlap", 
+                         br(),
+                         selectInput("bNOM_ES", label = "Effect size index",
+                                     choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), 
+                                     selected = "NAP"),
+                         selectInput("bimprovement", label = "Direction of improvement", 
+                                     choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series")),
+                         conditionalPanel(condition = "input.bimprovement == 'series'",
+                                          selectInput("bseldir", label = "Select variable identifying improvement direction",
+                                                      choices = var_names, selected = var_names[5]))),
+                tabPanel("Parametric", 
+                         br(),
+                         selectInput("bparametric_ES", label = "Effect size index", 
+                                     choices = c("LRR","SMD"), selected = "LRR"),
+                         conditionalPanel(condition = "input.bparametric_ES == 'SMD'",
+                                          radioButtons("bSMD_denom", label = "Standardized by", 
+                                                       choices = c("baseline SD","pooled SD"))
+                         )
+                )
+    ),
+    conditionalPanel(condition = "input.bES_family=='Parametric'|input.bNOM_ES=='NAP'|input.bNOM_ES=='Tau'",
+                     numericInput("bconfidence", label = "Confidence level", value = 95, min = 0, max = 100)
+    ))}
+    
+    if(input$dat_type == "example"){
+      var_names <- names(datFile())
+      b_var_names <- exampleMapping[[input$example]]$varnames
+      n_var <- length(b_var_names)
+      list(selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = b_var_names[3:n_var], multiple = TRUE),
+           selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = b_var_names[2]),
+           selectInput("b_out", label = "Outcome", choices = var_names, selected = b_var_names[1]),
+           hr(),
+           h4("Select Effect Size"),
+           tabsetPanel(id = "bES_family", type = "pills",
+                       tabPanel("Non-overlap", 
+                                br(),
+                                selectInput("bNOM_ES", label = "Effect size index",
+                                            choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), 
+                                            selected = "NAP"),
+                                selectInput("bimprovement", label = "Direction of improvement", 
+                                            choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series", selected = exampleMapping[[input$example]]$direction)),
+                                conditionalPanel(condition = "input.bimprovement == 'series'",
+                                                 selectInput("bseldir", label = "Select variable identifying improvement direction",
+                                                             choices = var_names, selected = exampleMapping[[input$example]]$direction_var))),
+                       tabPanel("Parametric", 
+                                br(),
+                                selectInput("bparametric_ES", label = "Effect size index", 
+                                            choices = c("LRR","SMD"), selected = "LRR"),
+                                conditionalPanel(condition = "input.bparametric_ES == 'SMD'",
+                                                 radioButtons("bSMD_denom", label = "Standardized by", 
+                                                              choices = c("baseline SD","pooled SD"))
+                                )
+                       )
+           ),
+           conditionalPanel(condition = "input.bES_family=='Parametric'|input.bNOM_ES=='NAP'|input.bNOM_ES=='Tau'",
+                            numericInput("bconfidence", label = "Confidence level", value = 95, min = 0, max = 100)
+           ))}
+    
+  })
+  
+  batchModel <- eventReactive(input$batchest, {
+    
+    dat <- datFile()[c(input$b_out, input$b_phase, input$b_clusters)]
+    names(dat)[1:2] <- c("Outcome", "phase")
+    
+    index <- c("Non-overlap" = input$bNOM_ES, "Parametric" = input$bparametric_ES)[[input$bES_family]]
+    arg_vals <- list()
+    if (input$bES_family == "Non-overlap" & input$bimprovement != "series") {
+      arg_vals$improvement <- input$bimprovement
+    }
+    if (index == "SMD") {
+      arg_vals$std_dev <- substr(input$bSMD_denom, 1, nchar(input$bSMD_denom) - 3)
+    }
+    if (index %in% statistical_indices) {
+      arg_vals$confidence <- input$bconfidence / 100
+    }
+    
+    
+    dat <- dat %>%  
+      slice_rows(input$b_clusters) %>%
+      by_slice(~call_index(index = index, arg_vals = arg_vals, dat = .), .collate = "cols")
 
+    dat$index <- index
+    
+    if (index %in% statistical_indices){
+      dat <- dat %>%
+        rename(Est = .out1, SE = .out2, SE_L = .out3, SE_U = .out4)
+    } else{
+      dat <- dat %>%
+        rename(Est = .out)
+    }
+      
+  })
+  
+  output$batchTable <- renderTable(batchModel())
+  
 })
