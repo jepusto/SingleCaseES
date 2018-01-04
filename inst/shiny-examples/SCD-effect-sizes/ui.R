@@ -3,8 +3,13 @@ source("mappings.R")
 
 ui <- navbarPage(title = "Single-case effect size calculator",
                  tabPanel("About",
-                          includeMarkdown("markdown/About.md")
-                 ),
+                          navlistPanel(widths = c(3,9),
+                                       tabPanel("About", includeMarkdown("markdown/About.md")),
+                                       tabPanel("Accessing the calculator", includeMarkdown("markdown/Accessing.md")),
+                                       tabPanel("Using the single-entry calculator", includeMarkdown("markdown/using_single.md")),
+                                       tabPanel("Using the batch-entry calculator", includeMarkdown("markdown/using_batch.md")),
+                                       tabPanel("Example data", includeMarkdown("markdown/example-data.md"))
+                 )),
                  tabPanel("Calculator",
                           fluidRow(column(12,
                                           h3("Data input"),

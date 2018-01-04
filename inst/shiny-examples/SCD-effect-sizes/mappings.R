@@ -8,9 +8,9 @@ example_list <- c("McKissick et al. (2010)" = "McKissick", "Schmidt (2007)" = "S
 
 exampleMapping <- list(
   Schmidt2007 = list(varnames = c("Condition", "Outcome", "Case_pseudonym", "Outcome_descriptor", "Phase_num"),
-                 direction = "decrease"),
+                     direction = "series",
+                     direction_var = "direction"),
   McKissick = list(varnames =c("Condition", "Outcome", "Case_pseudonym"),
-                   direction = "series",
-                   direction_var = "direction")
+                   direction = "decrease")
   
 )

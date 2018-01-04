@@ -33,7 +33,7 @@ call_index <- function(index, arg_vals, dat, dir = NULL){
 
 
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   
   dat <- reactive({ 
     dat_strings <- list(A = input$A_dat, B = input$B_dat)
@@ -118,9 +118,10 @@ shinyServer(function(input, output) {
   
   output$indexMapping <- renderUI({
     
-    if(input$dat_type == "dat"){
     var_names <- names(datFile())
-    list(selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = NULL, multiple = TRUE),
+    list(conditionalPanel(condition = "input.dat_type == 'example'",
+                          actionButton("bupdateselections", label = "Automatically populate example choices")),
+         selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = NULL, multiple = TRUE),
     selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = var_names[3]),
     selectInput("b_out", label = "Outcome", choices = var_names, selected = var_names[4]),
     hr(),
@@ -135,7 +136,7 @@ shinyServer(function(input, output) {
                                      choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series")),
                          conditionalPanel(condition = "input.bimprovement == 'series'",
                                           selectInput("bseldir", label = "Select variable identifying improvement direction",
-                                                      choices = var_names, selected = var_names[5]))),
+                                                      choices = var_names, selected = if(input$dat_type == "example"){exampleMapping[[input$example]]$direction_var}else{NULL}))),
                 tabPanel("Parametric", 
                          br(),
                          selectInput("bparametric_ES", label = "Effect size index", 
@@ -148,43 +149,21 @@ shinyServer(function(input, output) {
     ),
     conditionalPanel(condition = "input.bES_family=='Parametric'|input.bNOM_ES=='NAP'|input.bNOM_ES=='Tau'",
                      numericInput("bconfidence", label = "Confidence level", value = 95, min = 0, max = 100)
-    ))}
-    
-    if(input$dat_type == "example"){
-      var_names <- names(datFile())
-      b_var_names <- exampleMapping[[input$example]]$varnames
-      n_var <- length(b_var_names)
-      list(selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = b_var_names[3:n_var], multiple = TRUE),
-           selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = b_var_names[2]),
-           selectInput("b_out", label = "Outcome", choices = var_names, selected = b_var_names[1]),
-           hr(),
-           h4("Select Effect Size"),
-           tabsetPanel(id = "bES_family", type = "pills",
-                       tabPanel("Non-overlap", 
-                                br(),
-                                selectInput("bNOM_ES", label = "Effect size index",
-                                            choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), 
-                                            selected = "NAP"),
-                                selectInput("bimprovement", label = "Direction of improvement", 
-                                            choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series", selected = exampleMapping[[input$example]]$direction)),
-                                conditionalPanel(condition = "input.bimprovement == 'series'",
-                                                 selectInput("bseldir", label = "Select variable identifying improvement direction",
-                                                             choices = var_names, selected = exampleMapping[[input$example]]$direction_var))),
-                       tabPanel("Parametric", 
-                                br(),
-                                selectInput("bparametric_ES", label = "Effect size index", 
-                                            choices = c("LRR","SMD"), selected = "LRR"),
-                                conditionalPanel(condition = "input.bparametric_ES == 'SMD'",
-                                                 radioButtons("bSMD_denom", label = "Standardized by", 
-                                                              choices = c("baseline SD","pooled SD"))
-                                )
-                       )
-           ),
-           conditionalPanel(condition = "input.bES_family=='Parametric'|input.bNOM_ES=='NAP'|input.bNOM_ES=='Tau'",
-                            numericInput("bconfidence", label = "Confidence level", value = 95, min = 0, max = 100)
-           ))}
-    
+    ))
   })
+  
+  observeEvent(input$bupdateselections,{
+    var_names <- names(datFile())
+    b_var_names <- exampleMapping[[input$example]]$varnames
+    n_var <- length(b_var_names)
+    improvement <- exampleMapping[[input$example]]$direction
+    if(improvement == "series") dirname <- exampleMapping[[input$example]]$direction_var
+    updateSelectizeInput(session, "b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = b_var_names[3:n_var])
+    updateSelectInput(session, "b_phase", label = "Phase Indicator", choices = var_names, selected = b_var_names[1])
+    updateSelectInput(session, "b_out",label = "Outcome", choices = var_names, selected = b_var_names[2])
+    updateSelectInput(session, "bimprovement", label = "Direction of improvement", 
+                      choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series"), selected = improvement)
+    })
   
   batchModel <- eventReactive(input$batchest, {
     
@@ -203,11 +182,16 @@ shinyServer(function(input, output) {
       arg_vals$confidence <- input$bconfidence / 100
     }
     
-    
+    if(input$bimprovement == "series"){
+      dat <- dat %>%  
+        slice_rows(input$b_clusters) %>%
+        by_slice(~call_index(index = index, arg_vals = arg_vals, dat = ., dir = input$bseldir), .collate = "cols")
+    }else{
     dat <- dat %>%  
       slice_rows(input$b_clusters) %>%
       by_slice(~call_index(index = index, arg_vals = arg_vals, dat = .), .collate = "cols")
-
+    }
+    
     dat$index <- index
     
     if (index %in% statistical_indices){
