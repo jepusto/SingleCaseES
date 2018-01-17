@@ -111,7 +111,8 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                      sidebarLayout(
                                        sidebarPanel(
                                          uiOutput("indexMapping"),
-                                         actionButton("batchest", "Estimate Models"),
+                                         checkboxInput("convertWide", "Convert data to wide format.", value = FALSE),
+                                         actionButton("batchest", "Calculate"),
                                          downloadButton("downcsv", "Download displayed results")
                                        ),
                                        mainPanel(tableOutput("batchTable")))

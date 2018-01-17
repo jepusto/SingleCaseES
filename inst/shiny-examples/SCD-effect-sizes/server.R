@@ -1,8 +1,8 @@
 library(ggplot2)
 library(tidyr)
 library(dplyr)
-library(purrrlyr)
 library(SingleCaseES)
+library(rlang)
 
 statistical_indices <- c("NAP","Tau","SMD","LRR")
 
@@ -15,22 +15,6 @@ full_names <- list(IRD = "Robust Improvement Rate Difference",
                    Tau_U = "Tau-U",
                    LRR = "Log Response Ratio",
                    SMD = "Standardized Mean Difference (within-case)")
-
-call_index <- function(index, arg_vals, dat, dir = NULL){
-  arg_vals$A_data <- dat$Outcome[dat$phase == dat$phase[1]]
-  arg_vals$B_data <- dat$Outcome[dat$phase != dat$phase[1]]
-  
-  if(!is.null(dir)){
-    arg_vals$improvement <- dir
-  }
-  
-  if(index %in% statistical_indices){
-  unlist(do.call(index, arg_vals))
-  }else{
-    do.call(index, arg_vals)
-  }
-  }
-
 
 
 shinyServer(function(input, output, session) {
@@ -121,35 +105,28 @@ shinyServer(function(input, output, session) {
     var_names <- names(datFile())
     list(conditionalPanel(condition = "input.dat_type == 'example'",
                           actionButton("bupdateselections", label = "Automatically populate example choices")),
-         selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = NULL, multiple = TRUE),
+    selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = NULL, multiple = TRUE),
     selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = var_names[3]),
+    selectInput("b_base", label = "Baseline Phase Value", 
+                choices = if(input$dat_type == "example"){exampleMapping[[input$example]]$phase_vals}else{unique(datFile()[input$b_phase])}, 
+                selected = if(input$dat_type == "example"){exampleMapping[[input$example]]$phase_vals[1]}else{NULL}),
+    selectInput("b_treat", label = "Treatment Phase Value", 
+                choices = if(input$dat_type == "example"){exampleMapping[[input$example]]$phase_vals}else{unique(datFile()[input$b_phase])}, 
+                selected = if(input$dat_type == "example"){exampleMapping[[input$example]]$phase_vals[2]}else{NULL}),
     selectInput("b_out", label = "Outcome", choices = var_names, selected = var_names[4]),
     hr(),
-    h4("Select Effect Size"),
-    tabsetPanel(id = "bES_family", type = "pills",
-                tabPanel("Non-overlap", 
-                         br(),
-                         selectInput("bNOM_ES", label = "Effect size index",
-                                     choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), 
-                                     selected = "NAP"),
-                         selectInput("bimprovement", label = "Direction of improvement", 
+    h4("Select Effect Sizes"),
+    checkboxGroupInput("bESno", "Non-Overlap Effect Sizes", choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), inline = TRUE),
+                      selectInput("bimprovement", label = "Direction of improvement", 
                                      choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series")),
-                         conditionalPanel(condition = "input.bimprovement == 'series'",
-                                          selectInput("bseldir", label = "Select variable identifying improvement direction",
-                                                      choices = var_names, selected = if(input$dat_type == "example"){exampleMapping[[input$example]]$direction_var}else{NULL}))),
-                tabPanel("Parametric", 
-                         br(),
-                         selectInput("bparametric_ES", label = "Effect size index", 
-                                     choices = c("LRR","SMD"), selected = "LRR"),
-                         conditionalPanel(condition = "input.bparametric_ES == 'SMD'",
-                                          radioButtons("bSMD_denom", label = "Standardized by", 
-                                                       choices = c("baseline SD","pooled SD"))
-                         )
-                )
-    ),
-    conditionalPanel(condition = "input.bES_family=='Parametric'|input.bNOM_ES=='NAP'|input.bNOM_ES=='Tau'",
-                     numericInput("bconfidence", label = "Confidence level", value = 95, min = 0, max = 100)
-    ))
+                      conditionalPanel(condition = "input.bimprovement == 'series'",
+                                       selectInput("bseldir", label = "Select variable identifying improvement direction",
+                                       choices = var_names, selected = if(input$dat_type == "example"){exampleMapping[[input$example]]$direction_var}else{NULL})),
+    checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LRR","SMD"),inline = TRUE),
+    radioButtons("bSMD_denom", label = "If calculating SMD, standardized by", 
+                                                       choices = c("baseline SD","pooled SD"), inline = TRUE),
+    numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100)
+    )
   })
   
   observeEvent(input$bupdateselections,{
@@ -167,43 +144,67 @@ shinyServer(function(input, output, session) {
   
   batchModel <- eventReactive(input$batchest, {
     
-    dat <- datFile()[c(input$b_out, input$b_phase, input$b_clusters)]
-    names(dat)[1:2] <- c("Outcome", "phase")
-    
-    index <- c("Non-overlap" = input$bNOM_ES, "Parametric" = input$bparametric_ES)[[input$bES_family]]
-    arg_vals <- list()
-    if (input$bES_family == "Non-overlap" & input$bimprovement != "series") {
-      arg_vals$improvement <- input$bimprovement
-    }
-    if (index == "SMD") {
-      arg_vals$std_dev <- substr(input$bSMD_denom, 1, nchar(input$bSMD_denom) - 3)
-    }
-    if (index %in% statistical_indices) {
-      arg_vals$confidence <- input$bconfidence / 100
+    call_index <- function(all_args, dat){
+      arg_vals <- list()
+      arg_vals$A_data <- dat$Outcome[dat$phase == input$b_base]
+      arg_vals$B_data <- dat$Outcome[dat$phase == input$b_treat]
+      index <- dat$index[1]
+      
+      if (index %in% c("IDR", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_U") & input$bimprovement != "series") {
+        arg_vals$improvement <- input$bimprovement
+      }
+      if (index %in% c("IDR", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_U") & input$bimprovement == "series") {
+        arg_vals$improvement <- dat[1,input$bseldir]
+      }
+      if (index == "SMD") {
+        arg_vals$std_dev <- substr(input$bSMD_denom, 1, nchar(input$bSMD_denom) - 3)
+      }
+      if (index %in% statistical_indices) {
+        arg_vals$confidence <- input$bconfidence / 100
+      }
+      
+      
+      if(index %in% statistical_indices){
+       es <- unlist(do.call(index, arg_vals))
+       return(data.frame(est = es[1], SE = es[2], lower = es[3], upper = es[4]))
+      }else{
+       es <-  do.call(index, arg_vals)
+       return(data.frame(est = es, SE = NA, lower = NA, upper = NA))
+      }
     }
     
     if(input$bimprovement == "series"){
-      dat <- dat %>%  
-        slice_rows(input$b_clusters) %>%
-        by_slice(~call_index(index = index, arg_vals = arg_vals, dat = ., dir = input$bseldir), .collate = "cols")
+      dat <- datFile()[c(input$b_out, input$b_phase, input$b_clusters, input$bseldir)]
     }else{
+    dat <- datFile()[c(input$b_out, input$b_phase, input$b_clusters)]
+    }
+    names(dat)[1:2] <- c("Outcome", "phase")
+    
+    index <- data.frame(index = c(input$bESno, input$bESpar), stringsAsFactors = FALSE)
+    
+    dat <- merge(dat, index, stringsAsFactors = FALSE)
+    
+    all_args <- list()
+    all_args$improvement <- input$bimprovement
+    all_args$std_dev <- substr(input$bSMD_denom, 1, nchar(input$bSMD_denom) - 3)
+    all_args$confidence <- input$bconfidence / 100
+    
+    grouping_sym <- syms(c(input$b_clusters, "index"))
+    
     dat <- dat %>%  
-      slice_rows(input$b_clusters) %>%
-      by_slice(~call_index(index = index, arg_vals = arg_vals, dat = .), .collate = "cols")
+      group_by(!!!grouping_sym) %>%
+      do(call_index(all_args = all_args, dat = .))
+    
+    if(input$convertWide){
+      dat <- gather(dat, key = "key", value = "value", est:upper, na.rm = TRUE) %>%
+        unite(col = "est", index, key) %>%
+        spread(key = "est", value = "value")
     }
     
-    dat$index <- index
-    
-    if (index %in% statistical_indices){
-      dat <- dat %>%
-        rename(Est = .out1, SE = .out2, SE_L = .out3, SE_U = .out4)
-    } else{
-      dat <- dat %>%
-        rename(Est = .out)
-    }
-      
+    return(dat)
+
   })
   
-  output$batchTable <- renderTable(batchModel())
+  output$batchTable <- renderTable(batchModel(), na = "-")
   
 })
