@@ -11,7 +11,7 @@ first-grade classroom. University of Kansas. Retrieved from http://gradworks.umi
 }
 \description{
 \itemize{
-  \item \code{Outcome_descriptor}. Outcome measure description (disruptive behavior or on task behavior).
+  \item \code{Behavior_type}. Outcome measure description (disruptive behavior or on task behavior).
   \item \code{Procedure}. The type of observation method used to measure the outcome.  
   \item \code{Session_length}. Time (in minutes) of the observation sessions
   \item \code{Interval_length}. If an interval method was used, the time in seconds of the intervals, \code{NA} otherwise.

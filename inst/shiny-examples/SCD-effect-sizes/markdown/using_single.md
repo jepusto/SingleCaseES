@@ -25,6 +25,17 @@ You will then need to specify values for the following effect size options:
   to select with variance to standardize the effect by. The baseline SD option will standardize the SMD
   by the variability of the observations in the baseline, and the pooled SD option will standardize the
   SMD by the pooled variance of the two phases.
+  
+- __Measurement procedure__: If you select the log-response ratio (LRR) you will be given an option to
+  select the appropriate measurement procedure. For momentary time sampling or continuous recording data, 
+  choose "continuous recording". For partial interval recording or whole interval recording, choose 
+  "interval recording." For event counting data, choose "event counting". For measurement procedures not 
+  listed, choose "other".
+  
+- __Outcome Scale__: If you select the log-response ratio (LRR) you will be given an option to select
+  the appropriate outcome scale. If the scale of the outcome for the series is not listed, select "other".
+
+- __Log-response ratio floor__: If you select the log-response ratio (LRR) you will be given an option to enter the approriate floor for the LRR. The floor must be a non-negative number.
 
 - __Show methods and references__: By default, the calculator will simply provide estimates and confidence
   intervals (if applicable). More detailed information and relevant formulas will be provided if this box is
