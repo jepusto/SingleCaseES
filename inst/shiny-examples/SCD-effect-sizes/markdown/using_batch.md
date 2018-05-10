@@ -1,8 +1,8 @@
 # Batch-entry calculator
 
-The batch-entry calculator will calculate single-case effect sizes using data 
+The batch-entry calculator will estimate single-case effect sizes using data 
 from multiple series, distinguished by one or more series identifiers. This is 
-useful if you are using SingleCaseES package to calculate effect sizes as 
+useful if you are using SingleCaseES package to estimate effect sizes as 
 part of a meta-analysis or other synthetic review.
 
 The batch calculator includes several example datasets. In order to see example 
@@ -23,11 +23,11 @@ Once you have uploaded a dataset, select the "Calculate" tab. In the left-hand p
 specify the column names corresponding to each of the following variables:
 
 - __Series Identifiers__: One or more columns that uniquely identify each individual series. To 
-  calculate an effect size for several series within a single study, the series identifier 
-  might be a column for case name or pseudonym. To calculate an effect size for several studies that 
+  estimate an effect size for several series within a single study, the series identifier 
+  might be a column for case name or pseudonym. To estimate an effect size for several studies that 
   each contained several cases, the series identifiers would need to include a variable listing the 
   source study and a variable with each case name or pseudonym. If some series had multiple phase
-  pairs (such as an ABAB design) and you wanted to calculate a separate effect size for each phase 
+  pairs (such as an ABAB design) and you wanted to estimate a separate effect size for each phase 
   pair, you would need to include a variable specifying phase pair membership.
 
 - __Phase Indicator__: A column of phase indicators. For example, this might be a column where every entry for a
@@ -82,11 +82,11 @@ You can then select all desired effect sizes and specify relevant details:
 - __Log-response ratio floor__: If you select the log-response ratio (LRR) you will be given an option to enter the approriate floor for the LRR. The floor must be a non-negative number.
     
 - __Confidence Level__:  For non-overlap effect sizes that have standard errors, as well as all parametric 
-  effect sizes you, the calculator will provide confidence intervals. You will need to specify what coverage
+  effect sizes you select, the calculator will provide confidence intervals. You will need to specify what coverage
   you desire in your confidence interval. The default is 95% confidence intervals.
 
-- __Long or wide format?__: If you select long each series will have a separate line for each calculated
+- __Long or wide format?__: If you select long each series will have a separate line for each estimated
   effect size and any accompanying standard errors and confidence interval. If you select wide, each series
-  will have a single line with separate columns for each calculated value.
+  will have a single line with separate columns for each estimated value.
   
-Once you have selected all of the desired effect sizes, click on "Calculate" to calculate the effect sizes. When you have calculated effect sizes, you can download the results by clicking on the "Download displayed results" button. 
+Once you have selected all of the desired effect sizes, click on "Estimate" to estimate the effect sizes. When you have estimated effect sizes, you can download the results by clicking on the "Download displayed results" button. 

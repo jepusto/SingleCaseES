@@ -144,7 +144,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                   radioButtons('quote', 'Include quotes?', c('No'='', 'Double Quotes'='"', 'Single Quotes'="'"))
                                                                 )),
                                                    mainPanel(tableOutput("datview")))),
-                            tabPanel("Calculate", 
+                            tabPanel("Estimate", 
                                      sidebarLayout(
                                        sidebarPanel(
                                          style = "max-height: 800px; overflow-y: auto",
@@ -165,7 +165,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100),
                                          radioButtons("convertWide", "Long or wide format?", c("Long" = FALSE, "Wide" = TRUE), inline = TRUE),
                                          conditionalPanel(condition = "input.bESpar.length > 0 || input.bESno.length > 0", 
-                                                          actionButton("batchest", "Calculate"),
+                                                          actionButton("batchest", "Estimate"),
                                                           conditionalPanel(condition = "input.batchest > 0",
                                                                            downloadButton("downcsv", "Download displayed results")))
                                        ),
