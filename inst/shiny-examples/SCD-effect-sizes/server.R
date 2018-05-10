@@ -3,6 +3,7 @@ library(tidyr)
 library(dplyr)
 library(SingleCaseES)
 library(rlang)
+library(DT)
 
 statistical_indices <- c("NAP","Tau","SMD","LRR")
 
@@ -101,47 +102,81 @@ shinyServer(function(input, output, session) {
   output$datview <- renderTable(datFile())
   
   output$indexMapping <- renderUI({
-    
     var_names <- names(datFile())
-    list(conditionalPanel(condition = "input.dat_type == 'example'",
-                          actionButton("bupdateselections", label = "Automatically populate example choices")),
-    selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = NULL, multiple = TRUE),
+    if(input$dat_type == "dat"){
+    list(
+    selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
+                   selected = NULL, multiple = TRUE),
     selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = var_names[3]),
-    selectInput("b_base", label = "Baseline Phase Value", 
-                choices = if(input$dat_type == "example"){exampleMapping[[input$example]]$phase_vals}else{unique(datFile()[input$b_phase])}, 
-                selected = if(input$dat_type == "example"){exampleMapping[[input$example]]$phase_vals[1]}else{NULL}),
-    selectInput("b_treat", label = "Treatment Phase Value", 
-                choices = if(input$dat_type == "example"){exampleMapping[[input$example]]$phase_vals}else{unique(datFile()[input$b_phase])}, 
-                selected = if(input$dat_type == "example"){exampleMapping[[input$example]]$phase_vals[2]}else{NULL}),
+    selectInput("b_base", label = "Baseline Phase Value", choices = unique(datFile()[input$b_phase])),
+    selectInput("b_treat", label = "Treatment Phase Value", choices = unique(datFile()[input$b_phase])),
     selectInput("b_out", label = "Outcome", choices = var_names, selected = var_names[4]),
+    selectInput("bimprovement", label = "Direction of improvement", choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series")),
+    conditionalPanel(condition = "input.bimprovement == 'series'",
+                     selectInput("bseldir", label = "Select variable identifying improvement direction",
+                     choices = var_names)),
+    selectInput("session_number", label = "Within-Case Session Number", choices = var_names),
+    selectInput("bmeasurementProcedure", label = "Measurement Procedure",
+                choices = c("continuous recording", "interval recording", "event counting", "other")),
+    selectInput("boutScale", label = "Outcome Scale",
+                choices = c("percentage", "proportion", "count", "rate", "other")),
     hr(),
     h4("Select Effect Sizes"),
     checkboxGroupInput("bESno", "Non-Overlap Effect Sizes", choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), inline = TRUE),
-                      selectInput("bimprovement", label = "Direction of improvement", 
-                                     choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series")),
-                      conditionalPanel(condition = "input.bimprovement == 'series'",
-                                       selectInput("bseldir", label = "Select variable identifying improvement direction",
-                                       choices = var_names, selected = if(input$dat_type == "example"){exampleMapping[[input$example]]$direction_var}else{NULL})),
     checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LRR","SMD"),inline = TRUE),
-    radioButtons("bSMD_denom", label = "If calculating SMD, standardized by", 
-                                                       choices = c("baseline SD","pooled SD"), inline = TRUE),
-    numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100)
-    )
+    conditionalPanel(condition = "input.bESpar.includes('SMD')", 
+                     radioButtons("bSMD_denom", label = "Standardize SMD ", 
+                                   choices = c("baseline SD","pooled SD"), inline = TRUE)),
+    numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100))
+    }else{
+    curMap <- exampleMapping[[input$example]]
+    list(
+    selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
+                   selected = curMap$cluster_vars, multiple = TRUE),
+    selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = curMap$condition),
+    selectInput("b_base", label = "Baseline Phase Value", choices = unique(datFile()[input$b_phase]), selected = curMap$phase_vals[1]),
+    selectInput("b_treat", label = "Treatment Phase Value", choices = unique(datFile()[input$b_phase], selected = curMap$phase_vals[2])),
+    selectInput("b_out", label = "Outcome", choices = var_names, selected = curMap$Outcome),
+    selectInput("bimprovement", label = "Direction of improvement", choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series"),
+                selected = curMap$direction),
+    conditionalPanel(condition = "input.bimprovement == 'series'",
+                     selectInput("bseldir", label = "Select variable identifying improvement direction",
+                                 choices = var_names, selected = if(!is.null(curMap$direction_var)){curMap$direction_var}else{NULL})),
+    selectInput("session_number", label = "Within-Case Session Number", choices = var_names, selected = curMap$session_num),
+    selectInput("bmeasurementProcedure", label = "Measurement Procedure",
+                choices = c("continuous recording", "interval recording", "event counting", "other")),
+    selectInput("boutScale", label = "Outcome Scale",
+                choices = c("percentage", "proportion", "count", "rate", "other")),
+    hr(),
+    h4("Select Effect Sizes"),
+    checkboxGroupInput("bESno", "Non-Overlap Effect Sizes", choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), inline = TRUE),
+    checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LRR","SMD"),inline = TRUE),
+    conditionalPanel(condition = "input.bESpar.includes('SMD')", 
+                     radioButtons("bSMD_denom", label = "Standardize SMD ", 
+                                  choices = c("baseline SD","pooled SD"), inline = TRUE)),
+    numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100))
+    }
+    
   })
   
-  observeEvent(input$bupdateselections,{
-    var_names <- names(datFile())
-    b_var_names <- exampleMapping[[input$example]]$varnames
-    n_var <- length(b_var_names)
-    improvement <- exampleMapping[[input$example]]$direction
-    if(improvement == "series") dirname <- exampleMapping[[input$example]]$direction_var
-    updateSelectizeInput(session, "b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = b_var_names[3:n_var])
-    updateSelectInput(session, "b_phase", label = "Phase Indicator", choices = var_names, selected = b_var_names[1])
-    updateSelectInput(session, "b_out",label = "Outcome", choices = var_names, selected = b_var_names[2])
-    updateSelectInput(session, "bimprovement", label = "Direction of improvement", 
-                      choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series"), selected = improvement)
+  observeEvent({
+    input$example
+    input$dat_type
+    },
+    {
+      if(input$dat_type == "example"){
+    curMap <- exampleMapping[[input$example]]
+    updateSelectizeInput(session, "b_clusters", selected = curMap$cluster_vars)
+    updateSelectInput(session, "b_phase", selected = curMap$condition)
+    updateSelectInput(session, "b_base", selected = curMap$phase_vals[1])
+    updateSelectInput(session, "b_treat", selected = curMap$phase_vals[2])
+    updateSelectInput(session, "b_out", selected = curMap$outcome)
+    updateSelectInput(session, "session_number", selected = curMap$session_num)
+    updateSelectInput(session, "bimprovement", selected = curMap$direction)
+    if(!is.null(curMap$direction_var)) updateSelectInput(session, "bseldir", curMap$direction_var)
+      }
     })
-  
+
   batchModel <- eventReactive(input$batchest, {
     
     call_index <- function(all_args, dat){
@@ -174,11 +209,11 @@ shinyServer(function(input, output, session) {
     }
     
     if(input$bimprovement == "series"){
-      dat <- datFile()[c(input$b_out, input$b_phase, input$b_clusters, input$bseldir)]
+      dat <- datFile()[c(input$b_out, input$b_phase, input$session_number, input$b_clusters, input$bseldir)]
     }else{
-    dat <- datFile()[c(input$b_out, input$b_phase, input$b_clusters)]
+    dat <- datFile()[c(input$b_out, input$b_phase, input$session_number, input$b_clusters)]
     }
-    names(dat)[1:2] <- c("Outcome", "phase")
+    names(dat)[1:3] <- c("Outcome", "phase", "session_number")
     
     index <- data.frame(index = c(input$bESno, input$bESpar), stringsAsFactors = FALSE)
     
@@ -193,6 +228,7 @@ shinyServer(function(input, output, session) {
     
     dat <- dat %>%  
       group_by(!!!grouping_sym) %>%
+      arrange(session_number) %>%
       do(call_index(all_args = all_args, dat = .))
     
     if(input$convertWide){

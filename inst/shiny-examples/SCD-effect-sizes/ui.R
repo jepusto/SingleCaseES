@@ -18,13 +18,24 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                           ),
                           fluidRow(
                             column(4, 
-                                   textInput("A_dat", label = "Phase A", value = "")
+                                   textInput("A_dat", label = "Phase A", value = ""),
+                                   br(),
+                                   selectInput("improvement", label = "Direction of improvement",
+                                               choices = c("increase", "decrease"))
                             ),
                             column(4, 
-                                   textInput("B_dat", label = "Phase B", value = "")
+                                   textInput("B_dat", label = "Phase B", value = ""),
+                                   br(),
+                                   selectInput("measurementProcedure", label = "Measurement Procedure",
+                                               choices = c("continuous recording", "interval recording", "event counting", "other"))
                             ),
                             column(4,
-                                   checkboxInput("plot","Show graph", value = FALSE)
+                                   checkboxInput("plot","Show graph", value = FALSE),
+                                   br(),
+                                   br(),
+                                   br(),
+                                   selectInput("outScale", label = "Outcome Scale",
+                                               choices = c("percentage", "proportion", "count", "rate", "other"))
                             )
                           ),
                           fluidRow(
@@ -48,9 +59,8 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                               br(),
                                                               selectInput("NOM_ES", label = "Effect size index",
                                                                           choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), 
-                                                                          selected = "NAP"),
-                                                              selectInput("improvement", label = "Direction of improvement", 
-                                                                          choices = c("increase", "decrease"))
+                                                                          selected = "NAP")
+                                                                          
                                                      ),
                                                      tabPanel("Parametric", 
                                                               br(),
@@ -110,11 +120,37 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                             tabPanel("Estimate", 
                                      sidebarLayout(
                                        sidebarPanel(
-                                         uiOutput("indexMapping"),
-                                         checkboxInput("convertWide", "Convert data to wide format.", value = FALSE),
-                                         actionButton("batchest", "Calculate"),
-                                         downloadButton("downcsv", "Download displayed results")
-                                       ),
+                                         style = "max-height: 800px; overflow-y: auto",
+                                         # uiOutput("indexMapping"),
+                                         selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = names(datFile()), 
+                                                        selected = NULL, multiple = TRUE),
+                                         selectInput("b_phase", label = "Phase Indicator", choices = names(datFile()), selected = names(datFile())[3]),
+                                         selectInput("b_base", label = "Baseline Phase Value", choices = unique(datFile()[input$b_phase])),
+                                         selectInput("b_treat", label = "Treatment Phase Value", choices = unique(datFile()[input$b_phase])),
+                                         selectInput("b_out", label = "Outcome", choices = names(datFile()), selected = names(datFile())[4]),
+                                         selectInput("bimprovement", label = "Direction of improvement", choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series")),
+                                         conditionalPanel(condition = "input.bimprovement == 'series'",
+                                                          selectInput("bseldir", label = "Select variable identifying improvement direction",
+                                                                      choices = names(datFile()))),
+                                         selectInput("session_number", label = "Within-Case Session Number", choices = names(datFile())),
+                                         selectInput("bmeasurementProcedure", label = "Measurement Procedure",
+                                                     choices = c("continuous recording", "interval recording", "event counting", "other")),
+                                         selectInput("boutScale", label = "Outcome Scale",
+                                                     choices = c("percentage", "proportion", "count", "rate", "other")),
+                                         hr(),
+                                         h4("Select Effect Sizes"),
+                                         checkboxGroupInput("bESno", "Non-Overlap Effect Sizes", choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), inline = TRUE),
+                                         checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LRR","SMD"),inline = TRUE),
+                                         conditionalPanel(condition = "input.bESpar.includes('SMD')", 
+                                                          radioButtons("bSMD_denom", label = "Standardize SMD ", 
+                                                                       choices = c("baseline SD","pooled SD"), inline = TRUE)),
+                                         numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100),
+                                         radioButtons("convertWide", "Long or wide format?", c("Long" = FALSE, "Wide" = TRUE), inline = TRUE),
+                                         conditionalPanel(condition = "input.bESpar.length > 0 || input.bESno.length > 0", 
+                                                          actionButton("batchest", "Calculate"),
+                                                          downloadButton("downcsv", "Download displayed results"))
+                                         ),
+                                         
                                        mainPanel(tableOutput("batchTable")))
                                      
                             )

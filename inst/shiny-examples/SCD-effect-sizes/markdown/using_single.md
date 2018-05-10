@@ -1,9 +1,9 @@
 # Single-entry Calculator
 
 The single-entry calculator will estimate an effect size using data from a single 
-series. To use the single-entry calculator with your own data, you must first enter 
-fill in the Phase A field and the Phase B field. If you desire, you can check the
-"Show graph" box to display a plot of the data you have entered.
+series. To use the single-entry calculator with your own data, you must first enter
+your data in the Phase A field and the Phase B field. If you desire, you can check 
+the "Show graph" box to display a plot of the data you have entered.
 
 You will then need to specify values for the following effect size options: 
 
@@ -17,6 +17,18 @@ You will then need to specify values for the following effect size options:
 - __Confidence Level__:  For non-overlap effect sizes that have standard errors, as well as all parametric 
   effect sizes you, the calculator will provide confidence intervals. You will need to specify what coverage
   you desire in your confidence interval. The default is 95% confidence intervals.
+  
+- __Digits__: The number of significant digits to round to. For instance, an SMD of 95.0456 will be rounded to
+  95.046 if the selector is set to 3 digits, or to 95.05 if the selector is set to 2 digits.
+
+- __Standardize by__: If you select the standardized mean difference (SMD) you will be given an option
+  to select with variance to standardize the effect by. The baseline SD option will standardize the SMD
+  by the variability of the observations in the baseline, and the pooled SD option will standardize the
+  SMD by the pooled variance of the two phases.
+
+- __Show methods and references__: By default, the calculator will simply provide estimates and confidence
+  intervals (if applicable). More detailed information and relevant formulas will be provided if this box is
+  checked.
   
 The single-entry calculator will display an effect size estimate, as well as a standard 
 error  and confidence interval if applicable. If you are interested in the methods and references

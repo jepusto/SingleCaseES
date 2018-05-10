@@ -8,12 +8,18 @@
 example_list <- c("McKissick et al. (2010)" = "McKissick", "Schmidt (2007)" = "Schmidt2007")
 
 exampleMapping <- list(
-  Schmidt2007 = list(varnames = c("Condition", "Outcome", "Case_pseudonym", "Outcome_descriptor", "Phase_num"),
+  Schmidt2007 = list(condition = "Condition",
+                     outcome = "Outcome",
+                     cluster_vars = c("Case_pseudonym", "Behavior_type", "Phase_num"),
                      phase_vals = c("A", "B"),
                      direction = "series",
-                     direction_var = "direction"),
-  McKissick = list(varnames =c("Condition", "Outcome", "Case_pseudonym"),
+                     direction_var = "direction",
+                     session_num = "Session_number"),
+  McKissick = list(condition = "Condition",
+                   outcome = "Outcome",
+                   cluster_vars = "Case_pseudonym",
                    phase_vals = c("A", "B"),
-                   direction = "decrease")
+                   direction = "decrease",
+                   session_num = "Session_number")
   
 )
