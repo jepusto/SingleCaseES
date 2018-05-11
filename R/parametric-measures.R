@@ -1,36 +1,56 @@
+# Calculate mean, variance, and sample size by phase
+
 summary_stats <- function(A_data, B_data) {
+  
   n <- c(sum(!is.na(A_data)), sum(!is.na(B_data)))
   M <- c(mean(A_data, na.rm = TRUE), mean(B_data, na.rm = TRUE))
   V <- c(var(A_data, na.rm = TRUE), var(B_data, na.rm = TRUE))
+  
   data.frame(n = n, M = M, V = V)
 }
 
+
+calc_D <- function(scale, observation_length, intervals) {
+  switch(scale,
+         percentage = intervals / 100,
+         proportion = intervals,
+         count = 1L,
+         rate = observation_length,
+         Inf)
+}
+
 #' @title Log-response ratio
-#'   
-#' @description Calculates the log-response ratio effect size index, with or 
-#'   without bias correction (Pustejovsky, 2015)
-#'   
+#'
+#' @description Calculates the increasing or decreasing versions of the
+#'   log-response ratio effect size index, with or without bias correction
+#'   (Pustejovsky, 2015)
+#'
 #' @inheritParams NAP
 #' @param bias_correct  logical value indicating whether to use bias-correction.
 #'   Default is \code{TRUE}
-#'   
-#' @details The response ratio parameter is the ratio of the mean level of the 
+#'
+#' @details The response ratio parameter is the ratio of the mean level of the
 #'   outcome during phase B to the mean level of the outcome during phase A. The
-#'   log response ratio is the natural logarithm of the response ratio. Without 
-#'   bias correction, the log response ratio is estimated as the natural 
-#'   logarithm of the phase B sample mean, minus the natural logarithm of the 
-#'   phase A sample mean. A delta-method bias correction to the estimator is 
+#'   log response ratio is the natural logarithm of the response ratio. Without
+#'   bias correction, the log response ratio is estimated as the natural
+#'   logarithm of the phase B sample mean, minus the natural logarithm of the
+#'   phase A sample mean. A delta-method bias correction to the estimator is
 #'   used by default.
-#'   
-#'   The standard error of LRR is calculated based on a delta-method 
-#'   approximation, allowing for the possibility of different degrees of 
+#'
+#'   The standard error of LRR is calculated based on a delta-method
+#'   approximation, allowing for the possibility of different degrees of
 #'   dispersion in each phase. The confidence interval for LRR is based on a
 #'   large-sample (z) approximation.
-#'   
-#' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes 
-#'   for single-case studies of free-operant behavior. \emph{Psychological 
-#'   Methods, 20}(3), 342--359. 
+#'
+#' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
+#'   for single-case studies of free-operant behavior. \emph{Psychological
+#'   Methods, 20}(3), 342--359.
 #'   doi:\href{http://dx.doi.org/10.1037/met0000019}{10.1037/met0000019}
+#'
+#'   Pustejovsky, J. E. (2018). Using response ratios for meta-analyzing
+#'   single-case designs with behavioral outcomes. \emph{Journal of School
+#'   Psychology, 16}, 99-112.
+#'   doi:\href{https://doi.org/10.1016/j.jsp.2018.02.003}{10.1016/j.jsp.2018.02.003}
 
 #' @return A list containing the estimate, standard error, and confidence 
 #'   interval.
@@ -38,18 +58,43 @@ summary_stats <- function(A_data, B_data) {
 #' @examples 
 #' A <- c(20, 20, 26, 25, 22, 23)
 #' B <- c(28, 25, 24, 27, 30, 30, 29)
-#' LRR(A_data = A, B_data = B, bias_correct = FALSE)
-#' LRR(A_data = A, B_data = B)
+#' LRRd(A_data = A, B_data = B, bias_correct = FALSE)
+#' LRRd(A_data = A, B_data = B)
 #' 
 #' @export
 
 # Check against calculations in Pustejovsky (2015)!
 
-LRR <- function(A_data, B_data, bias_correct = TRUE, confidence = .95) {
+LRRd <- function(A_data, B_data, 
+                 improvement = "decrease", 
+                 scale, observation_length, intervals, d = NULL,
+                 bias_correct = TRUE, confidence = .95) {
   
-  dat <- summary_stats(A_data, B_data)
+  if (is.null(D)) D <- calc_D(scale, observation_length, intervals)
   
-  if (!all(dat$M > 0)) stop('The mean of one or both phases is at the floor of 0.')
+  calc_ES(A_data = A_data, A_data = B_data, ES = "LRRd",
+          improvement = improvement, scale = scale, D = D,
+          bias_correct = bias_correct, confidence = confidence)  
+}
+
+LRRi <- function(A_data, B_data, 
+                 improvement = "increase", 
+                 scale, observation_length, intervals, d = NULL,
+                 bias_correct = TRUE, confidence = .95) {
+  
+  if (is.null(D)) D <- calc_D(scale, observation_length, intervals)
+  
+  calc_ES(A = A_data, B = B_data, ES = "LRRd",
+          improvement = improvement, scale = scale, D = D,
+          bias_correct = bias_correct, confidence = confidence)  
+}
+
+
+calc_LRRd <- function(A_data, B_data,
+                      improvement = "increase", scale, D,
+                      bias_correct = TRUE, confidence = .95) {
+
+  dat <- summary_stats(A_data, B_data, D)
   
   if (bias_correct == TRUE) {
     BC <- with(dat, log(M) + V / (2 * n * M^2))
@@ -104,8 +149,24 @@ LRR <- function(A_data, B_data, bias_correct = TRUE, confidence = .95) {
 
 # Check against calculations in Pustejovsky (2015)!
 
-SMD <- function(A_data, B_data, std_dev = "baseline", 
-                bias_correct = TRUE, confidence = .95) {
+SMD <- function(..., 
+                improvement = "increase",
+                std_dev = "baseline", 
+                bias_correct = TRUE, 
+                confidence = .95) {
+ 
+  calc_ES(..., ES = "SMD", 
+          improvement = improvement, 
+          bias_correct = bias_correct, 
+          confidence = confidence)
+}
+
+
+calc_SMD <- function(A_data, B_data, 
+                     improvement = "increase",
+                     std_dev = "baseline", 
+                     bias_correct = TRUE, 
+                     confidence = .95) {
   
   dat <- summary_stats(A_data, B_data)
   
@@ -121,7 +182,12 @@ SMD <- function(A_data, B_data, std_dev = "baseline",
   
   J <- if (bias_correct) 1  - 3 / (4 * df - 1) else 1
   
+  if (s_sq == 0) stop("There is no variation in the outcome! The SMD is not an appropriate ES for these data.")
+  
   d <- J * diff(dat$M) / sqrt(s_sq) 
+  
+  if (improvement=="decrease") d <- -d
+  
   SE <- J * sqrt(SV1 + d^2 / (2 * df))
   CI <- d + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
   
