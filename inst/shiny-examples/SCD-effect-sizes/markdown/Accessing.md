@@ -7,14 +7,15 @@ to learn more about both options.
 
 #### Access through the shinyapps.io website
 
-The simplest way to access the simulator is via the web, at
+The simplest way to access the calculator is via the web, at
 <https://jepusto.shinyapps.io/SCD-effect-sizes/>. This version of the
 calculator is hosted by a service called
 [shinyapps.io](https://www.shinyapps.io/), which imposes limitations on
-the number of concurrent users of the site and total hours of active use
+the number of concurrent users of the site and the total hours of active use
 of the site. Consequently, you might find that the site is not always
-available. If you intend to use the calculator extensively, please
-follow the steps below in order to install it on your own computer.
+available (especially towards the end of the month). If you intend to 
+use the calculator extensively, please follow the steps below in order to 
+install it on your own computer.
 
 #### Access through RStudio
 
@@ -22,8 +23,9 @@ In order to run the effect size calculator on your own computer, you
 will need to install two pieces of software (R and RStudio), both of
 which are open-source and freely available. You will then need to follow
 several further steps to configure that software. The installation is
-more involved, but has the benefit of letting you run the tool as much
-as you want, at faster speeds than over the web.
+more involved than using the web interface, but it has the benefit of 
+letting you run the tool as much as you want, at faster speeds than 
+over the web.
 
 1.  Install R from <http://cran.r-project.org/>
 2.  For Windows users, install Rtools from
