@@ -4,7 +4,8 @@
 \alias{SMD}
 \title{Within-case standardized mean difference}
 \usage{
-SMD(A_data, B_data, std_dev = "baseline", bias_correct = TRUE,
+SMD(A_data, B_data, condition, outcome, baseline_phase,
+  improvement = "increase", std_dev = "baseline", bias_correct = TRUE,
   confidence = 0.95)
 }
 \arguments{
@@ -12,36 +13,48 @@ SMD(A_data, B_data, std_dev = "baseline", bias_correct = TRUE,
 
 \item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
-\item{std_dev}{character string controlling how to calculate the standard 
-deviation in the denominator of the effect size. Set to \code{"baseline"} 
-(the default) to use the baseline standard deviation. Set to \code{"pool"} 
+\item{condition}{vector identifying the treatment condition for each
+observation in the series.}
+
+\item{outcome}{vector of outcome data for the entire series.}
+
+\item{baseline_phase}{character string specifying which value of
+\code{condition} corresponds to the baseline phase. Defaults to first
+observed value of \code{condition}.}
+
+\item{improvement}{character string indicating direction of improvement.
+Default is "increase"}
+
+\item{std_dev}{character string controlling how to calculate the standard
+deviation in the denominator of the effect size. Set to \code{"baseline"}
+(the default) to use the baseline standard deviation. Set to \code{"pool"}
 to use the pooled standard deviation.}
 
-\item{bias_correct}{logical value indicating whether to use bias-correction. 
-Default is \code{TRUE}}
+\item{bias_correct}{logical value indicating whether to use bias-correction
+(i.e., Hedges' g). Default is \code{TRUE}}
 
 \item{confidence}{confidence level for the reported interval estimate}
 }
 \value{
-A list containing the estimate, standard error, and confidence 
+A list containing the estimate, standard error, and confidence
   interval.
 }
 \description{
-Calculates the within-case standardized mean difference effect 
+Calculates the within-case standardized mean difference effect
   size index
 }
 \details{
-The standardized mean difference parameter is defined as the 
-  difference between the mean level of the outcome in phase B and the mean 
-  level of the outcome in phase A, scaled by the within-case standard 
-  deviation of the outcome in phase A. The parameter is estimated using 
-  sample means and sample standard deviations and (optionally) making a 
-  small-sample correction. 
-  
-  By default, the scaling factor is estimated using 
-  the sample standard deviation in phase A (the baseline phase) only. Set
-  \code{std_dev = "pool"} to use the sample standard deviation pooled across
-  both phases. Hedges' (1981) small-sample bias correction is applied by default.
+The standardized mean difference parameter is defined as the
+  difference between the mean level of the outcome in phase B and the mean
+  level of the outcome in phase A, scaled by the within-case standard
+  deviation of the outcome in phase A. The parameter is estimated using
+  sample means and sample standard deviations and (optionally) making a
+  small-sample correction.
+
+  By default, the scaling factor is estimated using the sample standard
+  deviation in phase A (the baseline phase) only. Set \code{std_dev = "pool"}
+  to use the sample standard deviation pooled across both phases. Hedges'
+  (1981) small-sample bias correction is applied by default.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)

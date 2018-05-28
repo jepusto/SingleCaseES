@@ -4,7 +4,8 @@
 \alias{Tau}
 \title{Tau (non-overlap)}
 \usage{
-Tau(A_data, B_data, improvement = "increase", SE = TRUE, CI = TRUE,
+Tau(A_data, B_data, condition, outcome, baseline_phase,
+  improvement = "increase", SE = "unbiased", CI = TRUE,
   confidence = 0.95)
 }
 \arguments{
@@ -12,10 +13,23 @@ Tau(A_data, B_data, improvement = "increase", SE = TRUE, CI = TRUE,
 
 \item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
+\item{condition}{vector identifying the treatment condition for each
+observation in the series.}
+
+\item{outcome}{vector of outcome data for the entire series.}
+
+\item{baseline_phase}{character string specifying which value of
+\code{condition} corresponds to the baseline phase. Defaults to first
+observed value of \code{condition}.}
+
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase"}
 
-\item{SE}{logical value indicating whether to report the standard error}
+\item{SE}{character value indicating which formula to use for calculating the
+standard error of NAP, with possible values \code{"unbiased"} for the
+exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
+estimator, or \code{"none"} to not calculate a standard error. Defaults to
+"unbiased".}
 
 \item{CI}{logical value indicating whether to report a confidence interval}
 
