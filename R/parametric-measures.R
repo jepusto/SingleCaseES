@@ -10,29 +10,52 @@ summary_stats <- function(A_data, B_data) {
 }
 
 
-calc_D <- function(scale, observation_length, intervals) {
+trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = NULL) {
+  
+  if (is.null(scale)) return(0)
+  
   switch(scale,
-         percentage = intervals / 100,
-         proportion = intervals,
          count = 1L,
          rate = observation_length,
-         Inf)
+         proportion = intervals,
+         percentage = intervals / 100)
 }
 
+#' @name LRR
 #' @title Log-response ratio
 #'
-#' @description Calculates the increasing or decreasing versions of the
+#' @description Calculates the increasing or decreasing version of the
 #'   log-response ratio effect size index, with or without bias correction
 #'   (Pustejovsky, 2015)
 #'
-#' @inheritParams NAP
+#' @param scale character string indicating the scale of the outcome variable,
+#'   with possible values \code{"percentage"} for a percentage with range 0-100,
+#'   \code{"proportion"} for a proportion with range 0-1, \code{"count"} for a
+#'   frequency count (0 or positive integers), \code{"rate"} for a standardized
+#'   rate per minute.
+#' @param observation_length length of observation session (in minutes).
+#' @param intervals for interval recording procedures, the total number of
+#'   intervals per observation session.
+#' @param D constant used for calculating the truncated sample mean (see
+#'   Pustejovsky, 2018).
 #' @param bias_correct  logical value indicating whether to use bias-correction.
-#'   Default is \code{TRUE}
+#'   Default is \code{TRUE}.
+#' @inheritParams calc_ES
 #'
 #' @details The response ratio parameter is the ratio of the mean level of the
 #'   outcome during phase B to the mean level of the outcome during phase A. The
-#'   log response ratio is the natural logarithm of the response ratio. Without
-#'   bias correction, the log response ratio is estimated as the natural
+#'   log response ratio is the natural logarithm of the response ratio. This
+#'   effect size is appropriate for outcomes measured on a ratio scale (so that
+#'   zero corresponds to the true absence of the outcome. There are two versions
+#'   of the LRR. The LRR-increasing is defined so that positive values
+#'   correspond to therapeutic improvements. The LRR-decreasing (LRRd) is
+#'   defined so that negative values correspond to therapeutic improvments. For
+#'   outcomes measured as frequency counts or rates, the two versions will have
+#'   the same magnitude but opposite sign; for outcomes measured as percentages
+#'   or proportions, the LRRd and LRRi will differ in both sign and magnitude
+#'   (Pustejovsky, 2018).
+#'
+#'   Without bias correction, the log response ratio is estimated as the natural
 #'   logarithm of the phase B sample mean, minus the natural logarithm of the
 #'   phase A sample mean. A delta-method bias correction to the estimator is
 #'   used by default.
@@ -41,6 +64,19 @@ calc_D <- function(scale, observation_length, intervals) {
 #'   approximation, allowing for the possibility of different degrees of
 #'   dispersion in each phase. The confidence interval for LRR is based on a
 #'   large-sample (z) approximation.
+#'
+#'   To account for the possibility of sample means of zero, a truncated mean is
+#'   calculated following the method described in Pustejovsky (2018). The
+#'   truncation constant depends on the scale of the outcome, the length of the
+#'   observation sessions used to measure the dependent variable, and (for
+#'   interval recording procedures) the total number of intervals per session
+#'   (or the total number of items for other percentage/proportion scales). The
+#'   argument \code{scale} must be specified in order to calculate an
+#'   appropriate truncation constant. For standardized rates, the argument
+#'   \code{observation_length} must also be specified; for percentages or
+#'   proportions, the argument \code{intervals} must be specified. For outcomes
+#'   measured using continuous recording procedures, set \code{intervals} equal
+#'   to 60 times the length of the observation session in minutes.
 #'
 #' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
 #'   for single-case studies of free-operant behavior. \emph{Psychological
@@ -51,114 +87,177 @@ calc_D <- function(scale, observation_length, intervals) {
 #'   single-case designs with behavioral outcomes. \emph{Journal of School
 #'   Psychology, 16}, 99-112.
 #'   doi:\href{https://doi.org/10.1016/j.jsp.2018.02.003}{10.1016/j.jsp.2018.02.003}
-
-#' @return A list containing the estimate, standard error, and confidence 
-#'   interval.
-#'   
-#' @examples 
+#'
+#' @return A data.frame containing the estimate, standard error, and approximate
+#'   confidence interval.
+#'
+#' @examples
 #' A <- c(20, 20, 26, 25, 22, 23)
 #' B <- c(28, 25, 24, 27, 30, 30, 29)
 #' LRRd(A_data = A, B_data = B, bias_correct = FALSE)
 #' LRRd(A_data = A, B_data = B)
-#' 
+#'
 #' @export
 
-# Check against calculations in Pustejovsky (2015)!
+# Check against calculations in Pustejovsky (2015, 2018)
 
-LRRd <- function(A_data, B_data, 
+#' @rdname LRR
+
+LRRd <- function(A_data, B_data, condition, outcome, baseline_phase,
                  improvement = "decrease", 
-                 scale, observation_length, intervals, d = NULL,
+                 scale, observation_length, intervals, D = NULL,
                  bias_correct = TRUE, confidence = .95) {
   
-  if (is.null(D)) D <- calc_D(scale, observation_length, intervals)
-  
-  calc_ES(A_data = A_data, A_data = B_data, ES = "LRRd",
-          improvement = improvement, scale = scale, D = D,
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, 
+          baseline_phase = baseline_phase,
+          ES = "LRRd", improvement = improvement, 
+          scale = scale, observation_length = observation_length, 
+          intervals = intervals, D = D,
           bias_correct = bias_correct, confidence = confidence)  
 }
 
-LRRi <- function(A_data, B_data, 
+#' @rdname LRR
+
+LRRi <- function(A_data, B_data, condition, outcome, baseline_phase,
                  improvement = "increase", 
-                 scale, observation_length, intervals, d = NULL,
+                 scale, observation_length, intervals, D = NULL,
                  bias_correct = TRUE, confidence = .95) {
   
-  if (is.null(D)) D <- calc_D(scale, observation_length, intervals)
-  
-  calc_ES(A = A_data, B = B_data, ES = "LRRd",
-          improvement = improvement, scale = scale, D = D,
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, 
+          baseline_phase = baseline_phase,
+          ES = "LRRi", improvement = improvement, 
+          scale = scale, observation_length = observation_length, 
+          intervals = intervals, D = D,
           bias_correct = bias_correct, confidence = confidence)  
+  
 }
 
+calc_LRRd <- function(A_data, B_data, improvement = "decrease", 
+                      scale, observation_length, intervals, D = NULL,
+                      bias_correct = TRUE, confidence = .95, ...) {
 
-calc_LRRd <- function(A_data, B_data,
-                      improvement = "increase", scale, D,
-                      bias_correct = TRUE, confidence = .95) {
-
-  dat <- summary_stats(A_data, B_data, D)
+  dat <- summary_stats(A_data, B_data)
+  
+  if (improvement == "increase") { 
+    if (scale == "percentage") {
+      dat$M <- 100 - dat$M
+    } 
+    if (scale == "proportion") {
+      dat$M <- 1 - dat$M
+    }
+  }
+  
+  if (is.null(D)) D <- trunc_constant(scale, observation_length, intervals)
+  if (D > 0) dat$M <- pmax(1 / (2 * D * dat$n), dat$M)
   
   if (bias_correct == TRUE) {
     BC <- with(dat, log(M) + V / (2 * n * M^2))
-    lRR <- BC[2] - BC[1]
+    lRR <- diff(BC)
   } else {
     lRR <- diff(log(dat$M))
+  }
+  
+  if (improvement == "increase" & ! scale %in% c("percentage","proportion")) {
+    lRR <- -1L * lRR
   }
   
   SE <- with(dat, sqrt(sum(V / (n * M^2))))
   CI <- lRR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
   
-  list(Est = lRR, SE = SE, CI = CI)
+  data.frame(ES = "LRRd", Est = lRR, 
+             SE = SE, CI_lower = CI[1], CI_upper = CI[2], 
+             stringsAsFactors = FALSE)
 }
 
+calc_LRRi <- function(A_data, B_data, improvement = "increase", 
+                      scale, observation_length, intervals, D = NULL,
+                      bias_correct = TRUE, confidence = .95, ...) {
+  
+  dat <- summary_stats(A_data, B_data)
+  
+  if (improvement == "decrease") { 
+    if (scale == "percentage") {
+      dat$M <- 100 - dat$M
+    } 
+    if (scale == "proportion") {
+      dat$M <- 1 - dat$M
+    }
+  }
+  
+  if (is.null(D)) D <- trunc_constant(scale, observation_length, intervals)
+  if (D > 0) dat$M <- pmax(1 / (2 * D * dat$n), dat$M)
+  
+  if (bias_correct == TRUE) {
+    BC <- with(dat, log(M) + V / (2 * n * M^2))
+    lRR <- diff(BC)
+  } else {
+    lRR <- diff(log(dat$M))
+  }
+  
+  if (improvement == "decrease" & ! scale %in% c("percentage","proportion")) {
+    lRR <- -1L * lRR
+  }
+  
+  SE <- with(dat, sqrt(sum(V / (n * M^2))))
+  CI <- lRR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
+  
+  data.frame(ES = "LRRi", Est = lRR, 
+             SE = SE, CI_lower = CI[1], CI_upper = CI[2], 
+             stringsAsFactors = FALSE)
+}
 
 #' @title Within-case standardized mean difference
-#'   
-#' @description Calculates the within-case standardized mean difference effect 
+#'
+#' @description Calculates the within-case standardized mean difference effect
 #'   size index
-#'   
-#' @inheritParams NAP
-#' @param std_dev character string controlling how to calculate the standard 
-#'   deviation in the denominator of the effect size. Set to \code{"baseline"} 
-#'   (the default) to use the baseline standard deviation. Set to \code{"pool"} 
+#'
+#' @inheritParams calc_ES
+#' @param std_dev character string controlling how to calculate the standard
+#'   deviation in the denominator of the effect size. Set to \code{"baseline"}
+#'   (the default) to use the baseline standard deviation. Set to \code{"pool"}
 #'   to use the pooled standard deviation.
-#' @param bias_correct logical value indicating whether to use bias-correction. 
-#'   Default is \code{TRUE}
-#'   
-#' @details The standardized mean difference parameter is defined as the 
-#'   difference between the mean level of the outcome in phase B and the mean 
-#'   level of the outcome in phase A, scaled by the within-case standard 
-#'   deviation of the outcome in phase A. The parameter is estimated using 
-#'   sample means and sample standard deviations and (optionally) making a 
-#'   small-sample correction. 
-#'   
-#'   By default, the scaling factor is estimated using 
-#'   the sample standard deviation in phase A (the baseline phase) only. Set
-#'   \code{std_dev = "pool"} to use the sample standard deviation pooled across
-#'   both phases. Hedges' (1981) small-sample bias correction is applied by default. 
-#'   
-#' @return A list containing the estimate, standard error, and confidence 
+#' @param bias_correct logical value indicating whether to use bias-correction
+#'   (i.e., Hedges' g). Default is \code{TRUE}
+#'
+#' @details The standardized mean difference parameter is defined as the
+#'   difference between the mean level of the outcome in phase B and the mean
+#'   level of the outcome in phase A, scaled by the within-case standard
+#'   deviation of the outcome in phase A. The parameter is estimated using
+#'   sample means and sample standard deviations and (optionally) making a
+#'   small-sample correction.
+#'
+#'   By default, the scaling factor is estimated using the sample standard
+#'   deviation in phase A (the baseline phase) only. Set \code{std_dev = "pool"}
+#'   to use the sample standard deviation pooled across both phases. Hedges'
+#'   (1981) small-sample bias correction is applied by default.
+#'
+#' @return A list containing the estimate, standard error, and confidence
 #'   interval.
-#'   
-#' @examples 
+#'
+#' @examples
 #' A <- c(20, 20, 26, 25, 22, 23)
 #' B <- c(28, 25, 24, 27, 30, 30, 29)
 #' SMD(A_data = A, B_data = B, bias_correct = FALSE)
 #' SMD(A_data = A, B_data = B)
 #' SMD(A_data = A, B_data = B, std_dev = "pool")
-#' 
+#'
 #' @export
 
 # Check against calculations in Pustejovsky (2015)!
 
-SMD <- function(..., 
+SMD <- function(A_data, B_data, condition, outcome, baseline_phase,
                 improvement = "increase",
                 std_dev = "baseline", 
                 bias_correct = TRUE, 
                 confidence = .95) {
  
-  calc_ES(..., ES = "SMD", 
-          improvement = improvement, 
-          bias_correct = bias_correct, 
-          confidence = confidence)
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, 
+          baseline_phase = baseline_phase,
+          ES = "SMD", improvement = improvement, 
+          bias_correct = bias_correct, confidence = confidence)
 }
 
 
@@ -191,5 +290,7 @@ calc_SMD <- function(A_data, B_data,
   SE <- J * sqrt(SV1 + d^2 / (2 * df))
   CI <- d + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
   
-  list(Est = d, SE = SE, CI = CI)
+  data.frame(ES = "SMD", Est = d, 
+             SE = SE, CI_lower = CI[1], CI_upper = CI[2], 
+             stringsAsFactors = FALSE)
 }
