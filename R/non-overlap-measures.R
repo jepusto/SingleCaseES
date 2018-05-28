@@ -58,19 +58,18 @@
 
 NAP <- function(A_data, B_data, condition, outcome, baseline_phase,
                 improvement = "increase", 
-                SE = "unbiased", CI = TRUE, confidence = .95) {
+                SE = "unbiased", confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
-          ES = "NAP", improvement = improvement, SE = SE, CI = CI, 
+          ES = "NAP", improvement = improvement, SE = SE, 
           confidence = confidence)
 }
   
 calc_NAP <- function(A_data, B_data, 
                      improvement = "increase", 
-                     SE = "unbiased", CI = TRUE, 
-                     confidence = .95, ...) {
+                     SE = "unbiased", confidence = .95, ...) {
   
   if (improvement=="decrease") {
     A_data <- -1 * A_data
@@ -85,14 +84,14 @@ calc_NAP <- function(A_data, B_data,
   
   res <- data.frame(ES = "NAP", Est = NAP, stringsAsFactors = FALSE)
   
-  if (SE) {
+  if (SE != "none") {
     Q1 <- sum(rowSums(Q_mat)^2) / (m * n^2)
     Q2 <- sum(colSums(Q_mat)^2) / (m^2 * n)
     V <- (NAP * (1 - NAP) + (n - 1) * (Q1 - NAP^2) + (m - 1) * (Q2 - NAP^2)) / (m * n)  
     res$SE <- sqrt(V)  
-  }
+  } 
   
-  if (CI) {
+  if (!is.null(confidence)) {
     h <- (m + n) / 2 - 1
     z <- qnorm(1 - (1 - confidence) / 2)
     f <- function(x) m * n * (NAP - x)^2 * (2 - x) * (1 + x) - 
@@ -137,12 +136,12 @@ calc_NAP <- function(A_data, B_data,
 
 Tau <- function(A_data, B_data, condition, outcome, baseline_phase,
                 improvement = "increase", 
-                SE = "unbiased", CI = TRUE, confidence = .95) {
+                SE = "unbiased", confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
-          ES = "Tau", improvement = improvement, SE = SE, CI = CI, 
+          ES = "Tau", improvement = improvement, SE = SE, 
           confidence = confidence)
   
 }
@@ -160,7 +159,7 @@ calc_Tau <- function(A_data, B_data,
   
   if (SE != "none") res$SE <- 2 * nap$SE
   
-  if (CI) {
+  if (!is.null(confidence)) {
     res$CI_lower <- 2 * nap$CI_lower - 1
     res$CI_upper <- 2 * nap$CI_upper - 1
   } 
@@ -446,7 +445,7 @@ calc_IRD <- function(A_data, B_data, improvement = "increase", ...) {
   m <- sum(!is.na(A_data))
   n <- sum(!is.na(B_data))
   
-  IRD <- ((m+n)^2 * pand - m^2 - n^2) / (2 * m * n)
+  IRD <- ((m+n)^2 * pand$Est - m^2 - n^2) / (2 * m * n)
   
   data.frame(ES = "IRD", Est = IRD, stringsAsFactors = FALSE)
 }

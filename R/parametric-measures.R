@@ -105,7 +105,8 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 
 LRRd <- function(A_data, B_data, condition, outcome, baseline_phase,
                  improvement = "decrease", 
-                 scale, observation_length, intervals, D = NULL,
+                 scale = "count", observation_length = NULL, 
+                 intervals = NULL, D = NULL,
                  bias_correct = TRUE, confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
@@ -121,7 +122,8 @@ LRRd <- function(A_data, B_data, condition, outcome, baseline_phase,
 
 LRRi <- function(A_data, B_data, condition, outcome, baseline_phase,
                  improvement = "increase", 
-                 scale, observation_length, intervals, D = NULL,
+                 scale = "count", observation_length = NULL, 
+                 intervals = NULL, D = NULL,
                  bias_correct = TRUE, confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
@@ -135,7 +137,8 @@ LRRi <- function(A_data, B_data, condition, outcome, baseline_phase,
 }
 
 calc_LRRd <- function(A_data, B_data, improvement = "decrease", 
-                      scale, observation_length, intervals, D = NULL,
+                      scale = "count", observation_length = NULL, 
+                      intervals = NULL, D = NULL,
                       bias_correct = TRUE, confidence = .95, ...) {
 
   dat <- summary_stats(A_data, B_data)
@@ -164,15 +167,23 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
   }
   
   SE <- with(dat, sqrt(sum(V / (n * M^2))))
-  CI <- lRR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
   
-  data.frame(ES = "LRRd", Est = lRR, 
-             SE = SE, CI_lower = CI[1], CI_upper = CI[2], 
-             stringsAsFactors = FALSE)
+  res <- data.frame(ES = "LRRd", Est = lRR, 
+                    SE = SE, stringsAsFactors = FALSE)
+  
+  if (!is.null(confidence)) {
+    CI <- lRR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
+    res$CI_lower <- CI[1]
+    res$CI_upper <- CI[2] 
+  }
+  
+  res
+  
 }
 
 calc_LRRi <- function(A_data, B_data, improvement = "increase", 
-                      scale, observation_length, intervals, D = NULL,
+                      scale = "count", observation_length = NULL, 
+                      intervals = NULL, D = NULL,
                       bias_correct = TRUE, confidence = .95, ...) {
   
   dat <- summary_stats(A_data, B_data)
@@ -201,11 +212,17 @@ calc_LRRi <- function(A_data, B_data, improvement = "increase",
   }
   
   SE <- with(dat, sqrt(sum(V / (n * M^2))))
-  CI <- lRR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
+  res <- data.frame(ES = "LRRi", Est = lRR, 
+                    SE = SE, stringsAsFactors = FALSE)
   
-  data.frame(ES = "LRRi", Est = lRR, 
-             SE = SE, CI_lower = CI[1], CI_upper = CI[2], 
-             stringsAsFactors = FALSE)
+  if (!is.null(confidence)) {
+    CI <- lRR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
+    res$CI_lower <- CI[1]
+    res$CI_upper <- CI[2] 
+  }
+  
+  res
+  
 }
 
 #' @title Within-case standardized mean difference
@@ -288,9 +305,16 @@ calc_SMD <- function(A_data, B_data,
   if (improvement=="decrease") d <- -d
   
   SE <- J * sqrt(SV1 + d^2 / (2 * df))
-  CI <- d + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
   
-  data.frame(ES = "SMD", Est = d, 
-             SE = SE, CI_lower = CI[1], CI_upper = CI[2], 
-             stringsAsFactors = FALSE)
+  res <- data.frame(ES = "SMD", Est = d, 
+                    SE = SE, stringsAsFactors = FALSE)
+  
+  if (!is.null(confidence)) {
+    CI <- d + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
+    res$CI_lower <- CI[1]
+    res$CI_upper <- CI[2] 
+  }
+  
+  res
+
 }
