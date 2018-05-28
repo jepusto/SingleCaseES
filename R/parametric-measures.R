@@ -14,6 +14,10 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
   
   if (is.null(scale)) return(0)
   
+  if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
+  if (length(observation_length) > 1L) observation_length <- mean(observation_length, na.rm = TRUE)
+  if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
+  
   switch(scale,
          count = 1L,
          rate = observation_length,
@@ -32,12 +36,14 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 #'   with possible values \code{"percentage"} for a percentage with range 0-100,
 #'   \code{"proportion"} for a proportion with range 0-1, \code{"count"} for a
 #'   frequency count (0 or positive integers), \code{"rate"} for a standardized
-#'   rate per minute.
-#' @param observation_length length of observation session (in minutes).
+#'   rate per minute. If a vector, the most frequent unique value will be used.
+#' @param observation_length length of observation session (in minutes). If a
+#'   vector, the mean observation session length will be used.
 #' @param intervals for interval recording procedures, the total number of
-#'   intervals per observation session.
+#'   intervals per observation session. If a vector, the mean number of
+#'   intervals will be used.
 #' @param D constant used for calculating the truncated sample mean (see
-#'   Pustejovsky, 2018).
+#'   Pustejovsky, 2018). If a vector, the mean value will be used.
 #' @param bias_correct  logical value indicating whether to use bias-correction.
 #'   Default is \code{TRUE}.
 #' @inheritParams calc_ES
@@ -87,6 +93,7 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 #'   single-case designs with behavioral outcomes. \emph{Journal of School
 #'   Psychology, 16}, 99-112.
 #'   doi:\href{https://doi.org/10.1016/j.jsp.2018.02.003}{10.1016/j.jsp.2018.02.003}
+#'
 #'
 #' @return A data.frame containing the estimate, standard error, and approximate
 #'   confidence interval.
@@ -153,6 +160,7 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
   }
   
   if (is.null(D)) D <- trunc_constant(scale, observation_length, intervals)
+  if (length(D) > 1) D <- mean(D, na.rm = TRUE)
   if (D > 0) dat$M <- pmax(1 / (2 * D * dat$n), dat$M)
   
   if (bias_correct == TRUE) {
