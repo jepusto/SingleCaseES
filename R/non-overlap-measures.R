@@ -1,77 +1,89 @@
 #' @title Non-overlap of all pairs
-#'   
+#'
 #' @description Calculates the non-overlap of all pairs index (Parker & Vannest,
 #'   2009).
-#'   
-#' @param A_data vector of numeric data for A phase. Missing values are dropped.
-#' @param B_data vector of numeric data for B phase. Missing values are dropped.
-#' @param improvement character string indicating direction of improvement.
-#'   Default is "increase"
-#' @param SE logical value indicating whether to report the standard error
+#'
+#' @param SE character value indicating which formula to use for calculating the
+#'   standard error of NAP, with possible values \code{"unbiased"} for the
+#'   exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
+#'   estimator, or \code{"none"} to not calculate a standard error. Defaults to
+#'   "unbiased".
 #' @param CI logical value indicating whether to report a confidence interval
-#' @param confidence confidence level for the reported interval estimate
-#'   
-#' @details NAP is calculated as the proportion of all pairs of one observation 
-#'   from each phase in which the measurement from the B phase improves upon the 
-#'   measurement from the A phase, with pairs of data points that are exactly 
+#' @inheritParams calc_ES
+#'
+#' @details NAP is calculated as the proportion of all pairs of one observation
+#'   from each phase in which the measurement from the B phase improves upon the
+#'   measurement from the A phase, with pairs of data points that are exactly
 #'   tied being given a weight of 0.5. The range of NAP is [0,1], with a null
 #'   value of 0.5.
-#'   
-#'   The standard error of NAP is calculated based on the method of Hanley and 
+#'
+#'   The standard error of NAP is calculated based on the method of Hanley and
 #'   McNeil (1982).
-#'   
-#'   The confidence interval for NAP is calculated based on the symmetrized 
+#'
+#'   The confidence interval for NAP is calculated based on the symmetrized
 #'   score-inversion method (Method 5) proposed by Newcombe (2006).
-#'   
+#'
 #' @references
-#' 
-#' Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under 
-#' a receiver operating characteristic (ROC) curve. \emph{Radiology, 143}, 
-#' 29--36. 
+#'
+#' Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under
+#' a receiver operating characteristic (ROC) curve. \emph{Radiology, 143},
+#' 29--36.
 #' doi:\href{http://dx.doi.org/10.1148/radiology.143.1.7063747}{10.1148/radiology.143.1.7063747}
-#' 
+#'
 #' Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
-#' on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation. 
-#' \emph{Statistics in Medicine, 25}(4), 559--573. 
+#' on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation.
+#' \emph{Statistics in Medicine, 25}(4), 559--573.
 #' doi:\href{http://dx.doi.org/10.1002/sim.2324}{10.1002/sim.2324}
-#' 
-#' Parker, R. I., & Vannest, K. J. (2009). An improved effect size for 
-#' single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy, 
-#' 40}(4), 357--67. 
+#'
+#' Parker, R. I., & Vannest, K. J. (2009). An improved effect size for
+#' single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy,
+#' 40}(4), 357--67.
 #' doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
-#' 
+#'
 #' @export
-#' 
-#' @return A list containing the estimate, standard error, and/or confidence
+#'
+#' @return A data.frame containing the estimate, standard error, and/or confidence
 #'   interval.
-#'   
+#'
 #' @examples
 #' A <- c(20, 20, 26, 25, 22, 23)
 #' B <- c(28, 25, 24, 27, 30, 30, 29)
 #' NAP(A_data = A, B_data = B)
-#' 
+#'
 #' # Example from Parker & Vannest (2009)
 #' yA <- c(4, 3, 4, 3, 4, 7, 5, 2, 3, 2)
 #' yB <- c(5, 9, 7, 9, 7, 5, 9, 11, 11, 10, 9)
 #' NAP(yA, yB)
 #' 
 
-NAP <- function(A_data, B_data, improvement = "increase", 
-                SE = TRUE, CI = TRUE, confidence = .95) {
+NAP <- function(A_data, B_data, condition, outcome, baseline_phase,
+                improvement = "increase", 
+                SE = "unbiased", CI = TRUE, confidence = .95) {
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, 
+          baseline_phase = baseline_phase,
+          ES = "NAP", improvement = improvement, SE = SE, CI = CI, 
+          confidence = confidence)
+}
+  
+calc_NAP <- function(A_data, B_data, 
+                     improvement = "increase", 
+                     SE = "unbiased", CI = TRUE, 
+                     confidence = .95, ...) {
   
   if (improvement=="decrease") {
     A_data <- -1 * A_data
     B_data <- -1 * B_data
   }
-  A_data <- A_data[!is.na(A_data)]
-  B_data <- B_data[!is.na(B_data)]
+  
   m <- length(A_data)
   n <- length(B_data)
   
   Q_mat <- sapply(B_data, function(j) (j > A_data) + 0.5 * (j == A_data))
   NAP <- mean(Q_mat)
   
-  res <- list(Est = NAP)
+  res <- data.frame(ES = "NAP", Est = NAP, stringsAsFactors = FALSE)
   
   if (SE) {
     Q1 <- sum(rowSums(Q_mat)^2) / (m * n^2)
@@ -85,9 +97,8 @@ NAP <- function(A_data, B_data, improvement = "increase",
     z <- qnorm(1 - (1 - confidence) / 2)
     f <- function(x) m * n * (NAP - x)^2 * (2 - x) * (1 + x) - 
       z^2 * x * (1 - x) * (2 + h + (1 + 2 * h) * x * (1 - x))
-    lower <- if (NAP > 0) uniroot(f, c(0, NAP))$root else 0
-    upper <- if (NAP < 1) uniroot(f, c(NAP, 1))$root else 1
-    res$CI <- c(lower = lower, upper = upper)
+    res$CI_lower <- if (NAP > 0) uniroot(f, c(0, NAP))$root else 0
+    res$CI_upper <- if (NAP < 1) uniroot(f, c(NAP, 1))$root else 1
   }
   
   res
@@ -124,17 +135,39 @@ NAP <- function(A_data, B_data, improvement = "increase",
 #' Tau(A_data = A, B_data = B)
 #' 
 
-Tau <- function(A_data, B_data, improvement = "increase", 
-                SE = TRUE, CI = TRUE, confidence = .95) {
-  nap <- NAP(A_data = A_data, B_data = B_data, improvement = improvement, 
-             SE = SE, CI = CI, confidence = confidence)
+Tau <- function(A_data, B_data, condition, outcome, baseline_phase,
+                improvement = "increase", 
+                SE = "unbiased", CI = TRUE, confidence = .95) {
   
-  res <- list(Est = 2 * nap$Est - 1)
-  if (SE) res$SE <- 2 * nap$SE
-  if (CI) res$CI <- 2 * nap$CI - 1
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, 
+          baseline_phase = baseline_phase,
+          ES = "Tau", improvement = improvement, SE = SE, CI = CI, 
+          confidence = confidence)
+  
+}
+
+calc_Tau <- function(A_data, B_data, 
+                     improvement = "increase", 
+                     SE = "unbiased", CI = TRUE, 
+                     confidence = .95, ...) {
+  
+  nap <- calc_NAP(A_data = A_data, B_data = B_data, 
+                  improvement = improvement, 
+                  SE = SE, CI = CI, confidence = confidence)
+  
+  res <- data.frame(ES = "Tau", Est = 2 * nap$Est - 1, stringsAsFactors = FALSE)
+  
+  if (SE != "none") res$SE <- 2 * nap$SE
+  
+  if (CI) {
+    res$CI_lower <- 2 * nap$CI_lower - 1
+    res$CI_upper <- 2 * nap$CI_upper - 1
+  } 
   
   res
 }
+
 
 #' @title Tau-U
 #'   
@@ -168,21 +201,32 @@ Tau <- function(A_data, B_data, improvement = "increase",
 #' Tau_U(A_data = A, B_data = B)
 #' 
 
-Tau_U <- function(A_data, B_data, improvement = "increase") {
+Tau_U <- function(A_data, B_data, condition, outcome, baseline_phase,
+                  improvement = "increase") {
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, 
+          baseline_phase = baseline_phase,
+          ES = "Tau_U", improvement = improvement)
+}
+  
+calc_Tau_U <- function(A_data, B_data, improvement = "increase", ...) {
   
   if (improvement=="decrease") {
     A_data <- -1 * A_data
     B_data <- -1 * B_data
   }
-  A_data <- A_data[!is.na(A_data)]
-  B_data <- B_data[!is.na(B_data)]
+  
   m <- length(A_data)
   n <- length(B_data)
   
   Q_P <- sapply(B_data, function(j) (j > A_data) - (j < A_data))
   Q_B <- sapply(A_data, function(j) (j > A_data) - (j < A_data))
   
-  (sum(Q_P) - sum(Q_B[upper.tri(Q_B)])) / (m * n)
+  TauU <- (sum(Q_P) - sum(Q_B[upper.tri(Q_B)])) / (m * n)
+
+  data.frame(ES = "Tau-U", Est = TauU, stringsAsFactors = FALSE)
+  
 }
 
 #' @title Percentage of non-overlapping data
@@ -215,12 +259,25 @@ Tau_U <- function(A_data, B_data, improvement = "increase") {
 #' PND(A_data = A, B_data = B)
 #' 
 
-PND <- function(A_data, B_data, improvement = "increase") {
+PND <- function(A_data, B_data, condition, outcome, baseline_phase,
+                  improvement = "increase") {
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, baseline_phase = baseline_phase,
+          ES = "PND", improvement = improvement)
+  
+}
+  
+calc_PND <- function(A_data, B_data, improvement = "increase", ...) {
+  
   if (improvement=="decrease") {
     A_data <- -1 * A_data
     B_data <- -1 * B_data
   }
-  mean(B_data > max(A_data, na.rm = TRUE), na.rm = TRUE)
+  
+  PND <- mean(B_data > max(A_data, na.rm = TRUE), na.rm = TRUE)
+  data.frame(ES = "PND", Est = PND, stringsAsFactors = FALSE)
+  
 }
 
 #' @title Percentage exceeding the median
@@ -254,13 +311,28 @@ PND <- function(A_data, B_data, improvement = "increase") {
 #' PEM(A_data = A, B_data = B)
 #' 
 
-PEM <- function(A_data, B_data, improvement = "increase") {
+PEM <- function(A_data, B_data, condition, outcome, baseline_phase,
+                improvement = "increase") {
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, baseline_phase = baseline_phase,
+          ES = "PEM", improvement = improvement)
+  
+}
+
+calc_PEM <- function(A_data, B_data, improvement = "increase", ...) {
+  
   if (improvement=="decrease") {
     A_data <- -1 * A_data
     B_data <- -1 * B_data
   }
+  
   med <- median(A_data, na.rm = TRUE)
-  mean((B_data > med) + 0.5 * (B_data == med), na.rm = TRUE)
+  
+  PEM <- mean((B_data > med) + 0.5 * (B_data == med), na.rm = TRUE)
+  
+  data.frame(ES = "PEM", Est = PEM, stringsAsFactors = FALSE)
+  
 }
 
 #' @title Percentage of all non-overlapping data (PAND)
@@ -303,13 +375,21 @@ PEM <- function(A_data, B_data, improvement = "increase") {
 #' PAND(A_data = A, B_data = B)
 #' 
 
-PAND <- function(A_data, B_data, improvement = "increase") {
+PAND <- function(A_data, B_data, condition, outcome, baseline_phase,
+                improvement = "increase") {
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, baseline_phase = baseline_phase,
+          ES = "PAND", improvement = improvement)
+  
+}
+
+calc_PAND <- function(A_data, B_data, improvement = "increase", ...) {
+  
   if (improvement=="decrease") {
     A_data <- -1 * A_data
     B_data <- -1 * B_data
   }
-  A_data <- A_data[!is.na(A_data)]
-  B_data <- B_data[!is.na(B_data)]
   
   m <- length(A_data)
   n <- length(B_data)
@@ -321,7 +401,9 @@ PAND <- function(A_data, B_data, improvement = "increase") {
   ij$overlap <- with(ij, i + n - j)
   overlaps <- with(ij, max(overlap * no_overlap))
   
-  overlaps / (m + n)
+  PAND <- overlaps / (m + n)
+  data.frame(ES = "PAND", Est = PAND, stringsAsFactors = FALSE)
+  
 }
 
 #' @title Robust improvement rate difference
@@ -348,10 +430,23 @@ PAND <- function(A_data, B_data, improvement = "increase") {
 #' IRD(A_data = A, B_data = B)
 #' 
 
-IRD <- function(A_data, B_data, improvement = "increase") {
-  pand <- PAND(A_data = A_data, B_data = B_data, improvement = improvement)
+IRD <- function(A_data, B_data, condition, outcome, baseline_phase,
+                 improvement = "increase") {
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, baseline_phase = baseline_phase,
+          ES = "IRD", improvement = improvement)
+  
+}
+
+calc_IRD <- function(A_data, B_data, improvement = "increase", ...) {
+  
+  pand <- calc_PAND(A_data = A_data, B_data = B_data, improvement = improvement)
+  
   m <- sum(!is.na(A_data))
   n <- sum(!is.na(B_data))
   
-  ((m+n)^2 * pand - m^2 - n^2) / (2 * m * n)
+  IRD <- ((m+n)^2 * pand - m^2 - n^2) / (2 * m * n)
+  
+  data.frame(ES = "IRD", Est = IRD, stringsAsFactors = FALSE)
 }
