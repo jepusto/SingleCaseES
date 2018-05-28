@@ -5,6 +5,10 @@ output:
     variant: markdown_github
 ---
 
+[![Travis-CI Build Status](https://travis-ci.org/jepusto/SingleCaseES.svg?branch=master)](https://travis-ci.org/jepusto/SingleCaseES)
+[![Coverage Status](https://img.shields.io/codecov/c/github/jepusto/SingleCaseES/master.svg)](https://codecov.io/github/jepusto/SingleCaseES?branch=master)
+[![](http://www.r-pkg.org/badges/version/SingleCaseES)](https://CRAN.R-project.org/package=SingleCaseES)
+
 # SingleCaseES: A calculator for single-case effect size indices
 
 This package provides R functions for calculating basic effect size indices for single-case designs, including several non-overlap measures and parametric effect size measures, and for estimating the gradual effects model developed by Swan and Pustejovsky (2017). Standard errors and confidence intervals for the effect sizes are provided for a subset of indices with known  sampling distributions. However, it is important to note that all of the standard errors and confidence intervals are based on the assumption that the outcome measurements are mutually independent.
@@ -51,6 +55,7 @@ devtools::install_github("jepusto/SingleCaseES")
 # Basic usage
 
 After installing the package, you are ready to begin using it. Every time you open a fresh R/RStudio session, you will need to start by loading the package functionality as follows:
+
 ```{r}
 library(SingleCaseES)
 ```
@@ -105,13 +110,21 @@ SMD(A, B, std_dev = "pool")
 
 By default, the estimate is calculated using the small-sample correction proposed by Hedges (1981) and often referred to as "Hedges' _g_." The standard error and approximate confidence interval for the standardized mean difference estimate are based on the assumption that the outcome measurements are mutually independent.
 
-The log response ratio can be calculated as follows:
+The package can also calculate both versions of the log response ratio. The log response ratio-increasing (LRRi) is defined so that therapeutic improvements correspond to positive values. It can be calculated as follows:
 
 ```{r}
-LRR(A, B)
+LRRi(A, B, scale = "count")
 ```
 
-By default, the estimate is calculated using a small-sample correction proposed by Pustejovsky (2015). See `?LRR` for further details. The standard error and approximate confidence interval for the log response ratio estimate are based on the assumption that the outcome measurements are mutually independent.
+The log response ratio-decreasing (LRRd) is defined so that therapeutic improvements correspond to negative values. The outcome data in the example is defined so that increases are therapeutic improvements, so we will need to specify the direction of improvement:
+
+```{r}
+LRRd(A, B, scale = "count", improvement = "increase")
+```
+
+In this case, the LRRi and LRRd estimates have the same magnitude but opposite sign. This will be true for outcomes measured as frequency counts or rates. For outcomes measured as percentages or proportions, LRRd and LRRi will differ in both sign and magnitude. See Pustejovsky (2018) for further details and recommendations about how to choose between LRRi and LRRd.
+
+By default, the LRRi and LRRd estimates are calculated using a small-sample correction proposed by Pustejovsky (2015). See `?LRR` for further details. The standard error and approximate confidence interval for the log response ratio estimate are based on the assumption that the outcome measurements are mutually independent.
 
 ## Graphical user interface
 
