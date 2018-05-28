@@ -32,8 +32,6 @@ estimator, or \code{"none"} to not calculate a standard error. Defaults to
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
-
-\item{CI}{logical value indicating whether to report a confidence interval}
 }
 \value{
 A data.frame containing the estimate, standard error, and/or confidence

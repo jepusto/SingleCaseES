@@ -8,7 +8,6 @@
 #'   exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
 #'   estimator, or \code{"none"} to not calculate a standard error. Defaults to
 #'   "unbiased".
-#' @param CI logical value indicating whether to report a confidence interval
 #' @inheritParams calc_ES
 #'
 #' @details NAP is calculated as the proportion of all pairs of one observation
