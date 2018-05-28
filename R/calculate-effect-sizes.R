@@ -48,6 +48,8 @@
 #' yB <- c(5, 9, 7, 9, 7, 5, 9, 11, 11, 10, 9)
 #' calc_ES(yA, yB)
 #' 
+#' @importFrom magrittr %>%
+#' 
 
 calc_ES <- function(A_data, B_data, 
                     condition, outcome, 
@@ -74,19 +76,20 @@ calc_ES <- function(A_data, B_data,
   
   ES_to_calc <- paste0("calc_", ES)
   
-  res <- purrr::map_df(ES_to_calc, do.call, 
-                       args = list(A_data = A_data, B_data = B_data,
-                                   improvement = improvement, 
-                                   confidence = confidence, ...))
+  res <- purrr::invoke_map_dfr(
+    ES_to_calc,  
+    A_data = A_data, B_data = B_data,
+    improvement = improvement, confidence = confidence, ...
+  )
   
   if (format != "long") {
+    val_names <- setdiff(names(res), "ES")
     res <- 
       res %>%
-      tidyr::gather(q,val, -ES) %>%
-      dplyr::arrange(ES, q) %>%
-      tidyr::unite("q", ES, q) %>%
+      tidyr::gather_("q","val", val_names) %>%
+      tidyr::unite_("q", from = c("ES","q")) %>%
       dplyr::filter(!is.na(val)) %>%
-      tidyr::spread(q, val) 
+      tidyr::spread_("q", "val") 
   }
   
   return(res)
