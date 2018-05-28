@@ -80,7 +80,13 @@ calc_ES <- function(A_data, B_data,
                                    confidence = confidence, ...))
   
   if (format != "long") {
-  
+    res <- 
+      res %>%
+      tidyr::gather(q,val, -ES) %>%
+      dplyr::arrange(ES, q) %>%
+      tidyr::unite("q", ES, q) %>%
+      dplyr::filter(!is.na(val)) %>%
+      tidyr::spread(q, val) 
   }
   
   return(res)
