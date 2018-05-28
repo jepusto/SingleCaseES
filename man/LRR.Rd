@@ -7,12 +7,12 @@
 \title{Log-response ratio}
 \usage{
 LRRd(A_data, B_data, condition, outcome, baseline_phase,
-  improvement = "decrease", scale, observation_length, intervals, D = NULL,
-  bias_correct = TRUE, confidence = 0.95)
+  improvement = "decrease", scale = "count", observation_length = NULL,
+  intervals = NULL, D = NULL, bias_correct = TRUE, confidence = 0.95)
 
 LRRi(A_data, B_data, condition, outcome, baseline_phase,
-  improvement = "increase", scale, observation_length, intervals, D = NULL,
-  bias_correct = TRUE, confidence = 0.95)
+  improvement = "increase", scale = "count", observation_length = NULL,
+  intervals = NULL, D = NULL, bias_correct = TRUE, confidence = 0.95)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
@@ -29,26 +29,29 @@ observation in the series.}
 observed value of \code{condition}.}
 
 \item{improvement}{character string indicating direction of improvement.
-Default is "increase"}
+Default is "increase".}
 
 \item{scale}{character string indicating the scale of the outcome variable,
 with possible values \code{"percentage"} for a percentage with range 0-100,
 \code{"proportion"} for a proportion with range 0-1, \code{"count"} for a
 frequency count (0 or positive integers), \code{"rate"} for a standardized
-rate per minute.}
+rate per minute. If a vector, the most frequent unique value will be used.}
 
-\item{observation_length}{length of observation session (in minutes).}
+\item{observation_length}{length of observation session (in minutes). If a
+vector, the mean observation session length will be used.}
 
 \item{intervals}{for interval recording procedures, the total number of
-intervals per observation session.}
+intervals per observation session. If a vector, the mean number of
+intervals will be used.}
 
 \item{D}{constant used for calculating the truncated sample mean (see
-Pustejovsky, 2018).}
+Pustejovsky, 2018). If a vector, the mean value will be used.}
 
 \item{bias_correct}{logical value indicating whether to use bias-correction.
 Default is \code{TRUE}.}
 
-\item{confidence}{confidence level for the reported interval estimate}
+\item{confidence}{confidence level for the reported interval estimate. Set to
+\code{NULL} to omit confidence interval calculations.}
 }
 \value{
 A data.frame containing the estimate, standard error, and approximate
@@ -65,8 +68,8 @@ The response ratio parameter is the ratio of the mean level of the
   log response ratio is the natural logarithm of the response ratio. This
   effect size is appropriate for outcomes measured on a ratio scale (so that
   zero corresponds to the true absence of the outcome. There are two versions
-  of the LRR. The LRR-increasing is defined so that positive values
-  correspond to therapeutic improvements. The LRR-decreasing (LRRd) is
+  of the LRR. The LRR-increasing (\code{LRRi}) is defined so that positive values
+  correspond to therapeutic improvements. The LRR-decreasing (\code{LRRd}) is
   defined so that negative values correspond to therapeutic improvments. For
   outcomes measured as frequency counts or rates, the two versions will have
   the same magnitude but opposite sign; for outcomes measured as percentages

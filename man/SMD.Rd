@@ -23,7 +23,7 @@ observation in the series.}
 observed value of \code{condition}.}
 
 \item{improvement}{character string indicating direction of improvement.
-Default is "increase"}
+Default is "increase".}
 
 \item{std_dev}{character string controlling how to calculate the standard
 deviation in the denominator of the effect size. Set to \code{"baseline"}
@@ -33,7 +33,8 @@ to use the pooled standard deviation.}
 \item{bias_correct}{logical value indicating whether to use bias-correction
 (i.e., Hedges' g). Default is \code{TRUE}}
 
-\item{confidence}{confidence level for the reported interval estimate}
+\item{confidence}{confidence level for the reported interval estimate. Set to
+\code{NULL} to omit confidence interval calculations.}
 }
 \value{
 A list containing the estimate, standard error, and confidence

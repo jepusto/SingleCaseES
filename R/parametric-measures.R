@@ -53,8 +53,8 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 #'   log response ratio is the natural logarithm of the response ratio. This
 #'   effect size is appropriate for outcomes measured on a ratio scale (so that
 #'   zero corresponds to the true absence of the outcome. There are two versions
-#'   of the LRR. The LRR-increasing is defined so that positive values
-#'   correspond to therapeutic improvements. The LRR-decreasing (LRRd) is
+#'   of the LRR. The LRR-increasing (\code{LRRi}) is defined so that positive values
+#'   correspond to therapeutic improvements. The LRR-decreasing (\code{LRRd}) is
 #'   defined so that negative values correspond to therapeutic improvments. For
 #'   outcomes measured as frequency counts or rates, the two versions will have
 #'   the same magnitude but opposite sign; for outcomes measured as percentages

@@ -23,7 +23,7 @@ observation in the series.}
 observed value of \code{condition}.}
 
 \item{improvement}{character string indicating direction of improvement.
-Default is "increase"}
+Default is "increase".}
 }
 \value{
 Numeric value

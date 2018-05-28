@@ -5,8 +5,8 @@
 \title{Calculate effect sizes}
 \usage{
 calc_ES(A_data, B_data, condition, outcome,
-  baseline_phase = unique(condition)[1], ES = c("LRRd", "LRRi", "LOR",
-  "SMD", "NAP", "Tau", "Tau_U", "PND", "IRD", "PAND", "PEM"),
+  baseline_phase = unique(condition)[1], ES = c("LRRd", "LRRi", "SMD",
+  "NAP", "Tau", "Tau_U", "PND", "IRD", "PAND", "PEM"),
   improvement = "increase", ..., confidence = 0.95, format = "long")
 }
 \arguments{
@@ -28,12 +28,13 @@ index or indices to calculate. Defaults to calculating all available
 indices.}
 
 \item{improvement}{character string indicating direction of improvement.
-Default is "increase"}
+Default is "increase".}
 
 \item{...}{further arguments used for calculating some of the effect size
-indices}
+indices.}
 
-\item{confidence}{confidence level for the reported interval estimate}
+\item{confidence}{confidence level for the reported interval estimate. Set to
+\code{NULL} to omit confidence interval calculations.}
 
 \item{format}{charaacter string specifying whether to organize the results in
 \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.}
