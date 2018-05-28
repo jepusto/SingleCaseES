@@ -13,12 +13,13 @@ BugReports: https://github.com/jepusto/SingleCaseES/issues
 License: GPL-3
 Imports:
   stats, 
-  purrr
+  purrr,
+  magrittr,
+  dplyr,
+  tidyr
 Suggests: 
     shiny,
     ggplot2,
-    dplyr,
-    tidyr,
     purrrlyr,
     markdown,
     testthat

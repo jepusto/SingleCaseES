@@ -126,6 +126,7 @@ LRRd <- function(A_data, B_data, condition, outcome, baseline_phase,
 }
 
 #' @rdname LRR
+#' @export
 
 LRRi <- function(A_data, B_data, condition, outcome, baseline_phase,
                  improvement = "increase", 
