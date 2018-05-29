@@ -86,7 +86,15 @@ calc_NAP <- function(A_data, B_data,
   if (SE != "none") {
     Q1 <- sum(rowSums(Q_mat)^2) / (m * n^2)
     Q2 <- sum(colSums(Q_mat)^2) / (m^2 * n)
-    V <- (NAP * (1 - NAP) + (n - 1) * (Q1 - NAP^2) + (m - 1) * (Q2 - NAP^2)) / (m * n)  
+    
+    if (SE == "Hanley") {
+      V <- (NAP * (1 - NAP) + (n - 1) * (Q1 - NAP^2) + (m - 1) * (Q2 - NAP^2)) / (m * n)  
+    } 
+    # if (SE == "unbiased") {
+    #   X <- sum(Q_mat^2) / (m * n)
+    #   V <- (1 + n * Q1 + m * Q2 - (m + n - 1) * Tau^2 - 2 * X) / ((m - 1) * (n - 1))
+    # }
+    
     res$SE <- sqrt(V)  
   } 
   
