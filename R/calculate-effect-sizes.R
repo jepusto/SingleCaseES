@@ -90,6 +90,14 @@ calc_ES <- function(A_data, B_data,
       tidyr::unite_("q", from = c("ES","q")) %>%
       dplyr::filter(!is.na(val)) %>%
       tidyr::spread_("q", "val") 
+    
+    # re-order names
+    long_names <- 
+      purrr::cross2(val_names, ES) %>%
+      purrr::map(.f = function(x) paste(rev(x), collapse = "_")) %>%
+      intersect(names(res))
+    
+    res <- dplyr::select_(res, .dots = long_names)
   }
   
   return(res)
