@@ -14,8 +14,8 @@
 #'   \code{condition} corresponds to the baseline phase. Defaults to first
 #'   observed value of \code{condition}.
 #' @param ES character string or character vector specifying which effect size
-#'   index or indices to calculate. Defaults to calculating all available
-#'   indices.
+#'   index or indices to calculate. Defaults to calculating the LRRd, LRRi, SMD,
+#'   and Tau indices.
 #' @param improvement character string indicating direction of improvement.
 #'   Default is "increase".
 #' @param ... further arguments used for calculating some of the effect size
@@ -47,14 +47,14 @@
 #' yA <- c(4, 3, 4, 3, 4, 7, 5, 2, 3, 2)
 #' yB <- c(5, 9, 7, 9, 7, 5, 9, 11, 11, 10, 9)
 #' calc_ES(yA, yB)
-#' 
+#'
 #' @importFrom magrittr %>%
-#' 
+#'   
 
 calc_ES <- function(A_data, B_data, 
                     condition, outcome, 
                     baseline_phase = unique(condition)[1],
-                    ES = c("LRRd","LRRi","SMD","NAP","Tau","Tau_U", "PND","IRD","PAND","PEM"), 
+                    ES = c("LRRd","LRRi","SMD","Tau"), 
                     improvement = "increase", 
                     ..., 
                     confidence = .95,

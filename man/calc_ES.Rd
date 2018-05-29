@@ -6,8 +6,8 @@
 \usage{
 calc_ES(A_data, B_data, condition, outcome,
   baseline_phase = unique(condition)[1], ES = c("LRRd", "LRRi", "SMD",
-  "NAP", "Tau", "Tau_U", "PND", "IRD", "PAND", "PEM"),
-  improvement = "increase", ..., confidence = 0.95, format = "long")
+  "Tau"), improvement = "increase", ..., confidence = 0.95,
+  format = "long")
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
@@ -24,8 +24,8 @@ observation in the series.}
 observed value of \code{condition}.}
 
 \item{ES}{character string or character vector specifying which effect size
-index or indices to calculate. Defaults to calculating all available
-indices.}
+index or indices to calculate. Defaults to calculating the LRRd, LRRi, SMD,
+and Tau indices.}
 
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase".}

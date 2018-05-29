@@ -25,6 +25,136 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
          percentage = intervals / 100)
 }
 
+#' @name LOR
+#' @title Log-odds ratio
+#'
+#' @description Calculates the log-odds ratio effect size index, with or without
+#'   bias correction (Pustejovsky, 2015)
+#'
+#' @param scale character string indicating the scale of the outcome variable.
+#'   Must be either \code{"percentage"} for percentages with range 0-100 or
+#'   \code{"proportion"} for proportions with range 0-1. If a vector, the most
+#'   frequent unique value will be used.
+#' @param D constant used for calculating the truncated sample mean (see
+#'   Pustejovsky, 2015). If a vector, the mean value will be used.
+#' @inheritParams LRR
+#'
+#' @details The odds ratio parameter is the ratio of the odds. The log-odds
+#'   ratio is the natural logarithm of the odds ratio. This effect size is
+#'   appropriate for outcomes measured on a percentage or proportion scale.
+#'   Unlike the LRRd and LRRi, the LOR is symmetric in valence, so that the LOR
+#'   for an positively-valenced outcome is equal to -1 times the LOR calculated
+#'   after reversing the scale of the outcome so that it is negatively valenced.
+#'
+#'   Without bias correction, the log-odds ratio is estimated by substituting
+#'   the sample mean level in each phase in place of the corresponding
+#'   parameter. A delta-method bias correction to the estimator is used by
+#'   default.
+#'
+#'   The standard error of LOR is calculated based on a delta-method
+#'   approximation, allowing for the possibility of different degrees of
+#'   dispersion in each phase. The confidence interval for LOR is based on a
+#'   large-sample (z) approximation.
+#'
+#'   To account for the possibility of sample means of zero, a truncated mean is
+#'   calculated following the method described in Pustejovsky (2015). The
+#'   truncation constant depends on the total number of intervals per session
+#'   (or the total number of items for other percentage/proportion scales). The
+#'   arguments \code{scale} and \code{intervals} must be specified in order to
+#'   calculate an appropriate truncation constant. For outcomes measured using
+#'   continuous recording procedures, set \code{intervals} equal to 60 times the
+#'   length of the observation session in minutes.
+#'
+#' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
+#'   for single-case studies of free-operant behavior. \emph{Psychological
+#'   Methods, 20}(3), 342--359.
+#'   doi:\href{http://dx.doi.org/10.1037/met0000019}{10.1037/met0000019}
+#'
+#' @return A data.frame containing the estimate, standard error, and approximate
+#'   confidence interval.
+#'
+#' @examples
+#' A_pct <- c(20, 20, 25, 25, 20, 25)
+#' B_pct <- c(30, 25, 25, 25, 35, 30, 25)
+#' LOR(A_data = A_pct, B_data = B_pct,
+#'     scale = "percentage", intervals = 20, bias_correct = FALSE)
+#' LOR(A_data = A_pct, B_data = B_pct,
+#'     scale = "percentage", intervals = 20)
+#'
+#' LOR(A_data = A_pct, B_data = B_pct, scale = "percentage")
+#' LOR(A_data = A_pct / 100, B_data = B_pct / 100, scale = "proportion")
+#' LOR(A_data = A_pct, B_data = B_pct, scale = "percentage", improvement = "decrease")
+#'
+#' @export
+
+# Check against calculations in Pustejovsky (2015)
+
+LOR <- function(A_data, B_data, condition, outcome, baseline_phase,
+                 improvement = "increase", 
+                 scale = "count", 
+                 intervals = NULL, D = NULL,
+                 bias_correct = TRUE, confidence = .95) {
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, 
+          baseline_phase = baseline_phase,
+          ES = "LOR", improvement = improvement, 
+          scale = scale, intervals = intervals, D = D,
+          bias_correct = bias_correct, confidence = confidence)  
+  
+}
+
+calc_LOR <- function(A_data, B_data, improvement = "increase", 
+                      scale = "proportion", intervals = NULL, D = NULL,
+                      bias_correct = TRUE, confidence = .95, ...) {
+
+  if (!scale %in% c("proportion", "percentage")) stop("LOR can only be calculated for proportions or percentages.")
+  
+  # check for valid outcome range
+  all_dat <- c(A_data, B_data)
+  if (scale == "proportion" & any(all_dat < 0 | all_dat > 1)) stop("Proportions must be between 0 and 1!") 
+  if (scale == "percentage" & any(all_dat < 0 | all_dat > 100)) stop("Percentages must be between 0 and 100!") 
+
+  if (scale == "percentage") {
+    A_data <- A_data / 100
+    B_data <- B_data / 100
+  }  
+  
+  dat <- summary_stats(A_data, B_data)
+  
+  if (is.null(D)) D <- if (!is.null(intervals)) intervals else Inf
+  if (length(D) > 1) D <- mean(D, na.rm = TRUE)
+  trunc_lower <- 1 / (2 * D * dat$n)
+  if (D > 0) dat$M <- pmin(1 - trunc_lower, pmax(trunc_lower, dat$M))
+  
+  log_odds <- with(dat, log(M) - log(1 - M))
+
+  if (bias_correct == TRUE) {
+    BC <- with(dat, (2 * M - 1) * V / (2 * n * M^2 * (1 - M)^2))
+    lOR <- diff(log_odds - BC)
+  } else {
+    lOR <- diff(log_odds)
+  }
+  
+  if (improvement == "decrease") {
+    lOR <- -1L * lOR
+  }
+  
+  SE <- with(dat, sqrt(sum(V / (n * M^2 * (1 - M)^2))))
+  
+  res <- data.frame(ES = "LOR", Est = lOR, 
+                    SE = SE, stringsAsFactors = FALSE)
+  
+  if (!is.null(confidence)) {
+    CI <- lOR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
+    res$CI_lower <- CI[1]
+    res$CI_upper <- CI[2] 
+  }
+  
+  res
+  
+}
+
 #' @name LRR
 #' @title Log-response ratio
 #'
