@@ -49,6 +49,8 @@
 #' calc_ES(yA, yB)
 #'
 #' @importFrom magrittr %>%
+#' @importFrom rlang !!!
+#' @importFrom rlang !!
 #'   
 
 calc_ES <- function(A_data, B_data, 
@@ -83,21 +85,25 @@ calc_ES <- function(A_data, B_data,
   )
   
   if (format != "long") {
+    
     val_names <- setdiff(names(res), "ES")
-    res <- 
-      res %>%
-      tidyr::gather_("q","val", val_names) %>%
-      tidyr::unite_("q", from = c("ES","q")) %>%
+    sym_val_names <- rlang::syms(val_names)
+    val <- rlang::sym("val")
+    
+    res <- res %>%
+      tidyr::gather("q", !!val, !!!sym_val_names)%>%
+      tidyr::unite("q", from = c("ES","q")) %>%
       dplyr::filter(!is.na(val)) %>%
-      tidyr::spread_("q", "val") 
+      tidyr::spread("q", !!val) 
     
     # re-order names
     long_names <- 
       purrr::cross2(val_names, ES) %>%
       purrr::map(.f = function(x) paste(rev(x), collapse = "_")) %>%
-      intersect(names(res))
+      intersect(names(res)) %>%
+      rlang::syms()
     
-    res <- dplyr::select_(res, .dots = long_names)
+    res <- dplyr::select(res, !!!long_names)
   }
   
   return(res)
