@@ -16,8 +16,8 @@
 #'   tied being given a weight of 0.5. The range of NAP is [0,1], with a null
 #'   value of 0.5.
 #'
-#'   The standard error of NAP is calculated based on the method of Hanley and
-#'   McNeil (1982).
+#'   The unbiased variance estimator was described by Sen (1967) and Mee (1990).
+#'   The Hanley estimator was proposed by Hanley and McNeil (1982).
 #'
 #'   The confidence interval for NAP is calculated based on the symmetrized
 #'   score-inversion method (Method 5) proposed by Newcombe (2006).
@@ -29,6 +29,11 @@
 #' 29--36.
 #' doi:\href{http://dx.doi.org/10.1148/radiology.143.1.7063747}{10.1148/radiology.143.1.7063747}
 #'
+#' Mee, W. (1990). Confidence intervals for probabilities and tolerance regions
+#' based on a generalization of the Mann-Whitney statistic. \emph{Journal of the
+#' American Statistical Association, 85}(411), 793–800.
+#' doi:\href{http://doi.org/10.1080/01621459.1990.10474942}{10.1080/01621459.1990.10474942}
+#'
 #' Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
 #' on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation.
 #' \emph{Statistics in Medicine, 25}(4), 559--573.
@@ -39,10 +44,15 @@
 #' 40}(4), 357--67.
 #' doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
 #'
+#' Sen, P. K. (1967). A note on asymptotically distribution-free confidence
+#' bounds for P{X<Y}, based on two independent samples. \emph{The Annals of
+#' Mathematical Statistics, 29}(1), 95–102.
+#' doi:\href{http://doi.org/10.1177/03063127067078012}{10.1177/03063127067078012}
+#'
 #' @export
 #'
-#' @return A data.frame containing the estimate, standard error, and/or confidence
-#'   interval.
+#' @return A data.frame containing the estimate, standard error, and/or
+#'   confidence interval.
 #'
 #' @examples
 #' A <- c(20, 20, 26, 25, 22, 23)
@@ -87,13 +97,13 @@ calc_NAP <- function(A_data, B_data,
     Q1 <- sum(rowSums(Q_mat)^2) / (m * n^2)
     Q2 <- sum(colSums(Q_mat)^2) / (m^2 * n)
     
+    if (SE == "unbiased") {
+      X <- sum(Q_mat^2) / (m * n)
+      V <- (NAP - (m + n - 1) * NAP^2 + n * Q1 + m * Q2 - 2 * X) / ((m - 1) * (n - 1))
+    }
     if (SE == "Hanley") {
       V <- (NAP * (1 - NAP) + (n - 1) * (Q1 - NAP^2) + (m - 1) * (Q2 - NAP^2)) / (m * n)  
     } 
-    # if (SE == "unbiased") {
-    #   X <- sum(Q_mat^2) / (m * n)
-    #   V <- (1 + n * Q1 + m * Q2 - (m + n - 1) * Tau^2 - 2 * X) / ((m - 1) * (n - 1))
-    # }
     
     res$SE <- sqrt(V)  
   } 

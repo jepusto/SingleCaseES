@@ -34,8 +34,8 @@ estimator, or \code{"none"} to not calculate a standard error. Defaults to
 \code{NULL} to omit confidence interval calculations.}
 }
 \value{
-A data.frame containing the estimate, standard error, and/or confidence
-  interval.
+A data.frame containing the estimate, standard error, and/or
+  confidence interval.
 }
 \description{
 Calculates the non-overlap of all pairs index (Parker & Vannest,
@@ -48,8 +48,8 @@ NAP is calculated as the proportion of all pairs of one observation
   tied being given a weight of 0.5. The range of NAP is [0,1], with a null
   value of 0.5.
 
-  The standard error of NAP is calculated based on the method of Hanley and
-  McNeil (1982).
+  The unbiased variance estimator was described by Sen (1967) and Mee (1990).
+  The Hanley estimator was proposed by Hanley and McNeil (1982).
 
   The confidence interval for NAP is calculated based on the symmetrized
   score-inversion method (Method 5) proposed by Newcombe (2006).
@@ -71,6 +71,11 @@ a receiver operating characteristic (ROC) curve. \emph{Radiology, 143},
 29--36.
 doi:\href{http://dx.doi.org/10.1148/radiology.143.1.7063747}{10.1148/radiology.143.1.7063747}
 
+Mee, W. (1990). Confidence intervals for probabilities and tolerance regions
+based on a generalization of the Mann-Whitney statistic. \emph{Journal of the
+American Statistical Association, 85}(411), 793–800.
+doi:\href{http://doi.org/10.1080/01621459.1990.10474942}{10.1080/01621459.1990.10474942}
+
 Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
 on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation.
 \emph{Statistics in Medicine, 25}(4), 559--573.
@@ -80,4 +85,9 @@ Parker, R. I., & Vannest, K. J. (2009). An improved effect size for
 single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy,
 40}(4), 357--67.
 doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
+
+Sen, P. K. (1967). A note on asymptotically distribution-free confidence
+bounds for P{X<Y}, based on two independent samples. \emph{The Annals of
+Mathematical Statistics, 29}(1), 95–102.
+doi:\href{http://doi.org/10.1177/03063127067078012}{10.1177/03063127067078012}
 }
