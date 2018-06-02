@@ -27,8 +27,9 @@ Default is "increase".}
 \item{SE}{character value indicating which formula to use for calculating the
 standard error of NAP, with possible values \code{"unbiased"} for the
 exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
-estimator, or \code{"none"} to not calculate a standard error. Defaults to
-"unbiased".}
+estimator, \code{"null"} for the (known) variance under the null hypothesis
+of no effect, or \code{"none"} to not calculate a standard error. Defaults
+to "unbiased".}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
@@ -46,7 +47,7 @@ Tau (non-overlap) a linear re-scaling of \code{\link{NAP}} to the
   range [-1,1], with a null value of 0.
   
   Standard errors and confidence intervals for Tau are based on 
-  transformations of the corresponding SEs and CIs for \code{\link{NAP}}
+  transformations of the corresponding SEs and CIs for \code{\link{NAP}}.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)

@@ -6,8 +6,10 @@
 #' @param SE character value indicating which formula to use for calculating the
 #'   standard error of NAP, with possible values \code{"unbiased"} for the
 #'   exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
-#'   estimator, or \code{"none"} to not calculate a standard error. Defaults to
-#'   "unbiased".
+#'   estimator, \code{"null"} for the (known) variance under the null hypothesis
+#'   of no effect, or \code{"none"} to not calculate a standard error. Defaults
+#'   to "unbiased".
+#'
 #' @inheritParams calc_ES
 #'
 #' @details NAP is calculated as the proportion of all pairs of one observation
@@ -17,7 +19,11 @@
 #'   value of 0.5.
 #'
 #'   The unbiased variance estimator was described by Sen (1967) and Mee (1990).
-#'   The Hanley estimator was proposed by Hanley and McNeil (1982).
+#'   The Hanley estimator was proposed by Hanley and McNeil (1982). The null
+#'   variance is a known function of sample size, equal to the exact sampling
+#'   variance when the null hypothesis of no effect holds. When the null
+#'   hypothesis does not hold, the null variance will tend to over-estimate 
+#'   the true sampling variance of NAP.
 #'
 #'   The confidence interval for NAP is calculated based on the symmetrized
 #'   score-inversion method (Method 5) proposed by Newcombe (2006).
@@ -104,6 +110,9 @@ calc_NAP <- function(A_data, B_data,
     if (SE == "Hanley") {
       V <- (NAP * (1 - NAP) + (n - 1) * (Q1 - NAP^2) + (m - 1) * (Q2 - NAP^2)) / (m * n)  
     } 
+    if (SE == "null") {
+      V <- (m + n + 1) / (12 * m * n)
+    }
     
     res$SE <- sqrt(V)  
   } 
@@ -132,7 +141,7 @@ calc_NAP <- function(A_data, B_data,
 #'   range [-1,1], with a null value of 0.
 #'   
 #'   Standard errors and confidence intervals for Tau are based on 
-#'   transformations of the corresponding SEs and CIs for \code{\link{NAP}}
+#'   transformations of the corresponding SEs and CIs for \code{\link{NAP}}.
 #'   
 #' @references Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. 
 #'   (2011). Combining nonoverlap and trend for single-case research: Tau-U. 

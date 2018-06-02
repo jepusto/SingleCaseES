@@ -27,8 +27,9 @@ Default is "increase".}
 \item{SE}{character value indicating which formula to use for calculating the
 standard error of NAP, with possible values \code{"unbiased"} for the
 exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
-estimator, or \code{"none"} to not calculate a standard error. Defaults to
-"unbiased".}
+estimator, \code{"null"} for the (known) variance under the null hypothesis
+of no effect, or \code{"none"} to not calculate a standard error. Defaults
+to "unbiased".}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
@@ -49,7 +50,11 @@ NAP is calculated as the proportion of all pairs of one observation
   value of 0.5.
 
   The unbiased variance estimator was described by Sen (1967) and Mee (1990).
-  The Hanley estimator was proposed by Hanley and McNeil (1982).
+  The Hanley estimator was proposed by Hanley and McNeil (1982). The null
+  variance is a known function of sample size, equal to the exact sampling
+  variance when the null hypothesis of no effect holds. When the null
+  hypothesis does not hold, the null variance will tend to over-estimate 
+  the true sampling variance of NAP.
 
   The confidence interval for NAP is calculated based on the symmetrized
   score-inversion method (Method 5) proposed by Newcombe (2006).
