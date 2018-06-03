@@ -32,21 +32,23 @@ SCD_effect_sizes <- function(browser = TRUE) {
 #' 
 #' \itemize{
 #'   \item \code{Behavior_type}. Outcome measure description (disruptive behavior or on task behavior).
-#'   \item \code{Procedure}. The type of observation method used to measure the outcome.  
-#'   \item \code{Session_length}. Time (in minutes) of the observation sessions
-#'   \item \code{Interval_length}. If an interval method was used, the time in seconds of the intervals, \code{NA} otherwise.
+#'   \item \code{Procedure}. The observation recording procedure used to measure the outcome.  
+#'   \item \code{Metric}. The metric in which the outcome measurement is expressed ("count" for natural counts; "percentage" for percentage of intervals)
+#'   \item \code{Session_length}. Length (in minutes) of the observation sessions
+#'   \item \code{Interval_length}. If an interval method was used, the length of the intervals (in seconds); \code{NA} otherwise.
 #'   \item \code{Case_Psuedonym}. Case psuedonym provided by the authors.
-#'   \item \code{Session_number}. Within-series session-number
-#'   \item \code{Phase}. Variable uniquely describe the phase. For instance A1 is the first baseline phase, B2 is the second treatment phase.
-#'   \item \code{Condition}. Describes whether the outcome is in the baseline (A) or treatment (B) phase.
-#'   \item \code{Outcome}. Value for the outcome.
-#'   \item \code{Phase_num}. A number describing which phase pair the outcome is a part of.
-#'   \item \code{direction}. Describes the direction of improvement for an outcome type.
+#'   \item \code{Session_number}. Within-series session-number.
+#'   \item \code{Phase}. Label for each unique phase (e.g., A1 is the first baseline phase, B2 is the second treatment phase).
+#'   \item \code{Condition}. Label indicating whether the outcome is in the baseline (A) or treatment (B) phase.
+#'   \item \code{Outcome}. Outcome measurement.
+#'   \item \code{Phase_num}. Indicator for each pair of baseline and treatment phases.
+#'   \item \code{direction}. Direction of therapeutic improvement for the outcome.
+#'   \item \code{n_Intervals}. In an interval method was used, the total number of intervals; \code{NA} otherwise.
 #' }
 #' 
 #' @docType data
 #' @keywords datasets
-#' @format A data frame with 172 rows and 12 variables
+#' @format A data frame with 172 rows and 13 variables
 #' @name Schmidt2007
 #' @source Schmidt, A. C. (2007). The effects of a group contingency on group and individual behavior in an urban 
 #' first-grade classroom. University of Kansas. Retrieved from http://gradworks.umi.com/14/43/1443719.html

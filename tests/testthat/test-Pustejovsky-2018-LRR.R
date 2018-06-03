@@ -82,9 +82,6 @@ Schmidt_LRR <-
 
 Schmidt_ES_calc <- 
   Schmidt2007 %>%
-  mutate(
-    Metric = ifelse(Metric == "Natural Count", "count", "percentage")
-  ) %>% 
   group_by(Behavior_type, Case_pseudonym, Phase_num) %>%
   do(calc_ES(condition = .$Condition, 
              outcome = .$Outcome, 
