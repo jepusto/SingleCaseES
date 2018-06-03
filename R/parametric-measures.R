@@ -91,7 +91,7 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 
 LOR <- function(A_data, B_data, condition, outcome, baseline_phase,
                  improvement = "increase", 
-                 scale = "count", 
+                 scale = "proportion", 
                  intervals = NULL, D = NULL,
                  bias_correct = TRUE, confidence = .95) {
   
@@ -108,7 +108,17 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
                       scale = "proportion", intervals = NULL, D = NULL,
                       bias_correct = TRUE, confidence = .95, ...) {
 
-  if (!scale %in% c("proportion", "percentage")) stop("LOR can only be calculated for proportions or percentages.")
+  if (!scale %in% c("proportion", "percentage")) {
+    message("LOR can only be calculated for proportions or percentages.")
+    res <- data.frame(ES = "LOR", Est = NA, 
+                      SE = NA, stringsAsFactors = FALSE)
+    if (!is.null(confidence)) {
+      res$CI_lower <- NA
+      res$CI_upper <- NA 
+    }
+    return(res)
+  }
+    
   
   # check for valid outcome range
   all_dat <- c(A_data, B_data)
