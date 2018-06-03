@@ -4,7 +4,7 @@
 \alias{PND}
 \title{Percentage of non-overlapping data}
 \usage{
-PND(A_data, B_data, condition, outcome, baseline_phase,
+PND(A_data, B_data, condition, outcome, baseline_phase = unique(condition)[1],
   improvement = "increase")
 }
 \arguments{

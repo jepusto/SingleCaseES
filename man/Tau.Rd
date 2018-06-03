@@ -4,7 +4,7 @@
 \alias{Tau}
 \title{Tau (non-overlap)}
 \usage{
-Tau(A_data, B_data, condition, outcome, baseline_phase,
+Tau(A_data, B_data, condition, outcome, baseline_phase = unique(condition)[1],
   improvement = "increase", SE = "unbiased", confidence = 0.95)
 }
 \arguments{

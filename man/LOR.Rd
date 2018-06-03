@@ -6,7 +6,7 @@
 \usage{
 LOR(A_data, B_data, condition, outcome, baseline_phase,
   improvement = "increase", scale = "proportion", intervals = NULL,
-  D = NULL, bias_correct = TRUE, confidence = 0.95)
+  D_const = NULL, bias_correct = TRUE, confidence = 0.95)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
@@ -34,7 +34,7 @@ frequent unique value will be used.}
 intervals per observation session. If a vector, the mean number of
 intervals will be used.}
 
-\item{D}{constant used for calculating the truncated sample mean (see
+\item{D_const}{constant used for calculating the truncated sample mean (see
 Pustejovsky, 2015). If a vector, the mean value will be used.}
 
 \item{bias_correct}{logical value indicating whether to use bias-correction.

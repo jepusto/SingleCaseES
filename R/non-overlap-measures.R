@@ -71,7 +71,8 @@
 #' NAP(yA, yB)
 #' 
 
-NAP <- function(A_data, B_data, condition, outcome, baseline_phase,
+NAP <- function(A_data, B_data, condition, outcome, 
+                baseline_phase = unique(condition)[1],
                 improvement = "increase", 
                 SE = "unbiased", confidence = .95) {
   
@@ -160,7 +161,8 @@ calc_NAP <- function(A_data, B_data,
 #' Tau(A_data = A, B_data = B)
 #' 
 
-Tau <- function(A_data, B_data, condition, outcome, baseline_phase,
+Tau <- function(A_data, B_data, condition, outcome, 
+                baseline_phase = unique(condition)[1],
                 improvement = "increase", 
                 SE = "unbiased", confidence = .95) {
   
@@ -226,7 +228,8 @@ calc_Tau <- function(A_data, B_data,
 #' Tau_U(A_data = A, B_data = B)
 #' 
 
-Tau_U <- function(A_data, B_data, condition, outcome, baseline_phase,
+Tau_U <- function(A_data, B_data, condition, outcome, 
+                  baseline_phase = unique(condition)[1],
                   improvement = "increase") {
   
   calc_ES(A_data = A_data, B_data = B_data, 
@@ -284,8 +287,9 @@ calc_Tau_U <- function(A_data, B_data, improvement = "increase", ...) {
 #' PND(A_data = A, B_data = B)
 #' 
 
-PND <- function(A_data, B_data, condition, outcome, baseline_phase,
-                  improvement = "increase") {
+PND <- function(A_data, B_data, condition, outcome, 
+                baseline_phase = unique(condition)[1],
+                improvement = "increase") {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, baseline_phase = baseline_phase,
@@ -336,7 +340,8 @@ calc_PND <- function(A_data, B_data, improvement = "increase", ...) {
 #' PEM(A_data = A, B_data = B)
 #' 
 
-PEM <- function(A_data, B_data, condition, outcome, baseline_phase,
+PEM <- function(A_data, B_data, condition, outcome, 
+                baseline_phase = unique(condition)[1],
                 improvement = "increase") {
   
   calc_ES(A_data = A_data, B_data = B_data, 
@@ -400,8 +405,9 @@ calc_PEM <- function(A_data, B_data, improvement = "increase", ...) {
 #' PAND(A_data = A, B_data = B)
 #' 
 
-PAND <- function(A_data, B_data, condition, outcome, baseline_phase,
-                improvement = "increase") {
+PAND <- function(A_data, B_data, condition, outcome, 
+                 baseline_phase = unique(condition)[1],
+                 improvement = "increase") {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, baseline_phase = baseline_phase,
@@ -455,8 +461,9 @@ calc_PAND <- function(A_data, B_data, improvement = "increase", ...) {
 #' IRD(A_data = A, B_data = B)
 #' 
 
-IRD <- function(A_data, B_data, condition, outcome, baseline_phase,
-                 improvement = "increase") {
+IRD <- function(A_data, B_data, condition, outcome, 
+                baseline_phase = unique(condition)[1],
+                improvement = "increase") {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, baseline_phase = baseline_phase,

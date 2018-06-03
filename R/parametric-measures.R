@@ -12,7 +12,10 @@ summary_stats <- function(A_data, B_data) {
 
 trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = NULL) {
   
-  if (is.null(scale)) return(0)
+  A <- is.null(scale) 
+  B <- (scale %in% c("count","rate") & is.null(observation_length))
+  C <- (scale %in% c("percentage","proportion") & is.null(intervals))
+  if (A | B | C) return(Inf)
   
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   if (length(observation_length) > 1L) observation_length <- mean(observation_length, na.rm = TRUE)
@@ -35,7 +38,7 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 #'   Must be either \code{"percentage"} for percentages with range 0-100 or
 #'   \code{"proportion"} for proportions with range 0-1. If a vector, the most
 #'   frequent unique value will be used.
-#' @param D constant used for calculating the truncated sample mean (see
+#' @param D_const constant used for calculating the truncated sample mean (see
 #'   Pustejovsky, 2015). If a vector, the mean value will be used.
 #' @inheritParams LRR
 #'
@@ -92,22 +95,24 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 LOR <- function(A_data, B_data, condition, outcome, baseline_phase,
                  improvement = "increase", 
                  scale = "proportion", 
-                 intervals = NULL, D = NULL,
+                 intervals = NULL, D_const = NULL,
                  bias_correct = TRUE, confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
           ES = "LOR", improvement = improvement, 
-          scale = scale, intervals = intervals, D = D,
+          scale = scale, intervals = intervals, D_const = D_const,
           bias_correct = bias_correct, confidence = confidence)  
   
 }
 
 calc_LOR <- function(A_data, B_data, improvement = "increase", 
-                      scale = "proportion", intervals = NULL, D = NULL,
+                      scale = "proportion", intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, confidence = .95, ...) {
 
+  if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
+  
   if (!scale %in% c("proportion", "percentage")) {
     message("LOR can only be calculated for proportions or percentages.")
     res <- data.frame(ES = "LOR", Est = NA, 
@@ -132,10 +137,10 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
   
   dat <- summary_stats(A_data, B_data)
   
-  if (is.null(D)) D <- if (!is.null(intervals)) intervals else Inf
-  if (length(D) > 1) D <- mean(D, na.rm = TRUE)
-  trunc_lower <- 1 / (2 * D * dat$n)
-  if (D > 0) dat$M <- pmin(1 - trunc_lower, pmax(trunc_lower, dat$M))
+  if (is.null(D_const)) D_const <- if (!is.null(intervals)) intervals else Inf
+  if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
+  trunc_lower <- 1 / (2 * D_const * dat$n)
+  if (D_const > 0) dat$M <- pmin(1 - trunc_lower, pmax(trunc_lower, dat$M))
   
   log_odds <- with(dat, log(M) - log(1 - M))
 
@@ -182,7 +187,7 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 #' @param intervals for interval recording procedures, the total number of
 #'   intervals per observation session. If a vector, the mean number of
 #'   intervals will be used.
-#' @param D constant used for calculating the truncated sample mean (see
+#' @param D_const constant used for calculating the truncated sample mean (see
 #'   Pustejovsky, 2018). If a vector, the mean value will be used.
 #' @param bias_correct  logical value indicating whether to use bias-correction.
 #'   Default is \code{TRUE}.
@@ -250,10 +255,11 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 
 #' @rdname LRR
 
-LRRd <- function(A_data, B_data, condition, outcome, baseline_phase,
+LRRd <- function(A_data, B_data, condition, outcome, 
+                 baseline_phase = unique(condition)[1],
                  improvement = "decrease", 
                  scale = "count", observation_length = NULL, 
-                 intervals = NULL, D = NULL,
+                 intervals = NULL, D_const = NULL,
                  bias_correct = TRUE, confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
@@ -261,17 +267,18 @@ LRRd <- function(A_data, B_data, condition, outcome, baseline_phase,
           baseline_phase = baseline_phase,
           ES = "LRRd", improvement = improvement, 
           scale = scale, observation_length = observation_length, 
-          intervals = intervals, D = D,
+          intervals = intervals, D_const = D_const,
           bias_correct = bias_correct, confidence = confidence)  
 }
 
 #' @rdname LRR
 #' @export
 
-LRRi <- function(A_data, B_data, condition, outcome, baseline_phase,
+LRRi <- function(A_data, B_data, condition, outcome, 
+                 baseline_phase = unique(condition)[1],
                  improvement = "increase", 
                  scale = "count", observation_length = NULL, 
-                 intervals = NULL, D = NULL,
+                 intervals = NULL, D_const = NULL,
                  bias_correct = TRUE, confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
@@ -279,16 +286,18 @@ LRRi <- function(A_data, B_data, condition, outcome, baseline_phase,
           baseline_phase = baseline_phase,
           ES = "LRRi", improvement = improvement, 
           scale = scale, observation_length = observation_length, 
-          intervals = intervals, D = D,
+          intervals = intervals, D_const = D_const,
           bias_correct = bias_correct, confidence = confidence)  
   
 }
 
 calc_LRRd <- function(A_data, B_data, improvement = "decrease", 
                       scale = "count", observation_length = NULL, 
-                      intervals = NULL, D = NULL,
+                      intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, confidence = .95, ...) {
 
+  if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
+  
   dat <- summary_stats(A_data, B_data)
   
   if (improvement == "increase") { 
@@ -300,9 +309,9 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
     }
   }
   
-  if (is.null(D)) D <- trunc_constant(scale, observation_length, intervals)
-  if (length(D) > 1) D <- mean(D, na.rm = TRUE)
-  if (D > 0) dat$M <- pmax(1 / (2 * D * dat$n), dat$M)
+  if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length, intervals)
+  if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
+  if (D_const > 0) dat$M <- pmax(1 / (2 * D_const * dat$n), dat$M)
   
   if (bias_correct == TRUE) {
     BC <- with(dat, log(M) + V / (2 * n * M^2))
@@ -332,8 +341,10 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
 
 calc_LRRi <- function(A_data, B_data, improvement = "increase", 
                       scale = "count", observation_length = NULL, 
-                      intervals = NULL, D = NULL,
+                      intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, confidence = .95, ...) {
+
+  if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
   dat <- summary_stats(A_data, B_data)
   
@@ -346,8 +357,9 @@ calc_LRRi <- function(A_data, B_data, improvement = "increase",
     }
   }
   
-  if (is.null(D)) D <- trunc_constant(scale, observation_length, intervals)
-  if (D > 0) dat$M <- pmax(1 / (2 * D * dat$n), dat$M)
+  if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length, intervals)
+  if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
+  if (D_const > 0) dat$M <- pmax(1 / (2 * D_const * dat$n), dat$M)
   
   if (bias_correct == TRUE) {
     BC <- with(dat, log(M) + V / (2 * n * M^2))

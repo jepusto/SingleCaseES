@@ -4,7 +4,7 @@
 \alias{PEM}
 \title{Percentage exceeding the median}
 \usage{
-PEM(A_data, B_data, condition, outcome, baseline_phase,
+PEM(A_data, B_data, condition, outcome, baseline_phase = unique(condition)[1],
   improvement = "increase")
 }
 \arguments{

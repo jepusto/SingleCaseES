@@ -73,6 +73,8 @@ calc_ES <- function(A_data, B_data,
     B_data <- dat[[treatment_phase]]
   } 
   
+  if (length(improvement) > 1L) improvement <- names(sort(table(improvement), decreasing = TRUE)[1])
+  
   A_data <- A_data[!is.na(A_data)]
   B_data <- B_data[!is.na(B_data)]
   

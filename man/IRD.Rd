@@ -4,7 +4,7 @@
 \alias{IRD}
 \title{Robust improvement rate difference}
 \usage{
-IRD(A_data, B_data, condition, outcome, baseline_phase,
+IRD(A_data, B_data, condition, outcome, baseline_phase = unique(condition)[1],
   improvement = "increase")
 }
 \arguments{

@@ -6,13 +6,15 @@
 \alias{LRRi}
 \title{Log-response ratio}
 \usage{
-LRRd(A_data, B_data, condition, outcome, baseline_phase,
-  improvement = "decrease", scale = "count", observation_length = NULL,
-  intervals = NULL, D = NULL, bias_correct = TRUE, confidence = 0.95)
+LRRd(A_data, B_data, condition, outcome,
+  baseline_phase = unique(condition)[1], improvement = "decrease",
+  scale = "count", observation_length = NULL, intervals = NULL,
+  D_const = NULL, bias_correct = TRUE, confidence = 0.95)
 
-LRRi(A_data, B_data, condition, outcome, baseline_phase,
-  improvement = "increase", scale = "count", observation_length = NULL,
-  intervals = NULL, D = NULL, bias_correct = TRUE, confidence = 0.95)
+LRRi(A_data, B_data, condition, outcome,
+  baseline_phase = unique(condition)[1], improvement = "increase",
+  scale = "count", observation_length = NULL, intervals = NULL,
+  D_const = NULL, bias_correct = TRUE, confidence = 0.95)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
@@ -44,7 +46,7 @@ vector, the mean observation session length will be used.}
 intervals per observation session. If a vector, the mean number of
 intervals will be used.}
 
-\item{D}{constant used for calculating the truncated sample mean (see
+\item{D_const}{constant used for calculating the truncated sample mean (see
 Pustejovsky, 2018). If a vector, the mean value will be used.}
 
 \item{bias_correct}{logical value indicating whether to use bias-correction.
