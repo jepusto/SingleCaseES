@@ -5,8 +5,8 @@
 \title{Log-odds ratio}
 \usage{
 LOR(A_data, B_data, condition, outcome, baseline_phase,
-  improvement = "increase", scale = "count", intervals = NULL, D = NULL,
-  bias_correct = TRUE, confidence = 0.95)
+  improvement = "increase", scale = "proportion", intervals = NULL,
+  D = NULL, bias_correct = TRUE, confidence = 0.95)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
