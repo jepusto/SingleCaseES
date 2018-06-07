@@ -51,7 +51,8 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang !!!
 #' @importFrom rlang !!
-#'   
+#' @importFrom dplyr .data
+#'  
 
 calc_ES <- function(A_data, B_data, 
                     condition, outcome, 
@@ -110,3 +111,90 @@ calc_ES <- function(A_data, B_data,
   
   return(res)
 }
+
+
+#' @title Calculate effect sizes from a dataset for multiple series
+#'
+#' @description Calculates one or more effect size estimates, along with
+#'   associated standard errors and confidence intervals, if available, for a
+#'   single-case data series.
+#' @param dat A dataframe containing SCD series for which effect sizes
+#'   will be calculated.
+#' @param condition A string containing the variable name that identifies
+#'  the treatment condition for each observation in the series.
+#' @param outcome A string containing the variable name of the outcome data.
+#' @param session_number A string containing the name of a variable used to
+#'   order outcomes within each series.
+#' @param grouping_vars A vector of strings of the names of the varibles that
+#'   uniquely identify each series (e.g. pseudonym, outcome type, study)
+#' @param baseline_phase character string specifying which value of
+#'   \code{condition} corresponds to the baseline phase. Defaults to first
+#'   observed value of \code{condition}.
+#' @param ES character string or character vector specifying which effect size
+#'   index or indices to calculate. Defaults to calculating the LRRd, LRRi, SMD,
+#'   and Tau indices.
+#' @param improvement character string either indicating the direction of
+#'   uniform improvement ("increase" or "decrease") or the variable name of 
+#'   a variable identifying the direction of improvement for each series. 
+#'   Default is "increase".
+#' @param ... further arguments used for calculating some of the effect size
+#'   indices.
+#' @param confidence confidence level for the reported interval estimate. Set to
+#'   \code{NULL} to omit confidence interval calculations.
+#' @param format charaacter string specifying whether to organize the results in
+#'   \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.
+#'
+#' @details Calculates one or more effect size indices for each series in a dataset
+#'
+#' @export
+#'
+#' @return A data.frame containing the estimate, standard error, and/or
+#'   confidence interval for each specified effect size.
+
+batch_calc_ES <- function(dat, 
+                          condition, outcome,
+                          session_number,
+                          grouping_vars,
+                          baseline_phase = unique(dat[[condition]])[1],
+                          ES = c("LRRd","LRRi","SMD","Tau"), 
+                          improvement = "increase",
+                          scale = NA,
+                          intervals = NA,
+                          observation_length = NA
+                          ...,
+                          confidence = .95,
+                          format = "long") {
+
+  if(!(condition %in% names(dat))) stop("The condition variable name is not in the provided dataset.")
+
+  if(!(outcome %in% names(dat))) stop("The outcome variable name is not in the provided dataset.")
+
+  if(!(session_number %in% names(dat))) stop("The session number variable name is not in the provided dataset.")
+
+  if(!all(grouping_vars %in% names(dat))) stop(paste0("The following grouping variables are not in the provided dataset:
+                                                      ", grouping_vars[!(grouping_vars %in% names(dat))]))
+
+  if(!(improvement %in% c("increase", "decrease") & !(improvement %in% names(dat)))) stop("The improvement variable name is not in the provided dataset.")
+
+  if(improvement %in% c("increase", "decrease")){
+    dat$improvement_dir <- improvement
+    improvement <- "improvement_dir"
+  }
+  
+  if(improvement %in% c("increase", "decrease")){
+    ES <- dat %>%  
+      dplyr::group_by(!!!rlang::syms(grouping_vars)) %>%
+      dplyr::arrange(!!rlang::sym(session_number)) %>%
+      dplyr::do(calc_ES(condition = .data[[condition]], outcome = .data[[outcome]], baseline_phase = baseline_phase,
+                 ES = ES, improvement = improvement, confidence = confidence, format = format, ...))
+  } else{
+    ES <- dat %>%  
+      dplyr::group_by(!!!rlang::syms(grouping_vars)) %>%
+      dplyr::arrange(!!rlang::sym(session_number)) %>%
+      dplyr::do(calc_ES(condition = .data[[condition]], outcome = .data[[outcome]], baseline_phase = baseline_phase,
+                        ES = ES, improvement = .data[[improvement]][1], confidence = confidence, format = format, ...))
+  }
+  
+  ES
+}
+
