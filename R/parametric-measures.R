@@ -443,7 +443,7 @@ calc_SMD <- function(A_data, B_data,
                      improvement = "increase",
                      std_dev = "baseline", 
                      bias_correct = TRUE, 
-                     confidence = .95) {
+                     confidence = .95,...) {
   
   dat <- summary_stats(A_data, B_data)
   
