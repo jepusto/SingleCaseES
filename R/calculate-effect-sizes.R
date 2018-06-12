@@ -158,9 +158,9 @@ batch_calc_ES <- function(dat,
                           baseline_phase = unique(dat[[condition]])[1],
                           ES = c("LRRd","LRRi","SMD","Tau"), 
                           improvement = "increase",
-                          scale = NA,
-                          intervals = NA,
-                          observation_length = NA
+                          scale = "count",
+                          intervals = NULL,
+                          observation_length = NULL,
                           ...,
                           confidence = .95,
                           format = "long") {
@@ -175,26 +175,22 @@ batch_calc_ES <- function(dat,
                                                       ", grouping_vars[!(grouping_vars %in% names(dat))]))
 
   if(!(improvement %in% c("increase", "decrease") & !(improvement %in% names(dat)))) stop("The improvement variable name is not in the provided dataset.")
+  
+  
+    ES <- dat %>%  
+      dplyr::group_by(!!!rlang::syms(grouping_vars)) %>%
+      dplyr::arrange(!!rlang::sym(session_number)) %>%
+      dplyr::do(calc_ES(condition = .data[[condition]], 
+                        outcome = .data[[outcome]], 
+                        baseline_phase = baseline_phase,
+                        ES = ES, 
+                        improvement = if(improvement %in% c("increase", "decrease")){improvement}else{.data[[improvement]][1]}, 
+                        scale = if(scale %in% c("percentage", "proportion", "count", "rate")){scale}else{scale = .data[[scale]][1]},
+                        intervals = if(is.null(intervals) || typeof(intervals) %in% c("integer", "double")){intervals}else{.data[[intervals]][1]},
+                        observation_length = if(is.null(observation_length) || typeof(observation_length) %in% c("integer", "double")){observation_length}else{.data[[observation_length]][1]},
+                        confidence = confidence, 
+                        format = format, ...))
 
-  if(improvement %in% c("increase", "decrease")){
-    dat$improvement_dir <- improvement
-    improvement <- "improvement_dir"
-  }
-  
-  if(improvement %in% c("increase", "decrease")){
-    ES <- dat %>%  
-      dplyr::group_by(!!!rlang::syms(grouping_vars)) %>%
-      dplyr::arrange(!!rlang::sym(session_number)) %>%
-      dplyr::do(calc_ES(condition = .data[[condition]], outcome = .data[[outcome]], baseline_phase = baseline_phase,
-                 ES = ES, improvement = improvement, confidence = confidence, format = format, ...))
-  } else{
-    ES <- dat %>%  
-      dplyr::group_by(!!!rlang::syms(grouping_vars)) %>%
-      dplyr::arrange(!!rlang::sym(session_number)) %>%
-      dplyr::do(calc_ES(condition = .data[[condition]], outcome = .data[[outcome]], baseline_phase = baseline_phase,
-                        ES = ES, improvement = .data[[improvement]][1], confidence = confidence, format = format, ...))
-  }
-  
   ES
 }
 
