@@ -13,7 +13,7 @@ test_that("PND is correct.", {
   expect_equal(pnd, subset(NOMs, ES == "PND"))
 })
 
-test_that("PND is correct.", {
+test_that("PAND is correct.", {
   pand <- PAND(A, B, improvement = "increase")
   expect_equal(1 - 2 / 13, pand$Est)
   expect_equal(pand, subset(NOMs, ES == "PAND"), check.attributes = FALSE)
