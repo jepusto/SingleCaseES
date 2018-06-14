@@ -21,6 +21,16 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
   if (length(observation_length) > 1L) observation_length <- mean(observation_length, na.rm = TRUE)
   if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
   
+  
+  if (is.null(scale)) scale <- NA
+  if (is.null(observation_length)) observation_length <- NA
+  if (is.null(intervals)) intervals <- NA
+  
+  D <- is.na(scale) 
+  E <- (scale %in% c("count","rate") & is.na(observation_length))
+  G <- (scale %in% c("percentage","proportion") & is.na(intervals) | is.null(intervals))
+  if (D | E | G) return(Inf)
+  
   switch(scale,
          count = 1L,
          rate = observation_length,

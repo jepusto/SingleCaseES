@@ -137,8 +137,27 @@ calc_ES <- function(A_data, B_data,
 #'   uniform improvement ("increase" or "decrease") or the variable name of 
 #'   a variable identifying the direction of improvement for each series. 
 #'   Default is "increase".
-#' @param ... further arguments used for calculating some of the effect size
-#'   indices.
+#' @param scale character string indicating the common scale of the outcome
+#'   variable across all of the series in the data set or the name of a variable 
+#'   within the dataset that identifies the outcome scale within each series. 
+#'   Possible values for the scle are \code{"percentage"} for a percentage with 
+#'   range 0-100, \code{"proportion"} for a proportion with range 0-1, 
+#'   \code{"count"} for a frequency count (0 or positive integers), 
+#'   \code{"rate"} for a standardized rate per minute. If a vector, the most 
+#'   frequent unique value will be used and missing values will be ignored. 
+#'   Defaults to \code{NA}.
+#' @param intervals for interval recording procedures. Either the total number of
+#'   intervals per observation session common to all series in the dataset, or the
+#'   name of a variable within the dataset that identifies the number of intervals
+#'   for each observation. If a variable name, the mean number of intervals within
+#'   each series will be used. Missing values will be ignored. Defaults to
+#'   \code{NA}.
+#' @param observation_length Used for the log-response ratio. Either the common
+#'   observation session length (in minutes) across all series in the dataset or
+#'   a variable name containing the observation session length for each 
+#'   observation. If a variable name, the mean observation session length within 
+#'   each series will be used. Missing values will be ignored. Defaults to 
+#'   \code{NA}.
 #' @param confidence confidence level for the reported interval estimate. Set to
 #'   \code{NULL} to omit confidence interval calculations.
 #' @param format charaacter string specifying whether to organize the results in
@@ -158,23 +177,56 @@ batch_calc_ES <- function(dat,
                           baseline_phase = unique(dat[[condition]])[1],
                           ES = c("LRRd","LRRi","SMD","Tau"), 
                           improvement = "increase",
-                          scale = "count",
-                          intervals = NULL,
-                          observation_length = NULL,
-                          ...,
+                          scale = NA,
+                          intervals = NA,
+                          observation_length = NA,
                           confidence = .95,
                           format = "long") {
 
   if(!(condition %in% names(dat))) stop("The condition variable name is not in the provided dataset.")
 
   if(!(outcome %in% names(dat))) stop("The outcome variable name is not in the provided dataset.")
-
+  
+  if(!(baseline_phase %in% unique(dat[[condition]])) && !(baseline_phase %in% names(dat))) stop ("The provided baseline phase is not one of the values in the provided condition variable.")
+    
   if(!(session_number %in% names(dat))) stop("The session number variable name is not in the provided dataset.")
 
   if(!all(grouping_vars %in% names(dat))) stop(paste0("The following grouping variables are not in the provided dataset:
                                                       ", grouping_vars[!(grouping_vars %in% names(dat))]))
 
-  if(!(improvement %in% c("increase", "decrease") & !(improvement %in% names(dat)))) stop("The improvement variable name is not in the provided dataset.")
+  if(!(improvement %in% c("increase", "decrease")) && !(improvement %in% names(dat))) stop("The improvement variable name is not in the provided dataset.")
+  
+  if(!is.na(scale) && !(scale %in% c("count", "rate", "proportion", "percentage")) && !(scale %in% names(dat))) stop("The scale variable name is not in the provided dataset.")
+  
+  if(!is.na(intervals) && typeof(intervals) == "character" && !(intervals %in% names(dat))) stop("The intervals variable name is not in the provided dataset.")
+  
+  if(!is.na(observation_length) && typeof(observation_length) == "character" && !(observation_length %in% names(dat))) stop("Observation session length variable name not in dataset.")
+  
+  if(baseline_phase %in% unique(dat[[condition]])){
+    dat$baseline_phase <- baseline_phase
+    baseline_phase <- "baseline_phase"
+  }
+  
+  if(improvement %in% c("increase", "decrease")){
+    dat$improvement <- improvement
+    improvement <- "improvement"
+  }
+  
+  if(scale %in% c("count", "rate", "proportion", "percentage")){
+    dat$scale <- scale
+    scale <- "scale"
+  }
+  
+  if(typeof(intervals) != "character"){
+    dat$intervals <- intervals
+    intervals <- "intervals"
+  }
+  
+  if(typeof(observation_length) != "character"){
+    dat$observation_length <- observation_length
+    observation_length <- "observation_length"
+  }
+  
   
   
     ES <- dat %>%  
@@ -182,14 +234,15 @@ batch_calc_ES <- function(dat,
       dplyr::arrange(!!rlang::sym(session_number)) %>%
       dplyr::do(calc_ES(condition = .data[[condition]], 
                         outcome = .data[[outcome]], 
-                        baseline_phase = baseline_phase,
+                        baseline_phase = .data[[baseline_phase]][1],
                         ES = ES, 
-                        improvement = if(improvement %in% c("increase", "decrease")){improvement}else{.data[[improvement]][1]}, 
-                        scale = if(scale %in% c("percentage", "proportion", "count", "rate")){scale}else{scale = .data[[scale]][1]},
-                        intervals = if(is.null(intervals) || typeof(intervals) %in% c("integer", "double")){intervals}else{.data[[intervals]][1]},
-                        observation_length = if(is.null(observation_length) || typeof(observation_length) %in% c("integer", "double")){observation_length}else{.data[[observation_length]][1]},
+                        improvement = .data[[improvement]][1], 
+                        scale =  .data[[scale]],
+                        intervals = .data[[intervals]],
+                        observation_length = .data[[observation_length]],
                         confidence = confidence, 
-                        format = format, ...))
+                        format = format)) %>%
+      dplyr::ungroup()
 
   ES
 }
