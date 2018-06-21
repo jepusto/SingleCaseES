@@ -5,7 +5,7 @@ library(SingleCaseES)
 library(rlang)
 
 
-statistical_indices <- c("NAP","Tau","SMD","LRR")
+statistical_indices <- c("NAP","Tau","SMD","LRRi", "LRRd", "LOR")
 
 full_names <- list(IRD = "Robust Improvement Rate Difference",
                    NAP = "Non-overlap of All Pairs",
@@ -46,18 +46,15 @@ shinyServer(function(input, output, session) {
   
   ES <- reactive({
     index <- c("Non-overlap" = input$NOM_ES, "Parametric" = input$parametric_ES)[[input$ES_family]]
-    arg_vals <- list(A_data = dat()$A, B_data = dat()$B)
-    if (input$ES_family == "Non-overlap") {
-      arg_vals$improvement <- input$improvement
-    }
-    if (index == "SMD") {
-      arg_vals$std_dev <- substr(input$SMD_denom, 1, nchar(input$SMD_denom) - 3)
-    }
-    if (index %in% statistical_indices) {
-      arg_vals$confidence <- input$confidence / 100
-    }
+    arg_vals <- list(A_data = dat()$A, B_data = dat()$B,
+                     improvement = input$improvement,
+                     std_dev = substr(input$SMD_denom, 1, nchar(input$SMD_denom) - 3),
+                     confidence = (input$confidence/100),
+                     scale = input$outScale,
+                     observation_length = input$obslength,
+                     D_const = input$lrrfloor)
     
-    est <- tryCatch(do.call(index, arg_vals), warning = function(w) w, error = function(e) e)
+    est <- tryCatch(do.call(paste0("calc_",index), arg_vals), warning = function(w) w, error = function(e) e)
     
     list(index = index, est = est)
   })
@@ -73,7 +70,7 @@ shinyServer(function(input, output, session) {
       if (ES()$index %in% statistical_indices) {
         Est_txt <- paste("Effect size estimate:", fmt(est$Est))
         SE_txt <- paste("Standard error:", fmt(est$SE))
-        CI_txt <- paste0(input$confidence,"% CI: [", fmt(est$CI[1]), ", ", fmt(est$CI[2]), "]")
+        CI_txt <- paste0(input$confidence,"% CI: [", fmt(est$CI_lower), ", ", fmt(est$CI_upper), "]")
         note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
         HTML(paste(Est_txt, SE_txt, CI_txt, note_txt, sep = "<br/>"))
       } else {
