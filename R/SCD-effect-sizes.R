@@ -43,7 +43,7 @@ SCD_effect_sizes <- function(browser = TRUE) {
 #'   \item \code{Outcome}. Outcome measurement.
 #'   \item \code{Phase_num}. Indicator for each pair of baseline and treatment phases.
 #'   \item \code{direction}. Direction of therapeutic improvement for the outcome.
-#'   \item \code{n_Intervals}. In an interval method was used, the total number of intervals; \code{NA} otherwise.
+#'   \item \code{n_Intervals}. If an interval method was used, the total number of intervals; \code{NA} otherwise.
 #' }
 #' 
 #' @docType data
