@@ -53,6 +53,19 @@ ShogrenPND <- batch_calc_ES(dat = Shogren,
                             format = "wide") %>%
   arrange(Study, Case)
 
+ShogrenLOR <- filter(Shogren, scale == "proportion") %>%
+              batch_calc_ES(condition = "Phase",
+                            outcome = "outcome",
+                            session_number = "session_number",
+                            grouping_vars = c("Study", "Case"),
+                            ES = c("LOR"),
+                            scale = "scale",
+                            intervals = "intervals",
+                            observation_length = "Session_length",
+                            format = "wide",
+                            D_const = 0) %>%
+  arrange(Study, Case)
+
 Shogren <- Shogren %>%
   mutate(outcome = ifelse(Measure == "Engagement", 1 - outcome, outcome))
 
@@ -107,4 +120,5 @@ test_that("LRRi, SMD, and PND are correct for the Pustejovksy data",{
   expect_equal(ShogrenLRR$LRRd_Est, ES$log_RR2)
   expect_equal(ShogrenSMD$SMD_Est, ES$SMD)
   expect_equal(ShogrenPND$PND_Est, ES$PND)
+  expect_equal(ShogrenLOR$LOR_Est, ES$lOR2[!is.na(ES$lOR2)])
 })
