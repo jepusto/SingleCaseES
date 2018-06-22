@@ -36,3 +36,26 @@ Schmidt2007$Metric <- ifelse(Schmidt2007$Metric == "Natural Count", "count", "pe
 names(Schmidt2007)[1] <- "Behavior_type"
 
 save(Schmidt2007, file = "data/Schmidt2007.RData", compress = TRUE)
+
+
+#------------------
+# Shogren 2004
+#------------------
+
+Session_data <- droplevels(subset(read.csv("auxilliary/Shogren Session data.csv"), Phase %in% c("Choice","No Choice") & 
+                                    Measure %in% c("Disruptive behavior","Problem behavior","Engagement","Undesirable behavior") &
+                                    (Case != "Danny" | Measure == "Problem behavior") &
+                                    Study %in% c("Dunlap","Dyer","Jolivette","Kern","Moes","Powell","Romaniuk","Seybert") | 
+                                    (Study == "Frea" & Setting == "Home living"), select = c(1,2,4:9)))
+
+Case_data <- read.csv("auxilliary/Shogren Case data.csv")
+
+Shogren <- left_join(Session_data, Case_data) %>%
+  select(-Outcome_measure) %>%
+  mutate(outcome = ifelse(is.na(Percentage),Observed, Percentage / 100),
+         outcome = ifelse(Study == "Kern" & Case == "Danny", outcome/4, outcome),
+         direction = ifelse(Measure == "Engagement", "increase", "decrease"),
+         Possible = ifelse(is.na(Possible), 0, Possible),
+         Phase = factor(Phase))
+
+save(Shogren, file = "data/Shogren.RData", compress = TRUE)

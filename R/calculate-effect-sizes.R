@@ -174,14 +174,15 @@ batch_calc_ES <- function(dat,
                           condition, outcome,
                           session_number,
                           grouping_vars,
-                          baseline_phase = unique(dat[[condition]])[1],
+                          baseline_phase = dat[[condition]][1],
                           ES = c("LRRd","LRRi","SMD","Tau"), 
                           improvement = "increase",
                           scale = NA,
                           intervals = NA,
                           observation_length = NA,
                           confidence = .95,
-                          format = "long") {
+                          format = "long",
+                          ...) {
 
   if(!(condition %in% names(dat))) stop("The condition variable name is not in the provided dataset.")
 
@@ -241,7 +242,8 @@ batch_calc_ES <- function(dat,
                         intervals = .data[[intervals]],
                         observation_length = .data[[observation_length]],
                         confidence = confidence, 
-                        format = format)) %>%
+                        format = format,
+                        ...)) %>%
       dplyr::ungroup()
 
   ES
