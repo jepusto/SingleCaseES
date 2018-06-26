@@ -5,9 +5,9 @@
 \title{Calculate effect sizes from a dataset for multiple series}
 \usage{
 batch_calc_ES(dat, condition, outcome, session_number, grouping_vars,
-  baseline_phase = unique(dat[[condition]])[1], ES = c("LRRd", "LRRi",
-  "SMD", "Tau"), improvement = "increase", scale = NA, intervals = NA,
-  observation_length = NA, confidence = 0.95, format = "long")
+  baseline_phase = dat[[condition]][1], ES = c("LRRd", "LRRi", "SMD",
+  "Tau"), improvement = "increase", scale = NA, intervals = NA,
+  observation_length = NA, confidence = 0.95, format = "long", ...)
 }
 \arguments{
 \item{dat}{A dataframe containing SCD series for which effect sizes
