@@ -45,7 +45,7 @@ Shogren_LRR_PND <-
 
 ShogrenLOR <- 
   Shogren %>%
-  filter(scale == "proportion") %>%
+  dplyr::filter(scale == "proportion") %>%
   batch_calc_ES(
     condition = "Phase",
     outcome = "outcome",
@@ -67,7 +67,10 @@ Shogren <-
   Shogren %>%
   mutate(outcome = ifelse(Measure == "Engagement", 1 - outcome, outcome))
 
-logit <- function(x) log(x) - log(1 - x)
+logit <- function(x) {
+  x[x <= 0 | 1 <= x] <- NA
+  log(x) - log(1 - x)
+} 
 
 ES <- 
   Shogren %>%
@@ -82,8 +85,8 @@ ES <-
     interval_length = ifelse(is.na(interval_length), 0, interval_length),
     adj_log = log(y_bar) + s_sq / (2 * n_phase * y_bar^2),
     V_log = s_sq / (n_phase * y_bar^2),
-    adj_logit = ifelse(y_bar < 1, logit(y_bar) - s_sq * (2 * y_bar - 1) / (2 * n_phase * y_bar^2 * (1 - y_bar)^2), NA),
-    V_logit = ifelse(y_bar < 1, s_sq / (n_phase * y_bar^2 * (1 - y_bar)^2), NA)
+    adj_logit = ifelse(y_bar > 0 & y_bar < 1, logit(y_bar) - s_sq * (2 * y_bar - 1) / (2 * n_phase * y_bar^2 * (1 - y_bar)^2), NA),
+    V_logit = ifelse(y_bar > 0 & y_bar < 1, s_sq / (n_phase * y_bar^2 * (1 - y_bar)^2), NA)
   ) %>%
   summarise(
     log_RR2 = -diff(adj_log),
