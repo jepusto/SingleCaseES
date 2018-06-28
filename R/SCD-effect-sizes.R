@@ -72,3 +72,29 @@ NULL
 #' student engagement in an urban second-grade classroom. \emph{Psychology in the Schools, 47}(9), 
 #' 944–959. https://doi.org/10.1002/pits.20516
 NULL
+
+#' Data from a systematic review by Shogren et al. (2004) on the effects of 
+#' choice-making interventions. The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{Study}. An ID for each study in the systematic review.
+#'   \item \code{Case}. Case psuedonym provided by the authors.
+#'   \item \code{Measure}. Type of behavior observed as the outcome measure
+#'   \item \code{Phase}. Phase indicator, baseline phase is "No Choice" and treatment phase is "Choice."
+#'   \item \code{Percentage}. For those outcomes measured as percentage, outcomes value. \code{NA} for count outcomes.
+#'   \item \code{Observed}. For those outcomes measured as count, outcome value. \code{NA} for percentage outcomes.
+#'   \item \code{Possible}. For counts out of a maxmimum, lists the maximum value. \item \code{Recording_procedure}  Recording procedure. CDR = "Continuous Duration Recording", EC = "Event Counting", "MTS = "Momentary Time Sampling", and PIR = "Partial Interval Recording."
+#'   \item \code{Session_length}. Length of the observation session in minutes.
+#'   \item \code{interval_length}. Length of the observation intervals for data observed using MTS or PIR.
+#'   \item \code{outcome}. Value for the outcome for all outcome types.
+#'   \item \code{direction}. Direction of therapeutic improvement for the outcome.
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 634 rows and 15 variables
+#' @name Shogren
+#' @source Shogren, K. A., Faggella-Luby, M. N., Bae, S. J., & Wehmeyer, M. L. (2004). 
+#' The effect of choice-making as an intervention for problem behavior. \emph{Journal 
+#' of Positive Behavior Interventions, 6(4)}, 228–237. 
+NULL

@@ -51,7 +51,7 @@ Session_data <- droplevels(subset(read.csv("auxilliary/Shogren Session data.csv"
 Case_data <- read.csv("auxilliary/Shogren Case data.csv")
 
 Shogren <- left_join(Session_data, Case_data) %>%
-  select(-Outcome_measure) %>%
+  select(-Outcome_measure, -mu) %>%
   mutate(outcome = ifelse(is.na(Percentage),Observed, Percentage / 100),
          outcome = ifelse(Study == "Kern" & Case == "Danny", outcome/4, outcome),
          direction = ifelse(Measure == "Engagement", "increase", "decrease"),
