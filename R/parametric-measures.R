@@ -11,24 +11,22 @@ summary_stats <- function(A_data, B_data) {
 
 
 trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = NULL) {
+
+  if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
+  if (length(observation_length) > 1L) observation_length <- mean(observation_length, na.rm = TRUE)
+  if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
   
   A <- is.null(scale) 
   B <- (scale %in% c("count","rate") & is.null(observation_length))
   C <- (scale %in% c("percentage","proportion") & is.null(intervals))
   if (A | B | C) return(Inf)
-  
-  if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
-  if (length(observation_length) > 1L) observation_length <- mean(observation_length, na.rm = TRUE)
-  if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
-  
-  
-  if (is.null(scale)) scale <- NA
+
   if (is.null(observation_length)) observation_length <- NA
   if (is.null(intervals)) intervals <- NA
   
   D <- is.na(scale) 
   E <- (scale %in% c("count","rate") & is.na(observation_length))
-  G <- (scale %in% c("percentage","proportion") & is.na(intervals) | is.null(intervals))
+  G <- (scale %in% c("percentage","proportion") & is.na(intervals))
   if (D | E | G) return(Inf)
   
   switch(scale,
@@ -147,7 +145,7 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
   
   dat <- summary_stats(A_data, B_data)
   
-  if (is.null(D_const)) D_const <- if (!is.null(intervals)) intervals else Inf
+  if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length = NULL, intervals)
   if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
   trunc_lower <- 1 / (2 * D_const * dat$n)
   if (D_const > 0) dat$M <- pmin(1 - trunc_lower, pmax(trunc_lower, dat$M))

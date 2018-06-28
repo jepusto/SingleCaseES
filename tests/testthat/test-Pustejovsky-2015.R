@@ -29,37 +29,20 @@ ShogrenSMD <- batch_calc_ES(dat = Shogren,
                             bias_correct = FALSE) %>%
   arrange(Study, Case)
 
-Shogren_LRR_PND <- 
+Shogren_LRR_LOR_PND <- 
   batch_calc_ES(dat = Shogren,
                 condition = "Phase",
                 outcome = "outcome",
                 session_number = "session_number",
                 grouping_vars = c("Study", "Measure", "Case"),
                 improvement = "direction",
-                ES = c("PND", "LRRd"),
+                ES = c("PND", "LRRd", "LOR"),
                 scale = "scale",
                 intervals = "intervals",
                 observation_length = "Session_length",
                 format = "wide") %>%
   arrange(Study, Case)
 
-ShogrenLOR <- 
-  Shogren %>%
-  dplyr::filter(scale == "proportion") %>%
-  batch_calc_ES(
-    condition = "Phase",
-    outcome = "outcome",
-    session_number = "session_number",
-    grouping_vars = c("Study", "Measure", "Case"),
-    improvement = "direction",
-    ES = "LOR",
-    scale = "scale",
-    intervals = "intervals",
-    observation_length = "Session_length",
-    format = "wide",
-    D_const = 0
-  ) %>%
-  arrange(Study, Case)
 
 # Calculate ES by hand 
 
@@ -110,10 +93,8 @@ ES <-
     PND = mean(outcome[Phase == "Choice"] < min(outcome[Phase == "No Choice"]))
   ) %>%
   full_join(ES, by = c("Study", "Measure", "Case")) %>%
-  full_join(Shogren_LRR_PND, by = c("Study", "Measure", "Case")) %>%
-  full_join(ShogrenSMD, by = c("Study", "Measure", "Case")) %>%
-  full_join(ShogrenLOR, by = c("Study", "Measure", "Case"))
-
+  full_join(Shogren_LRR_LOR_PND, by = c("Study", "Measure", "Case")) %>%
+  full_join(ShogrenSMD, by = c("Study", "Measure", "Case"))
 
 
 test_that("LRRd, LOR, SMD, and PND are correct for the Pustejovsky (2015) data", {
