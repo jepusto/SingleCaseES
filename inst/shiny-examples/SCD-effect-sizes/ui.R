@@ -114,7 +114,8 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                        ),
                                                        conditionalPanel("input.ES_family=='Parametric'",
                                                                         conditionalPanel("input.parametric_ES == 'LRRi'|input.parametric_ES == 'LRRd'", withMathJax(includeMarkdown("markdown/LRR.md"))),
-                                                                        conditionalPanel("input.parametric_ES == 'SMD'", withMathJax(includeMarkdown("markdown/SMD.md")))
+                                                                        conditionalPanel("input.parametric_ES == 'SMD'", withMathJax(includeMarkdown("markdown/SMD.md"))),
+                                                                        conditionalPanel("input.parametric_ES == 'LOR'", withMathJax(includeMarkdown("markdown/LOR.md")))
                                                        )
                                       )
                             )
