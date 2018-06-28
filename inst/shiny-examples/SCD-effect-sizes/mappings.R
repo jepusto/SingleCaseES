@@ -14,12 +14,19 @@ exampleMapping <- list(
                      phase_vals = c("A", "B"),
                      direction = "series",
                      direction_var = "direction",
-                     session_num = "Session_number"),
+                     session_num = "Session_number",
+                     scale = "series",
+                     scale_var = "Metric",
+                     intervals = "n_Intervals",
+                     observation_length = "Session_length"),
   McKissick = list(condition = "Condition",
                    outcome = "Outcome",
                    cluster_vars = "Case_pseudonym",
                    phase_vals = c("A", "B"),
                    direction = "decrease",
-                   session_num = "Session_number")
+                   session_num = "Session_number",
+                   scale = "all percentage",
+                   intervals = NA,
+                   observation_length = NA)
   
 )

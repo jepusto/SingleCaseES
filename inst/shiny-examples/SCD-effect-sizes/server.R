@@ -179,91 +179,81 @@ output$improvementVar <- renderUI({
   var_names <- names(datFile())
   if(input$dat_type == "dat"){
     list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names))
-  }else if(input$bimprovement == "series"){
+  }else{
     curMap <- exampleMapping[[input$example]]
     list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names, selected = curMap$direction_var))
   }
 })
-  
+ 
+# Measurement details taken out of the following function - might be useful later
+# selectInput("bmeasurementProcedure", label = "Measurement Procedure",
+#                  choices = c("all continuous recording", "all interval recording", "all event counting", "all other", "by series" = "series")),
+#      conditionalPanel(condition = "input.bmeasurementProcedure == 'series'",
+#                       selectInput("bmeasurementvar", "Select variable identifying measurement procedure",
+#                                   choices = var_names)),
+#      conditionalPanel(condition = "input.bmeasurementProcedure == 'series' | input.bmeasurementProcedure == 'all continuous recording'",
+#                       textInput("bfloor", label = "Optional floor for log-prevalence odds-ratio", value = NA)),
+ 
 output$measurementProc <- renderUI({
   var_names <- names(datFile())
-  list(selectInput("bmeasurementProcedure", label = "Measurement Procedure",
-                   choices = c("all continuous recording", "all interval recording", "all event counting", "all other", "by series" = "series")),
-       conditionalPanel(condition = "input.bmeasurementProcedure == 'series'",
-                        selectInput("bmeasurementvar", "Select variable identifying measurement procedure",
-                                    choices = var_names)),
-       conditionalPanel(condtion = "input.bmeasurementProcedure == 'series' | input.bmeasurementProcedure == 'all continuous recording'",
-                        textInput("bfloor", label = "Floor for log-prevalence odds-ratio")),
-       selectInput("boutScale", label = "Outcome Scale",
-                   choices = c("all percentage", "all proportion", "all count", "all rate", "all other", "by series" = "series")),
+  if(input$dat_type == "dat"){  
+  list(selectInput("boutScale", label = "Outcome Scale",
+                     choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series")),
        conditionalPanel(condition = "input.boutScale == 'series'",
                         selectInput("bscalevar", "Select variable identifying outcome scale",
                                     choices = var_names)),
-       numericInput("blrrfloor", label = "What is the value of the floor for the log-response ratio? Must be greater than or equal to 0.", value = 0, min = 0))
+       selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
+                   choices = c(NA, var_names), selected = NA),
+       selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
+                   choices = c(NA, var_names), selected = NA),
+       numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
+                    value = NA, min = 0))
+    }else{
+      curMap <- exampleMapping[[input$example]]
+      list(selectInput("boutScale", label = "Outcome Scale",
+                  choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series"),
+                  selected = curMap$scale),
+      conditionalPanel(condition = "input.boutScale == 'series'",
+                       selectInput("bscalevar", "Select variable identifying outcome scale",
+                                   choices = var_names,
+                                   selected = (if(!is.null(curMap$scale_var)){curMap$scale_var}else{NA}))),
+      selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
+                  choices = c(NA, var_names), selected = curMap$intervals),
+      selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
+                  choices = c(NA, var_names), selected = curMap$observation_length),
+      numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
+                   value = NA, min = 0)) 
+    }
 }) 
 
 
   batchModel <- eventReactive(input$batchest, {
     
-    call_index <- function(all_args, dat){
-      arg_vals <- list()
-      arg_vals$A_data <- dat$Outcome[dat$phase == input$b_base]
-      arg_vals$B_data <- dat$Outcome[dat$phase == input$b_treat]
-      index <- dat$index[1]
-      
-      if (index %in% c("IDR", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_U") & input$bimprovement != "series") {
-        arg_vals$improvement <- input$bimprovement
-      }
-      if (index %in% c("IDR", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_U") & input$bimprovement == "series") {
-        arg_vals$improvement <- dat[1,input$bseldir]
-      }
-      if (index == "SMD") {
-        arg_vals$std_dev <- substr(input$bSMD_denom, 1, nchar(input$bSMD_denom) - 3)
-      }
-      if (index %in% statistical_indices) {
-        arg_vals$confidence <- input$bconfidence / 100
-      }
-      
-      
-      if(index %in% statistical_indices){
-       es <- unlist(do.call(index, arg_vals))
-       return(data.frame(est = es[1], SE = es[2], lower = es[3], upper = es[4]))
-      }else{
-       es <-  do.call(index, arg_vals)
-       return(data.frame(est = es, SE = NA, lower = NA, upper = NA))
-      }
+    if(any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))){
+    if(input$boutScale == "series"){
+      scale_val <- input$bscalevar
+    } else{
+      scale_val <- input$boutScale
+    }}else{
+      scale_val <- NA
     }
     
     if(input$bimprovement == "series"){
-      dat <- datFile()[c(input$b_out, input$b_phase, input$session_number, input$b_clusters, input$bseldir)]
+      improvement <- input$bseldir
     }else{
-    dat <- datFile()[c(input$b_out, input$b_phase, input$session_number, input$b_clusters)]
-    }
-    names(dat)[1:3] <- c("Outcome", "phase", "session_number")
-    
-    index <- data.frame(index = c(input$bESno, input$bESpar), stringsAsFactors = FALSE)
-    
-    dat <- merge(dat, index, stringsAsFactors = FALSE)
-    
-    all_args <- list()
-    all_args$improvement <- input$bimprovement
-    all_args$std_dev <- substr(input$bSMD_denom, 1, nchar(input$bSMD_denom) - 3)
-    all_args$confidence <- input$bconfidence / 100
-    
-    grouping_sym <- syms(c(input$b_clusters, "index"))
-    
-    dat <- dat %>%  
-      group_by(!!!grouping_sym) %>%
-      arrange(session_number) %>%
-      do(call_index(all_args = all_args, dat = .))
-    
-    if(input$convertWide){
-      dat <- gather(dat, key = "key", value = "value", est:upper, na.rm = TRUE) %>%
-        unite(col = "est", index, key) %>%
-        spread(key = "est", value = "value")
+      improvement <- input$bimprovement
     }
     
-    return(dat)
+    batch_calc_ES(dat = datFile(), 
+                  condition = input$b_phase, 
+                  outcome = input$b_out,
+                  session_number = input$session_number,
+                  grouping_vars = input$b_clusters,
+                  baseline_phase = input$b_base,
+                  ES = c(input$bESno, input$bESpar),
+                  improvement = improvement,
+                  scale = scale_val,
+                  format = input$resultsformat)
 
   })
   
