@@ -158,6 +158,8 @@ calc_ES <- function(A_data, B_data,
 #'   observation. If a variable name, the mean observation session length within 
 #'   each series will be used. Missing values will be ignored. Defaults to 
 #'   \code{NA}.
+#' @param ... further arguments used for calculating some of the effect size
+#'   indices.
 #' @param confidence confidence level for the reported interval estimate. Set to
 #'   \code{NULL} to omit confidence interval calculations.
 #' @param format charaacter string specifying whether to organize the results in
@@ -180,9 +182,10 @@ batch_calc_ES <- function(dat,
                           scale = NA,
                           intervals = NA,
                           observation_length = NA,
+                          ...,
                           confidence = .95,
-                          format = "long",
-                          ...) {
+                          format = "long"
+                          ) {
 
   if(!(condition %in% names(dat))) stop("The condition variable name is not in the provided dataset.")
 

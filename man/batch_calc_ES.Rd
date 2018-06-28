@@ -7,7 +7,7 @@
 batch_calc_ES(dat, condition, outcome, session_number, grouping_vars,
   baseline_phase = dat[[condition]][1], ES = c("LRRd", "LRRi", "SMD",
   "Tau"), improvement = "increase", scale = NA, intervals = NA,
-  observation_length = NA, confidence = 0.95, format = "long", ...)
+  observation_length = NA, ..., confidence = 0.95, format = "long")
 }
 \arguments{
 \item{dat}{A dataframe containing SCD series for which effect sizes
@@ -60,6 +60,9 @@ a variable name containing the observation session length for each
 observation. If a variable name, the mean observation session length within 
 each series will be used. Missing values will be ignored. Defaults to 
 \code{NA}.}
+
+\item{...}{further arguments used for calculating some of the effect size
+indices.}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
