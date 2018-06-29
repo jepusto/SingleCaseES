@@ -1,13 +1,13 @@
 #### Parameter definition
 
-The log-odds ratio is an effect size index that quantifies the change from phase A to phase B in proportionate change of the prevalence odds. It is appropriate for use with outcomes on a percentage or proportion scale.  The LOR parameter is defined as
+The log-odds ratio is an effect size index that quantifies the change from phase A to phase B in terms of proportionate change in the odds that a behavior is occurring. It is appropriate for use with outcomes on a percentage or proportion scale. The LOR parameter is defined as
 
 $$
 \psi = \ln\left(\frac{\mu_B/(1-\mu_B)}{\mu_A/(1-\mu_A)}\right),
 $$
-where $\mu_A$ and $\mu_B$ denote the mean levels, as measured in proportions, in phases A and B respectively, and $\ln()$ is the natural logarithm function. The use of the odds (e.g. x(1-x)) along with the natural logarithm function is used so that the log odds ratio ranges from $-\infty$ to $\infty$.
+where $\mu_A$ and $\mu_B$ denote the mean levels, as measured in proportions, in phases A and B respectively, and $\ln()$ is the natural logarithm function. The log odds ratio ranges from $-\infty$ to $\infty$, with a value of zero corresponding to no change in mean levels.
 
-####Estimation
+#### Estimation
 
 Denote the sample means from phase A and phase B as $\bar{y}_A$ and $\bar{y}_B$, the sample standard deviations from phase A and phase B as $s_A$ and $s_B$, and the number of observations in phase A and phase B as $m$ and $n$, respectively. The LOR is estimated as
 
