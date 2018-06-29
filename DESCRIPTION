@@ -12,13 +12,19 @@ URL: https://github.com/jepusto/SingleCaseES
 BugReports: https://github.com/jepusto/SingleCaseES/issues
 License: GPL-3
 Imports:
-  stats
-Suggests: 
-  shiny,
-  ggplot2,
+  stats, 
+  purrr,
+  magrittr,
   dplyr,
   tidyr,
-  purrrlyr,
-  markdown
+  rlang
+Suggests: 
+    shiny,
+    ggplot2,
+    purrrlyr,
+    markdown,
+    testthat,
+    reshape
 LazyData: TRUE
 RoxygenNote: 6.0.1
+Encoding: UTF-8
