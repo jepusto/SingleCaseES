@@ -31,10 +31,11 @@ The available **non-overlap indices** are:
 The available **parametric effect sizes** are:
 
 -   Within-case standardized mean difference
--   Log response ratio
+-   Log response ratio (decreasing and increasing)
+-   Log odds ratio
 -   The gradual effects model, which can be used to estimate log
-    response ratios in the presence of time trends during treatment and
-    return-to-baseline phases.
+    response ratios or log odds ratios in the presence of time trends
+    during treatment and return-to-baseline phases.
 
 The package also includes two graphical user interfaces (designed using
 [Shiny](https://shiny.rstudio.com/)) for interactive use, both of which
@@ -232,8 +233,8 @@ calc_ES(A, B, ES = c("LRRd","LRRi","SMD","NAP"), improvement = "increase")
     ## 3  SMD  1.7037340 0.63701390  0.45520971  2.95225831
     ## 4  NAP  0.9166667 0.06900656  0.59734061  0.98601758
 
-Optional arguments are applied to the effect sizes for which they are
-relevant.
+Any optional arguments supplied are applied to the effect sizes for
+which they are relevant.
 
 Graphical user interface
 ------------------------
