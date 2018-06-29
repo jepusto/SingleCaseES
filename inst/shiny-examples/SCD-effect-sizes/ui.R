@@ -165,8 +165,9 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          radioButtons("resultsformat", "Long or wide format?", c("Long" = "long", "Wide" = "wide"), inline = TRUE),
                                          conditionalPanel(condition = "input.bESpar.length > 0 || input.bESno.length > 0", 
                                                           actionButton("batchest", "Estimate"),
+                                                          p(),
                                                           conditionalPanel(condition = "input.batchest > 0",
-                                                                           downloadButton("downcsv", "Download displayed results")))
+                                                                           downloadButton("downloadES", label = "Download results")))
                                        ),
                                        
                                        mainPanel(tableOutput("batchTable")))

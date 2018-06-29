@@ -51,6 +51,7 @@ shinyServer(function(input, output, session) {
     index <- c("Non-overlap" = input$NOM_ES, "Parametric" = input$parametric_ES)[[input$ES_family]]
     
     arg_vals <- list(A_data = dat()$A, B_data = dat()$B,
+                     ES = index,
                      improvement = input$improvement,
                      std_dev = substr(input$SMD_denom, 1, nchar(input$SMD_denom) - 3),
                      confidence = (input$confidence/100),
@@ -61,7 +62,7 @@ shinyServer(function(input, output, session) {
                      # D_const = input$lrrfloor
                      )
     
-    est <- tryCatch(do.call(index, arg_vals), warning = function(w) w, error = function(e) e)
+    est <- tryCatch(do.call(calc_ES, arg_vals), warning = function(w) w, error = function(e) e)
     
     if (index %in% c("LRRi", "LRRd", "LOR")){
       validate(
@@ -96,7 +97,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$result <- renderUI({
-    index <- c("Non-overlap" = input$NOM_ES, "Parametric" = input$parametric_ES)[[input$ES_family]]
+    index <- ES()$index
     
     if (dat()$compute) {
       fmt <- function(x) format(x, digits = input$digits, nsmall = input$digits)
@@ -108,14 +109,15 @@ shinyServer(function(input, output, session) {
         note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
         HTML(paste(Est_txt, SE_txt, CI_txt, note_txt, sep = "<br/>"))
       } else {
-        HTML(paste("Effect size estimate:", fmt(est)))
+        Est_txt <- paste("Effect size estimate:", fmt(est$Est))
+        HTML(Est_txt)
       }
     }
   })
   
   datFile <- reactive({
     
-    if(input$dat_type == "example"){
+    if (input$dat_type == "example") {
       dat <- get(input$example)
       
       return(dat)
@@ -203,7 +205,7 @@ shinyServer(function(input, output, session) {
  
   output$measurementProc <- renderUI({
     var_names <- names(datFile())
-    if(input$dat_type == "dat"){  
+    if(input$dat_type == "dat") {  
     list(selectInput("boutScale", label = "Outcome Scale",
                        choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series")),
          conditionalPanel(condition = "input.boutScale == 'series'",
@@ -215,7 +217,7 @@ shinyServer(function(input, output, session) {
                      choices = c(NA, var_names), selected = NA),
          numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
                       value = NA, min = 0))
-      }else{
+      } else {
         curMap <- exampleMapping[[input$example]]
         list(selectInput("boutScale", label = "Outcome Scale",
                     choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series"),
@@ -263,6 +265,15 @@ shinyServer(function(input, output, session) {
                   format = input$resultsformat)
 
   })
+  
+  output$downloadES <- downloadHandler(
+    filename = "SCD effect size estimates.csv",
+    content = function(file) {
+      dat <- batchModel()
+      write.csv(dat, file, row.names=FALSE)
+    },
+    contentType = "text/csv"
+  )
   
   output$batchTable <- renderTable(batchModel(), na = "-")
   
