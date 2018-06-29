@@ -64,7 +64,7 @@ shinyServer(function(input, output, session) {
       )
     }
     
-    if(input$ES_family == "Parametric" & input$outScale == "percentage" & !is.null(dat()$A) & !is.null(dat()$B)){
+    if(input$ES_family == "Parametric" & input$outScale == "percentage"){
       validate(
         need(all(c(dat()$A, dat()$B) > 0) & all(c(dat()$A, dat()$B) < 100), message =  "For percentage scale, values must be between 0 and 100.")
       )
