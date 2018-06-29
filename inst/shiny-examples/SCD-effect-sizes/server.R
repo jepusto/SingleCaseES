@@ -64,7 +64,7 @@ shinyServer(function(input, output, session) {
     
     if (index %in% c("LRRi", "LRRd", "LOR")){
       validate(
-        need(all(c(dat()$A, dat()$B) >= 0), message = "For the log response or log odds ratio all data must be greater than or equal to zero. ")
+        need(all(c(dat()$A, dat()$B) >= 0), message = "For the log response or log odds ratio, all data must be greater than or equal to zero. ")
       )
     }
     
