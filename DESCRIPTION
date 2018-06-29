@@ -21,7 +21,8 @@ Imports:
 Suggests: 
     shiny,
     ggplot2,
-    testthat
+    testthat,
+    markdown
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Encoding: UTF-8
