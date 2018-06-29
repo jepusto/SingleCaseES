@@ -26,8 +26,9 @@ The available __non-overlap indices__ are:
 The available __parametric effect sizes__ are:
 
 * Within-case standardized mean difference
-* Log response ratio
-* The gradual effects model, which can be used to estimate log response ratios in the presence of time trends during treatment and return-to-baseline phases.
+* Log response ratio (decreasing and increasing)
+* Log odds ratio
+* The gradual effects model, which can be used to estimate log response ratios or log odds ratios in the presence of time trends during treatment and return-to-baseline phases.
 
 The package also includes two graphical user interfaces (designed using [Shiny](https://shiny.rstudio.com/)) for interactive use, both of which are also available as web apps hosted through [shinyapps.io](https://www.shinyapps.io/): 
 
