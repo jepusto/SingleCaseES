@@ -1,3 +1,4 @@
+library(markdown)
 library(ggplot2)
 library(tidyr)
 library(dplyr)
@@ -44,7 +45,7 @@ shinyServer(function(input, output, session) {
         scale_color_brewer(type = "qual", palette = 2) + 
         theme_minimal() + theme(legend.position = "bottom")
     }
-  }, height = function() 300 * dat()$compute * input$plot)
+  })
   
   ES <- reactive({
     index <- c("Non-overlap" = input$NOM_ES, "Parametric" = input$parametric_ES)[[input$ES_family]]

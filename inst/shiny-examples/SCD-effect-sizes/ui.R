@@ -32,11 +32,12 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                    checkboxInput("plot","Show graph", value = FALSE)
                             )
                           ),
-                          fluidRow(
-                            column(12,
-                                   plotOutput('SCDplot', height = "auto")
-                            )
-                          ),
+                          conditionalPanel(condition = "input.plot",
+                            fluidRow(
+                              column(12,
+                                     plotOutput('SCDplot', height = "300px")
+                              )
+                          )),
                           fluidRow(
                             hr(),
                             column(4, 
