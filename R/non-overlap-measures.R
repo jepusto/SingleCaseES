@@ -52,8 +52,8 @@
 #'
 #' Sen, P. K. (1967). A note on asymptotically distribution-free confidence
 #' bounds for P{X<Y}, based on two independent samples. \emph{The Annals of
-#' Mathematical Statistics, 29}(1), 95–102.
-#' doi:\href{http://doi.org/10.1177/03063127067078012}{10.1177/03063127067078012}
+#' Mathematical Statistics, 29}(1), 95-102.
+#' \href{https://www.jstor.org/stable/25049448}{https://www.jstor.org/stable/25049448}
 #'
 #' @export
 #'

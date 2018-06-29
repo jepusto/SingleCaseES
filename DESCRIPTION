@@ -1,13 +1,13 @@
 Package: SingleCaseES
 Type: Package
-Title: A calculator for single-case effect size indices
-Version: 0.3
-Date: 2017-05-22
+Title: A Calculator for Single-Case Effect Sizes
+Version: 0.4
+Date: 2018-06-29
 Authors@R: c(
   person(c("James","E."), "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre")),
   person(c("Daniel","M."), "Swan", email = "dswan@utexas.edu", role = "aut")
   )
-Description: Calculates effect size indices for single-case designs, including several non-overlap measures, the within-case standardized mean difference, and the log-response ratio.
+Description: Calculates within-case effect sizes for single-case designs, including several non-overlap measures, the within-case standardized mean difference, and the log-response ratio.
 URL: https://github.com/jepusto/SingleCaseES
 BugReports: https://github.com/jepusto/SingleCaseES/issues
 License: GPL-3
