@@ -11,6 +11,12 @@ shine_gem_scd(browser = TRUE)
 system's default web-browser. Defaults to \code{TRUE}.}
 }
 \description{
-An interactive tool for calculating the gradual effects model
+Open an interactive tool for calculating the gradual effects model
 for SCDs.
+}
+\examples{
+\dontrun{
+shine_gem_scd()
+}
+
 }

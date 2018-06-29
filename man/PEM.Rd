@@ -4,15 +4,25 @@
 \alias{PEM}
 \title{Percentage exceeding the median}
 \usage{
-PEM(A_data, B_data, improvement = "increase")
+PEM(A_data, B_data, condition, outcome, baseline_phase = unique(condition)[1],
+  improvement = "increase")
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
 \item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
+\item{condition}{vector identifying the treatment condition for each
+observation in the series.}
+
+\item{outcome}{vector of outcome data for the entire series.}
+
+\item{baseline_phase}{character string specifying which value of
+\code{condition} corresponds to the baseline phase. Defaults to first
+observed value of \code{condition}.}
+
 \item{improvement}{character string indicating direction of improvement.
-Default is "increase"}
+Default is "increase".}
 }
 \value{
 Numeric value

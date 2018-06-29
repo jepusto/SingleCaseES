@@ -4,42 +4,59 @@
 \alias{NAP}
 \title{Non-overlap of all pairs}
 \usage{
-NAP(A_data, B_data, improvement = "increase", SE = TRUE, CI = TRUE,
-  confidence = 0.95)
+NAP(A_data, B_data, condition, outcome, baseline_phase = unique(condition)[1],
+  improvement = "increase", SE = "unbiased", confidence = 0.95)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
 \item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
+\item{condition}{vector identifying the treatment condition for each
+observation in the series.}
+
+\item{outcome}{vector of outcome data for the entire series.}
+
+\item{baseline_phase}{character string specifying which value of
+\code{condition} corresponds to the baseline phase. Defaults to first
+observed value of \code{condition}.}
+
 \item{improvement}{character string indicating direction of improvement.
-Default is "increase"}
+Default is "increase".}
 
-\item{SE}{logical value indicating whether to report the standard error}
+\item{SE}{character value indicating which formula to use for calculating the
+standard error of NAP, with possible values \code{"unbiased"} for the
+exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
+estimator, \code{"null"} for the (known) variance under the null hypothesis
+of no effect, or \code{"none"} to not calculate a standard error. Defaults
+to "unbiased".}
 
-\item{CI}{logical value indicating whether to report a confidence interval}
-
-\item{confidence}{confidence level for the reported interval estimate}
+\item{confidence}{confidence level for the reported interval estimate. Set to
+\code{NULL} to omit confidence interval calculations.}
 }
 \value{
-A list containing the estimate, standard error, and/or confidence
-  interval.
+A data.frame containing the estimate, standard error, and/or
+  confidence interval.
 }
 \description{
 Calculates the non-overlap of all pairs index (Parker & Vannest,
   2009).
 }
 \details{
-NAP is calculated as the proportion of all pairs of one observation 
-  from each phase in which the measurement from the B phase improves upon the 
-  measurement from the A phase, with pairs of data points that are exactly 
+NAP is calculated as the proportion of all pairs of one observation
+  from each phase in which the measurement from the B phase improves upon the
+  measurement from the A phase, with pairs of data points that are exactly
   tied being given a weight of 0.5. The range of NAP is [0,1], with a null
   value of 0.5.
-  
-  The standard error of NAP is calculated based on the method of Hanley and 
-  McNeil (1982).
-  
-  The confidence interval for NAP is calculated based on the symmetrized 
+
+  The unbiased variance estimator was described by Sen (1967) and Mee (1990).
+  The Hanley estimator was proposed by Hanley and McNeil (1982). The null
+  variance is a known function of sample size, equal to the exact sampling
+  variance when the null hypothesis of no effect holds. When the null
+  hypothesis does not hold, the null variance will tend to over-estimate 
+  the true sampling variance of NAP.
+
+  The confidence interval for NAP is calculated based on the symmetrized
   score-inversion method (Method 5) proposed by Newcombe (2006).
 }
 \examples{
@@ -54,18 +71,28 @@ NAP(yA, yB)
 
 }
 \references{
-Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under 
-a receiver operating characteristic (ROC) curve. \emph{Radiology, 143}, 
-29--36. 
+Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under
+a receiver operating characteristic (ROC) curve. \emph{Radiology, 143},
+29--36.
 doi:\href{http://dx.doi.org/10.1148/radiology.143.1.7063747}{10.1148/radiology.143.1.7063747}
 
+Mee, W. (1990). Confidence intervals for probabilities and tolerance regions
+based on a generalization of the Mann-Whitney statistic. \emph{Journal of the
+American Statistical Association, 85}(411), 793–800.
+doi:\href{http://doi.org/10.1080/01621459.1990.10474942}{10.1080/01621459.1990.10474942}
+
 Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
-on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation. 
-\emph{Statistics in Medicine, 25}(4), 559--573. 
+on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation.
+\emph{Statistics in Medicine, 25}(4), 559--573.
 doi:\href{http://dx.doi.org/10.1002/sim.2324}{10.1002/sim.2324}
 
-Parker, R. I., & Vannest, K. J. (2009). An improved effect size for 
-single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy, 
-40}(4), 357--67. 
+Parker, R. I., & Vannest, K. J. (2009). An improved effect size for
+single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy,
+40}(4), 357--67.
 doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
+
+Sen, P. K. (1967). A note on asymptotically distribution-free confidence
+bounds for P{X<Y}, based on two independent samples. \emph{The Annals of
+Mathematical Statistics, 29}(1), 95–102.
+doi:\href{http://doi.org/10.1177/03063127067078012}{10.1177/03063127067078012}
 }

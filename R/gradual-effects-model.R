@@ -158,7 +158,7 @@ greff_glm_dev <- function(omega, Trt, outcome, m, fam){
 #' @export
 #' @import stats
 #' 
-#' @example 
+#' @examples 
 #' \dontrun{
 #' shine_gem_scd()
 #' }
@@ -226,7 +226,7 @@ NULL
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 180 rows and 5 variables
-#' @name Schmidt
+#' @name Schmidt2012
 #' @source Schmidt, C., & Stichter, J. P. (2012). The use of peer-mediated interventions to 
 #' promote the generalization of social competence for adolescents with high-functioning autism 
 #' and Asperger's syndrome. \emph{Exceptionality}, 20(2), 94-113. doi:10.1080/09362835.2012

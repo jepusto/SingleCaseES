@@ -2,52 +2,120 @@
 % Please edit documentation in R/parametric-measures.R
 \name{LRR}
 \alias{LRR}
+\alias{LRRd}
+\alias{LRRi}
 \title{Log-response ratio}
 \usage{
-LRR(A_data, B_data, bias_correct = TRUE, confidence = 0.95)
+LRRd(A_data, B_data, condition, outcome,
+  baseline_phase = unique(condition)[1], improvement = "decrease",
+  scale = "count", observation_length = NULL, intervals = NULL,
+  D_const = NULL, bias_correct = TRUE, confidence = 0.95)
+
+LRRi(A_data, B_data, condition, outcome,
+  baseline_phase = unique(condition)[1], improvement = "increase",
+  scale = "count", observation_length = NULL, intervals = NULL,
+  D_const = NULL, bias_correct = TRUE, confidence = 0.95)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
 \item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
-\item{bias_correct}{logical value indicating whether to use bias-correction.
-Default is \code{TRUE}}
+\item{condition}{vector identifying the treatment condition for each
+observation in the series.}
 
-\item{confidence}{confidence level for the reported interval estimate}
+\item{outcome}{vector of outcome data for the entire series.}
+
+\item{baseline_phase}{character string specifying which value of
+\code{condition} corresponds to the baseline phase. Defaults to first
+observed value of \code{condition}.}
+
+\item{improvement}{character string indicating direction of improvement.
+Default is "increase".}
+
+\item{scale}{character string indicating the scale of the outcome variable,
+with possible values \code{"percentage"} for a percentage with range 0-100,
+\code{"proportion"} for a proportion with range 0-1, \code{"count"} for a
+frequency count (0 or positive integers), \code{"rate"} for a standardized
+rate per minute. If a vector, the most frequent unique value will be used.}
+
+\item{observation_length}{length of observation session (in minutes). If a
+vector, the mean observation session length will be used.}
+
+\item{intervals}{for interval recording procedures, the total number of
+intervals per observation session. If a vector, the mean number of
+intervals will be used.}
+
+\item{D_const}{constant used for calculating the truncated sample mean (see
+Pustejovsky, 2018). If a vector, the mean value will be used.}
+
+\item{bias_correct}{logical value indicating whether to use bias-correction.
+Default is \code{TRUE}.}
+
+\item{confidence}{confidence level for the reported interval estimate. Set to
+\code{NULL} to omit confidence interval calculations.}
 }
 \value{
-A list containing the estimate, standard error, and confidence 
-  interval.
+A data.frame containing the estimate, standard error, and approximate
+  confidence interval.
 }
 \description{
-Calculates the log-response ratio effect size index, with or 
-  without bias correction (Pustejovsky, 2015)
+Calculates the increasing or decreasing version of the
+  log-response ratio effect size index, with or without bias correction
+  (Pustejovsky, 2015)
 }
 \details{
-The response ratio parameter is the ratio of the mean level of the 
+The response ratio parameter is the ratio of the mean level of the
   outcome during phase B to the mean level of the outcome during phase A. The
-  log response ratio is the natural logarithm of the response ratio. Without 
-  bias correction, the log response ratio is estimated as the natural 
-  logarithm of the phase B sample mean, minus the natural logarithm of the 
-  phase A sample mean. A delta-method bias correction to the estimator is 
+  log response ratio is the natural logarithm of the response ratio. This
+  effect size is appropriate for outcomes measured on a ratio scale (so that
+  zero corresponds to the true absence of the outcome. There are two versions
+  of the LRR. The LRR-increasing (\code{LRRi}) is defined so that positive values
+  correspond to therapeutic improvements. The LRR-decreasing (\code{LRRd}) is
+  defined so that negative values correspond to therapeutic improvments. For
+  outcomes measured as frequency counts or rates, the two versions will have
+  the same magnitude but opposite sign; for outcomes measured as percentages
+  or proportions, the LRRd and LRRi will differ in both sign and magnitude
+  (Pustejovsky, 2018).
+
+  Without bias correction, the log response ratio is estimated as the natural
+  logarithm of the phase B sample mean, minus the natural logarithm of the
+  phase A sample mean. A delta-method bias correction to the estimator is
   used by default.
-  
-  The standard error of LRR is calculated based on a delta-method 
-  approximation, allowing for the possibility of different degrees of 
+
+  The standard error of LRR is calculated based on a delta-method
+  approximation, allowing for the possibility of different degrees of
   dispersion in each phase. The confidence interval for LRR is based on a
   large-sample (z) approximation.
+
+  To account for the possibility of sample means of zero, a truncated mean is
+  calculated following the method described in Pustejovsky (2018). The
+  truncation constant depends on the scale of the outcome, the length of the
+  observation sessions used to measure the dependent variable, and (for
+  interval recording procedures) the total number of intervals per session
+  (or the total number of items for other percentage/proportion scales). The
+  argument \code{scale} must be specified in order to calculate an
+  appropriate truncation constant. For standardized rates, the argument
+  \code{observation_length} must also be specified; for percentages or
+  proportions, the argument \code{intervals} must be specified. For outcomes
+  measured using continuous recording procedures, set \code{intervals} equal
+  to 60 times the length of the observation session in minutes.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
 B <- c(28, 25, 24, 27, 30, 30, 29)
-LRR(A_data = A, B_data = B, bias_correct = FALSE)
-LRR(A_data = A, B_data = B)
+LRRd(A_data = A, B_data = B, bias_correct = FALSE)
+LRRd(A_data = A, B_data = B)
 
 }
 \references{
-Pustejovsky, J. E. (2015). Measurement-comparable effect sizes 
-  for single-case studies of free-operant behavior. \emph{Psychological 
-  Methods, 20}(3), 342--359. 
+Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
+  for single-case studies of free-operant behavior. \emph{Psychological
+  Methods, 20}(3), 342--359.
   doi:\href{http://dx.doi.org/10.1037/met0000019}{10.1037/met0000019}
+
+  Pustejovsky, J. E. (2018). Using response ratios for meta-analyzing
+  single-case designs with behavioral outcomes. \emph{Journal of School
+  Psychology, 16}, 99-112.
+  doi:\href{https://doi.org/10.1016/j.jsp.2018.02.003}{10.1016/j.jsp.2018.02.003}
 }

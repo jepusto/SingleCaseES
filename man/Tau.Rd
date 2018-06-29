@@ -4,22 +4,35 @@
 \alias{Tau}
 \title{Tau (non-overlap)}
 \usage{
-Tau(A_data, B_data, improvement = "increase", SE = TRUE, CI = TRUE,
-  confidence = 0.95)
+Tau(A_data, B_data, condition, outcome, baseline_phase = unique(condition)[1],
+  improvement = "increase", SE = "unbiased", confidence = 0.95)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
 
 \item{B_data}{vector of numeric data for B phase. Missing values are dropped.}
 
+\item{condition}{vector identifying the treatment condition for each
+observation in the series.}
+
+\item{outcome}{vector of outcome data for the entire series.}
+
+\item{baseline_phase}{character string specifying which value of
+\code{condition} corresponds to the baseline phase. Defaults to first
+observed value of \code{condition}.}
+
 \item{improvement}{character string indicating direction of improvement.
-Default is "increase"}
+Default is "increase".}
 
-\item{SE}{logical value indicating whether to report the standard error}
+\item{SE}{character value indicating which formula to use for calculating the
+standard error of NAP, with possible values \code{"unbiased"} for the
+exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
+estimator, \code{"null"} for the (known) variance under the null hypothesis
+of no effect, or \code{"none"} to not calculate a standard error. Defaults
+to "unbiased".}
 
-\item{CI}{logical value indicating whether to report a confidence interval}
-
-\item{confidence}{confidence level for the reported interval estimate}
+\item{confidence}{confidence level for the reported interval estimate. Set to
+\code{NULL} to omit confidence interval calculations.}
 }
 \value{
 A list containing the estimate, standard error, and/or confidence 
@@ -34,7 +47,7 @@ Tau (non-overlap) a linear re-scaling of \code{\link{NAP}} to the
   range [-1,1], with a null value of 0.
   
   Standard errors and confidence intervals for Tau are based on 
-  transformations of the corresponding SEs and CIs for \code{\link{NAP}}
+  transformations of the corresponding SEs and CIs for \code{\link{NAP}}.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
