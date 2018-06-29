@@ -28,7 +28,9 @@ SCD_effect_sizes <- function(browser = TRUE) {
   shiny::runApp(appDir, display.mode = "normal", launch.browser = browser)
 }
 
-#' Data from a study by Schmidt (2007). The variables are as follows:
+#' @title Schmidt (2007) 
+#' 
+#' @description Data from a study by Schmidt (2007). The variables are as follows:
 #' 
 #' \itemize{
 #'   \item \code{Behavior_type}. Outcome measure description (disruptive behavior or on task behavior).
@@ -54,7 +56,9 @@ SCD_effect_sizes <- function(browser = TRUE) {
 #' first-grade classroom. University of Kansas. Retrieved from http://gradworks.umi.com/14/43/1443719.html
 NULL
 
-#' Data from a study by McKissick et al. (2010). The variables are as follows:
+#' @title McKissick et al. (2010)
+#' 
+#' @description  Data from a study by McKissick et al. (2010). The variables are as follows:
 #' 
 #' \itemize{
 #'   \item \code{Case_Psuedonym}. Case psuedonym provided by the authors.
@@ -73,8 +77,12 @@ NULL
 #' 944–959. https://doi.org/10.1002/pits.20516
 NULL
 
-#' Data from a systematic review by Shogren et al. (2004) on the effects of 
-#' choice-making interventions. The variables are as follows:
+#' @title Shogren et al. (2004)
+#' 
+#' @description Data from a systematic review by Shogren et al. (2004) 
+#' on the effects of choice-making interventions. 
+#' These data were compiled and re-analyzed in Pustejovsky (2015).
+#' The variables are as follows:
 #' 
 #' \itemize{
 #'   \item \code{Study}. An ID for each study in the systematic review.
@@ -96,5 +104,58 @@ NULL
 #' @name Shogren
 #' @source Shogren, K. A., Faggella-Luby, M. N., Bae, S. J., & Wehmeyer, M. L. (2004). 
 #' The effect of choice-making as an intervention for problem behavior. \emph{Journal 
-#' of Positive Behavior Interventions, 6(4)}, 228–237. 
+#' of Positive Behavior Interventions, 6}(4), 228–237. 
+#'
+#' @references Pustejovsky, J.E. (2015). Measurement-comparable effect 
+#' sizes for single-case studies of free-operant behavior. 
+#' \emph{Psychological Methods, 20}(3), 342–359.
+#' 
+
+NULL
+
+#' @title Thorne and Kamps (2008)
+#' 
+#' @description Data from an ABAB design conducted by Thorne and Kamps (2008). 
+#' These data were used as an example in Swan and Pustejovsky (2017).
+#' The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{Measure}. Outcome measure description (academic engagement or inappropriate verbalizations).
+#'   \item \code{Case}. Participant identifier.  
+#'   \item \code{Session_number}. Measurement occasion.
+#'   \item \code{Outcome}. Outcome scores
+#'   \item \code{Trt} Treatment indicators.
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 776 rows and 5 variables
+#' @name Thorne
+#' @source Thorne, S., & Kamps, D. (2008). The effects of a group contingency intervention on academic engagement and problem 
+#' behavior of at-risk students. \emph{Behavior Analysis in Practice, 1}(2), 12-18.
+#' 
+#' @references Swan, D. M., & Pustejovsky, J. E. (2017). 
+#' A gradual effects model for single-case designs. http://doi.org/10.17605/OSF.IO/GAXRV
+NULL
+
+#' @title Schmidt and Stichter (2012)
+#' 
+#' @description Data from an ABAB design conducted by Schmidt and 
+#' Stichter (2012). The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{Case}. Participant identifier.
+#'   \item \code{Behavior}. Behavior type (Conversation, Initiations, or Responses).
+#'   \item \code{Trt} Treatment indicators.
+#'   \item \code{Outcome}. Outcome scores.
+#'   \item \code{Session_num}. Measurement occasion.
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 180 rows and 5 variables
+#' @name Schmidt2012
+#' @source Schmidt, C., & Stichter, J. P. (2012). The use of peer-mediated interventions to 
+#' promote the generalization of social competence for adolescents with high-functioning autism 
+#' and Asperger's syndrome. \emph{Exceptionality}, 20(2), 94-113. doi:10.1080/09362835.2012
 NULL

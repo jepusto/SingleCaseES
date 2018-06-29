@@ -3,15 +3,19 @@
 \docType{data}
 \name{Shogren}
 \alias{Shogren}
-\title{Data from a systematic review by Shogren et al. (2004) on the effects of 
-choice-making interventions. The variables are as follows:}
+\title{Shogren et al. (2004)}
 \format{A data frame with 634 rows and 15 variables}
 \source{
 Shogren, K. A., Faggella-Luby, M. N., Bae, S. J., & Wehmeyer, M. L. (2004). 
 The effect of choice-making as an intervention for problem behavior. \emph{Journal 
-of Positive Behavior Interventions, 6(4)}, 228–237.
+of Positive Behavior Interventions, 6}(4), 228–237.
 }
 \description{
+Data from a systematic review by Shogren et al. (2004) 
+on the effects of choice-making interventions. 
+These data were compiled and re-analyzed in Pustejovsky (2015).
+The variables are as follows:
+
 \itemize{
   \item \code{Study}. An ID for each study in the systematic review.
   \item \code{Case}. Case psuedonym provided by the authors.
@@ -25,5 +29,10 @@ of Positive Behavior Interventions, 6(4)}, 228–237.
   \item \code{outcome}. Value for the outcome for all outcome types.
   \item \code{direction}. Direction of therapeutic improvement for the outcome.
 }
+}
+\references{
+Pustejovsky, J.E. (2015). Measurement-comparable effect 
+sizes for single-case studies of free-operant behavior. 
+\emph{Psychological Methods, 20}(3), 342–359.
 }
 \keyword{datasets}

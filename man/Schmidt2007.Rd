@@ -3,13 +3,15 @@
 \docType{data}
 \name{Schmidt2007}
 \alias{Schmidt2007}
-\title{Data from a study by Schmidt (2007). The variables are as follows:}
+\title{Schmidt (2007)}
 \format{A data frame with 172 rows and 13 variables}
 \source{
 Schmidt, A. C. (2007). The effects of a group contingency on group and individual behavior in an urban 
 first-grade classroom. University of Kansas. Retrieved from http://gradworks.umi.com/14/43/1443719.html
 }
 \description{
+Data from a study by Schmidt (2007). The variables are as follows:
+
 \itemize{
   \item \code{Behavior_type}. Outcome measure description (disruptive behavior or on task behavior).
   \item \code{Procedure}. The observation recording procedure used to measure the outcome.  

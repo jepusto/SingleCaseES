@@ -3,7 +3,7 @@
 \docType{data}
 \name{McKissick}
 \alias{McKissick}
-\title{Data from a study by McKissick et al. (2010). The variables are as follows:}
+\title{McKissick et al. (2010)}
 \format{A data frame with 35 rows and 4 variables}
 \source{
 McKissick, C., Hawkins, R. O., Lentz, F. E., Hailley, J., & McGuire, S. (2010). 
@@ -12,6 +12,8 @@ student engagement in an urban second-grade classroom. \emph{Psychology in the S
 944–959. https://doi.org/10.1002/pits.20516
 }
 \description{
+Data from a study by McKissick et al. (2010). The variables are as follows:
+
 \itemize{
   \item \code{Case_Psuedonym}. Case psuedonym provided by the authors.
   \item \code{Session_number}. Within-series session-number
