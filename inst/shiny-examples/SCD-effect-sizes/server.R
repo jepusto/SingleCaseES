@@ -53,6 +53,7 @@ shinyServer(function(input, output, session) {
                      confidence = (input$confidence/100),
                      scale = input$outScale,
                      observation_length = input$obslength,
+                     intervals = input$intervals,
                      D_const = input$lrrfloor)
     
     est <- tryCatch(do.call(paste0("calc_",index), arg_vals), warning = function(w) w, error = function(e) e)
@@ -63,15 +64,15 @@ shinyServer(function(input, output, session) {
       )
     }
     
-    if(input$ES_family == "Parametric" & input$outScale == "percentage"){
+    if(input$ES_family == "Parametric" & input$outScale == "percentage" & !is.null(dat()$A) & !is.null(dat()$B)){
       validate(
-        need(all(c(dat()$A, dat()$B)) > 0 & all(c(dat()$A, dat()$B) < 100), message =  "For percentage scale, values must be between 0 and 100.")
+        need(all(c(dat()$A, dat()$B) > 0) & all(c(dat()$A, dat()$B) < 100), message =  "For percentage scale, values must be between 0 and 100.")
       )
     }
     
     if(input$ES_family == "Parametric" & input$outScale == "proportion"){
       validate(
-        need(all(c(dat()$A, dat()$B)) > 0 & all(c(dat()$A, dat()$B) < 1), message = "For proportion scale, values must be between 0 and 1.")
+        need(all(c(dat()$A, dat()$B) > 0) & all(c(dat()$A, dat()$B) < 1), message = "For proportion scale, values must be between 0 and 1.")
       )
     }
     
