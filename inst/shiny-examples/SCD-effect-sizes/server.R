@@ -61,7 +61,7 @@ shinyServer(function(input, output, session) {
                      # D_const = input$lrrfloor
                      )
     
-    est <- tryCatch(do.call(paste0("calc_",index), arg_vals), warning = function(w) w, error = function(e) e)
+    est <- tryCatch(do.call(index, arg_vals), warning = function(w) w, error = function(e) e)
     
     if (index %in% c("LRRi", "LRRd", "LOR")){
       validate(
