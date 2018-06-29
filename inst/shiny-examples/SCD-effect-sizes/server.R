@@ -60,19 +60,19 @@ shinyServer(function(input, output, session) {
     
     if (index %in% c("LRRi", "LRRd", "LOR")){
       validate(
-        need(all(c(dat()$A, dat()$B) > 0), message = "For the log response or log odds ratio all data must be greater than or equal to zero. ")
+        need(all(c(dat()$A, dat()$B) >= 0), message = "For the log response or log odds ratio all data must be greater than or equal to zero. ")
       )
     }
     
     if(input$ES_family == "Parametric" & input$outScale == "percentage"){
       validate(
-        need(all(c(dat()$A, dat()$B) > 0) & all(c(dat()$A, dat()$B) < 100), message =  "For percentage scale, values must be between 0 and 100.")
+        need(all(c(dat()$A, dat()$B) >= 0) & all(c(dat()$A, dat()$B) <= 100), message =  "For percentage scale, values must be between 0 and 100.")
       )
     }
     
     if(input$ES_family == "Parametric" & input$outScale == "proportion"){
       validate(
-        need(all(c(dat()$A, dat()$B) > 0) & all(c(dat()$A, dat()$B) < 1), message = "For proportion scale, values must be between 0 and 1.")
+        need(all(c(dat()$A, dat()$B) >= 0) & all(c(dat()$A, dat()$B) <= 1), message = "For proportion scale, values must be between 0 and 1.")
       )
     }
     
