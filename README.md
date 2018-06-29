@@ -10,11 +10,12 @@ SingleCaseES: A calculator for single-case effect size indices
 This package provides R functions for calculating basic effect size
 indices for single-case designs, including several non-overlap measures
 and parametric effect size measures, and for estimating the gradual
-effects model developed by Swan and Pustejovsky (2017). Standard errors
-and confidence intervals for the effect sizes are provided for a subset
-of indices with known sampling distributions. However, it is important
-to note that all of the standard errors and confidence intervals are
-based on the assumption that the outcome measurements are mutually
+effects model developed by [Swan and Pustejovsky
+(2018)](https://doi.org/10.1080/00273171.2018.1466681). Standard errors
+and confidence intervals are provided for the subset of effect sizes
+indices with known sampling distributions. However, it is important to
+note that all of the standard errors and confidence intervals are based
+on the assumption that the outcome measurements are mutually
 independent.
 
 The available **non-overlap indices** are:
@@ -107,7 +108,7 @@ NAP(A, B, improvement = "increase")
 ```
 
     ##    ES       Est         SE  CI_lower  CI_upper
-    ## 1 NAP 0.9166667 0.07739185 0.5973406 0.9860176
+    ## 1 NAP 0.9166667 0.06900656 0.5973406 0.9860176
 
 Because formulas are available for NAP, the function reports the
 standard error and confidence interval in addition to the point estimate
@@ -125,7 +126,7 @@ NAP(A, B, improvement = "decrease")
 ```
 
     ##    ES        Est         SE   CI_lower  CI_upper
-    ## 1 NAP 0.08333333 0.07739185 0.01398242 0.4026594
+    ## 1 NAP 0.08333333 0.06900656 0.01398242 0.4026594
 
 Type `?NAP` at the console prompt for further information about the
 available options for NAP.
@@ -214,6 +215,25 @@ small-sample correction proposed by Pustejovsky (2015). See `?LRR` for
 further details. The standard error and approximate confidence interval
 for the log response ratio estimate are based on the assumption that the
 outcome measurements are mutually independent.
+
+Multiple effect sizes for a single series
+-----------------------------------------
+
+The `calc_ES()` function can be used to calculate multiple effect size
+indices for a single series with A and B phases:
+
+``` r
+calc_ES(A, B, ES = c("LRRd","LRRi","SMD","NAP"), improvement = "increase")
+```
+
+    ##     ES        Est         SE    CI_lower    CI_upper
+    ## 1 LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679
+    ## 2 LRRi  0.1953962 0.05557723  0.08646679  0.30432554
+    ## 3  SMD  1.7037340 0.63701390  0.45520971  2.95225831
+    ## 4  NAP  0.9166667 0.06900656  0.59734061  0.98601758
+
+Optional arguments are applied to the effect sizes for which they are
+relevant.
 
 Graphical user interface
 ------------------------
