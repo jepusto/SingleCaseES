@@ -18,12 +18,12 @@ The variables are as follows:
 
 \itemize{
   \item \code{Study}. An ID for each study in the systematic review.
-  \item \code{Case}. Case psuedonym provided by the authors.
+  \item \code{Case}. Case Pseudonym provided by the authors.
   \item \code{Measure}. Type of behavior observed as the outcome measure
   \item \code{Phase}. Phase indicator, baseline phase is "No Choice" and treatment phase is "Choice."
   \item \code{Percentage}. For those outcomes measured as percentage, outcomes value. \code{NA} for count outcomes.
   \item \code{Observed}. For those outcomes measured as count, outcome value. \code{NA} for percentage outcomes.
-  \item \code{Possible}. For counts out of a maxmimum, lists the maximum value. \item \code{Recording_procedure}  Recording procedure. CDR = "Continuous Duration Recording", EC = "Event Counting", "MTS = "Momentary Time Sampling", and PIR = "Partial Interval Recording."
+  \item \code{Possible}. For counts out of a maximum, lists the maximum value. \item \code{Recording_procedure}  Recording procedure. CDR = "Continuous Duration Recording", EC = "Event Counting", "MTS = "Momentary Time Sampling", and PIR = "Partial Interval Recording."
   \item \code{Session_length}. Length of the observation session in minutes.
   \item \code{interval_length}. Length of the observation intervals for data observed using MTS or PIR.
   \item \code{outcome}. Value for the outcome for all outcome types.

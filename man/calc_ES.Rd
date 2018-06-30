@@ -36,7 +36,7 @@ indices.}
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
 
-\item{format}{charaacter string specifying whether to organize the results in
+\item{format}{character string specifying whether to organize the results in
 \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.}
 }
 \value{

@@ -38,7 +38,7 @@ SCD_effect_sizes <- function(browser = TRUE) {
 #'   \item \code{Metric}. The metric in which the outcome measurement is expressed ("count" for natural counts; "percentage" for percentage of intervals)
 #'   \item \code{Session_length}. Length (in minutes) of the observation sessions
 #'   \item \code{Interval_length}. If an interval method was used, the length of the intervals (in seconds); \code{NA} otherwise.
-#'   \item \code{Case_Psuedonym}. Case psuedonym provided by the authors.
+#'   \item \code{Case_Pseudonym}. Case Pseudonym provided by the authors.
 #'   \item \code{Session_number}. Within-series session-number.
 #'   \item \code{Phase}. Label for each unique phase (e.g., A1 is the first baseline phase, B2 is the second treatment phase).
 #'   \item \code{Condition}. Label indicating whether the outcome is in the baseline (A) or treatment (B) phase.
@@ -61,7 +61,7 @@ NULL
 #' @description  Data from a study by McKissick et al. (2010). The variables are as follows:
 #' 
 #' \itemize{
-#'   \item \code{Case_Psuedonym}. Case psuedonym provided by the authors.
+#'   \item \code{Case_Pseudonym}. Case Pseudonym provided by the authors.
 #'   \item \code{Session_number}. Within-series session-number
 #'   \item \code{Condition}. Describes whether the outcome is in the baseline (A) or treatment (B) phase.
 #'   \item \code{Outcome}. Value for the outcome.
@@ -86,12 +86,12 @@ NULL
 #' 
 #' \itemize{
 #'   \item \code{Study}. An ID for each study in the systematic review.
-#'   \item \code{Case}. Case psuedonym provided by the authors.
+#'   \item \code{Case}. Case Pseudonym provided by the authors.
 #'   \item \code{Measure}. Type of behavior observed as the outcome measure
 #'   \item \code{Phase}. Phase indicator, baseline phase is "No Choice" and treatment phase is "Choice."
 #'   \item \code{Percentage}. For those outcomes measured as percentage, outcomes value. \code{NA} for count outcomes.
 #'   \item \code{Observed}. For those outcomes measured as count, outcome value. \code{NA} for percentage outcomes.
-#'   \item \code{Possible}. For counts out of a maxmimum, lists the maximum value. \item \code{Recording_procedure}  Recording procedure. CDR = "Continuous Duration Recording", EC = "Event Counting", "MTS = "Momentary Time Sampling", and PIR = "Partial Interval Recording."
+#'   \item \code{Possible}. For counts out of a maximum, lists the maximum value. \item \code{Recording_procedure}  Recording procedure. CDR = "Continuous Duration Recording", EC = "Event Counting", "MTS = "Momentary Time Sampling", and PIR = "Partial Interval Recording."
 #'   \item \code{Session_length}. Length of the observation session in minutes.
 #'   \item \code{interval_length}. Length of the observation intervals for data observed using MTS or PIR.
 #'   \item \code{outcome}. Value for the outcome for all outcome types.

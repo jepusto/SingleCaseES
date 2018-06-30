@@ -21,7 +21,7 @@ the treatment condition for each observation in the series.}
 \item{session_number}{A string containing the name of a variable used to
 order outcomes within each series.}
 
-\item{grouping_vars}{A vector of strings of the names of the varibles that
+\item{grouping_vars}{A vector of strings of the names of the variables that
 uniquely identify each series (e.g. pseudonym, outcome type, study)}
 
 \item{baseline_phase}{character string specifying which value of
@@ -40,7 +40,7 @@ Default is "increase".}
 \item{scale}{character string indicating the common scale of the outcome
 variable across all of the series in the data set or the name of a variable 
 within the dataset that identifies the outcome scale within each series. 
-Possible values for the scle are \code{"percentage"} for a percentage with 
+Possible values for the scale are \code{"percentage"} for a percentage with 
 range 0-100, \code{"proportion"} for a proportion with range 0-1, 
 \code{"count"} for a frequency count (0 or positive integers), 
 \code{"rate"} for a standardized rate per minute. If a vector, the most 
@@ -67,7 +67,7 @@ indices.}
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
 
-\item{format}{charaacter string specifying whether to organize the results in
+\item{format}{character string specifying whether to organize the results in
 \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.}
 }
 \value{

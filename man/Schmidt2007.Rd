@@ -18,7 +18,7 @@ Data from a study by Schmidt (2007). The variables are as follows:
   \item \code{Metric}. The metric in which the outcome measurement is expressed ("count" for natural counts; "percentage" for percentage of intervals)
   \item \code{Session_length}. Length (in minutes) of the observation sessions
   \item \code{Interval_length}. If an interval method was used, the length of the intervals (in seconds); \code{NA} otherwise.
-  \item \code{Case_Psuedonym}. Case psuedonym provided by the authors.
+  \item \code{Case_Pseudonym}. Case Pseudonym provided by the authors.
   \item \code{Session_number}. Within-series session-number.
   \item \code{Phase}. Label for each unique phase (e.g., A1 is the first baseline phase, B2 is the second treatment phase).
   \item \code{Condition}. Label indicating whether the outcome is in the baseline (A) or treatment (B) phase.

@@ -15,7 +15,7 @@ student engagement in an urban second-grade classroom. \emph{Psychology in the S
 Data from a study by McKissick et al. (2010). The variables are as follows:
 
 \itemize{
-  \item \code{Case_Psuedonym}. Case psuedonym provided by the authors.
+  \item \code{Case_Pseudonym}. Case Pseudonym provided by the authors.
   \item \code{Session_number}. Within-series session-number
   \item \code{Condition}. Describes whether the outcome is in the baseline (A) or treatment (B) phase.
   \item \code{Outcome}. Value for the outcome.

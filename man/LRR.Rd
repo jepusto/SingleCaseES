@@ -72,7 +72,7 @@ The response ratio parameter is the ratio of the mean level of the
   zero corresponds to the true absence of the outcome. There are two versions
   of the LRR. The LRR-increasing (\code{LRRi}) is defined so that positive values
   correspond to therapeutic improvements. The LRR-decreasing (\code{LRRd}) is
-  defined so that negative values correspond to therapeutic improvments. For
+  defined so that negative values correspond to therapeutic improvements. For
   outcomes measured as frequency counts or rates, the two versions will have
   the same magnitude but opposite sign; for outcomes measured as percentages
   or proportions, the LRRd and LRRi will differ in both sign and magnitude
