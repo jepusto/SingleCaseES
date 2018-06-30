@@ -20,11 +20,17 @@ You will then need to specify values for the following options:
 
 - __Standardize by__: If you select the standardized mean difference (SMD), an option will appear allowing you select whether to calculate it using the standard deviation of the baseline observations (baseline SD) or by the standard deviation pooled across the baseline and treatment phases (pooled SD).
 
-- __Additional input for the log response ratio__. If you select the log-response ratio (LRR), several further input boxes will appear. Use these 
+- __Additional input for the log response ratio__. If you select the log-response ratio (LRRi or LRRd), several further input boxes will appear.
 
-  - __Measurement procedure__:  the procedure used to measure the outcome. Available options are: Continuous recording, interval recording (for partial or whole interval recording or momentary time sampling), event counting (for frequency counts), other (for measurement procedures other than those listed).
   - __Outcome Scale__: How the outcome measurements are scaled. For continuous recording or interval recording, the scale will either be a percentage (ranging from 0% to 100%) or a proportion (ranging from 0 to 1). For event counting, the scale will either be a count (a raw frequency count) or a rate (events per unit time). For other measurement procedures, select "other" for the outcome scale.
-  - __Log-response ratio floor__: Minimum value for truncating the mean level of the outcome within a phase. 
+    - __Total intervals per session__: If the data were observed via some interval recording method (e.g. momentary time sampling or partial interval recording), the total number of intervals observed in each session. If this varies from session to session, use the mean. Leave blank if the data were not observed via an interval recording method. Used for calculating a truncation constant for values very near the floor of 0.
+    - __Observation session length__: The length of the observation sessions in minutes. If the length of the observation session varies, use the mean. If unknown, leave blank. Used for calculating a truncation constant for values very near the floor of 0.
+    - __Log-response ratio floor__: The user may also specify their own truncation constant for values very near the floor of zero, if desired.
+    
+- __Additional input for the log odds ratio__. If you select the log-response ratio (LOR), several further input boxes will appear.
+  - __Outcome Scale__: How the outcome measurements are scaled. For continuous recording or interval recording, the scale will either be a percentage (ranging from 0% to 100%) or a proportion (ranging from 0 to 1). The log odds ratio only accepts percentage or proportion scaled data.
+    - __Total intervals per session__: If the data were observed via some interval recording method (e.g. momentary time sampling or partial interval recording), the total number of intervals observed in each session. If this varies from session to session, use the mean. Leave blank if the data were not observed via an interval recording method. Used for calculating a truncation constant for values very near the floor of 0.
+    - __Log-odds ratio floor__: The user may also specify their own truncation constant for values very near the floor of zero, if desired.
 
 The single-entry calculator will display an effect size estimate, as well as a standard 
 error and a confidence interval if applicable. If you are interested in the methods and references
