@@ -57,9 +57,8 @@ shinyServer(function(input, output, session) {
                      confidence = (input$confidence/100),
                      scale = input$outScale,
                      observation_length = input$obslength,
-                     intervals = input$intervals
-                     # ,
-                     # D_const = input$lrrfloor
+                     intervals = input$intervals,
+                     D_const = input$lrrfloor
                      )
     
     est <- tryCatch(do.call(calc_ES, arg_vals), warning = function(w) w, error = function(e) e)

@@ -23,8 +23,8 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 
   if (is.null(observation_length)) observation_length <- NA
   if (is.null(intervals)) intervals <- NA
-  
-  D <- is.na(scale) 
+
+  D <- is.na(scale)
   E <- (scale %in% c("count","rate") & is.na(observation_length))
   G <- (scale %in% c("percentage","proportion") & is.na(intervals))
   if (D | E | G) return(Inf)
@@ -146,6 +146,7 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
   dat <- summary_stats(A_data, B_data)
   
   if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length = NULL, intervals)
+  if (all(is.na(D_const))) D_const <- trunc_constant(scale, observation_length = NULL, intervals)
   if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
   trunc_lower <- 1 / (2 * D_const * dat$n)
   if (D_const > 0) dat$M <- pmin(1 - trunc_lower, pmax(trunc_lower, dat$M))
@@ -318,6 +319,7 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
   }
   
   if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length, intervals)
+  if (all(is.na(D_const))) D_const <- trunc_constant(scale, observation_length, intervals)
   if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
   if (D_const > 0) dat$M <- pmax(1 / (2 * D_const * dat$n), dat$M)
   
@@ -366,6 +368,7 @@ calc_LRRi <- function(A_data, B_data, improvement = "increase",
   }
   
   if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length, intervals)
+  if (all(is.na(D_const))) D_const <- trunc_constant(scale, observation_length, intervals)
   if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
   if (D_const > 0) dat$M <- pmax(1 / (2 * D_const * dat$n), dat$M)
   
