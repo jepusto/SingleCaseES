@@ -41,12 +41,12 @@ specify the column names corresponding to each of the following variables:
   Select the value associated with outcomes in the treatment phase. The calculator assumes that all treatment phases
   across every series have the same value in the __Phase Indicator__ column.
   
-- __Within-case session number__: A column that allows the calculator to sequentially order each case. 
+- __Within-Case Session Number__: A column that allows the calculator to sequentially order each case. 
   For each case, number the first observation 1, the second 2, up through the final observation.
   
 - __Outcome__: A column of outcomes.
   
-- __Direction of Improvement__ : If the desired effect size is a non-overlap index you will
+- __Direction of improvement__ : If the desired effect size is a non-overlap index you will
   need to specify the expected direction of improvement. If all of the behaviors in your dataset have a uniform
   improvement direction, then you may select "all increase" or "all decrease". If the direction of improvement
   varies from series to series, you can select "by series". If you choose "by series", you will need 
@@ -60,26 +60,20 @@ You can then select all desired effect sizes and specify relevant details:
   by the variability of the observations in the baseline, and the pooled SD option will standardize the
   SMD by the pooled variance of the two phases.
   
-- __Measurement procedure__: If you select the log-response ratio (LRR) you will be given an option to
-  select the appropriate measurement procedure. If the measurement procedure is uniform for all of the
-  behaviors in your dataset, you may select an overall measurement procedure. For momentary time sampling or
-  continuous recording data, choose "all continuous recording". For partial interval recording or whole
-  interval recording, choose "all interval recording." For event counting data, choose "all event counting".
-  For measurement procedures not listed, choose "all other". If the measurement procedures varies from
-  series to series, you can select "by series". If you choose "by series" you will need to include a variable
-  in your dataset that specifies "continuous recording", "interval recording", "event counting", or "other" 
-  for each series, and then select the variable name in the drop box that appears when you select
-  "by series".
   
-- __Outcome Scale__: If you select the log-response ratio (LRR) you will be given an option to select
+- __Outcome Scale__: If you select log-response ratio (LRRi or LRRd) or the log-odds ratio you will be given an option to select
   the appropriate outcome scale. If the measurement procedure is uniform for all of the behaviors in your 
   dataset, then you can select the appropriate outcome scale -- "all percentage", "all proportion", "all count", 
   "all rate", or "all other". If the outcome scale varies from series to series, you can select "by series".
   If you choose "by series" you will need to include a variable in your dataset that specifies "percentage",
   "proportion", "count", "rate", or "other" for each series, and then select the variable name in the drop
-  box that appears when you select "by series."
+  box that appears when you select "by series." LRRi and LRRd accept data for all outcome scales. Data that is specified as something other than proportion or percentage will not have a LOR calculated for it.
+
+- __Intervals per observation session__: If you select log-response ratio or the log-odds ratio you will be given an option to select a variable in your dataset containing the number of intervals per observation session for any data that was observed using an interval method, for example partial interval recording. For any series that were not observed using an interval method, the values for this entry should be set to missing (NA).
+
+- __Observation session length__: If you select the log-response ratio, you will be given an option to select a variableble in your dataset containing the length of each observation session. For any data where this value is unknown, it should be set to missing (NA).
   
-- __Log-response ratio floor__: If you select the log-response ratio (LRR) you will be given an option to enter the approriate floor for the LRR. The floor must be a non-negative number.
+- __Log-response or log-ratio ratio floor__: If you select the log-response ratio or the log-odds ratio you will be given an option to enter the approriate floor for the effect size. The floor must be a non-negative number.
     
 - __Confidence Level__:  For non-overlap effect sizes that have standard errors, as well as all parametric 
   effect sizes you select, the calculator will provide confidence intervals. You will need to specify what coverage
@@ -89,4 +83,4 @@ You can then select all desired effect sizes and specify relevant details:
   effect size and any accompanying standard errors and confidence interval. If you select wide, each series
   will have a single line with separate columns for each estimated value.
   
-Once you have selected all of the desired effect sizes, click on "Estimate" to estimate the effect sizes. When you have estimated effect sizes, you can download the results by clicking on the "Download displayed results" button. 
+Once you have selected all of the desired effect sizes, click on "Estimate" to estimate the effect sizes. When you have estimated effect sizes, you can download the results by clicking on the "Download results" button. 

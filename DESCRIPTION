@@ -18,7 +18,8 @@ Imports:
   dplyr,
   tidyr,
   rlang
-Suggests: 
+Suggests:
+    spelling, 
     shiny,
     ggplot2,
     testthat,
@@ -26,3 +27,4 @@ Suggests:
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Encoding: UTF-8
+Language: en-US
