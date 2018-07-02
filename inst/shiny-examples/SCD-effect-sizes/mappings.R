@@ -25,8 +25,8 @@ exampleMapping <- list(
                    phase_vals = c("A", "B"),
                    direction = "decrease",
                    session_num = "Session_number",
-                   scale = "all percentage",
+                   scale = "count",
                    intervals = NA,
-                   observation_length = NA)
+                   observation_length = "Session_length")
   
 )

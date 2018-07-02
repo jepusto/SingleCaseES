@@ -11,7 +11,9 @@ behavior of at-risk students. \emph{Behavior Analysis in Practice, 1}(2), 12-18.
 }
 \description{
 Data from an ABAB design conducted by Thorne and Kamps (2008). 
-These data were used as an example in Swan and Pustejovsky (2017).
+These data were used as an example in Swan and Pustejovsky (2017). Academic engagement 
+was collected via continuous recording (marked as "other") and inappropriate 
+verbalizations were collected via event counting (marked as "count").
 The variables are as follows:
 
 \itemize{
@@ -19,7 +21,9 @@ The variables are as follows:
   \item \code{Case}. Participant identifier.  
   \item \code{Session_number}. Measurement occasion.
   \item \code{Outcome}. Outcome scores
-  \item \code{Trt} Treatment indicators.
+  \item \code{Trt}. Treatment indicators.
+  \item \code{Session_length}. Length of the observation session.
+  \item \code{Measure}. The metric in which the outcome measurement is expressed (count or other).
 }
 }
 \references{
