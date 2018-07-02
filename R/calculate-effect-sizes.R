@@ -89,6 +89,8 @@ calc_ES <- function(A_data, B_data,
   
   if (format != "long") {
     
+    if(any(ES == "Tau_U")) ES[ES == "Tau_U"] <- "Tau-U"
+    
     val_names <- setdiff(names(res), "ES")
     sym_val_names <- rlang::syms(val_names)
     val <- rlang::sym("val")
@@ -102,7 +104,7 @@ calc_ES <- function(A_data, B_data,
     # re-order names
     long_names <- 
       purrr::cross2(val_names, ES) %>%
-      purrr::map(.f = function(x) paste(rev(x), collapse = "_")) %>%
+      purrr::map(.f = function(x) paste(rev(x), collapse = "_"))  %>%
       intersect(names(res)) %>%
       rlang::syms()
     
