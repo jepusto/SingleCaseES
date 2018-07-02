@@ -6,8 +6,10 @@
 \title{Schmidt (2007)}
 \format{A data frame with 172 rows and 13 variables}
 \source{
-Schmidt, A. C. (2007). The effects of a group contingency on group and individual behavior in an urban 
-first-grade classroom. University of Kansas. Retrieved from http://gradworks.umi.com/14/43/1443719.html
+Schmidt, A. C. (2007). The effects of a group contingency on group
+  and individual behavior in an urban first-grade classroom.  Masters Thesis,
+  University of Kansas, Department of Applied Behavioral Sciences. ProQuest
+  Dissertations & Theses Global, thesis number 1443719.
 }
 \description{
 Data from a study by Schmidt (2007). The variables are as follows:
