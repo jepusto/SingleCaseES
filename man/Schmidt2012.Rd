@@ -12,7 +12,8 @@ and Asperger's syndrome. \emph{Exceptionality}, 20(2), 94-113. doi:10.1080/09362
 }
 \description{
 Data from an ABAB design conducted by Schmidt and 
-Stichter (2012). The variables are as follows:
+Stichter (2012). All data were collected via continuous recording.
+ The variables are as follows:
 
 \itemize{
   \item \code{Case}. Participant identifier.
@@ -20,6 +21,8 @@ Stichter (2012). The variables are as follows:
   \item \code{Trt} Treatment indicators.
   \item \code{Outcome}. Outcome scores.
   \item \code{Session_num}. Measurement occasion.
+  \item \code{Session_length} Length of the observation session.
+  \item \code{Procedure}  The metric in which the outcome measurement is expressed, all "other".
 }
 }
 \keyword{datasets}

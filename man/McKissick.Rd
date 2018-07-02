@@ -12,13 +12,17 @@ student engagement in an urban second-grade classroom. \emph{Psychology in the S
 944–959. https://doi.org/10.1002/pits.20516
 }
 \description{
-Data from a study by McKissick et al. (2010). The variables are as follows:
+Disruptive behavior data from a study by McKissick et al. (2010). All data were collected
+via event counting. The variables are as follows:
 
 \itemize{
   \item \code{Case_Pseudonym}. Case Pseudonym provided by the authors.
   \item \code{Session_number}. Within-series session-number
   \item \code{Condition}. Describes whether the outcome is in the baseline (A) or treatment (B) phase.
   \item \code{Outcome}. Value for the outcome.
+  \item \code{Session_length}. Length of the observation session.
+  \item \code{Procedure}. The metric in which the outcome measurement is expressed, all "count".
+  \item \code{Session_length}. The length of the observation session.
 }
 }
 \keyword{datasets}

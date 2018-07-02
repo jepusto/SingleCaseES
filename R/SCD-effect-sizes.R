@@ -58,13 +58,17 @@ NULL
 
 #' @title McKissick et al. (2010)
 #' 
-#' @description  Data from a study by McKissick et al. (2010). The variables are as follows:
+#' @description  Disruptive behavior data from a study by McKissick et al. (2010). All data were collected
+#' via event counting. The variables are as follows:
 #' 
 #' \itemize{
 #'   \item \code{Case_Pseudonym}. Case Pseudonym provided by the authors.
 #'   \item \code{Session_number}. Within-series session-number
 #'   \item \code{Condition}. Describes whether the outcome is in the baseline (A) or treatment (B) phase.
 #'   \item \code{Outcome}. Value for the outcome.
+#'   \item \code{Session_length}. Length of the observation session.
+#'   \item \code{Procedure}. The metric in which the outcome measurement is expressed, all "count".
+#'   \item \code{Session_length}. The length of the observation session.
 #' }
 #' 
 #' @docType data
@@ -116,7 +120,9 @@ NULL
 #' @title Thorne and Kamps (2008)
 #' 
 #' @description Data from an ABAB design conducted by Thorne and Kamps (2008). 
-#' These data were used as an example in Swan and Pustejovsky (2017).
+#' These data were used as an example in Swan and Pustejovsky (2017). Academic engagement 
+#' was collected via continuous recording (marked as "other") and inappropriate 
+#' verbalizations were collected via event counting (marked as "count").
 #' The variables are as follows:
 #' 
 #' \itemize{
@@ -124,7 +130,9 @@ NULL
 #'   \item \code{Case}. Participant identifier.  
 #'   \item \code{Session_number}. Measurement occasion.
 #'   \item \code{Outcome}. Outcome scores
-#'   \item \code{Trt} Treatment indicators.
+#'   \item \code{Trt}. Treatment indicators.
+#'   \item \code{Session_length}. Length of the observation session.
+#'   \item \code{Measure}. The metric in which the outcome measurement is expressed (count or other).
 #' }
 #' 
 #' @docType data
@@ -141,7 +149,8 @@ NULL
 #' @title Schmidt and Stichter (2012)
 #' 
 #' @description Data from an ABAB design conducted by Schmidt and 
-#' Stichter (2012). The variables are as follows:
+#' Stichter (2012). All data were collected via continuous recording.
+#'  The variables are as follows:
 #' 
 #' \itemize{
 #'   \item \code{Case}. Participant identifier.
@@ -149,6 +158,8 @@ NULL
 #'   \item \code{Trt} Treatment indicators.
 #'   \item \code{Outcome}. Outcome scores.
 #'   \item \code{Session_num}. Measurement occasion.
+#'   \item \code{Session_length} Length of the observation session.
+#'   \item \code{Procedure}  The metric in which the outcome measurement is expressed, all "other".
 #' }
 #' 
 #' @docType data

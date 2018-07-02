@@ -4,6 +4,9 @@ library(stringr)
 #--------------------
 
 Schmidt2012 <- read.csv("auxilliary/Schmidt.csv", stringsAsFactors = FALSE)
+Schmidt2012 <- Schmidt2012 %>%
+  mutate(Session_length = 10,
+         Procedure = "other")
 str(Schmidt2012)
 save(Schmidt2012, file = "data/Schmidt2012.RData", compress = TRUE)
 
@@ -12,6 +15,9 @@ save(Schmidt2012, file = "data/Schmidt2012.RData", compress = TRUE)
 #--------------------
 
 Thorne <- read.csv("auxilliary/Thorne.csv", stringsAsFactors = FALSE)
+Thorne <- Thorne %>%
+  mutate(Session_length = 15,
+         Procedure = ifelse(Measure == "Academic Engagement", "other", "count"))
 str(Thorne)
 save(Thorne, file = "data/Thorne.RData", compress = TRUE)
 
@@ -19,7 +25,10 @@ save(Thorne, file = "data/Thorne.RData", compress = TRUE)
 # McKissick
 #-------------------
 
-McKissick <- read.csv("auxilliary/McKissick.csv", stringsAsFactors = FALSE)[-1]
+McKissick <- read.csv("auxilliary/McKissick.csv", stringsAsFactors = FALSE)
+McKissick <- McKissick %>%
+  mutate(Session_length = 20,
+         Procedure = "count")
 str(McKissick)
 save(McKissick, file = "data/McKissick.RData", compress = TRUE)
 
