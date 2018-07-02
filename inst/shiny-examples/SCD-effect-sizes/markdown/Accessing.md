@@ -13,13 +13,13 @@ calculator is hosted by a service called
 [shinyapps.io](https://www.shinyapps.io/), which imposes limitations on
 the number of concurrent users of the site and the total hours of active use
 of the site. Consequently, you might find that the site is not always
-available (especially towards the end of the month). If you intend to 
-use the calculator extensively, please follow the steps below in order to 
-install it on your own computer.
+available---especially towards the end of the month. If you intend to 
+use the calculator extensively, please install it on your own computer 
+by following the steps below.
 
 #### Access through RStudio
 
-In order to run the effect size calculator on your own computer, you
+To run the effect size calculator on your own computer, you
 will need to install two pieces of software (R and RStudio), both of
 which are open-source and freely available. You will then need to follow
 several further steps to configure that software. The installation is
