@@ -2,7 +2,7 @@
 
 For an outcome where increase (decrease) is desirable, Parker, Vannest, and Davis (2011) define PAND as the proportion of observations remaining after removing the fewest possible number of observations from either phase so that the highest remaining point from the baseline phase is less than the lowest remaining point from the treatment phase (lowest remaining point from the baseline phase is larger than the highest remaining point from the treatment phase).
 
-This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase. 
+This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase (Pustejovsky, 2018). 
 
 #### Estimation
 
@@ -22,5 +22,6 @@ where $y^A_{(m + 1)} = \infty$, $y^B_{(0)} = -\infty$, and the maximum is taken 
 
 #### Primary reference
 
-Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in single-case research: A review of nine nonoverlap techniques. _Behavior Modification, 35_(4), 303--22. doi: [10.1177/0145445511399147](http://dx.doi.org/10.1177/0145445511399147)
+Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in single-case research: A review of nine nonoverlap techniques. _Behavior Modification, 35_(4), 303--22. https://dx.doi.org/10.1177/0145445511399147
 
+Pustejovsky, J. E. (2018). Procedural sensitivities of effect sizes for single-case designs with behavioral outcome. _Psychological Methods_, forthcoming. https://doi.org/10.1037/met0000179

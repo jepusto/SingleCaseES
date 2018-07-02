@@ -2,7 +2,7 @@
 
 The robust improvement rate difference is defined as the robust phi coefficient corresponding to a certain $2 \times 2$ table that is a function of the degree of overlap between the observations each phase (Parker, Vannest, & Davis, 2011). 
 
-This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase. 
+This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase (Pustejovsky, 2018). 
 
 #### Estimation
 
@@ -26,7 +26,7 @@ m - \\tilde{i} & \\tilde{j} \\\\ \\hline
 \\end{array}
 $$
 
-Parker, Vannest, and Brown (2009) proposed the _non-robust_ improvement rate difference, which is equivalent to the phi coefficient for this table. Parker, Vannest, and Davis (2011) proposed to instead use the _robust_ phi coefficient, which involves modifying the table so that the row- and column-margins are equal. Robust IRD is thus equal to 
+Parker, Vannest, and Brown (2009) proposed the _non-robust_ improvement rate difference, which is equivalent to the phi coefficient from this table. Parker, Vannest, and Davis (2011) proposed to instead use the _robust_ phi coefficient, which involves modifying the table so that the row- and column-margins are equal. Robust IRD is thus equal to 
 
 $$
 \text{IRD} = \frac{n - m - \tilde{i} - \tilde{j}}{2 n} - \frac{m + n - \tilde{i} - \tilde{j}}{2 m}.
@@ -41,8 +41,10 @@ $$
 
 #### Primary reference
 
-Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in single-case research: A review of nine nonoverlap techniques. _Behavior Modification, 35_(4), 303--22. doi: [10.1177/0145445511399147](http://dx.doi.org/10.1177/0145445511399147)
+Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in single-case research: A review of nine nonoverlap techniques. _Behavior Modification, 35_(4), 303--22. https://dx.doi.org/10.1177/0145445511399147
 
 #### Additional references 
 
-Parker, R. I., Vannest, K. J., & Brown, L. (2009). The improvement rate difference for single-case research. _Exceptional Children, 75_(2), 135–150. doi: [10.1177/001440290907500201](http://dx.doi.org/10.1177/001440290907500201)
+Parker, R. I., Vannest, K. J., & Brown, L. (2009). The improvement rate difference for single-case research. _Exceptional Children, 75_(2), 135–150. https://dx.doi.org/10.1177/001440290907500201
+
+Pustejovsky, J. E. (2018). Procedural sensitivities of effect sizes for single-case designs with behavioral outcome. _Psychological Methods_, forthcoming. https://doi.org/10.1037/met0000179

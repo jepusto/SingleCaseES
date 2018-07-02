@@ -2,7 +2,7 @@
 
 Tau-U is one of several effect sizes proposed by Parker, Vannest, Davis, and Sauber (2011). The Tau-U variant is similar to Tau, but includes an adjustment for baseline time trends. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, plus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
 
-This effect size does not have a stable parameter definition. 
+This effect size does not have a stable parameter definition (Tarlow, 2017). 
 
 #### Estimation
 
@@ -22,4 +22,6 @@ $$
 
 #### Primary reference
 
-Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. (2011). Combining nonoverlap and trend for single-case research: Tau-U. _Behavior Therapy, 42_(2), 284--299. doi: [10.1016/j.beth.2010.08.006](http://dx.doi.org/10.1016/j.beth.2010.08.006)
+Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. (2011). Combining nonoverlap and trend for single-case research: Tau-U. _Behavior Therapy, 42_(2), 284--299. https://dx.doi.org/10.1016/j.beth.2010.08.006
+
+Tarlow, K. R. (2017). An improved rank correlation effect size statistic for single-case designs: Baseline corrected Tau. _Behavior Modification, 41_(4), 427–467. https://doi.org/10.1177/0145445516676750

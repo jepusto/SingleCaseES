@@ -20,7 +20,7 @@ $$
 \text{Tau} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w_{ij} = 2 \times \text{NAP} - 1.
 $$
 
-Standard errors and confidence intervals for Tau are calculated using transformations of the corresponding SEs and CIs for NAP. All of the methods assume that the observations are mutually independent and are identically distributed within each phase. The standard error for Tau is calculated as $SE_{\text{Tau}} = 2 SE_{\text{NAP}}$, where $SE_{\text{NAP}}$ is the standard error for NAP from Hanley and McNeil (1982). The CI for $\tau$ is calculated as 
+Standard errors and confidence intervals for Tau are calculated using transformations of the corresponding SEs and CIs for NAP. All of the methods assume that the observations are mutually independent and are identically distributed within each phase. The standard error for Tau is calculated as $SE_{\text{Tau}} = 2 SE_{\text{NAP}}$, where $SE_{\text{NAP}}$ is the standard error for NAP from Sen (1967). The CI for $\tau$ is calculated as 
 
 $$
 [L_{\tau}, U_{\tau}] = [2 L_{\theta} - 1, 2 U_{\theta} - 1],
@@ -30,12 +30,12 @@ where $L_{\theta}$ and $U_{\theta}$ are the lower and upper bounds of the CI for
 
 #### Primary reference
 
-Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. (2011). Combining nonoverlap and trend for single-case research: Tau-U. _Behavior Therapy, 42_(2), 284--299. doi: [10.1016/j.beth.2010.08.006](http://dx.doi.org/10.1016/j.beth.2010.08.006)
+Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. (2011). Combining nonoverlap and trend for single-case research: Tau-U. _Behavior Therapy, 42_(2), 284--299. https://dx.doi.org/10.1016/j.beth.2010.08.006
 
 #### Additional references
 
-Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. _Radiology, 143_, 29--36. doi: [10.1148/radiology.143.1.7063747](http://dx.doi/org/10.1148/radiology.143.1.7063747)
+Sen, P. K. (1967). A note on asymptotically distribution-free confidence bounds for P{X<Y}, based on two independent samples. _The Annals of Mathematical Statistics, 29_(1), 95-102. https://www.jstor.org/stable/25049448
 
 Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
 on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation. 
-_Statistics in Medicine, 25_(4), 559--573. doi: [10.1002/sim.2324](http://dx.doi.org/10.1002/sim.2324)
+_Statistics in Medicine, 25_(4), 559--573. https://dx.doi.org/10.1002/sim.2324

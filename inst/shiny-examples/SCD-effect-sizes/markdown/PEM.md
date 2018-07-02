@@ -18,4 +18,4 @@ $$
 
 #### Primary reference
 
-Ma, H.-H. (2006). An alternative method for quantitative synthesis of single-subject researches: Percentage of data points exceeding the median. _Behavior Modification, 30_(5), 598–617. doi: [10.1177/0145445504272974](http://dx.doi.org/10.1177/0145445504272974)
+Ma, H.-H. (2006). An alternative method for quantitative synthesis of single-subject researches: Percentage of data points exceeding the median. _Behavior Modification, 30_(5), 598–617. https://dx.doi.org/10.1177/0145445504272974

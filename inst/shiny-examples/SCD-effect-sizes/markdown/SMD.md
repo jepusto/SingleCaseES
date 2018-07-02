@@ -20,7 +20,7 @@ $$
 d_A = \left(1 - \frac{3}{4m - 5}\right) \frac{\bar{y}_B - \bar{y}_A}{s_A}.
 $$
 
-The term in parentheses is a small-sample bias correction term (cf. Hedges, 1981). The standard error of this estimate is calculated as
+The term in parentheses is a small-sample bias correction term (cf. Hedges, 1981; Pustejovsky, 2018). The standard error of this estimate is calculated as
 
 $$
 SE_{d_A} = \left(1 - \frac{3}{4m - 5}\right)\sqrt{\frac{1}{m} + \frac{s_B^2}{n s_A^2} + \frac{d_A^2}{2(m - 1)}}.
@@ -61,3 +61,5 @@ Gingerich, W. J. (1984). Meta-analysis of applied time-series data. Journal of A
 #### Additional references
 
 Hedges, L. V. (1981). Distribution theory for Glass’s estimator of effect size and related estimators. Journal of Educational Statistics, 6(2), 107–128. doi: [10.3102/10769986006002107](http://dx.doi.org/10.3102/10769986006002107)
+
+Pustejovsky, J. E. (2018). Procedural sensitivities of effect sizes for single-case designs with behavioral outcome. _Psychological Methods_, forthcoming. https://doi.org/10.1037/met0000179
