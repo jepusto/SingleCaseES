@@ -12,7 +12,7 @@ student engagement in an urban second-grade classroom. \emph{Psychology in the S
 944–959. https://doi.org/10.1002/pits.20516
 }
 \description{
-Data from a study by McKissick et al. (2010). All data were collected
+Disruptive behavior data from a study by McKissick et al. (2010). All data were collected
 via event counting. The variables are as follows:
 
 \itemize{

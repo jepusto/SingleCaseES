@@ -58,7 +58,7 @@ NULL
 
 #' @title McKissick et al. (2010)
 #' 
-#' @description  Data from a study by McKissick et al. (2010). All data were collected
+#' @description  Disruptive behavior data from a study by McKissick et al. (2010). All data were collected
 #' via event counting. The variables are as follows:
 #' 
 #' \itemize{
