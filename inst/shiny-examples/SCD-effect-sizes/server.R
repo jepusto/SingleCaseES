@@ -153,14 +153,14 @@ shinyServer(function(input, output, session) {
     phase_choices <- unique(datFile()[input$b_phase])
     if(input$dat_type == "dat"){
       list(
-      selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices),
-      selectInput("b_treat", label = "Treatment Phase Value", choices = phase_choices)
+      selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices)
+      # selectInput("b_treat", label = "Treatment Phase Value", choices = phase_choices)
       )
     }else{
       curMap <- exampleMapping[[input$example]]
       list(
-        selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices, selected = curMap$phase_vals[1]),
-        selectInput("b_treat", label = "Treatment Phase Value", choices = phase_choices, selected = curMap$phase_vals[2])  
+        selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices, selected = curMap$phase_vals[1])
+        # selectInput("b_treat", label = "Treatment Phase Value", choices = phase_choices, selected = curMap$phase_vals[2])  
       )
     }
   })
@@ -169,7 +169,7 @@ shinyServer(function(input, output, session) {
     var_names <- names(datFile())
     if(input$dat_type == "dat"){
       list(
-        selectInput("session_number", label = "Within-Case Session Number", choices = var_names[5]),
+        selectInput("session_number", label = "Within-Case Session Number", choices = var_names, selected = var_names[5]),
         selectInput("b_out", label = "Outcome", choices = var_names, selected = var_names[4]),
         selectInput("bimprovement", label = "Direction of improvement", choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series")))
     }else{
