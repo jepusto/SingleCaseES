@@ -56,7 +56,7 @@
 
 calc_ES <- function(A_data, B_data, 
                     condition, outcome, 
-                    baseline_phase = unique(condition)[1],
+                    baseline_phase = NULL,
                     ES = c("LRRd","LRRi","SMD","Tau"), 
                     improvement = "increase", 
                     ..., 
@@ -66,10 +66,15 @@ calc_ES <- function(A_data, B_data,
   if (missing(A_data) | missing(B_data)) {
     if (missing(outcome) | missing(condition)) stop("You must provide the data using the arguments 'A_data' and 'B_data' or 'condition' and 'outcome'.")
     
-    conditions <- unique(condition)
+    conditions <- as.character(unique(condition))
     if (length(conditions) != 2) stop("The 'condition' variable must have exactly two unique values.")
-    dat <- split(outcome, condition)
+
+    if (is.null(baseline_phase)) baseline_phase <- conditions[1]
+    if (!is.character(baseline_phase)) baseline_phase <- as.character(baseline_phase)
     treatment_phase <- setdiff(conditions, baseline_phase)
+    
+    dat <- split(outcome, condition)
+    
     A_data <- dat[[baseline_phase]]
     B_data <- dat[[treatment_phase]]
   } 
@@ -79,7 +84,11 @@ calc_ES <- function(A_data, B_data,
   A_data <- A_data[!is.na(A_data)]
   B_data <- B_data[!is.na(B_data)]
   
-  ES_to_calc <- paste0("calc_", ES)
+  # Allow for Tau-U variant names
+  ES_names <- ES
+  Tau_U_names <- c("Tau_U","Tau-U","TauU")
+  if (any(Tau_U_names %in% ES)) union(setdiff(ES, Tau_U_names), "Tau_U") 
+  ES_to_calc <- paste0("calc_", ES_names)
   
   res <- purrr::invoke_map_dfr(
     ES_to_calc,  
@@ -122,16 +131,16 @@ calc_ES <- function(A_data, B_data,
 #'   single-case data series.
 #' @param dat A dataframe containing SCD series for which effect sizes
 #'   will be calculated.
+#' @param grouping_vars A vector of strings of the names of the variables that
+#'   uniquely identify each series (e.g. pseudonym, outcome type, study)
 #' @param condition A string containing the variable name that identifies
 #'  the treatment condition for each observation in the series.
 #' @param outcome A string containing the variable name of the outcome data.
 #' @param session_number A string containing the name of a variable used to
 #'   order outcomes within each series.
-#' @param grouping_vars A vector of strings of the names of the variables that
-#'   uniquely identify each series (e.g. pseudonym, outcome type, study)
 #' @param baseline_phase character string specifying which value of
-#'   \code{condition} corresponds to the baseline phase. Defaults to first
-#'   observed value of \code{condition}.
+#'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the default), the first
+#'   observed value of \code{condition} within the series will be used.
 #' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Defaults to calculating the LRRd, LRRi, SMD,
 #'   and Tau indices.
@@ -175,10 +184,10 @@ calc_ES <- function(A_data, B_data,
 #'   confidence interval for each specified effect size.
 
 batch_calc_ES <- function(dat, 
+                          grouping_vars,
                           condition, outcome,
                           session_number,
-                          grouping_vars,
-                          baseline_phase = dat[[condition]][1],
+                          baseline_phase = NULL,
                           ES = c("LRRd","LRRi","SMD","Tau"), 
                           improvement = "increase",
                           scale = NA,
@@ -189,31 +198,24 @@ batch_calc_ES <- function(dat,
                           format = "long"
                           ) {
 
-  if(!(condition %in% names(dat))) stop("The condition variable name is not in the provided dataset.")
+  if (!(condition %in% names(dat))) stop("The condition variable name is not in the provided dataset.")
 
-  if(!(outcome %in% names(dat))) stop("The outcome variable name is not in the provided dataset.")
+  if (!(outcome %in% names(dat))) stop("The outcome variable name is not in the provided dataset.")
   
-  if(!(baseline_phase %in% unique(dat[[condition]])) && !(baseline_phase %in% names(dat))) stop ("The provided baseline phase is not one of the values in the provided condition variable.")
-    
-  if(!(session_number %in% names(dat))) stop("The session number variable name is not in the provided dataset.")
+  if (!(session_number %in% names(dat))) stop("The session number variable name is not in the provided dataset.")
 
-  if(!all(grouping_vars %in% names(dat))) stop(paste0("The following grouping variables are not in the provided dataset:
+  if (!all(grouping_vars %in% names(dat))) stop(paste0("The following grouping variables are not in the provided dataset:
                                                       ", grouping_vars[!(grouping_vars %in% names(dat))]))
 
-  if(!(improvement %in% c("increase", "decrease")) && !(improvement %in% names(dat))) stop("The improvement variable name is not in the provided dataset.")
+  if (!(improvement %in% c("increase", "decrease")) && !(improvement %in% names(dat))) stop("The improvement variable name is not in the provided dataset.")
   
-  if(!is.na(scale) && !(scale %in% c("count", "rate", "proportion", "percentage")) && !(scale %in% names(dat))) stop("The scale variable name is not in the provided dataset.")
+  if (!is.na(scale) && !(scale %in% c("count", "rate", "proportion", "percentage")) && !(scale %in% names(dat))) stop("The scale variable name is not in the provided dataset.")
   
-  if(!is.na(intervals) && typeof(intervals) == "character" && !(intervals %in% names(dat))) stop("The intervals variable name is not in the provided dataset.")
+  if (!is.na(intervals) && typeof(intervals) == "character" && !(intervals %in% names(dat))) stop("The intervals variable name is not in the provided dataset.")
   
-  if(!is.na(observation_length) && typeof(observation_length) == "character" && !(observation_length %in% names(dat))) stop("Observation session length variable name not in dataset.")
+  if (!is.na(observation_length) && typeof(observation_length) == "character" && !(observation_length %in% names(dat))) stop("Observation session length variable name not in dataset.")
   
-  if(baseline_phase %in% unique(dat[[condition]])){
-    dat$baseline_phase <- baseline_phase
-    baseline_phase <- "baseline_phase"
-  }
-  
-  if(improvement %in% c("increase", "decrease")){
+  if (improvement %in% c("increase", "decrease")) {
     dat$improvement <- improvement
     improvement <- "improvement"
   }
@@ -240,7 +242,7 @@ batch_calc_ES <- function(dat,
       dplyr::arrange(!!rlang::sym(session_number)) %>%
       dplyr::do(calc_ES(condition = .data[[condition]], 
                         outcome = .data[[outcome]], 
-                        baseline_phase = .data[[baseline_phase]][1],
+                        baseline_phase = baseline_phase,
                         ES = ES, 
                         improvement = .data[[improvement]][1], 
                         scale =  .data[[scale]],

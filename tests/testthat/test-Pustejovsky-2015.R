@@ -15,10 +15,11 @@ Shogren <- Shogren %>%
   ungroup()
 
 ShogrenSMD <- batch_calc_ES(dat = Shogren,
+                            grouping_vars = c("Study", "Measure","Case"),
                             condition = "Phase",
+                            baseline_phase = "No Choice",
                             outcome = "outcome",
                             session_number = "session_number",
-                            grouping_vars = c("Study", "Measure","Case"),
                             improvement = "smd_improvement",
                             ES = "SMD",
                             scale = "scale",
@@ -31,10 +32,11 @@ ShogrenSMD <- batch_calc_ES(dat = Shogren,
 
 Shogren_LRR_LOR_PND <- 
   batch_calc_ES(dat = Shogren,
+                grouping_vars = c("Study", "Measure", "Case"),
                 condition = "Phase",
+                baseline_phase = "No Choice",
                 outcome = "outcome",
                 session_number = "session_number",
-                grouping_vars = c("Study", "Measure", "Case"),
                 improvement = "direction",
                 ES = c("PND", "LRRd", "LOR"),
                 scale = "scale",
@@ -95,7 +97,6 @@ ES <-
   full_join(ES, by = c("Study", "Measure", "Case")) %>%
   full_join(Shogren_LRR_LOR_PND, by = c("Study", "Measure", "Case")) %>%
   full_join(ShogrenSMD, by = c("Study", "Measure", "Case"))
-
 
 test_that("LRRd, LOR, SMD, and PND are correct for the Pustejovsky (2015) data", {
   expect_equal(ES$LRRd_Est, ES$log_RR2)
