@@ -4,10 +4,9 @@
 \alias{calc_ES}
 \title{Calculate effect sizes}
 \usage{
-calc_ES(A_data, B_data, condition, outcome,
-  baseline_phase = unique(condition)[1], ES = c("LRRd", "LRRi", "SMD",
-  "Tau"), improvement = "increase", ..., confidence = 0.95,
-  format = "long")
+calc_ES(A_data, B_data, condition, outcome, baseline_phase = NULL,
+  ES = c("LRRd", "LRRi", "SMD", "Tau"), improvement = "increase", ...,
+  confidence = 0.95, format = "long")
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}

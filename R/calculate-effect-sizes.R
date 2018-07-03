@@ -129,45 +129,49 @@ calc_ES <- function(A_data, B_data,
 #' @description Calculates one or more effect size estimates, along with
 #'   associated standard errors and confidence intervals, if available, for a
 #'   single-case data series.
-#' @param dat A dataframe containing SCD series for which effect sizes
-#'   will be calculated.
+#' @param dat A dataframe containing SCD series for which effect sizes will be
+#'   calculated.
 #' @param grouping_vars A vector of strings of the names of the variables that
 #'   uniquely identify each series (e.g. pseudonym, outcome type, study)
-#' @param condition A string containing the variable name that identifies
-#'  the treatment condition for each observation in the series.
+#' @param condition A string containing the variable name that identifies the
+#'   treatment condition for each observation in the series.
 #' @param outcome A string containing the variable name of the outcome data.
 #' @param session_number A string containing the name of a variable used to
 #'   order outcomes within each series.
 #' @param baseline_phase character string specifying which value of
-#'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the default), the first
-#'   observed value of \code{condition} within the series will be used.
+#'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the
+#'   default), the first observed value of \code{condition} within the series
+#'   will be used.
 #' @param ES character string or character vector specifying which effect size
-#'   index or indices to calculate. Defaults to calculating the LRRd, LRRi, SMD,
-#'   and Tau indices.
+#'   index or indices to calculate. Possible values are \code{"LRRd"},
+#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
+#'   \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and
+#'   \code{"Tau-U"}. Defaults to calculating the LRRd, LRRi, SMD, and Tau
+#'   indices.
 #' @param improvement character string either indicating the direction of
-#'   uniform improvement ("increase" or "decrease") or the variable name of 
-#'   a variable identifying the direction of improvement for each series. 
-#'   Default is "increase".
+#'   uniform improvement ("increase" or "decrease") or the variable name of a
+#'   variable identifying the direction of improvement for each series. Default
+#'   is "increase".
 #' @param scale character string indicating the common scale of the outcome
-#'   variable across all of the series in the data set or the name of a variable 
-#'   within the dataset that identifies the outcome scale within each series. 
-#'   Possible values for the scale are \code{"percentage"} for a percentage with 
-#'   range 0-100, \code{"proportion"} for a proportion with range 0-1, 
-#'   \code{"count"} for a frequency count (0 or positive integers), 
-#'   \code{"rate"} for a standardized rate per minute. If a vector, the most 
-#'   frequent unique value will be used and missing values will be ignored. 
+#'   variable across all of the series in the data set or the name of a variable
+#'   within the dataset that identifies the outcome scale within each series.
+#'   Possible values for the scale are \code{"percentage"} for a percentage with
+#'   range 0-100, \code{"proportion"} for a proportion with range 0-1,
+#'   \code{"count"} for a frequency count (0 or positive integers),
+#'   \code{"rate"} for a standardized rate per minute. If a vector, the most
+#'   frequent unique value will be used and missing values will be ignored.
 #'   Defaults to \code{NA}.
-#' @param intervals for interval recording procedures. Either the total number of
-#'   intervals per observation session common to all series in the dataset, or the
-#'   name of a variable within the dataset that identifies the number of intervals
-#'   for each observation. If a variable name, the mean number of intervals within
-#'   each series will be used. Missing values will be ignored. Defaults to
-#'   \code{NA}.
+#' @param intervals for interval recording procedures. Either the total number
+#'   of intervals per observation session common to all series in the dataset,
+#'   or the name of a variable within the dataset that identifies the number of
+#'   intervals for each observation. If a variable name, the mean number of
+#'   intervals within each series will be used. Missing values will be ignored.
+#'   Defaults to \code{NA}.
 #' @param observation_length Used for the log-response ratio. Either the common
 #'   observation session length (in minutes) across all series in the dataset or
-#'   a variable name containing the observation session length for each 
-#'   observation. If a variable name, the mean observation session length within 
-#'   each series will be used. Missing values will be ignored. Defaults to 
+#'   a variable name containing the observation session length for each
+#'   observation. If a variable name, the mean observation session length within
+#'   each series will be used. Missing values will be ignored. Defaults to
 #'   \code{NA}.
 #' @param ... further arguments used for calculating some of the effect size
 #'   indices.
@@ -176,7 +180,8 @@ calc_ES <- function(A_data, B_data,
 #' @param format character string specifying whether to organize the results in
 #'   \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.
 #'
-#' @details Calculates one or more effect size indices for each series in a dataset
+#' @details Calculates one or more effect size indices for each series in a
+#'   dataset
 #'
 #' @export
 #'
