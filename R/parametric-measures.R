@@ -6,6 +6,12 @@ summary_stats <- function(A_data, B_data) {
   M <- c(mean(A_data, na.rm = TRUE), mean(B_data, na.rm = TRUE))
   V <- c(var(A_data, na.rm = TRUE), var(B_data, na.rm = TRUE))
   
+  if (any(n < 2)) {
+    short_phases <- c("A","B")[n < 2]
+    phases <- ifelse(all(n < 2), "phases", "phase")
+    warning(paste(paste(short_phases, collapse = ", "), phases, "contains less than 2 observations."))
+  }
+  
   data.frame(n = n, M = M, V = V)
 }
 
