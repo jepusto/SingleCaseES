@@ -1,0 +1,42 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Intro
+
+Point to the web-app, but then spend rest of vignette on R functions.
+
+# Using SingleCaseES
+
+## NAP
+
+### A, B inputs
+
+### condition, outcome inputs
+
+## Other effect size functions
+
+## calc_ES()
+
+## batch_calc_ES()
+
+# Effect size calculation details
+
+# An extended example
+
+
+
