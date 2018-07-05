@@ -1,10 +1,15 @@
 context("Handling phases with a single observation.")
 
 A1 <- rbinom(1, 15, 0.3) * 100 / 15
+
 B1 <- rbinom(1, 15, 0.2) * 100 / 15
+while (A1 == B1) B1 <- rbinom(1, 15, 0.2) * 100 / 15
 
 A3 <- rbinom(3, 14:16, 0.3) * 100 / (14:16)
+while (B1 %in% A3) A3 <- rbinom(3, 14:16, 0.3) * 100 / (14:16)
+
 B3 <- rbinom(3, 14:16, 0.2) * 100 / (14:16)
+while (A1 %in% B3) B3 <- rbinom(3, 14:16, 0.2) * 100 / (14:16)
 
 test_that("calc_ES() works with single observation in baseline.", {
   
@@ -29,6 +34,7 @@ test_that("calc_ES() works with single observation in baseline.", {
                   improvement = "decrease", ES = c("NAP","Tau","PND","PAND","PEM","IRD","Tau-U"),
                   confidence = NULL, format = "wide")
   expect_identical(NOMs$NAP_Est, NOMs$PEM_Est)
+  expect_identical(NOMs$NAP_Est, NOMs$PND_Est)
   expect_equal(NOMs$Tau_Est, NOMs$`Tau-U_Est`)
 })
 
@@ -55,6 +61,7 @@ test_that("calc_ES() works with single observation in treatment", {
                   improvement = "decrease", ES = c("NAP","Tau","PND","PAND","PEM","IRD","Tau-U"),
                   confidence = NULL, format = "wide")
   expect_identical(NOMs$NAP_Est, NOMs$PEM_Est)
+  expect_identical(NOMs$NAP_Est, NOMs$PND_Est)
   expect_equal(NOMs$Tau_Est, NOMs$`Tau-U_Est`)
 })
 
@@ -87,6 +94,7 @@ test_that("calc_ES() works with single observation in each phase", {
                   improvement = "decrease", ES = c("NAP","Tau","PND","PAND","PEM","IRD","Tau-U"),
                   confidence = NULL, format = "wide")
   expect_identical(NOMs$NAP_Est, NOMs$PEM_Est)
+  expect_identical(NOMs$NAP_Est, NOMs$PND_Est)
   expect_equal(NOMs$Tau_Est, NOMs$`Tau-U_Est`)
 })
 
