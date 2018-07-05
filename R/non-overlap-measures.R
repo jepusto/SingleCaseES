@@ -95,7 +95,7 @@ calc_NAP <- function(A_data, B_data,
   m <- length(A_data)
   n <- length(B_data)
   
-  Q_mat <- sapply(B_data, function(j) (j > A_data) + 0.5 * (j == A_data))
+  Q_mat <- matrix(sapply(B_data, function(j) (j > A_data) + 0.5 * (j == A_data)), nrow = m, ncol = n)
   NAP <- mean(Q_mat)
   
   res <- data.frame(ES = "NAP", Est = NAP, stringsAsFactors = FALSE)
