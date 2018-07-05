@@ -17,7 +17,7 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
   if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
   
   A <- is.null(scale) 
-  B <- (scale %in% c("count","rate") & is.null(observation_length))
+  B <- (scale == "rate" & is.null(observation_length))
   C <- (scale %in% c("percentage","proportion") & is.null(intervals))
   if (A | B | C) return(Inf)
 
@@ -25,7 +25,7 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
   if (is.null(intervals)) intervals <- NA
 
   D <- is.na(scale)
-  E <- (scale %in% c("count","rate") & is.na(observation_length))
+  E <- (scale == "rate" & is.na(observation_length))
   G <- (scale %in% c("percentage","proportion") & is.na(intervals))
   if (D | E | G) return(Inf)
   
