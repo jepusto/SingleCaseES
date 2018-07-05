@@ -14,7 +14,12 @@
 #'   \code{condition} corresponds to the baseline phase. Defaults to first
 #'   observed value of \code{condition}.
 #' @param ES character string or character vector specifying which effect size
-#'   index or indices to calculate. Defaults to calculating the LRRd, LRRi, SMD,
+#'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
+#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
+#'   \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and
+#'   \code{"Tau-U"}. Set to \code{"all"} for all available effect sizes. Set to
+#'   \code{"parametric"} for all parametric effect sizes. Set to \code{"NOM"}
+#'   for all non-overlap measures. Defaults to calculating the LRRd, LRRi, SMD,
 #'   and Tau indices.
 #' @param improvement character string indicating direction of improvement.
 #'   Default is "increase".
@@ -52,7 +57,7 @@
 #' @importFrom rlang !!!
 #' @importFrom rlang !!
 #' @importFrom dplyr .data
-#'  
+#'   
 
 calc_ES <- function(A_data, B_data, 
                     condition, outcome, 
@@ -84,10 +89,19 @@ calc_ES <- function(A_data, B_data,
   A_data <- A_data[!is.na(A_data)]
   B_data <- B_data[!is.na(B_data)]
   
+  ES_names <- if (identical(ES, "all")) {
+    c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+  } else if (identical(ES,"NOM")) {
+    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+  } else if (identical(ES, "parametric")) {
+    c("LRRd","LRRi","LOR","SMD")
+  } else {
+    ES
+  }
+
   # Allow for Tau-U variant names
-  ES_names <- ES
   Tau_U_names <- c("Tau_U","Tau-U","TauU")
-  if (any(Tau_U_names %in% ES)) union(setdiff(ES, Tau_U_names), "Tau_U") 
+  if (any(Tau_U_names %in% ES)) ES_names <- union(setdiff(ES_names, Tau_U_names), "Tau_U") 
   ES_to_calc <- paste0("calc_", ES_names)
   
   res <- purrr::invoke_map_dfr(
@@ -98,7 +112,7 @@ calc_ES <- function(A_data, B_data,
   
   if (format != "long") {
     
-    if(any(ES == "Tau_U")) ES[ES == "Tau_U"] <- "Tau-U"
+    if(any(ES_names == "Tau_U")) ES_names[ES_names == "Tau_U"] <- "Tau-U"
     
     val_names <- setdiff(names(res), "ES")
     sym_val_names <- rlang::syms(val_names)
@@ -112,7 +126,7 @@ calc_ES <- function(A_data, B_data,
     
     # re-order names
     long_names <- 
-      purrr::cross2(val_names, ES) %>%
+      purrr::cross2(val_names, ES_names) %>%
       purrr::map(.f = function(x) paste(rev(x), collapse = "_"))  %>%
       intersect(names(res)) %>%
       rlang::syms()
@@ -142,12 +156,6 @@ calc_ES <- function(A_data, B_data,
 #'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the
 #'   default), the first observed value of \code{condition} within the series
 #'   will be used.
-#' @param ES character string or character vector specifying which effect size
-#'   index or indices to calculate. Possible values are \code{"LRRd"},
-#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
-#'   \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and
-#'   \code{"Tau-U"}. Defaults to calculating the LRRd, LRRi, SMD, and Tau
-#'   indices.
 #' @param improvement character string either indicating the direction of
 #'   uniform improvement ("increase" or "decrease") or the variable name of a
 #'   variable identifying the direction of improvement for each series. Default
@@ -173,14 +181,9 @@ calc_ES <- function(A_data, B_data,
 #'   observation. If a variable name, the mean observation session length within
 #'   each series will be used. Missing values will be ignored. Defaults to
 #'   \code{NA}.
-#' @param ... further arguments used for calculating some of the effect size
-#'   indices.
-#' @param confidence confidence level for the reported interval estimate. Set to
-#'   \code{NULL} to omit confidence interval calculations.
-#' @param format character string specifying whether to organize the results in
-#'   \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.
-#' @param warn logical indicating whether warnings regarding LOR should be
-#'   displayed. Default is \code{TRUE}.
+#' @param warn logical indicating whether warnings should be displayed. Default
+#'   is \code{TRUE}.
+#' @inheritParams calc_ES
 #'
 #' @details Calculates one or more effect size indices for each series in a
 #'   dataset

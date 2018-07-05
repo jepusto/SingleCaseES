@@ -31,11 +31,13 @@ default), the first observed value of \code{condition} within the series
 will be used.}
 
 \item{ES}{character string or character vector specifying which effect size
-index or indices to calculate. Possible values are \code{"LRRd"},
+index or indices to calculate. Available effect sizes are \code{"LRRd"},
 \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
 \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and
-\code{"Tau-U"}. Defaults to calculating the LRRd, LRRi, SMD, and Tau
-indices.}
+\code{"Tau-U"}. Set to \code{"all"} for all available effect sizes. Set to
+\code{"parametric"} for all parametric effect sizes. Set to \code{"NOM"}
+for all non-overlap measures. Defaults to calculating the LRRd, LRRi, SMD,
+and Tau indices.}
 
 \item{improvement}{character string either indicating the direction of
 uniform improvement ("increase" or "decrease") or the variable name of a
@@ -75,8 +77,8 @@ indices.}
 \item{format}{character string specifying whether to organize the results in
 \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.}
 
-\item{warn}{logical indicating whether warnings regarding LOR should be
-displayed. Default is \code{TRUE}.}
+\item{warn}{logical indicating whether warnings should be displayed. Default
+is \code{TRUE}.}
 }
 \value{
 A data.frame containing the estimate, standard error, and/or
