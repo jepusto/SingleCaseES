@@ -117,12 +117,12 @@ LOR <- function(A_data, B_data, condition, outcome, baseline_phase,
 
 calc_LOR <- function(A_data, B_data, improvement = "increase", 
                       scale = "proportion", intervals = NULL, D_const = NULL,
-                      bias_correct = TRUE, confidence = .95, ...) {
+                      bias_correct = TRUE, confidence = .95, ..., warn = TRUE) {
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
   if (!scale %in% c("proportion", "percentage")) {
-    message("LOR can only be calculated for proportions or percentages.")
+    if (warn) warning("LOR can only be calculated for proportions or percentages. Will return NAs for other outcome scales.", call. = FALSE)
     res <- data.frame(ES = "LOR", Est = NA, 
                       SE = NA, stringsAsFactors = FALSE)
     if (!is.null(confidence)) {

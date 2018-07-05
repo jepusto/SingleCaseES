@@ -42,7 +42,7 @@ Shogren_LRR_LOR_PND <-
                 scale = "scale",
                 intervals = "intervals",
                 observation_length = "Session_length",
-                format = "wide") %>%
+                format = "wide", warn = FALSE) %>%
   arrange(Study, Case)
 
 

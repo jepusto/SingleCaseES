@@ -179,6 +179,8 @@ calc_ES <- function(A_data, B_data,
 #'   \code{NULL} to omit confidence interval calculations.
 #' @param format character string specifying whether to organize the results in
 #'   \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.
+#' @param warn logical indicating whether warnings regarding LOR should be
+#'   displayed. Default is \code{TRUE}.
 #'
 #' @details Calculates one or more effect size indices for each series in a
 #'   dataset
@@ -200,7 +202,8 @@ batch_calc_ES <- function(dat,
                           observation_length = NA,
                           ...,
                           confidence = .95,
-                          format = "long"
+                          format = "long",
+                          warn = TRUE
                           ) {
 
   if (!(condition %in% names(dat))) stop("The condition variable name is not in the provided dataset.")
@@ -225,22 +228,24 @@ batch_calc_ES <- function(dat,
     improvement <- "improvement"
   }
   
-  if(scale %in% c("count", "rate", "proportion", "percentage")){
+  if (scale %in% c("count", "rate", "proportion", "percentage")) {
     dat$scale <- scale
     scale <- "scale"
   }
   
-  if(typeof(intervals) != "character"){
+  if (typeof(intervals) != "character") {
     dat$intervals <- intervals
     intervals <- "intervals"
   }
   
-  if(typeof(observation_length) != "character"){
+  if (typeof(observation_length) != "character") {
     dat$observation_length <- observation_length
     observation_length <- "observation_length"
   }
   
-  
+  if (warn & "LOR" %in% ES & !all(dat$scale %in% c("proportion","percentage"))) {
+    warning("LOR can only be calculated for proportions or percentages. Will return NAs for other outcome scales.", call. = FALSE)
+  }
   
     ES <- dat %>%  
       dplyr::group_by(!!!rlang::syms(grouping_vars)) %>%
@@ -255,6 +260,7 @@ batch_calc_ES <- function(dat,
                         observation_length = .data[[observation_length]],
                         confidence = confidence, 
                         format = format,
+                        warn = FALSE,
                         ...)) %>%
       dplyr::ungroup()
 
