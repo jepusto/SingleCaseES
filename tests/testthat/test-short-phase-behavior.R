@@ -30,7 +30,7 @@ test_that("calc_ES() works with single observation in baseline.", {
                   confidence = NULL, format = "wide")
   expect_identical(NOMs$NAP_Est, NOMs$PEM_Est)
   expect_identical(NOMs$NAP_Est, NOMs$PND_Est)
-  expect_identical(NOMs$Tau_Est, NOMs$`Tau-U_Est`)
+  expect_equal(NOMs$Tau_Est, NOMs$`Tau-U_Est`)
 })
 
 test_that("calc_ES() works with single observation in treatment", {
