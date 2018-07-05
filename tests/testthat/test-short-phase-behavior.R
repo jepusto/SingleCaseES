@@ -3,8 +3,8 @@ context("Handling phases with a single observation.")
 A1 <- rbinom(1, 15, 0.3) * 100 / 15
 B1 <- rbinom(1, 15, 0.2) * 100 / 15
 
-A3 <- rbinom(3, 15, 0.3) * 100 / 15
-B3 <- rbinom(3, 15, 0.2) * 100 / 15
+A3 <- rbinom(3, 14:16, 0.3) * 100 / (14:16)
+B3 <- rbinom(3, 14:16, 0.2) * 100 / (14:16)
 
 test_that("calc_ES() works with single observation in baseline.", {
   
@@ -104,3 +104,4 @@ test_that("calc_ES() works with three observations in each phase.", {
   expect_identical(names(NOMs), c("ES","Est"))
   
 })
+
