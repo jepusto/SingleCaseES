@@ -12,23 +12,156 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  error = TRUE
 )
 ```
 
 # Intro
 
-Point to the web-app, but then spend rest of vignette on R functions.
+This package provides R functions for calculating basic effect size
+indices for single-case designs, including several non-overlap measures
+and parametric effect size measures, and for estimating the gradual
+effects model developed by [Swan and Pustejovsky
+(2018)](https://doi.org/10.1080/00273171.2018.1466681). Standard errors
+and confidence intervals are provided for the subset of effect sizes
+indices with known sampling distributions. However, it is important to
+note that all of the standard errors and confidence intervals are based
+on the assumption that the outcome measurements are mutually
+independent.
 
+The available **non-overlap indices** are:
+
+-   Percentage of non-overlapping data (PND)
+-   Percentage of all non-overlapping data (PAND)
+-   Robust improvement rate difference (IRD)
+-   Percentage exceeding the median (PEM)
+-   Non-overlap of all pairs (NAP)
+-   Tau non-overlap (Tau)
+-   Tau-U (including baseline trend adjustment)
+
+The available **parametric effect sizes** are:
+
+-   Within-case standardized mean difference
+-   Log response ratio (decreasing and increasing)
+-   Log odds ratio
+-   The gradual effects model, which can be used to estimate log
+    response ratios or log odds ratios in the presence of time trends
+    during treatment and return-to-baseline phases.
+
+The package also includes two graphical user interfaces (designed using
+[Shiny](https://shiny.rstudio.com/)) for interactive use, both of which
+are also available as web apps hosted through
+[shinyapps.io](https://www.shinyapps.io/):
+
+-   `SCD_effect_sizes()` opens an interactive calculator for the basic
+    non-overlap indices and parametric effect sizes. It is also
+    available at <https://jepusto.shinyapps.io/SCD-effect-sizes>
+-   `shine_gem_scd()` opens an interactive calculator for the gradual
+    effects model. It is also available at
+    <https://jepusto.shinyapps.io/gem-scd>
+
+***Please note that the web apps should only be used for demonstration
+purposes***. For research purposes, please install the R package and run
+the GUI through Rstudio.
 # Using SingleCaseES
+
+The first part of this vignette focuses on the calculation of non-overlap effect
+sizes along with the log-response ratio, the log odds ratio, and the standardized
+mean difference. The use of the gradual effects model will be examined separately.
 
 ## NAP
 
 ### A, B inputs
 
+All of the effect sizes functions in `SingleCaseES` can take the data from a
+single SCD series in one of two formats. The first format involves providing a
+vector corresponding to the A phase (typically the baseline phase) and a vector 
+corresponding to the B phase (typically the treatment phase).
+
+```{r}
+library(SingleCaseES)
+A <- c(20, 20, 26, 25, 22, 23)
+B <- c(28, 25, 24, 27, 30, 30, 29)
+NAP(A_data = A, B_data = B)
+```
+
 ### condition, outcome inputs
 
+The second format involves providing a single vector of outcomes and a vector
+with values corresponding to the A phase and the B phase.
+
+```{r}
+cond <- c(rep("A", 6), rep("B", 7))
+outcome <- c(20, 20, 26, 25, 22, 23, 28, 25, 24, 27, 30, 30, 29)
+NAP(condition = cond, outcome = outcome)
+```
+
+Note that if the provided vector for `condition` has more than two values,
+the effect size function will throw an error.
+
+```{r}
+cond2 <- c(rep("A", 5), rep("B", 5), rep("C",3))
+NAP(condition = cond2, outcome = outcome)
+```
+
+By default, the the effect size functions treat the first observed value of
+`condition` as the the baseline phase. However, if the baseline phase is not the
+first phase, you can specify the baseline phase explicitly. This might happen in
+an SCD design with multiple participants comparing two different interventions and
+the ordering of the interventions is alternated across participants, but you want
+the effect sizes you calculate for each series to be comparable across cases. You
+can specify the baseline phase using the `baseline_phase` argument.
+
+```{r}
+cond <- c(rep("B", 7), rep("A", 6))
+outcome <- c(28, 25, 24, 27, 30, 30, 29,20, 20, 26, 25, 22, 23)
+NAP(condition = cond, outcome = outcome, baseline_phase = "A")
+```
+
+Additionally, most of the effect size functions default to assuming that the desired
+effect of the intervention is an increase in the outcome behavior. You can also 
+specify a that the desired effect of the intervention is a decrease by specifying
+`improvement = "decrease"` when you call the effect size argument.
+
+```{r}
+NAP(A_data = A, B_data = B, improvement = "decrease")
+```
+
+The `NAP` function has several possible methods for calculating the standard 
+error. By default the exactly unbiased standard errors are used . However, the 
+function can also produce standard errors using the Hanley-McNeil estimator, 
+the variance under the null hypothesis of no effect, or no standard errors at all.
+
+```{r}
+NAP(A_data = A, B_data = B, SE = "unbiased")
+NAP(A_data = A, B_data = B, SE = "Hanley")
+NAP(A_data = A, B_data = B, SE = "null")
+NAP(A_data = A, B_data = B, SE = "none")
+```
+
+Note that the confidence intervals don't depend upon the standard error 
+calculations. The confidence interval calculation is controlled via the 
+`confidence` argument, where the interval can be specified 0 < confidence < 1,
+or set to `NULL` to calculate no confidence interval.
+
+```{r}
+NAP(A_data = A, B_data = B)
+NAP(A_data = A, B_data = B, confidence = .99)
+NAP(A_data = A, B_data = B, confidence = .90)
+NAP(A_data = A, B_data = B, confidence = NULL)    
+```
 ## Other effect size functions
+
+As noted previously, the SingleCaseES function can estimate a number of 
+non-overlap indices. The functions for PND (`PND()`), PAND (`PAND()`),
+IRD (`IRD()`), PEM (`PEM`) and Tau-U (`Tau_U()`) all accept data in either the
+A, B format or the condition, outcome format with optional baseline 
+specification and the ability to specify the direction of improvement. Like the
+function for NAP, the function for Tau (`Tau`) can produce unbiased standard
+errors, Hanley-McNeil standard errors, standard errors under the null, or no
+standard errors at all. The confidence level for the confidence intervals can
+also be controlled, or no confidence interval at all can be specified.
 
 ## calc_ES()
 
