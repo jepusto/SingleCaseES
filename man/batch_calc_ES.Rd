@@ -75,8 +75,8 @@ indices.}
 \item{format}{character string specifying whether to organize the results in
 \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.}
 
-\item{warn}{logical indicating whether warnings regarding LOR should be
-displayed. Default is \code{TRUE}.}
+\item{warn}{logical indicating whether warnings should be displayed. Default
+is \code{TRUE}.}
 }
 \value{
 A data.frame containing the estimate, standard error, and/or

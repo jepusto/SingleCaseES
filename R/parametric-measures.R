@@ -1,12 +1,12 @@
 # Calculate mean, variance, and sample size by phase
 
-summary_stats <- function(A_data, B_data) {
+summary_stats <- function(A_data, B_data, warn = TRUE) {
   
   n <- c(sum(!is.na(A_data)), sum(!is.na(B_data)))
   M <- c(mean(A_data, na.rm = TRUE), mean(B_data, na.rm = TRUE))
   V <- c(var(A_data, na.rm = TRUE), var(B_data, na.rm = TRUE))
   
-  if (any(n < 2)) {
+  if (warn & any(n < 2)) {
     short_phases <- c("A","B")[n < 2]
     phases <- ifelse(all(n < 2), "phases", "phase")
     warning(paste(paste(short_phases, collapse = ", "), phases, "contains less than 2 observations."))
@@ -154,7 +154,7 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
     D_const <- 100 * D_const
   }  
   
-  dat <- summary_stats(A_data, B_data)
+  dat <- summary_stats(A_data, B_data, warn = warn)
   
   trunc_lower <- 1 / (2 * D_const * dat$n)
   if (D_const > 0) dat$M <- pmin(1 - trunc_lower, pmax(trunc_lower, dat$M))
@@ -311,11 +311,11 @@ LRRi <- function(A_data, B_data, condition, outcome,
 calc_LRRd <- function(A_data, B_data, improvement = "decrease", 
                       scale = "count", observation_length = NULL, 
                       intervals = NULL, D_const = NULL,
-                      bias_correct = TRUE, confidence = .95, ...) {
+                      bias_correct = TRUE, confidence = .95, warn = TRUE, ...) {
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
-  dat <- summary_stats(A_data, B_data)
+  dat <- summary_stats(A_data, B_data, warn = warn)
   
   if (improvement == "increase") { 
     if (scale == "percentage") {
@@ -360,11 +360,11 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
 calc_LRRi <- function(A_data, B_data, improvement = "increase", 
                       scale = "count", observation_length = NULL, 
                       intervals = NULL, D_const = NULL,
-                      bias_correct = TRUE, confidence = .95, ...) {
+                      bias_correct = TRUE, confidence = .95, warn = TRUE, ...) {
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
-  dat <- summary_stats(A_data, B_data)
+  dat <- summary_stats(A_data, B_data, warn = warn)
   
   if (improvement == "decrease") { 
     if (scale == "percentage") {
@@ -462,9 +462,9 @@ calc_SMD <- function(A_data, B_data,
                      improvement = "increase",
                      std_dev = "baseline", 
                      bias_correct = TRUE, 
-                     confidence = .95,...) {
+                     confidence = .95, warn = TRUE, ...) {
   
-  dat <- summary_stats(A_data, B_data)
+  dat <- summary_stats(A_data, B_data, warn = warn)
   
   if (std_dev == "baseline") {
     df <- dat$n[1]
@@ -472,13 +472,13 @@ calc_SMD <- function(A_data, B_data,
     SV1 <- with(dat, 1 / n[1] + V[2] / (n[2] * V[1]))
   } else {
     df <- sum(dat$n - 1)
-    s_sq <-  with(dat, sum((n - 1) * V) / df)
+    s_sq <-  with(dat, sum((n - 1) * V, na.rm = TRUE) / df)
     SV1 <- sum(1 / dat$n)
   }
   
   J <- if (bias_correct) 1  - 3 / (4 * df - 1) else 1
   
-  if (s_sq == 0) stop("There is no variation in the outcome! The SMD is not an appropriate ES for these data.")
+  if (is.na(s_sq) | s_sq == 0) stop("There is no variation in the outcome! The SMD is not an appropriate ES for these data.")
   
   d <- J * diff(dat$M) / sqrt(s_sq) 
   

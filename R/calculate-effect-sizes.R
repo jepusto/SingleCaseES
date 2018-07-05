@@ -87,7 +87,7 @@ calc_ES <- function(A_data, B_data,
   # Allow for Tau-U variant names
   ES_names <- ES
   Tau_U_names <- c("Tau_U","Tau-U","TauU")
-  if (any(Tau_U_names %in% ES)) union(setdiff(ES, Tau_U_names), "Tau_U") 
+  if (any(Tau_U_names %in% ES)) ES_names <- union(setdiff(ES, Tau_U_names), "Tau_U") 
   ES_to_calc <- paste0("calc_", ES_names)
   
   res <- purrr::invoke_map_dfr(
@@ -179,8 +179,8 @@ calc_ES <- function(A_data, B_data,
 #'   \code{NULL} to omit confidence interval calculations.
 #' @param format character string specifying whether to organize the results in
 #'   \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.
-#' @param warn logical indicating whether warnings regarding LOR should be
-#'   displayed. Default is \code{TRUE}.
+#' @param warn logical indicating whether warnings should be displayed. Default
+#'   is \code{TRUE}.
 #'
 #' @details Calculates one or more effect size indices for each series in a
 #'   dataset
