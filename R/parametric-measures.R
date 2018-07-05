@@ -132,8 +132,12 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
     return(res)
   }
     
+  # calculate truncation constant if not supplied
+  if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length = NULL, intervals)
+  if (all(is.na(D_const))) D_const <- trunc_constant(scale, observation_length = NULL, intervals)
+  if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
   
-  # check for valid outcome range
+  # check for valid outcome range, re-scale percentages to proportions
   all_dat <- c(A_data, B_data)
   if (scale == "proportion" & any(all_dat < 0 | all_dat > 1)) stop("Proportions must be between 0 and 1!") 
   if (scale == "percentage" & any(all_dat < 0 | all_dat > 100)) stop("Percentages must be between 0 and 100!") 
@@ -141,13 +145,11 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
   if (scale == "percentage") {
     A_data <- A_data / 100
     B_data <- B_data / 100
+    D_const <- 100 * D_const
   }  
   
   dat <- summary_stats(A_data, B_data)
   
-  if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length = NULL, intervals)
-  if (all(is.na(D_const))) D_const <- trunc_constant(scale, observation_length = NULL, intervals)
-  if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
   trunc_lower <- 1 / (2 * D_const * dat$n)
   if (D_const > 0) dat$M <- pmin(1 - trunc_lower, pmax(trunc_lower, dat$M))
   
