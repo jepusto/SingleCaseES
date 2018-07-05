@@ -7,7 +7,8 @@
 batch_calc_ES(dat, grouping_vars, condition, outcome, session_number,
   baseline_phase = NULL, ES = c("LRRd", "LRRi", "SMD", "Tau"),
   improvement = "increase", scale = NA, intervals = NA,
-  observation_length = NA, ..., confidence = 0.95, format = "long")
+  observation_length = NA, ..., confidence = 0.95, format = "long",
+  warn = TRUE)
 }
 \arguments{
 \item{dat}{A dataframe containing SCD series for which effect sizes will be
@@ -73,6 +74,9 @@ indices.}
 
 \item{format}{character string specifying whether to organize the results in
 \code{"long"} format or \code{"wide"} format. Defaults to \code{"long"}.}
+
+\item{warn}{logical indicating whether warnings regarding LOR should be
+displayed. Default is \code{TRUE}.}
 }
 \value{
 A data.frame containing the estimate, standard error, and/or
