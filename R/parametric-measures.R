@@ -453,7 +453,8 @@ SMD <- function(A_data, B_data, condition, outcome, baseline_phase,
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
-          ES = "SMD", improvement = improvement, 
+          ES = "SMD", improvement = improvement,
+          std_dev = std_dev,
           bias_correct = bias_correct, confidence = confidence)
 }
 
