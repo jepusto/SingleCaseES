@@ -156,6 +156,14 @@ calc_ES <- function(A_data, B_data,
 #'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the
 #'   default), the first observed value of \code{condition} within the series
 #'   will be used.
+#'   @param ES character string or character vector specifying which effect size
+#'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
+#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
+#'   \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and
+#'   \code{"Tau-U"}. Set to \code{"all"} for all available effect sizes. Set to
+#'   \code{"parametric"} for all parametric effect sizes. Set to \code{"NOM"}
+#'   for all non-overlap measures. Defaults to calculating the LRRd, LRRi, SMD,
+#'   and Tau indices.
 #' @param improvement character string either indicating the direction of
 #'   uniform improvement ("increase" or "decrease") or the variable name of a
 #'   variable identifying the direction of improvement for each series. Default
@@ -250,13 +258,23 @@ batch_calc_ES <- function(dat,
     warning("LOR can only be calculated for proportions or percentages. Will return NAs for other outcome scales.", call. = FALSE)
   }
   
-    ES <- dat %>%  
+  ES_names <- if (identical(ES, "all")) {
+    c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+  } else if (identical(ES,"NOM")) {
+    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+  } else if (identical(ES, "parametric")) {
+    c("LRRd","LRRi","LOR","SMD")
+  } else {
+    ES
+  }
+  
+    res <- dat %>%  
       dplyr::group_by(!!!rlang::syms(grouping_vars)) %>%
       dplyr::arrange(!!rlang::sym(session_number)) %>%
       dplyr::do(calc_ES(condition = .data[[condition]], 
                         outcome = .data[[outcome]], 
                         baseline_phase = baseline_phase,
-                        ES = ES, 
+                        ES = ES_names, 
                         improvement = .data[[improvement]][1], 
                         scale =  .data[[scale]],
                         intervals = .data[[intervals]],
@@ -267,6 +285,6 @@ batch_calc_ES <- function(dat,
                         ...)) %>%
       dplyr::ungroup()
 
-  ES
+ res
 }
 
