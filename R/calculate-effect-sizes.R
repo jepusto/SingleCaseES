@@ -34,7 +34,7 @@
 #'
 #' @export
 #'
-#' @return A tibble containing the estimate, standard error, and/or
+#' @return A data.frame containing the estimate, standard error, and/or
 #'   confidence interval for each specified effect size.
 #'
 #' @examples
