@@ -28,7 +28,15 @@ order outcomes within each series.}
 \item{baseline_phase}{character string specifying which value of
 \code{condition} corresponds to the baseline phase. If \code{NULL} (the
 default), the first observed value of \code{condition} within the series
-will be used.}
+will be used.
+@param ES character string or character vector specifying which effect size
+index or indices to calculate. Available effect sizes are \code{"LRRd"},
+\code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
+\code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and
+\code{"Tau-U"}. Set to \code{"all"} for all available effect sizes. Set to
+\code{"parametric"} for all parametric effect sizes. Set to \code{"NOM"}
+for all non-overlap measures. Defaults to calculating the LRRd, LRRi, SMD,
+and Tau indices.}
 
 \item{ES}{character string or character vector specifying which effect size
 index or indices to calculate. Available effect sizes are \code{"LRRd"},
@@ -81,7 +89,7 @@ indices.}
 is \code{TRUE}.}
 }
 \value{
-A data.frame containing the estimate, standard error, and/or
+A tibble containing the estimate, standard error, and/or
   confidence interval for each specified effect size.
 }
 \description{
