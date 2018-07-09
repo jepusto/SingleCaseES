@@ -25,7 +25,8 @@ Suggests:
     testthat,
     markdown,
     knitr,
-    rmarkdown
+    rmarkdown,
+    prettydoc
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Encoding: UTF-8
