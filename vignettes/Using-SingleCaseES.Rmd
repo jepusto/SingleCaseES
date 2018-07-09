@@ -1,10 +1,16 @@
 ---
-title: "Basic Effect Sizes Calculations using SingleCaseES"
-author: "Daniel M. Swan"
+title: "Basic effect sizes calculations using SingleCaseES"
+author: "Daniel M. Swan and James E. Pustejovsky" 
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+    toc_depth: 2 
+    number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Basic effect sizes calculations using SingleCaseES}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,20 +23,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Intro
-
 This package provides R functions for calculating basic effect size
 indices for single-case designs, including several non-overlap measures
 and parametric effect size measures, and for estimating the gradual
 effects model developed by [Swan and Pustejovsky
 (2018)](https://doi.org/10.1080/00273171.2018.1466681). Standard errors
 and confidence intervals are provided for the subset of effect sizes
-indices with known sampling distributions. However, it is important to
-note that all of the standard errors and confidence intervals are based
-on the assumption that the outcome measurements are mutually
-independent.
-
-The available **non-overlap indices** are:
+indices with known sampling distributions. The available non-overlap 
+indices are:
 
 -   Percentage of non-overlapping data (PND)
 -   Percentage of all non-overlapping data (PAND)
@@ -40,7 +40,7 @@ The available **non-overlap indices** are:
 -   Tau non-overlap (Tau)
 -   Tau-U (including baseline trend adjustment)
 
-The available **parametric effect sizes** are:
+The available parametric effect sizes are:
 
 -   Within-case standardized mean difference
 -   Log response ratio (decreasing and increasing)
@@ -61,9 +61,6 @@ are also available as web apps hosted through
     effects model. It is also available at
     <https://jepusto.shinyapps.io/gem-scd>
 
-***Please note that the web apps should only be used for demonstration
-purposes***. For research purposes, please install the R package and run
-the GUI through Rstudio.
 # Using SingleCaseES
 
 The first part of this vignette focuses on the calculation of non-overlap effect
@@ -151,6 +148,7 @@ NAP(A_data = A, B_data = B, confidence = .99)
 NAP(A_data = A, B_data = B, confidence = .90)
 NAP(A_data = A, B_data = B, confidence = NULL)    
 ```
+
 ## Other effect size functions
 
 ### Non-overlap indices
@@ -579,7 +577,7 @@ knitr::kable(schmidt_es)
 The output contains a row corresponding to each phase pair for each outcome type
 for each participant, for each type of effect size.
 
-# Effect size calculation details
+# Mathematical definitions and details
 
 ## IRD
 
