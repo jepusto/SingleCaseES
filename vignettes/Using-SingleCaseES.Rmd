@@ -1,6 +1,8 @@
 ---
 title: "Basic effect sizes calculations using SingleCaseES"
-author: "Daniel M. Swan and James E. Pustejovsky" 
+author: "Daniel M. Swan and James E. Pustejovsky"
+bibliography: references.bibtex
+
 date: "`r Sys.Date()`"
 output: 
   prettydoc::html_pretty:
@@ -9,12 +11,15 @@ output:
     toc: true
     toc_depth: 2 
     number_sections: true
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Basic effect sizes calculations using SingleCaseES}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
----
 
+nocite: |
+  @pustejovsky2015measurement, @scruggs1987quantitative
+---
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -208,8 +213,7 @@ It is also possible to specify the measurement scale of the outcome using the
 `scale` argument, with the possible choices being "count", "rate" (assumed to be 
 events per minute), "percentage", "proportion" or "other. If the `scale` is 
 specified as "proportion" or "percentage" then changing the improvement direction 
-will alter the magnitude as well as the sign of the effect size. Pustejovsky 
-(2018) p. 16-18 has more details.
+will alter the magnitude as well as the sign of the effect size. @pustejovsky2018using [p. 16-18] has more details.
 
 ```{r}
 A <- c(20, 20, 26, 25, 22, 23)
@@ -304,7 +308,7 @@ LOR(A_data = c(0,0,0), B_data = B_pct,
     scale = "percentage", intervals = 20)
 ```
 
-Like the LOR functions, it is possible to specify your own truncation constant
+Like the LRR functions, it is possible to specify your own truncation constant
 using the `D_const` argument. By default the `LOR()` function produces effect
 sizes with a bias correction for small sample sizes, but this can be turned off
 by specifying the argument `bias_correct = FALSE`. The width of the confidence
@@ -579,17 +583,30 @@ for each participant, for each type of effect size.
 
 # Mathematical definitions and details
 
+## Notation
+
+For all of what follows let 
+
+-   $\mu_A$ and $\mu_B$ denote the mean levels for Phase A and Phase B, respectively.
+-   $y^A_1,...,y^A_m$ denote the observations from phase A and $y^B_1,...,y^B_n$ denote the observations from phase B.
+-   $m$ and $n$ denote the number of observations in phase A and phase B, respectively.
+-   $\bar{y}_A$ and $\bar{y}_B$ denote the sample means for phase A and phase B, respectively.
+-   $\sigma_A$ and $\sigma_B$ denote the standard deviations for phase A and phase B, respectively.
+-   $y^A_{(1)},y^A_{(2)},...,y^A_{(m)}$ denote the values of the baseline phase data, sorted in increasing order, and let $y^B_{(1)},y^B_{(2)},...,y^B_{(n)}$ denote the values of the sorted treatment phase data.
+
+Finally, $\ln()$ is the natural logarithm function
+
 ## IRD
 
 #### Definition 
 
-The robust improvement rate difference is defined as the robust phi coefficient corresponding to a certain $2 \times 2$ table that is a function of the degree of overlap between the observations each phase (Parker, Vannest, & Davis, 2011). 
+The robust improvement rate difference is defined as the robust phi coefficient corresponding to a certain $2 \times 2$ table that is a function of the degree of overlap between the observations each phase [@parker2011effect]. 
 
-This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase (Pustejovsky, 2018). 
+This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase [@pustejovsky2018procedural]. 
 
 #### Estimation
 
-Let $y^A_{(1)},y^A_{(2)},...,y^A_{(m)}$ denote the values of the baseline phase data, sorted in increasing order, and let $y^B_{(1)},y^B_{(2)},...,y^B_{(n)}$ denote the values of the sorted treatment phase data. Let $y^A_{(0)} = y^B_{(0)} = -\infty$ and $y^A_{(m + 1)} = y^B_{(n + 1)} = \infty$. For an outcome where increase is desirable, let $\tilde{i}$ and $\tilde{j}$ denote the values that maximize the quantity
+Let $y^A_{(0)} = y^B_{(0)} = -\infty$ and $y^A_{(m + 1)} = y^B_{(n + 1)} = \infty$. For an outcome where increase is desirable, let $\tilde{i}$ and $\tilde{j}$ denote the values that maximize the quantity
 
 $$
 \left(i + j\right) I\left(y^A_{(i)} < y^B_{(n + 1 - j)}\right)
@@ -603,13 +620,13 @@ $$
 Now calculate the $2 \times 2$ table
 
 $$
-\\begin{array}{|c|c|} \\hline
-m - \\tilde{i} & \\tilde{j} \\\\ \\hline
-\\tilde{i} & n - \\tilde{j} \\\\ \\hline
-\\end{array}
+\begin{array}{|c|c|} \hline
+m - \tilde{i} & \tilde{j} \\ \hline
+\tilde{i} & n - \tilde{j} \\ \hline
+\end{array}
 $$
 
-Parker, Vannest, and Brown (2009) proposed the _non-robust_ improvement rate difference, which is equivalent to the phi coefficient from this table. Parker, Vannest, and Davis (2011) proposed to instead use the _robust_ phi coefficient, which involves modifying the table so that the row- and column-margins are equal. Robust IRD is thus equal to 
+@parker2009improvement proposed the _non-robust_ improvement rate difference, which is equivalent to the phi coefficient from this table. @parker2011effect proposed to instead use the _robust_ phi coefficient, which involves modifying the table so that the row- and column-margins are equal. Robust IRD is thus equal to 
 
 $$
 \text{IRD} = \frac{n - m - \tilde{i} - \tilde{j}}{2 n} - \frac{m + n - \tilde{i} - \tilde{j}}{2 m}.
@@ -630,14 +647,14 @@ The log-odds ratio is an effect size index that quantifies the change from phase
 $$
 \psi = \ln\left(\frac{\mu_B/(1-\mu_B)}{\mu_A/(1-\mu_A)}\right),
 $$
-where $\mu_A$ and $\mu_B$ denote the mean levels, as measured in proportions, in phases A and B respectively, and $\ln()$ is the natural logarithm function. The log odds ratio ranges from $-\infty$ to $\infty$, with a value of zero corresponding to no change in mean levels.
+where the outcomes are measured in proportions. The log odds ratio ranges from $-\infty$ to $\infty$, with a value of zero corresponding to no change in mean levels.
 
 #### Estimation
 
-Denote the sample means from phase A and phase B as $\bar{y}_A$ and $\bar{y}_B$, the sample standard deviations from phase A and phase B as $s_A$ and $s_B$, and the number of observations in phase A and phase B as $m$ and $n$, respectively. To account for the possibility that the sample means may be equal to zero or one, even if the mean levels are strictly between zero and one, the LOR is calculated using _truncated_ sample means, given by 
+To account for the possibility that the sample means may be equal to zero or one, even if the mean levels are strictly between zero and one, the LOR is calculated using _truncated_ sample means, given by 
 
 $$
-\tilde{y}_A = \text{max} \left\{ \text{min}\\left[\bar{y}_A, 1 - \frac{1}{2 D m}\right], \frac{1}{2 D m}\right\} \qquad \text{and} \qquad \tilde{y}_B = \text{max} \left\{ \text{min}\left[\bar{y}_B, 1 - \frac{1}{2 D n}\right], \frac{1}{2 D n}\right\},
+\tilde{y}_A = \text{max} \left\{ \text{min}\left[\bar{y}_A, 1 - \frac{1}{2 D m}\right], \frac{1}{2 D m}\right\} \qquad \text{and} \qquad \tilde{y}_B = \text{max} \left\{ \text{min}\left[\bar{y}_B, 1 - \frac{1}{2 D n}\right], \frac{1}{2 D n}\right\},
 $$
 
 where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes (Pustejovsky, 2018b).
@@ -671,15 +688,16 @@ The log-response ratio is an effect size index that quantifies the change from p
 $$
 \psi = \ln\left(\mu_B / \mu_A\right),
 $$
-where $\mu_A$ and $\mu_B$ denote the mean levels of phases A and B, respectively, and $\ln()$ is the natural logarithm function. The logarithm is used so that the range of the index is less restricted. 
+
+The logarithm is used so that the range of the index is less restricted. 
 
 #### LRR-decreasing and LRR-increasing
 
-There are two variants of the LRR (Pustejovsky, 2018), corresponding to whether therapeutic improvements correspond to negative values of the index (LRR-decreasing or LRRd) or positive values of the index (LRR-increasing or LRRi). For outcomes measured as frequency counts or rates, LRRd and LRRi are identical in magnitude but have opposite sign. However, for outcomes measured as proportions (ranging from 0 to 1) or percentages (ranging from 0% to 100%), LRRd and LRRi will differ in both sign and magnitude because the outcomes are first transformed to be consistent with the selected direction of therapeutic improvement.
+There are two variants of the LRR [@pustejovsky2018using], corresponding to whether therapeutic improvements correspond to negative values of the index (LRR-decreasing or LRRd) or positive values of the index (LRR-increasing or LRRi). For outcomes measured as frequency counts or rates, LRRd and LRRi are identical in magnitude but have opposite sign. However, for outcomes measured as proportions (ranging from 0 to 1) or percentages (ranging from 0% to 100%), LRRd and LRRi will differ in both sign and magnitude because the outcomes are first transformed to be consistent with the selected direction of therapeutic improvement.
 
 #### Estimation
 
-Denote the sample means from phase A and phase B as $\bar{y}_A$ and $\bar{y}_B$ (possibly after transforming to be consistent with the direction of therapeutic improvement), the sample standard deviations from phase A and phase B as $s_A$ and $s_B$, and the number of observations in phase A and phase B as $m$ and $n$, respectively. To account for the possibility that the sample means may be equal to zero, even if the mean levels are strictly greater than zero, the LRR is calculated using _truncated_ sample means, given by 
+To account for the possibility that the sample means may be equal to zero, even if the mean levels are strictly greater than zero, the LRR is calculated using _truncated_ sample means, given by 
 $$
 \tilde{y}_A = \text{max} \left\{ \bar{y}_A, \frac{1}{2 D m}\right\} \qquad \text{and} \qquad \tilde{y}_B = \text{max} \left\{ \bar{y}_B, \frac{1}{2 D n}\right\},
 $$
@@ -722,7 +740,7 @@ $$\theta = \text{Pr}(Y^B < Y^A) + 0.5 \times \text{Pr}(Y^B = Y^A).$$
 
 #### Estimation
 
-Let $y^A_1,...,y^A_m$ denote the observations from phase A. Let $y^B_1,...,y^B_n$ denote the observations from phase B. For an outcome where increase is desirable, calculate 
+For an outcome where increase is desirable, calculate 
 
 $$q_{ij} = I(y^B_j > y^A_i) + 0.5 I(y^B_j = y^A_i)$$
 
@@ -732,7 +750,7 @@ $$
 \text{NAP} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n q_{ij}.
 $$
 
-__Standard error.__ The standard error for NAP is calculated based on the exactly unbiased variance estimator described by Sen (1967; see also Mee, 1990), which assumes that the observations are mutually independent and are identically distributed within each phase. Let 
+__Standard error.__ The standard error for NAP is calculated based on the exactly unbiased variance estimator described by @sen1967note [@mee1990confidence], which assumes that the observations are mutually independent and are identically distributed within each phase. Let 
 
 $$
 Q_1 = \frac{1}{m n^2} \sum_{i=1}^m \left(\sum_{j=1}^n q_{ij}\right)^2, \qquad
@@ -746,7 +764,7 @@ $$
 SE_{\text{NAP}} = \sqrt{\frac{\text{NAP} - (m + n - 1)\text{NAP}^2 + n Q_1 + m Q_2 - 2 Q_3}{(m - 1)(n - 1)}}.
 $$
 
-__Confidence interval.__ The confidence interval for $\theta$ is calculated based on a method proposed by Newcombe (2006; Method 5), which assumes that the observations are mutually independent and are identically distributed within each phase. Using a confidence level of $100\% \times (1 - \alpha)$, the endpoints of the confidence interval are defined as the values of $\theta$ that satisfy the equality 
+__Confidence interval.__ The confidence interval for $\theta$ is calculated based on a method proposed by @newcombe2006confidence [; Method 5], which assumes that the observations are mutually independent and are identically distributed within each phase. Using a confidence level of $100\% \times (1 - \alpha)$, the endpoints of the confidence interval are defined as the values of $\theta$ that satisfy the equality 
 
 $$
 (\text{NAP} - \theta)^2 = \frac{z^2_{\alpha / 2} h \theta (1 - \theta)}{mn}\left[\frac{1}{h} + \frac{1 - \theta}{2 - \theta} + \frac{\theta}{1 + \theta}\right],
@@ -758,13 +776,13 @@ where $h = (m + n) / 2 - 1$ and $z_{\alpha / 2}$ is $1 - \alpha / 2$ critical va
 
 #### Definition 
 
-For an outcome where increase (decrease) is desirable, Parker, Vannest, and Davis (2011) define PAND as the proportion of observations remaining after removing the fewest possible number of observations from either phase so that the highest remaining point from the baseline phase is less than the lowest remaining point from the treatment phase (lowest remaining point from the baseline phase is larger than the highest remaining point from the treatment phase).
+For an outcome where increase (decrease) is desirable, @parker2011effect define PAND as the proportion of observations remaining after removing the fewest possible number of observations from either phase so that the highest remaining point from the baseline phase is less than the lowest remaining point from the treatment phase (lowest remaining point from the baseline phase is larger than the highest remaining point from the treatment phase).
 
-This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase (Pustejovsky, 2018). 
+This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase [@pustejovsky2018procedural]. 
 
 #### Estimation
 
-Let $y^A_{(1)},y^A_{(2)},...,y^A_{(m)}$ denote the values of the baseline phase data, sorted in increasing order, and let $y^B_{(1)},y^B_{(2)},...,y^B_{(n)}$ denote the values of the sorted treatment phase data. For an outcome where increase is desirable, PAND is calculated as
+For an outcome where increase is desirable, PAND is calculated as
 
 $$
 \text{PAND} = \frac{1}{m + n} \max \left\{\left(i + j\right) I\left(y^A_{(i)} < y^B_{(n + 1 - j)}\right)\right\},
@@ -782,7 +800,7 @@ where $y^A_{(m + 1)} = \infty$, $y^B_{(0)} = -\infty$, and the maximum is taken 
 
 #### Definition 
 
-Ma (2006) proposed the percent exceeding the median, defined as the proportion of observations in phase B that improve upon the median of phase A. Ma (2006) did not specify an effect size parameter corresponding to this index.
+@ma2006alternative proposed the percent exceeding the median, defined as the proportion of observations in phase B that improve upon the median of phase A. @ma2006alternative did not specify an effect size parameter corresponding to this index.
 
 #### Estimation
 
@@ -804,7 +822,7 @@ $$
 
 For an outcome where increase is desirable, PND is defined as the proportion of observations in the B phase that exceed the highest observation from the A phase. For an outcome where decrease is desirable, PND is the proportion of observations in the B phase that are less than the lowest observation from the A phase. 
 
-This effect size does not have a stable parameter definition because the magnitude of the maximum (or minimum) value from phase A depends on the number of observations in the phase (Allison & Gorman, 1994; Pustejovsky, 2018). 
+This effect size does not have a stable parameter definition because the magnitude of the maximum (or minimum) value from phase A depends on the number of observations in the phase [@allison1994make;@pustejovsky2018procedural] 
 
 #### Estimation
 
@@ -826,7 +844,7 @@ where $y^A_{(1)}$ is the minimum value of $y^A_1,...,y^A_m$.
 
 #### Parameter definition 
 
-Gingerich (1984) and Busk and Serlin (1992) proposed a within-case standardized mean difference for use in single-case designs (within-case because it is based on the data for a single individual, rather than across individuals). Let $\mu_A$ and $\mu_B$ denote the mean levels of phases A and B, respectively; let $\sigma_A$ and $\sigma_B$ denote the standard deviations of the outcomes within phases A and B, respectively. The standardized mean difference parameter $\delta$ is defined as the difference in means between phase B and phase A, scaled by the standard deviation of the outcome within phase A:
+@gingerich1984meta and @serlin2015meta proposed a within-case standardized mean difference for use in single-case designs (within-case because it is based on the data for a single individual, rather than across individuals). The standardized mean difference parameter $\delta$ is defined as the difference in means between phase B and phase A, scaled by the standard deviation of the outcome within phase A:
 
 $$
 \delta = \frac{\mu_B - \mu_A}{\sigma_A}.
@@ -836,17 +854,17 @@ Note that $\sigma_A$ represents _within-individual_ variability only. In contras
 
 #### Estimation
 
-The SMD $\delta$ can be estimated under the assumption that the observations are mutually independent and have constant variance within each phase. Denote the sample means from phase A and phase B as $\bar{y}_A$ and $\bar{y}_B$, the sample standard deviations from phase A and phase B as $s_A$ and $s_B$, and the number of observations in phase A and phase B as $m$ and $n$, respectively. 
+The SMD $\delta$ can be estimated under the assumption that the observations are mutually independent and have constant variance within each phase.
 
 There are two ways that the SMD, depending on whether it is reasonable to assume that the standard deviation of the outcome is constant across phases (i.e., $\sigma_A = \sigma_B$). 
 
-__Baseline SD only.__ Gingerich (1984) and Busk and Serlin (1992) originally suggested scaling by the SD from phase A only, due to the possibility of non-constant variance across phases. Without assuming constant SDs, an estimate of the standardized mean difference is
+__Baseline SD only.__ @gingerich1984meta and @serlin2015meta originally suggested scaling by the SD from phase A only, due to the possibility of non-constant variance across phases. Without assuming constant SDs, an estimate of the standardized mean difference is
 
 $$
 d_A = \left(1 - \frac{3}{4m - 5}\right) \frac{\bar{y}_B - \bar{y}_A}{s_A}.
 $$
 
-The term in parentheses is a small-sample bias correction term (cf. Hedges, 1981; Pustejovsky, 2018). The standard error of this estimate is calculated as
+The term in parentheses is a small-sample bias correction term [cf. @hedges1981distribution;@pustejovsky2018using]. The standard error of this estimate is calculated as
 
 $$
 SE_{d_A} = \left(1 - \frac{3}{4m - 5}\right)\sqrt{\frac{1}{m} + \frac{s_B^2}{n s_A^2} + \frac{d_A^2}{2(m - 1)}}.
@@ -882,7 +900,7 @@ where $z_{\alpha / 2}$ is $1 - \alpha / 2$ critical value from a standard normal
 
 #### Parameter definition 
 
-Tau is one of several effect sizes proposed by Parker, Vannest, Davis, and Sauber (2011) and known collectively as "Tau-U." The basic estimator Tau does not make any adjustments for time trends. For an outcome where increase is desirable, the effect size parameter is
+Tau is one of several effect sizes proposed by @parker2011combining and known collectively as "Tau-U." The basic estimator Tau does not make any adjustments for time trends. For an outcome where increase is desirable, the effect size parameter is
 
 $$\tau = \text{Pr}(Y^B > Y^A) - \text{Pr}(Y^B < Y^A)$$
 
@@ -892,7 +910,7 @@ $$\tau = 2 \theta - 1.$$
 
 #### Estimation
 
-Let $y^A_1,...,y^A_m$ denote the observations from phase A. Let $y^B_1,...,y^B_n$ denote the observations from phase B. For an outcome where increase is desirable, calculate 
+For an outcome where increase is desirable, calculate 
 
 $$w_{ij} = I(y^B_j > y^A_i) - I(y^B_j < y^A_i)$$
 
@@ -914,9 +932,9 @@ where $L_{\theta}$ and $U_{\theta}$ are the lower and upper bounds of the CI for
 
 #### Definition 
 
-Tau-U is one of several effect sizes proposed by Parker, Vannest, Davis, and Sauber (2011). The Tau-U variant is similar to Tau, but includes an adjustment for baseline time trends. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, plus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
+Tau-U is one of several effect sizes proposed by @parker2011combining. The Tau-U variant is similar to Tau, but includes an adjustment for baseline time trends. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, plus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
 
-This effect size does not have a stable parameter definition (Tarlow, 2017). 
+This effect size does not have a stable parameter definition [@tarlow2017improved]. 
 
 #### Estimation
 
@@ -940,39 +958,3 @@ To come in future revisions
 
 # References
 
-Allison, D. B., & Gorman, B. S. (1994). "Make things as simple as possible, but no simpler." A rejoinder to Scruggs and Mastropieri. _Behaviour Research and Therapy, 32_(8), 885–890. https://doi.org/10.1016/0005-7967(94)90170-8
-
-Busk, P. L., & Serlin, R. C. (1992). Meta-analysis for single-case research. In T. R. Kratochwill & J. R. Levin (Eds.), Single-Case Research Design and Analysis: New Directions for Psychology and Education (pp. 187–212). Hillsdale, NJ: Lawrence Erlbaum Associates, Inc.
-
-Gingerich, W. J. (1984). Meta-analysis of applied time-series data. Journal of Applied Behavioral Science, 20(1), 71–79. doi: [10.1177/002188638402000113](http://dx.doi.org/10.1177/002188638402000113)
-
-Hedges, L. V. (1981). Distribution theory for Glass’s estimator of effect size and related estimators. Journal of Educational Statistics, 6(2), 107–128. doi: [10.3102/10769986006002107](http://dx.doi.org/10.3102/10769986006002107)
-
-Ma, H.-H. (2006). An alternative method for quantitative synthesis of single-subject researches: Percentage of data points exceeding the median. _Behavior Modification, 30_(5), 598–617. https://dx.doi.org/10.1177/0145445504272974
-
-Mee, W. (1990). Confidence intervals for probabilities and tolerance regions based on a generalization of the Mann-Whitney statistic. _Journal of the American Statistical Association, 85_(411), 793–800. https://doi.org/10.1080/01621459.1990.10474942
-
-Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
-on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation. 
-_Statistics in Medicine, 25_(4), 559--573. doi: [10.1002/sim.2324](http://dx.doi.org/10.1002/sim.2324)
-
-
-Parker, R. I., & Vannest, K. J. (2009). An improved effect size for single-case research: Nonoverlap of all pairs. _Behavior Therapy, 40_(4), 357--67. doi: [10.1016/j.beth.2008.10.006](http://dx.doi.org/10.1016/j.beth.2008.10.006)
-
-Parker, R. I., Vannest, K. J., & Brown, L. (2009). The improvement rate difference for single-case research. _Exceptional Children, 75_(2), 135–150. https://dx.doi.org/10.1177/001440290907500201
-
-Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in single-case research: A review of nine nonoverlap techniques. _Behavior Modification, 35_(4), 303--22. https://dx.doi.org/10.1177/0145445511399147
-
-Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. (2011). Combining nonoverlap and trend for single-case research: Tau-U. _Behavior Therapy, 42_(2), 284--299. https://dx.doi.org/10.1016/j.beth.2010.08.006
-
-Pustejovsky, J. E. (2015). Measurement-comparable effect sizes for single-case studies of free-operant behavior. Psychological Methods, 20(3), 342–359. doi: [10.1037/met0000019](http://dx.doi.org/10.1037/met0000019)
-
-Pustejovsky, J. E. (2018). Procedural sensitivities of effect sizes for single-case designs with behavioral outcome. _Psychological Methods_, forthcoming. https://doi.org/10.1037/met0000179
-
-Pustejovsky, J. E. (2018b). Using response ratios for meta-analyzing single-case designs with behavioral outcomes. _Journal of School Psychology, 16_, 99-112. https://doi.org/10.1016/j.jsp.2018.02.003
-
-Scruggs, T. E., Mastropieri, M. A., & Casto, G. (1987). The quantitative synthesis of single-subject research: Methodology and validation. _Remedial and Special Education, 8_(2), 24--43. https://dx.doi.org/10.1177/074193258700800206
-
-Sen, P. K. (1967). A note on asymptotically distribution-free confidence bounds for P{X<Y}, based on two independent samples. _The Annals of Mathematical Statistics, 29_(1), 95-102. https://www.jstor.org/stable/25049448
-
-Tarlow, K. R. (2017). An improved rank correlation effect size statistic for single-case designs: Baseline corrected Tau. _Behavior Modification, 41_(4), 427–467. https://doi.org/10.1177/0145445516676750
