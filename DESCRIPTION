@@ -7,13 +7,14 @@ Authors@R: c(
   person(c("James","E."), "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre")),
   person(c("Daniel","M."), "Swan", email = "dswan@utexas.edu", role = "aut")
   )
-Description: provides R functions for calculating basic effect size indices for 
-single-case designs, including several non-overlap measures and parametric 
-effect size measures, and for estimating the gradual effects model developed 
-by Swan and Pustejovsky (2018)<DOI:10.1080/00273171.2018.1466681>. 
-Standard errors and confidence intervals (based on the assumption that the outcome 
-measurements are mutually independent) are provided for the subset of effect sizes 
-indices with known sampling distributions.
+Description: 
+  Provides R functions for calculating basic effect size indices for 
+  single-case designs, including several non-overlap measures and parametric 
+  effect size measures, and for estimating the gradual effects model developed 
+  by Swan and Pustejovsky (2018)<DOI:10.1080/00273171.2018.1466681>. 
+  Standard errors and confidence intervals (based on the assumption that the outcome 
+  measurements are mutually independent) are provided for the subset of effect sizes 
+  indices with known sampling distributions.
 URL: https://github.com/jepusto/SingleCaseES
 BugReports: https://github.com/jepusto/SingleCaseES/issues
 License: GPL-3
@@ -25,14 +26,14 @@ Imports:
   tidyr,
   rlang
 Suggests:
-    spelling, 
-    shiny,
-    ggplot2,
-    testthat,
-    markdown,
-    knitr,
-    rmarkdown,
-    prettydoc
+  spelling, 
+  shiny,
+  ggplot2,
+  testthat,
+  markdown,
+  knitr,
+  rmarkdown,
+  prettydoc
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Encoding: UTF-8
