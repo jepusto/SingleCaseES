@@ -94,7 +94,7 @@ vignette("Effect-size-definitions")
 ```
 
 Graphical user interface
-------------------------
+========================
 
 To use the graphical user interface for basic effect sizes, you must
 first ensure that the `SingleCaseES` package is installed (following the
