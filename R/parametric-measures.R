@@ -51,12 +51,12 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 #' @param scale character string indicating the scale of the outcome variable.
 #'   Must be either \code{"percentage"} for percentages with range 0-100 or
 #'   \code{"proportion"} for proportions with range 0-1. If a vector, the most
-#'   frequent unique value will be used.
+#'   frequent unique value will be used. \code{"percentage"} is assumed by default.
 #' @param D_const constant used for calculating the truncated sample mean (see
 #'   Pustejovsky, 2015). If a vector, the mean value will be used.
 #' @inheritParams LRR
 #'
-#' @details The odds ratio parameter is the ratio of the odds. The log-odds
+#' @details The odds ratio parameter is the ratio of the odds of the outcome. The log-odds
 #'   ratio is the natural logarithm of the odds ratio. This effect size is
 #'   appropriate for outcomes measured on a percentage or proportion scale.
 #'   Unlike the LRRd and LRRi, the LOR is symmetric in valence, so that the LOR
@@ -108,7 +108,7 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 
 LOR <- function(A_data, B_data, condition, outcome, baseline_phase,
                  improvement = "increase", 
-                 scale = "proportion", 
+                 scale = "percentage", 
                  intervals = NULL, D_const = NULL,
                  bias_correct = TRUE, confidence = .95) {
   
@@ -122,7 +122,7 @@ LOR <- function(A_data, B_data, condition, outcome, baseline_phase,
 }
 
 calc_LOR <- function(A_data, B_data, improvement = "increase", 
-                      scale = "proportion", intervals = NULL, D_const = NULL,
+                      scale = "percentage", intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, confidence = .95, ..., warn = TRUE) {
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])

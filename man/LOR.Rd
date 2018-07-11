@@ -5,7 +5,7 @@
 \title{Log-odds ratio}
 \usage{
 LOR(A_data, B_data, condition, outcome, baseline_phase,
-  improvement = "increase", scale = "proportion", intervals = NULL,
+  improvement = "increase", scale = "percentage", intervals = NULL,
   D_const = NULL, bias_correct = TRUE, confidence = 0.95)
 }
 \arguments{
@@ -28,7 +28,7 @@ Default is "increase".}
 \item{scale}{character string indicating the scale of the outcome variable.
 Must be either \code{"percentage"} for percentages with range 0-100 or
 \code{"proportion"} for proportions with range 0-1. If a vector, the most
-frequent unique value will be used.}
+frequent unique value will be used. \code{"percentage"} is assumed by default.}
 
 \item{intervals}{for interval recording procedures, the total number of
 intervals per observation session. If a vector, the mean number of
@@ -52,7 +52,7 @@ Calculates the log-odds ratio effect size index, with or without
   bias correction (Pustejovsky, 2015)
 }
 \details{
-The odds ratio parameter is the ratio of the odds. The log-odds
+The odds ratio parameter is the ratio of the odds of the outcome. The log-odds
   ratio is the natural logarithm of the odds ratio. This effect size is
   appropriate for outcomes measured on a percentage or proportion scale.
   Unlike the LRRd and LRRi, the LOR is symmetric in valence, so that the LOR
