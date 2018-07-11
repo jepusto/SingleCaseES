@@ -86,7 +86,12 @@ browseVignettes("SingleCaseES")
 ```
 
 A list of vignettes should then appear in your browser. Click on the
-hyperlinks to view them.
+hyperlinks to view them. Alternately, type the following line of code to
+open the introductory vignette:
+
+``` r
+vignette("Effect-size-definitions")
+```
 
 Graphical user interface
 ------------------------
