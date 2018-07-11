@@ -7,7 +7,7 @@ test_that("LOR handles scales correctly.", {
   
   expect_warning(LOR(A_data, B_data, scale = "count"))
   expect_warning(LOR(A_data, B_data, scale = "rate"))
-  expect_error(LOR(A_data, B_data))
+  expect_error(LOR(A_data + 100, B_data))
   
   LOR_pct <- LOR(A_data, B_data, scale = "percentage")  
   LOR_prop <- LOR(A_data / 100, B_data / 100, scale = "proportion")
