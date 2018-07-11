@@ -2,7 +2,7 @@
 title: "Effect size definitions and mathematical details"
 author: "James E. Pustejovsky and Daniel M. Swan"
 bibliography: references.bibtex
-date: "`r Sys.Date()`"
+date: "`r packageDate('SingleCaseES')`"
 output: 
   prettydoc::html_pretty:
     theme: cayman
@@ -24,17 +24,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `SingleCaseES` package provides R functions for calculating basic, within-case effect size indices for single-case designs, including several non-overlap measures
-and parametric effect size measures, and for estimating the gradual
-effects model developed by [Swan and Pustejovsky
-(2018)](https://doi.org/10.1080/00273171.2018.1466681). Standard errors
-and confidence intervals are provided for the subset of effect sizes
-indices with known sampling distributions. This vignette covers the mathematical 
-definitions of the basic non-overlap and parametric effect size measures, along 
-with some details about how they are estimated. @parker2011effect provides a review
-of the non-overlap measures, including worked examples of the calculations.  @pustejovsky2018procedural provides a critical review of non-overlap measures and 
-parametric effect sizes. However, neither of these reviews include details about 
-standard error calculations.
+The `SingleCaseES` package provides R functions for calculating basic,
+within-case effect size indices for single-case designs, including several
+non-overlap measures and parametric effect size measures, and for estimating the
+gradual effects model developed by @Swan2018gradual. Standard errors and
+confidence intervals are provided for the subset of effect sizes indices with
+known sampling distributions. This vignette covers the mathematical definitions
+of the basic non-overlap and parametric effect size measures, along with some
+details about how they are estimated. @parker2011effect provides a review of the
+non-overlap measures, including worked examples of the calculations.
+@pustejovsky2018procedural provides a critical review of non-overlap measures
+and parametric effect sizes. However, neither of these reviews include details
+about standard error calculations.
 
 # Notation
 
@@ -291,54 +292,63 @@ $$
 
 # Parametric effect sizes
 
-## LOR
+## SMD
 
-The log-odds ratio is an effect size index that quantifies the change from phase A to phase B in terms of proportionate change in the odds that a behavior is occurring [@@pustejovsky2015measurement]. It is appropriate for use with outcomes on a percentage or proportion scale. The LOR parameter is defined as
-
-$$
-\psi = \ln\left(\frac{\mu_B/(1-\mu_B)}{\mu_A/(1-\mu_A)}\right),
-$$
-where the outcomes are measured in proportions. The log odds ratio ranges from $-\infty$ to $\infty$, with a value of zero corresponding to no change in mean levels.
-
-### Estimation
-
-To account for the possibility that the sample means may be equal to zero or one, even if the mean levels are strictly between zero and one, the LOR is calculated using _truncated_ sample means, given by 
+@gingerich1984meta and @serlin2015meta proposed a within-case standardized mean difference for use in single-case designs (within-case because it is based on the data for a single individual, rather than across individuals). The standardized mean difference parameter $\delta$ is defined as the difference in means between phase B and phase A, scaled by the standard deviation of the outcome within phase A:
 
 $$
-\tilde{y}_A = \text{max} \left\{ \text{min}\left[\bar{y}_A, 1 - \frac{1}{2 D m}\right], \frac{1}{2 D m}\right\}
+\delta = \frac{\mu_B - \mu_A}{\sigma_A}.
 $$
 
-and
+Note that $\sigma_A$ represents _within-individual_ variability only. In contrast, the SMD applied to a between-groups design involves scaling by a measure of between- and within-individual variability. Thus, the scale of the within-case SMD is _not_ comparable to the scale of the SMD from a between-groups design.
+
+The SMD $\delta$ can be estimated under the assumption that the observations are mutually independent and have constant variance within each phase. There are two ways that the SMD, depending on whether it is reasonable to assume that the standard deviation of the outcome is constant across phases (i.e., $\sigma_A = \sigma_B$). 
+
+### Baseline SD
+
+@gingerich1984meta and @serlin2015meta originally suggested scaling by the SD from phase A only, due to the possibility of non-constant variance across phases. Without assuming constant SDs, an estimate of the standardized mean difference is
 
 $$
-\tilde{y}_B = \text{max} \left\{ \text{min}\left[\bar{y}_B, 1 - \frac{1}{2 D n}\right], \frac{1}{2 D n}\right\},
+d_A = \left(1 - \frac{3}{4m - 5}\right) \frac{\bar{y}_B - \bar{y}_A}{s_A}.
 $$
 
-where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes [@pustejovsky2018using].
-
-The LOR is then estimated as
+The term in parentheses is a small-sample bias correction term [cf. @hedges1981distribution; @pustejovsky2018procedural]. The standard error of this estimate is calculated as
 
 $$
-LOR = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) - \frac{s_B^2(2 \tilde{y}_B - 1)}{2 n_B (\tilde{y}_B)^2(1-\tilde{y}_B)^2} - \ln\left(\tilde{y}_A\right) + \ln\left(1-\tilde{y}_A\right) + \frac{s_A^2(2 \tilde{y}_A - 1)}{2 n_A (\tilde{y}_A)^2(1-\tilde{y}_A)^2}.
+SE_{d_A} = \left(1 - \frac{3}{4m - 5}\right)\sqrt{\frac{1}{m} + \frac{s_B^2}{n s_A^2} + \frac{d_A^2}{2(m - 1)}}.
 $$
 
-This estimator uses a small-sample correction to reduce bias when one or both phases include only a small number of observations.
+### Pooled SD 
 
-Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for $LOR$ is given by
-
-$$
-SE_{LOR} = \sqrt{\frac{s^2_A}{n_A \tilde{y}_A^2 (1 - \tilde{y}_A)^2} + \frac{s^2_B}{n_B \tilde{y}_B^2 (1 - \tilde{y}_B)^2}}.
-$$
-
-Under the same assumption, an approximate confidence interval for $\psi$ is
+If it is reasonable to assume that the SDs are constant across phases, then one can use the pooled sample SD to calculate the SMD, defined as
 
 $$
-[LOR - z_\alpha \times SE_{LOR},\quad LOR + z_\alpha \times SE_{LOR}],
+s_p = \sqrt{\frac{(m - 1)s_A^2 + (n - 1) s_B^2}{m + n - 2}}.
+$$
+
+The SMD can then be estimated as 
+
+$$
+d_p = \left(1 - \frac{3}{4(m + n) - 9}\right) \frac{\bar{y}_B - \bar{y}_A}{s_p},
+$$
+
+with standard error
+
+$$
+SE_{d_A} = \left(1 - \frac{3}{4(m + n) - 9}\right)\sqrt{\frac{1}{m} + \frac{1}{n} + \frac{d_p^2}{2(m + n - 2)}}.
+$$
+
+### Confidence intervals
+
+Whether the estimator is based on the baseline or pooled standard deviation, an approximate confidence interval for $\delta$ is given by 
+
+$$
+[d - z_\alpha \times SE_d,\quad d + z_\alpha \times SE_d].
 $$
 
 ## LRR
 
-The log-response ratio is an effect size index that quantifies the change from phase A to phase B in proportionate terms. It is appropriate for use with outcomes on a ratio scale (i.e., where zero indicates the total absence of the outcome). The LRR parameter is defined as
+The log-response ratio (LRR) is an effect size index that quantifies the change from phase A to phase B in proportionate terms. @pustejovsky2015measurement proposed to use it as an effect size index for single-case designs [see also @pustejovsky2018using]. The LRR is appropriate for use with outcomes on a ratio scale---that is, where zero indicates the total absence of the outcome. The LRR parameter is defined as
 
 $$
 \psi = \ln\left(\mu_B / \mu_A\right),
@@ -358,17 +368,22 @@ $$
 $$
 where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes [@pustejovsky2018using].
 
-The LRR is then estimated as
+A basic estimator of the LRR is then given by 
 
 $$
-R = \ln\left(\tilde{y}_B\right) + \frac{s_B^2}{2 n \tilde{y}_B^2} - \ln\left(\tilde{y}_A\right) - \frac{s_A^2}{2 m \tilde{y}_A^2}.
+R_1 = \ln\left(\tilde{y}_B\right) - \ln\left(\tilde{y}_A\right).
 $$
 
-This estimator uses a small-sample correction to reduce bias when the one or both phases include only a small number of observations. 
+However, $R_1$ will be biased when the one or both phases include only a small number of observations. A bias-corrected estimator is given by 
+
+$$
+R_2 = \ln\left(\tilde{y}_B\right) + \frac{s_B^2}{2 n \tilde{y}_B^2} - \ln\left(\tilde{y}_A\right) - \frac{s_A^2}{2 m \tilde{y}_A^2}.
+$$
+The bias-corrected estimator is the default option in `SingleCaseES`. 
 
 ### Standard errors and confidence intervals
 
-Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for $R$ is given by
+Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for $R_1$ or $R_2$ is given by
 
 $$
 SE_R = \sqrt{\frac{s_A^2}{m \tilde{y}_A^2} + \frac{s_B^2}{n \tilde{y}_B^2}}.
@@ -377,66 +392,60 @@ $$
 Under the same assumption, an approximate confidence interval for $\psi$ is 
 
 $$
-[R - z_\alpha \times SE_R,\quad R + z_\alpha \times SE_R],
+[R - z_\alpha \times SE_R,\quad R + z_\alpha \times SE_R].
 $$
 
-where $z_{\alpha / 2}$ is $1 - \alpha / 2$ critical value from a standard normal distribution. 
+## LOR
 
-## SMD
-
-#### Parameter definition 
-
-@gingerich1984meta and @serlin2015meta proposed a within-case standardized mean difference for use in single-case designs (within-case because it is based on the data for a single individual, rather than across individuals). The standardized mean difference parameter $\delta$ is defined as the difference in means between phase B and phase A, scaled by the standard deviation of the outcome within phase A:
+The log-odds ratio is an effect size index that quantifies the change from phase A to phase B in terms of proportionate change in the odds that a behavior is occurring [@pustejovsky2015measurement]. It is appropriate for use with outcomes on a percentage or proportion scale. The LOR parameter is defined as
 
 $$
-\delta = \frac{\mu_B - \mu_A}{\sigma_A}.
+\psi = \ln\left(\frac{\mu_B/(1-\mu_B)}{\mu_A/(1-\mu_A)}\right),
 $$
 
-Note that $\sigma_A$ represents _within-individual_ variability only. In contrast, the SMD applied to a between-groups design involves scaling by a measure of between- and within-individual variability. Thus, the scale of the within-case SMD is _not_ comparable to the scale of the SMD from a between-groups design.
+where the outcomes are measured in proportions. The log odds ratio ranges from $-\infty$ to $\infty$, with a value of zero corresponding to no change in mean levels.
 
-#### Estimation
+### Estimation
 
-The SMD $\delta$ can be estimated under the assumption that the observations are mutually independent and have constant variance within each phase.
-
-There are two ways that the SMD, depending on whether it is reasonable to assume that the standard deviation of the outcome is constant across phases (i.e., $\sigma_A = \sigma_B$). 
-
-__Baseline SD only.__ @gingerich1984meta and @serlin2015meta originally suggested scaling by the SD from phase A only, due to the possibility of non-constant variance across phases. Without assuming constant SDs, an estimate of the standardized mean difference is
+To account for the possibility that the sample means may be equal to zero or one, even if the mean levels are strictly between zero and one, the LOR is calculated using _truncated_ sample means, given by 
 
 $$
-d_A = \left(1 - \frac{3}{4m - 5}\right) \frac{\bar{y}_B - \bar{y}_A}{s_A}.
+\tilde{y}_A = \text{max} \left\{ \text{min}\left[\bar{y}_A, 1 - \frac{1}{2 D m}\right], \frac{1}{2 D m}\right\}
 $$
 
-The term in parentheses is a small-sample bias correction term [cf. @hedges1981distribution;@pustejovsky2018using]. The standard error of this estimate is calculated as
+and
 
 $$
-SE_{d_A} = \left(1 - \frac{3}{4m - 5}\right)\sqrt{\frac{1}{m} + \frac{s_B^2}{n s_A^2} + \frac{d_A^2}{2(m - 1)}}.
+\tilde{y}_B = \text{max} \left\{ \text{min}\left[\bar{y}_B, 1 - \frac{1}{2 D n}\right], \frac{1}{2 D n}\right\},
 $$
 
-__Pooled SD.__ If it is reasonable to assume that the SDs are constant across phases, then one can use the pooled sample SD to calculate the SMD, defined as
+where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes [@pustejovsky2018using].
+
+A basic estimator of the LOR is given by 
 
 $$
-s_p = \sqrt{\frac{(m - 1)s_A^2 + (n - 1) s_B^2}{m + n - 2}}.
+LOR_1 = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) - \ln\left(\tilde{y}_A\right) + \ln\left(1-\tilde{y}_A\right).
 $$
 
-The SMD can then be estimated as 
+However, like the LRR, this estimator will be biased when the one or both phases include only a small number of observations. A bias-corrected estimator of the LOR is given by 
 
 $$
-d_p = \left(1 - \frac{3}{4(m + n) - 9}\right) \frac{\bar{y}_B - \bar{y}_A}{s_p},
+LOR_2 = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) - \frac{s_B^2(2 \tilde{y}_B - 1)}{2 n_B (\tilde{y}_B)^2(1-\tilde{y}_B)^2} - \ln\left(\tilde{y}_A\right) + \ln\left(1-\tilde{y}_A\right) + \frac{s_A^2(2 \tilde{y}_A - 1)}{2 n_A (\tilde{y}_A)^2(1-\tilde{y}_A)^2}.
 $$
+This estimator uses a small-sample correction to reduce bias when one or both phases include only a small number of observations.
 
-with standard error
+### Standard errors and confidence intervals
 
-$$
-SE_{d_A} = \left(1 - \frac{3}{4(m + n) - 9}\right)\sqrt{\frac{1}{m} + \frac{1}{n} + \frac{d_p^2}{2(m + n - 2)}}.
-$$
-
-__Confidence interval.__ Whether the estimator is based on the baseline or pooled standard deviation, an approximate confidence interval for $\delta$ is given by 
+Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for $LOR$ is given by
 
 $$
-[d - z_\alpha \times SE_d,\quad d + z_\alpha \times SE_d],
+SE_{LOR} = \sqrt{\frac{s^2_A}{n_A \tilde{y}_A^2 (1 - \tilde{y}_A)^2} + \frac{s^2_B}{n_B \tilde{y}_B^2 (1 - \tilde{y}_B)^2}}.
 $$
 
-where $z_{\alpha / 2}$ is $1 - \alpha / 2$ critical value from a standard normal distribution. 
+Under the same assumption, an approximate confidence interval for $\psi$ is
+
+$$
+[LOR - z_\alpha \times SE_{LOR},\quad LOR + z_\alpha \times SE_{LOR}],
+$$
 
 # References
-
