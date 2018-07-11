@@ -2,12 +2,18 @@ Package: SingleCaseES
 Type: Package
 Title: A Calculator for Single-Case Effect Sizes
 Version: 0.4.0
-Date: 2018-07-02
+Date: 2018-07-11
 Authors@R: c(
   person(c("James","E."), "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre")),
   person(c("Daniel","M."), "Swan", email = "dswan@utexas.edu", role = "aut")
   )
-Description: Calculates within-case effect sizes for single-case designs, including several non-overlap measures, the within-case standardized mean difference, and the log-response ratio.
+Description: provides R functions for calculating basic effect size indices for 
+single-case designs, including several non-overlap measures and parametric 
+effect size measures, and for estimating the gradual effects model developed 
+by Swan and Pustejovsky (2018)<DOI:10.1080/00273171.2018.1466681>. 
+Standard errors and confidence intervals (based on the assumption that the outcome 
+measurements are mutually independent) are provided for the subset of effect sizes 
+indices with known sampling distributions.
 URL: https://github.com/jepusto/SingleCaseES
 BugReports: https://github.com/jepusto/SingleCaseES/issues
 License: GPL-3

@@ -2,7 +2,7 @@
 title: "Effect size definitions and mathematical details"
 author: "James E. Pustejovsky and Daniel M. Swan"
 bibliography: references.bibtex
-date: "`r packageDate('SingleCaseES')`"
+date: "July 11, 2018"
 output: 
   prettydoc::html_pretty:
     theme: cayman
