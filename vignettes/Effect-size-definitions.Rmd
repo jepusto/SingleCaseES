@@ -12,7 +12,7 @@ output:
     number_sections: true
 csl: apa.csl
 vignette: >
-  %\VignetteIndexEntry{Effect-size-definitions}
+  %\VignetteIndexEntry{Effect size definitions and mathematical details}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

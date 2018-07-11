@@ -49,10 +49,18 @@ install.packages("sourcetools")
 install.packages("shiny")
 install.packages("markdown")
 install.packages("ggplot2")
-devtools::install_github("jepusto/SingleCaseES")
+devtools::install_github("jepusto/SingleCaseES", build_vignettes = TRUE, force = TRUE)
 ```
 
 # Getting started
+
+The package includes two vignettes that demonstrate the syntax of the main functions and provide precise definitions and details about how each of the effect sizes are calculated. To view the vignettes, type the following:
+
+```{r, eval = FALSE}
+browseVignettes("SingleCaseES")
+```
+
+A list of vignettes should then appear in your browser. Click on the hyperlinks to view them. 
 
 ## Graphical user interface
 
