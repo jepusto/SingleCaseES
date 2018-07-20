@@ -229,7 +229,7 @@ batch_calc_ES <- function(dat,
   
   improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), error = function(e) stop("improvement must be a variable name, or string specifying 'increase' or 'decraease'."))
 
-  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "percentage", "proportion", "count", "rate", "other"), !!rlang::enquo(scale)), error = function(e) stop("scale must be a variable name or one of the accepted scale types. See ?batch_calcES for more details."))
+  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "percentage", "proportion", "count", "rate", "other"), !! rlang::enquo(scale)), error = function(e) stop("scale must be a variable name or one of the accepted scale types. See ?batch_calcES for more details."))
   
   if (!is.na(intervals) && typeof(intervals) == "character" && !(intervals %in% names(dat))) stop("The intervals variable name is not in the provided dataset.")
   
