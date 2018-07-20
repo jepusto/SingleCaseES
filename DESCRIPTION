@@ -24,7 +24,8 @@ Imports:
   magrittr,
   dplyr,
   tidyr,
-  rlang
+  rlang,
+  tidyselect
 Suggests:
   spelling, 
   shiny,
@@ -33,7 +34,8 @@ Suggests:
   markdown,
   knitr,
   rmarkdown,
-  prettydoc
+  prettydoc,
+  kableExtra
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Encoding: UTF-8

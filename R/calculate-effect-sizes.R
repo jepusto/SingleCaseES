@@ -145,8 +145,8 @@ calc_ES <- function(A_data, B_data,
 #'   single-case data series.
 #' @param dat A dataframe containing SCD series for which effect sizes will be
 #'   calculated.
-#' @param grouping_vars A vector of strings of the names of the variables that
-#'   uniquely identify each series (e.g. pseudonym, outcome type, study)
+#' @param ... A selection of columns that uniquely identify each series (e.g. 
+#'   pseudonym, outcome type, study). You can supply bare variable names.
 #' @param condition A string containing the variable name that identifies the
 #'   treatment condition for each observation in the series.
 #' @param outcome A string containing the variable name of the outcome data.
@@ -202,7 +202,7 @@ calc_ES <- function(A_data, B_data,
 #'   confidence interval for each specified effect size.
 
 batch_calc_ES <- function(dat, 
-                          grouping_vars,
+                          ...,
                           condition, outcome,
                           session_number,
                           baseline_phase = NULL,
@@ -211,24 +211,25 @@ batch_calc_ES <- function(dat,
                           scale = NA,
                           intervals = NA,
                           observation_length = NA,
-                          ...,
+                          bias_correct = TRUE,
+                          D_const = NULL,
+                          SE = "unbiased",
+                          std_dev = "baseline",
                           confidence = .95,
                           format = "long",
                           warn = TRUE
                           ) {
-
-  if (!(condition %in% names(dat))) stop("The condition variable name is not in the provided dataset.")
-
-  if (!(outcome %in% names(dat))) stop("The outcome variable name is not in the provided dataset.")
+  group_vars <- rlang::enquos(...)
   
-  if (!(session_number %in% names(dat))) stop("The session number variable name is not in the provided dataset.")
-
-  if (!all(grouping_vars %in% names(dat))) stop(paste0("The following grouping variables are not in the provided dataset:
-                                                      ", grouping_vars[!(grouping_vars %in% names(dat))]))
-
-  if (!(improvement %in% c("increase", "decrease")) && !(improvement %in% names(dat))) stop("The improvement variable name is not in the provided dataset.")
+  condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), error = function(e) stop("condition variable is not in the provided dataset."))
   
-  if (!is.na(scale) && !(scale %in% c("count", "rate", "proportion", "percentage")) && !(scale %in% names(dat))) stop("The scale variable name is not in the provided dataset.")
+  outcome <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), error = function(e) stop("outcome variable is not in the provided dataset."))
+  
+  session_number <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), error = function(e) stop("session number variable is not in the provided dataset."))
+  
+  improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), error = function(e) stop("improvement must be a variable name, or string specifying 'increase' or 'decraease'."))
+
+  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "percentage", "proportion", "count", "rate", "other"), !!rlang::enquo(scale)), error = function(e) stop("scale must be a variable name or one of the accepted scale types. See ?batch_calcES for more details."))
   
   if (!is.na(intervals) && typeof(intervals) == "character" && !(intervals %in% names(dat))) stop("The intervals variable name is not in the provided dataset.")
   
@@ -269,7 +270,7 @@ batch_calc_ES <- function(dat,
   }
   
     res <- dat %>%  
-      dplyr::group_by(!!!rlang::syms(grouping_vars)) %>%
+      dplyr::group_by(!!!group_vars) %>%
       dplyr::arrange(!!rlang::sym(session_number)) %>%
       dplyr::do(calc_ES(condition = .data[[condition]], 
                         outcome = .data[[outcome]], 
@@ -279,10 +280,13 @@ batch_calc_ES <- function(dat,
                         scale =  .data[[scale]],
                         intervals = .data[[intervals]],
                         observation_length = .data[[observation_length]],
+                        bias_correct = bias_correct,
+                        D_const = D_const,
+                        SE = SE,
+                        std_dev = std_dev,
                         confidence = confidence, 
                         format = format,
-                        warn = FALSE,
-                        ...)) %>%
+                        warn = FALSE)) %>%
       dplyr::ungroup()
 
  res

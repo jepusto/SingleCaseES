@@ -4,18 +4,19 @@
 \alias{batch_calc_ES}
 \title{Calculate effect sizes from a dataset for multiple series}
 \usage{
-batch_calc_ES(dat, grouping_vars, condition, outcome, session_number,
+batch_calc_ES(dat, ..., condition, outcome, session_number,
   baseline_phase = NULL, ES = c("LRRd", "LRRi", "SMD", "Tau"),
   improvement = "increase", scale = NA, intervals = NA,
-  observation_length = NA, ..., confidence = 0.95, format = "long",
-  warn = TRUE)
+  observation_length = NA, bias_correct = TRUE, D_const = NULL,
+  SE = "unbiased", std_dev = "baseline", confidence = 0.95,
+  format = "long", warn = TRUE)
 }
 \arguments{
 \item{dat}{A dataframe containing SCD series for which effect sizes will be
 calculated.}
 
-\item{grouping_vars}{A vector of strings of the names of the variables that
-uniquely identify each series (e.g. pseudonym, outcome type, study)}
+\item{...}{A selection of columns that uniquely identify each series (e.g. 
+pseudonym, outcome type, study). You can supply bare variable names.}
 
 \item{condition}{A string containing the variable name that identifies the
 treatment condition for each observation in the series.}
@@ -75,9 +76,6 @@ a variable name containing the observation session length for each
 observation. If a variable name, the mean observation session length within
 each series will be used. Missing values will be ignored. Defaults to
 \code{NA}.}
-
-\item{...}{further arguments used for calculating some of the effect size
-indices.}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
