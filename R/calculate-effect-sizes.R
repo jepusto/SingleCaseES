@@ -231,7 +231,7 @@ batch_calc_ES <- function(dat,
 
   scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "percentage", "proportion", "count", "rate", "other"), !! rlang::enquo(scale)), error = function(e) stop("scale must be a variable name or one of the accepted scale types. See ?batch_calcES for more details."))
   
-  if (!is.na(intervals) && typeof(intervals) == "character" && !(intervals %in% names(dat))) stop("The intervals variable name is not in the provided dataset.")
+  # if (!is.na(intervals) && typeof(intervals) == "character" && !(intervals %in% names(dat))) stop("The intervals variable name is not in the provided dataset.")
   
   if (!is.na(observation_length) && typeof(observation_length) == "character" && !(observation_length %in% names(dat))) stop("Observation session length variable name not in dataset.")
   
@@ -245,9 +245,12 @@ batch_calc_ES <- function(dat,
     scale <- "scale"
   }
   
-  if (typeof(intervals) != "character") {
+  if (tryCatch(typeof(intervals) %in% c("double", "integer") || is.na(intervals), error = function(e) FALSE)) {
     dat$intervals <- intervals
     intervals <- "intervals"
+  }else{
+    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(intervals)), error = function(e) stop("intervals variable is not in the provided dataset."))
+    
   }
   
   if (typeof(observation_length) != "character") {
