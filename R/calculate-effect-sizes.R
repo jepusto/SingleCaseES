@@ -145,8 +145,8 @@ calc_ES <- function(A_data, B_data,
 #'   single-case data series.
 #' @param dat A dataframe containing SCD series for which effect sizes will be
 #'   calculated.
-#' @param ... A selection of columns that uniquely identify each series (e.g. 
-#'   pseudonym, outcome type, study). You can supply bare variable names.
+#' @param grouping A one sided formula of variables (e.g. ~ var1 + var2) that 
+#' uniquely identify each series (e.g.  pseudonym, outcome type, study).
 #' @param condition A string containing the variable name that identifies the
 #'   treatment condition for each observation in the series.
 #' @param outcome A string containing the variable name of the outcome data.
@@ -202,7 +202,7 @@ calc_ES <- function(A_data, B_data,
 #'   confidence interval for each specified effect size.
 
 batch_calc_ES <- function(dat, 
-                          ...,
+                          grouping,
                           condition, outcome,
                           session_number,
                           baseline_phase = NULL,
@@ -211,15 +211,16 @@ batch_calc_ES <- function(dat,
                           scale = NA,
                           intervals = NA,
                           observation_length = NA,
-                          bias_correct = TRUE,
-                          D_const = NULL,
-                          SE = "unbiased",
-                          std_dev = "baseline",
                           confidence = .95,
                           format = "long",
-                          warn = TRUE
+                          warn = TRUE,
+                          ...
                           ) {
-  group_vars <- rlang::enquos(...)
+  if(!formula.tools::is.one.sided(grouping)){
+    warning("Only the right hand side of the grouping formula will be used, the left hand side will be disregarded.", call. = FALSE)
+  }
+  
+  grouping <- formula.tools::get.vars(formula.tools::rhs(grouping))
   
   condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), error = function(e) stop("condition variable is not in the provided dataset."))
   
@@ -231,9 +232,6 @@ batch_calc_ES <- function(dat,
 
   scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "percentage", "proportion", "count", "rate", "other"), !! rlang::enquo(scale)), error = function(e) stop("scale must be a variable name or one of the accepted scale types. See ?batch_calcES for more details."))
   
-  # if (!is.na(intervals) && typeof(intervals) == "character" && !(intervals %in% names(dat))) stop("The intervals variable name is not in the provided dataset.")
-  
-  if (!is.na(observation_length) && typeof(observation_length) == "character" && !(observation_length %in% names(dat))) stop("Observation session length variable name not in dataset.")
   
   if (improvement %in% c("increase", "decrease")) {
     dat$improvement <- improvement
@@ -253,9 +251,11 @@ batch_calc_ES <- function(dat,
     
   }
   
-  if (typeof(observation_length) != "character") {
+  if (tryCatch(typeof(observation_length) %in% c("double", "integer") || is.na(observation_length), error = function (e) FALSE)) {
     dat$observation_length <- observation_length
     observation_length <- "observation_length"
+  } else {
+    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(observation_length)), error = function(e) stop("observation length variable is not in the provided dataset."))
   }
   
   if (warn & "LOR" %in% ES & !all(dat$scale %in% c("proportion","percentage"))) {
@@ -273,7 +273,7 @@ batch_calc_ES <- function(dat,
   }
   
     res <- dat %>%  
-      dplyr::group_by(!!!group_vars) %>%
+      dplyr::group_by(!!!rlang::syms(grouping)) %>%
       dplyr::arrange(!!rlang::sym(session_number)) %>%
       dplyr::do(calc_ES(condition = .data[[condition]], 
                         outcome = .data[[outcome]], 
@@ -283,12 +283,9 @@ batch_calc_ES <- function(dat,
                         scale =  .data[[scale]],
                         intervals = .data[[intervals]],
                         observation_length = .data[[observation_length]],
-                        bias_correct = bias_correct,
-                        D_const = D_const,
-                        SE = SE,
-                        std_dev = std_dev,
                         confidence = confidence, 
                         format = format,
+                        ...,
                         warn = FALSE)) %>%
       dplyr::ungroup()
 

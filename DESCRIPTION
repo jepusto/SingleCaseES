@@ -25,7 +25,8 @@ Imports:
   dplyr,
   tidyr,
   rlang,
-  tidyselect
+  tidyselect,
+  formula.tools
 Suggests:
   spelling, 
   shiny,

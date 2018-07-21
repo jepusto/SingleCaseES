@@ -15,7 +15,7 @@ Thorne_counts <- dplyr::filter(Thorne, Procedure == "count")
 symmetric_ES_counts <- 
   batch_calc_ES(
     Thorne_counts, 
-    grouping_vars = "Case", 
+    grouping = ~Case, 
     condition = "Trt", 
     baseline_phase = 0, 
     session_number = "Session_number", 
@@ -32,7 +32,7 @@ test_that("Symmetric ES with count data have opposite sign if direction of impro
   switch_improvement_counts <- 
     batch_calc_ES(
       Thorne_counts, 
-      grouping_vars = "Case",
+      grouping = ~Case,
       condition = "Trt",
       baseline_phase = 0,
       session_number = "Session_number",
@@ -64,7 +64,7 @@ test_that("For symmetric ES with count data, flipping improvement direction and 
   switch_baseline_counts <- 
     batch_calc_ES(
       Thorne_counts, 
-      grouping_vars = "Case",
+      grouping = ~Case,
       condition = "Trt",
       baseline_phase = 1,
       session_number = "Session_number",
@@ -96,7 +96,7 @@ Thorne_pct <- dplyr::filter(Thorne, Procedure == "other")
 symmetric_ES_pct <- 
   batch_calc_ES(
     Thorne_pct, 
-    Case, 
+    ~Case, 
     condition = "Trt", 
     baseline_phase = 0, 
     session_number = "Session_number", 
@@ -113,7 +113,7 @@ test_that("Symmetric ES with percentage data have opposite sign if direction of 
   switch_improvement_pct <- 
     batch_calc_ES(
       Thorne_pct, 
-      Case,
+      ~Case,
       condition = "Trt",
       baseline_phase = 0,
       session_number = "Session_number",
@@ -159,7 +159,7 @@ test_that("For symmetric ES with percentage, flipping improvement direction and 
   switch_baseline_pct <- 
     batch_calc_ES(
       Thorne_pct, 
-      Case,
+      ~Case,
       condition = "Trt",
       baseline_phase = 1,
       session_number = "Session_number",

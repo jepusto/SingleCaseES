@@ -15,7 +15,7 @@ Shogren <- Shogren %>%
   ungroup()
 
 ShogrenSMD <- batch_calc_ES(dat = Shogren,
-                            Study, Measure, Case,
+                            grouping = ~ Study + Measure + Case,
                             condition = Phase,
                             baseline_phase = "No Choice",
                             outcome = outcome,
@@ -32,7 +32,7 @@ ShogrenSMD <- batch_calc_ES(dat = Shogren,
 
 Shogren_LRR_LOR_PND <- 
   batch_calc_ES(dat = Shogren,
-                Study, Measure, Case,
+                grouping = ~ Study + Measure + Case,
                 condition = Phase,
                 baseline_phase = "No Choice",
                 outcome = outcome,
