@@ -93,6 +93,7 @@ Schmidt_ES_calc <-
              format = "wide")
   )
 
+
 test_that("LRRd and LRRi are correct with Schmidt (2007) data.", {
   
   expect_equal(Schmidt_LRR$R_2_i, Schmidt_ES_calc$LRRi_Est)
@@ -100,4 +101,23 @@ test_that("LRRd and LRRi are correct with Schmidt (2007) data.", {
   expect_equal(Schmidt_LRR$R_2_d, Schmidt_ES_calc$LRRd_Est)
   expect_equal(sqrt(Schmidt_LRR$V_R_d), Schmidt_ES_calc$LRRd_SE)
   
+})
+
+Schmidt_batch_ES_calc <- 
+  batch_calc_ES(dat = Schmidt2007,
+                grouping = vars(Behavior_type, Case_pseudonym, Phase_num),
+                condition = Condition,
+                outcome = Outcome,
+                ES = c("LRRi","LRRd"),
+                improvement = direction,
+                scale = Metric,
+                bias_correct = TRUE,
+                confidence = NULL,
+                format = "wide")
+
+
+test_that("batch_calc_ES() works with Schmidt (2007) data.", {
+
+  expect_identical(ungroup(Schmidt_ES_calc), Schmidt_batch_ES_calc)
+
 })

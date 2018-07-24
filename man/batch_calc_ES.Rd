@@ -11,19 +11,18 @@ batch_calc_ES(dat, grouping, condition, outcome, session_number,
   warn = TRUE, ...)
 }
 \arguments{
-\item{dat}{A dataframe containing SCD series for which effect sizes will be
+\item{dat}{data frame containing SCD series for which effect sizes will be
 calculated.}
 
-\item{grouping}{A one sided formula of variables (e.g. ~ var1 + var2) that 
-uniquely identify each series (e.g.  pseudonym, outcome type, study).}
+\item{grouping}{A variable name or list of (unquoted) variable names that uniquely identify each data series.}
 
-\item{condition}{A string containing the variable name that identifies the
+\item{condition}{A variable name that identifies the
 treatment condition for each observation in the series.}
 
-\item{outcome}{A string containing the variable name of the outcome data.}
+\item{outcome}{A variable name for the outcome data.}
 
-\item{session_number}{A string containing the name of a variable used to
-order outcomes within each series.}
+\item{session_number}{A variable name used to
+order the data within each series.}
 
 \item{baseline_phase}{character string specifying which value of
 \code{condition} corresponds to the baseline phase. If \code{NULL} (the

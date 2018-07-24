@@ -143,15 +143,14 @@ calc_ES <- function(A_data, B_data,
 #' @description Calculates one or more effect size estimates, along with
 #'   associated standard errors and confidence intervals, if available, for a
 #'   single-case data series.
-#' @param dat A dataframe containing SCD series for which effect sizes will be
+#' @param dat data frame containing SCD series for which effect sizes will be
 #'   calculated.
-#' @param grouping A one sided formula of variables (e.g. ~ var1 + var2) that 
-#' uniquely identify each series (e.g.  pseudonym, outcome type, study).
-#' @param condition A string containing the variable name that identifies the
+#' @param grouping A variable name or list of (unquoted) variable names that uniquely identify each data series.
+#' @param condition A variable name that identifies the
 #'   treatment condition for each observation in the series.
-#' @param outcome A string containing the variable name of the outcome data.
-#' @param session_number A string containing the name of a variable used to
-#'   order outcomes within each series.
+#' @param outcome A variable name for the outcome data.
+#' @param session_number A variable name used to
+#'   order the data within each series.
 #' @param baseline_phase character string specifying which value of
 #'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the
 #'   default), the first observed value of \code{condition} within the series
@@ -216,17 +215,16 @@ batch_calc_ES <- function(dat,
                           warn = TRUE,
                           ...
                           ) {
-  if(!formula.tools::is.one.sided(grouping)){
-    warning("Only the right hand side of the grouping formula will be used, the left hand side will be disregarded.", call. = FALSE)
-  }
   
-  grouping <- formula.tools::get.vars(formula.tools::rhs(grouping))
+  group_class <- tryCatch(class(grouping), error = function(e) "single variable")
+  if (group_class == "single variable") grouping <- rlang::enquo(grouping)
+  grouping <- tryCatch(tidyselect::vars_select(names(dat), !!!grouping), error = function(e) stop("Grouping variables are not in the dataset."))
+
+  condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), error = function(e) stop("Condition variable is not in the dataset."))
   
-  condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), error = function(e) stop("condition variable is not in the provided dataset."))
+  outcome <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), error = function(e) stop("Outcome variable is not in the dataset."))
   
-  outcome <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), error = function(e) stop("outcome variable is not in the provided dataset."))
-  
-  session_number <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), error = function(e) stop("session number variable is not in the provided dataset."))
+  session_number <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), error = function(e) stop("Session number variable is not in the dataset."))
   
   improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), error = function(e) stop("improvement must be a variable name, or string specifying 'increase' or 'decraease'."))
 
