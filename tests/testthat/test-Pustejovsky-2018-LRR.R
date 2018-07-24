@@ -41,6 +41,27 @@ McKissick_R2 <-
   do(LRRd(condition = .$Condition, outcome = .$Outcome, 
           scale = "count", observation_length = 20))
 
+McKissick_R1_batch <- 
+  batch_calc_ES(McKissick,
+                grouping = Case_pseudonym,
+                condition = Condition,
+                outcome = Outcome,
+                ES = "LRRd",
+                improvement = "decrease",
+                scale = "count",
+                observation_length = 20,
+                bias_correct = FALSE)
+
+McKissick_R2_batch <- 
+  batch_calc_ES(McKissick,
+                grouping = Case_pseudonym,
+                condition = Condition,
+                outcome = Outcome,
+                ES = "LRRd",
+                improvement = "decrease",
+                scale = "count",
+                observation_length = 20)
+
 test_that("LRRd is correct with McKissick counts.", {
   
   expect_equal(McKissick_summary$R_1, McKissick_R1$Est)
@@ -48,7 +69,10 @@ test_that("LRRd is correct with McKissick counts.", {
   expect_equal(McKissick_summary$SE_R, McKissick_R1$SE)
   expect_equal(McKissick_summary$SE_R, McKissick_R2$SE)
   
+  expect_identical(ungroup(McKissick_R1), McKissick_R1_batch)
+  expect_identical(ungroup(McKissick_R2), McKissick_R2_batch)
 })
+
 
 #----------------------------------
 # Schmidt (2007) example

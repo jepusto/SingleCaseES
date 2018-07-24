@@ -199,6 +199,32 @@ calc_ES <- function(A_data, B_data,
 #'
 #' @return A tibble containing the estimate, standard error, and/or
 #'   confidence interval for each specified effect size.
+#'   
+#' @examples 
+#' 
+#' data(McKissick)
+#' batch_calc_ES(McKissick,
+#'               grouping = Case_pseudonym,
+#'               condition = Condition,
+#'               outcome = Outcome,
+#'               ES = c("LRRd","LRRi"),
+#'               improvement = "decrease",
+#'               scale = "count",
+#'               observation_length = 20,
+#'               format = "long")
+#'               
+#' data(Schmidt2007)               
+#' batch_calc_ES(dat = Schmidt2007,
+#'               grouping = vars(Behavior_type, Case_pseudonym, Phase_num),
+#'               condition = Condition,
+#'               outcome = Outcome,
+#'               ES = c("LRRi","LRRd"),
+#'               improvement = direction,
+#'               scale = Metric,
+#'               bias_correct = TRUE,
+#'               confidence = NULL,
+#'               format = "wide")
+#'               
 
 batch_calc_ES <- function(dat, 
                           grouping,
@@ -216,19 +242,26 @@ batch_calc_ES <- function(dat,
                           ...
                           ) {
   
-  group_class <- tryCatch(class(grouping), error = function(e) "single variable")
+  group_class <- tryCatch(class(grouping), 
+                          error = function(e) "single variable")
   if (group_class == "single variable") grouping <- rlang::enquo(grouping)
-  grouping <- tryCatch(tidyselect::vars_select(names(dat), !!!grouping), error = function(e) stop("Grouping variables are not in the dataset."))
+  grouping <- tryCatch(tidyselect::vars_select(names(dat), !!!grouping), 
+                       error = function(e) stop("Grouping variables are not in the dataset."))
 
-  condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), error = function(e) stop("Condition variable is not in the dataset."))
+  condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), 
+                        error = function(e) stop("Condition variable is not in the dataset."))
   
-  outcome <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), error = function(e) stop("Outcome variable is not in the dataset."))
+  outcome <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), 
+                      error = function(e) stop("Outcome variable is not in the dataset."))
   
-  session_number <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), error = function(e) stop("Session number variable is not in the dataset."))
+  session_number <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), 
+                             error = function(e) stop("Session number variable is not in the dataset."))
   
-  improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), error = function(e) stop("improvement must be a variable name, or string specifying 'increase' or 'decraease'."))
+  improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), 
+                          error = function(e) stop("Improvement must be a variable name or a string specifying 'increase' or 'decraease'."))
 
-  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "percentage", "proportion", "count", "rate", "other"), !! rlang::enquo(scale)), error = function(e) stop("scale must be a variable name or one of the accepted scale types. See ?batch_calcES for more details."))
+  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "percentage", "proportion", "count", "rate", "other"), !! rlang::enquo(scale)), 
+                    error = function(e) stop("Scale must be a variable name or one of the accepted scale types. See ?batch_calcES for more details."))
   
   
   if (improvement %in% c("increase", "decrease")) {
@@ -241,19 +274,23 @@ batch_calc_ES <- function(dat,
     scale <- "scale"
   }
   
-  if (tryCatch(typeof(intervals) %in% c("double", "integer") || is.na(intervals), error = function(e) FALSE)) {
+  if (tryCatch(typeof(intervals) %in% c("double", "integer") || is.na(intervals), 
+               error = function(e) FALSE)) {
     dat$intervals <- intervals
     intervals <- "intervals"
-  }else{
-    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(intervals)), error = function(e) stop("intervals variable is not in the provided dataset."))
+  } else {
+    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(intervals)), 
+                          error = function(e) stop("Intervals variable is not in the dataset."))
     
   }
   
-  if (tryCatch(typeof(observation_length) %in% c("double", "integer") || is.na(observation_length), error = function (e) FALSE)) {
+  if (tryCatch(typeof(observation_length) %in% c("double", "integer") || is.na(observation_length), 
+               error = function (e) FALSE)) {
     dat$observation_length <- observation_length
     observation_length <- "observation_length"
   } else {
-    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(observation_length)), error = function(e) stop("observation length variable is not in the provided dataset."))
+    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(observation_length)), 
+                          error = function(e) stop("Observation length variable is not in the dataset."))
   }
   
   if (warn & "LOR" %in% ES & !all(dat$scale %in% c("proportion","percentage"))) {
@@ -270,23 +307,24 @@ batch_calc_ES <- function(dat,
     ES
   }
   
-    res <- dat %>%  
-      dplyr::group_by(!!!rlang::syms(grouping)) %>%
-      dplyr::arrange(!!rlang::sym(session_number)) %>%
-      dplyr::do(calc_ES(condition = .data[[condition]], 
-                        outcome = .data[[outcome]], 
-                        baseline_phase = baseline_phase,
-                        ES = ES_names, 
-                        improvement = .data[[improvement]][1], 
-                        scale =  .data[[scale]],
-                        intervals = .data[[intervals]],
-                        observation_length = .data[[observation_length]],
-                        confidence = confidence, 
-                        format = format,
-                        ...,
-                        warn = FALSE)) %>%
-      dplyr::ungroup()
+  print(improvement)
+  
+  dat %>%  
+    dplyr::group_by(!!!rlang::syms(grouping)) %>%
+    dplyr::arrange(!!rlang::sym(session_number)) %>%
+    dplyr::do(calc_ES(condition = .data[[condition]], 
+                      outcome = .data[[outcome]], 
+                      baseline_phase = baseline_phase,
+                      ES = ES_names, 
+                      improvement = .data[[improvement]], 
+                      scale =  .data[[scale]],
+                      intervals = .data[[intervals]],
+                      observation_length = .data[[observation_length]],
+                      confidence = confidence, 
+                      format = format,
+                      ...,
+                      warn = FALSE)) %>%
+    dplyr::ungroup()
 
- res
 }
 
