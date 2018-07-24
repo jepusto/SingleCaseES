@@ -1,4 +1,5 @@
 library(dplyr)
+library(tidyselect)
 data("iris")
 
 group_data <- function(df, group_var) {
