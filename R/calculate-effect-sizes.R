@@ -57,7 +57,9 @@
 #' @importFrom rlang !!!
 #' @importFrom rlang !!
 #' @importFrom dplyr .data
-#'   
+#' @importFrom dplyr vars
+#'
+
 
 calc_ES <- function(A_data, B_data, 
                     condition, outcome, 
@@ -224,12 +226,13 @@ calc_ES <- function(A_data, B_data,
 #'               bias_correct = TRUE,
 #'               confidence = NULL,
 #'               format = "wide")
-#'               
+#'
+
 
 batch_calc_ES <- function(dat, 
                           grouping,
                           condition, outcome,
-                          session_number,
+                          session_number = NULL,
                           baseline_phase = NULL,
                           ES = c("LRRd","LRRi","SMD","Tau"), 
                           improvement = "increase",
@@ -254,14 +257,15 @@ batch_calc_ES <- function(dat,
   outcome <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), 
                       error = function(e) stop("Outcome variable is not in the dataset."))
   
-  session_number <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), 
-                             error = function(e) stop("Session number variable is not in the dataset."))
+  if(tryCatch(!is.null(session_number), error = function(e) TRUE)){
+  session_number <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(session_number)), 
+                             error = function(e) stop("Session number variable is not in the dataset."))}
   
   improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), 
-                          error = function(e) stop("Improvement must be a variable name or a string specifying 'increase' or 'decraease'."))
+                          error = function(e) stop("Improvement must be a variable name or a string specifying 'increase' or 'decrease'."))
 
   scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "percentage", "proportion", "count", "rate", "other"), !! rlang::enquo(scale)), 
-                    error = function(e) stop("Scale must be a variable name or one of the accepted scale types. See ?batch_calcES for more details."))
+                    error = function(e) stop("Scale must be a variable name or one of the accepted scale types. See ?batch_calc_ES for more details."))
   
   
   if (improvement %in% c("increase", "decrease")) {
@@ -307,11 +311,10 @@ batch_calc_ES <- function(dat,
     ES
   }
   
-  print(improvement)
+  if (!is.null(session_number)) dat <- dplyr::arrange(dat, !!rlang::sym(session_number))
   
   dat %>%  
     dplyr::group_by(!!!rlang::syms(grouping)) %>%
-    dplyr::arrange(!!rlang::sym(session_number)) %>%
     dplyr::do(calc_ES(condition = .data[[condition]], 
                       outcome = .data[[outcome]], 
                       baseline_phase = baseline_phase,
@@ -325,6 +328,5 @@ batch_calc_ES <- function(dat,
                       ...,
                       warn = FALSE)) %>%
     dplyr::ungroup()
-
 }
 

@@ -4,7 +4,7 @@
 \alias{batch_calc_ES}
 \title{Calculate effect sizes from a dataset for multiple series}
 \usage{
-batch_calc_ES(dat, grouping, condition, outcome, session_number,
+batch_calc_ES(dat, grouping, condition, outcome, session_number = NULL,
   baseline_phase = NULL, ES = c("LRRd", "LRRi", "SMD", "Tau"),
   improvement = "increase", scale = NA, intervals = NA,
   observation_length = NA, confidence = 0.95, format = "long",
@@ -99,4 +99,30 @@ Calculates one or more effect size estimates, along with
 \details{
 Calculates one or more effect size indices for each series in a
   dataset
+}
+\examples{
+
+data(McKissick)
+batch_calc_ES(McKissick,
+              grouping = Case_pseudonym,
+              condition = Condition,
+              outcome = Outcome,
+              ES = c("LRRd","LRRi"),
+              improvement = "decrease",
+              scale = "count",
+              observation_length = 20,
+              format = "long")
+              
+data(Schmidt2007)               
+batch_calc_ES(dat = Schmidt2007,
+              grouping = vars(Behavior_type, Case_pseudonym, Phase_num),
+              condition = Condition,
+              outcome = Outcome,
+              ES = c("LRRi","LRRd"),
+              improvement = direction,
+              scale = Metric,
+              bias_correct = TRUE,
+              confidence = NULL,
+              format = "wide")
+
 }
