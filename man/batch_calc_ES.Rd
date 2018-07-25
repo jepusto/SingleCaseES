@@ -4,26 +4,25 @@
 \alias{batch_calc_ES}
 \title{Calculate effect sizes from a dataset for multiple series}
 \usage{
-batch_calc_ES(dat, grouping_vars, condition, outcome, session_number,
+batch_calc_ES(dat, grouping, condition, outcome, session_number = NULL,
   baseline_phase = NULL, ES = c("LRRd", "LRRi", "SMD", "Tau"),
   improvement = "increase", scale = NA, intervals = NA,
-  observation_length = NA, ..., confidence = 0.95, format = "long",
-  warn = TRUE)
+  observation_length = NA, confidence = 0.95, format = "long",
+  warn = TRUE, ...)
 }
 \arguments{
-\item{dat}{A dataframe containing SCD series for which effect sizes will be
+\item{dat}{data frame containing SCD series for which effect sizes will be
 calculated.}
 
-\item{grouping_vars}{A vector of strings of the names of the variables that
-uniquely identify each series (e.g. pseudonym, outcome type, study)}
+\item{grouping}{A variable name or list of (unquoted) variable names that uniquely identify each data series.}
 
-\item{condition}{A string containing the variable name that identifies the
+\item{condition}{A variable name that identifies the
 treatment condition for each observation in the series.}
 
-\item{outcome}{A string containing the variable name of the outcome data.}
+\item{outcome}{A variable name for the outcome data.}
 
-\item{session_number}{A string containing the name of a variable used to
-order outcomes within each series.}
+\item{session_number}{A variable name used to
+order the data within each series.}
 
 \item{baseline_phase}{character string specifying which value of
 \code{condition} corresponds to the baseline phase. If \code{NULL} (the
@@ -76,9 +75,6 @@ observation. If a variable name, the mean observation session length within
 each series will be used. Missing values will be ignored. Defaults to
 \code{NA}.}
 
-\item{...}{further arguments used for calculating some of the effect size
-indices.}
-
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
 
@@ -87,6 +83,9 @@ indices.}
 
 \item{warn}{logical indicating whether warnings should be displayed. Default
 is \code{TRUE}.}
+
+\item{...}{further arguments used for calculating some of the effect size
+indices.}
 }
 \value{
 A tibble containing the estimate, standard error, and/or
@@ -100,4 +99,30 @@ Calculates one or more effect size estimates, along with
 \details{
 Calculates one or more effect size indices for each series in a
   dataset
+}
+\examples{
+
+data(McKissick)
+batch_calc_ES(McKissick,
+              grouping = Case_pseudonym,
+              condition = Condition,
+              outcome = Outcome,
+              ES = c("LRRd","LRRi"),
+              improvement = "decrease",
+              scale = "count",
+              observation_length = 20,
+              format = "long")
+              
+data(Schmidt2007)               
+batch_calc_ES(dat = Schmidt2007,
+              grouping = c(Behavior_type, Case_pseudonym, Phase_num),
+              condition = Condition,
+              outcome = Outcome,
+              ES = c("LRRi","LRRd"),
+              improvement = direction,
+              scale = Metric,
+              bias_correct = TRUE,
+              confidence = NULL,
+              format = "wide")
+
 }

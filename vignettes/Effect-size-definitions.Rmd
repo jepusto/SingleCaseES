@@ -53,7 +53,7 @@ The parametric effect size measures are all defined under a simple model for the
 
 @parker2009improved proposed non-overlap of all pairs (NAP) as an effect size index for use in single-case research. NAP is defined in terms of all pair-wise comparisons between the data points in two different phases for a given case (i.e., a treatment phase versus a baseline phase). For an outcome that is desirable to increase, NAP is the proportion of all such pair-wise comparisons where the treatment phase observation exceeds the baseline phase observation, with pairs that are exactly tied getting a weight of 1/2. NAP is exactly equivalent to the modified Common Language Effect Size [@Vargha2000critique] and has been proposed as an effect size index in other contexts too [e.g., @Acion2006probabilistic].
 
-NAP can be interpretted as an estimate of the probability that a randomly selected observation from the B phase improves upon a randomly selected observation from the A phase. For an outcome where increase is desirable, the effect size parameter is
+NAP can be interpreted as an estimate of the probability that a randomly selected observation from the B phase improves upon a randomly selected observation from the A phase. For an outcome where increase is desirable, the effect size parameter is
 
 $$\theta = \text{Pr}(Y^B > Y^A) + 0.5 \times \text{Pr}(Y^B = Y^A).$$
 

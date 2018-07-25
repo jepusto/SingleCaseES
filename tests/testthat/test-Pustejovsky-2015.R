@@ -15,15 +15,15 @@ Shogren <- Shogren %>%
   ungroup()
 
 ShogrenSMD <- batch_calc_ES(dat = Shogren,
-                            grouping_vars = c("Study", "Measure","Case"),
-                            condition = "Phase",
+                            grouping = vars(Study, Measure, Case),
+                            condition = Phase,
                             baseline_phase = "No Choice",
-                            outcome = "outcome",
-                            session_number = "session_number",
-                            improvement = "smd_improvement",
+                            outcome = outcome,
+                            session_number = session_number,
+                            improvement = smd_improvement,
                             ES = "SMD",
-                            scale = "scale",
-                            intervals = "intervals",
+                            scale = scale,
+                            intervals = intervals,
                             observation_length = "Session_length",
                             format = "wide",
                             std_dev = "both",
@@ -32,17 +32,18 @@ ShogrenSMD <- batch_calc_ES(dat = Shogren,
 
 Shogren_LRR_LOR_PND <- 
   batch_calc_ES(dat = Shogren,
-                grouping_vars = c("Study", "Measure", "Case"),
-                condition = "Phase",
+                grouping = vars(Study, Measure, Case),
+                condition = Phase,
                 baseline_phase = "No Choice",
-                outcome = "outcome",
-                session_number = "session_number",
-                improvement = "direction",
+                outcome = outcome,
+                session_number = session_number,
+                improvement = direction,
                 ES = c("PND", "LRRd", "LOR"),
-                scale = "scale",
+                scale = scale,
                 intervals = "intervals",
                 observation_length = "Session_length",
-                format = "wide", warn = FALSE) %>%
+                format = "wide", 
+                warn = FALSE) %>%
   arrange(Study, Case)
 
 

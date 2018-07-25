@@ -19,6 +19,7 @@ nocite: |
   @pustejovsky2015measurement, @scruggs1987quantitative
 ---
 ```{r setup, include = FALSE}
+library(kableExtra)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -544,7 +545,37 @@ session (`Session_length`), and a variable identifying the measurement scale
 
 ### Schmidt (2007)
 
-## 
+The Schmidt2007 dataset are data drawn from @Schmidt2007effects. This data is somewhat
+more complicated. It has two outcomes for each participant which have differing
+directions of improvement, as well as different outcome measurement scales for
+the two outcomes. Each series also has a baseline phase, a treatment phase,
+a return to baseline phase, and a second treatment phase.
+
+```{r}
+data(Schmidt2007)
+```
+
+Here are the first few rows of the data
+
+```{r, echo = F}
+knitr::kable(head(Schmidt2007, n = 10), longtable = TRUE) %>%
+  kable_styling() %>%
+  scroll_box(width = "100%")
+```
+
+This demonstration will focus on a subset of the variables:
+`Behavior_type` which specifies whether the outcome is disruptive behavior or on
+task behavior, `Metric` which specifies whether it is percentage or count data,
+`Session_length` which specifies the length of the observation session, 
+`Case_Pseudonym` which specifies which participant the observation corresponds to,
+`Session_number` which specifies the within-session observation ordering,
+`Condition` which specifies whether the outcome is in the baseline ("A") phase
+or the treatment ("B") phase, `Outcome` which contains the outcome data,
+`Phase_num` which specifies whether the data is in the first or second phase
+pair, `direction` which specifies the improvement direction, and `N_intervals`
+which specifies the number of intervals for the percentage outcomes.
+
+## Batch calculator arguments 
 
 There are a number of required arguments for the function.
 
@@ -613,21 +644,11 @@ and some of your series are not proportion or percentages, the function will
 warn you that data specified as count, rate, or other will be returned as NA
 for the LOR. You can turn off this warning by setting `warn = FALSE`.
 
-### Some Examples
+## Some Examples
 
-The `McKissick` dataset is data drawn from McKissick et al. (2010). These data
-are event counts of negative behaviors observed at the classroom level.
-
-```{r}
-data(McKissick)
-
-head(McKissick)
-```
-
-The data contains a pseudonym for each case (`Case_pseudonym`) corresponding to
-a classroom period. It also contains a within case session number
+Remember that data contains a pseudonym for each case (`Case_pseudonym`), a within case session number
 (`Session_number`), a variable (`Condition`) corresponding to the baseline ("A")
-and treatment ("B") phases. It has an outcome variable containing the values of
+and treatment ("B") phases, an outcome variable containing the values of
 the outcomes, a variable specifying the length of the observation session
 (`Session_length`), as well as a variable corresponding to the measurement scale
 (`Procedure`). Note that the session length is uniform across all series (20),
