@@ -217,7 +217,7 @@ calc_ES <- function(A_data, B_data,
 #'               
 #' data(Schmidt2007)               
 #' batch_calc_ES(dat = Schmidt2007,
-#'               grouping = vars(Behavior_type, Case_pseudonym, Phase_num),
+#'               grouping = c(Behavior_type, Case_pseudonym, Phase_num),
 #'               condition = Condition,
 #'               outcome = Outcome,
 #'               ES = c("LRRi","LRRd"),
