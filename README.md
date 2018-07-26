@@ -90,7 +90,7 @@ hyperlinks to view them. Alternately, type the following line of code to
 open the introductory vignette:
 
 ``` r
-vignette("Effect-size-definitions")
+vignette("Using-SingleCaseES")
 ```
 
 Graphical user interface
