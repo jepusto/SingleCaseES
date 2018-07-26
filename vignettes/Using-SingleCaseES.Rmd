@@ -558,180 +558,182 @@ data(Schmidt2007)
 Here are the first few rows of the data
 
 ```{r, echo = F}
-knitr::kable(head(Schmidt2007, n = 10), longtable = TRUE) %>%
+knitr::kable(head(Schmidt2007[,c("Case_pseudonym", "Behavior_type", "Session_number", "Outcome", "Condition", "Phase_num", "Metric", "Session_length", "direction", "n_Intervals")], n = 10), longtable = TRUE) %>%
   kable_styling() %>%
   scroll_box(width = "100%")
 ```
 
-This demonstration will focus on a subset of the variables:
-`Behavior_type` which specifies whether the outcome is disruptive behavior or on
-task behavior, `Metric` which specifies whether it is percentage or count data,
-`Session_length` which specifies the length of the observation session, 
+The Schmidt (2007) dataset contains many variables, and this vignette focuses
+on the displayed subset of the variables:
 `Case_Pseudonym` which specifies which participant the observation corresponds to,
-`Session_number` which specifies the within-session observation ordering,
-`Condition` which specifies whether the outcome is in the baseline ("A") phase
-or the treatment ("B") phase, `Outcome` which contains the outcome data,
+`Behavior_type` which specifies whether the outcome is disruptive behavior or on
+task behavior, `Session_number` which specifies the within-session observation ordering,
+`Outcome` which contains the outcome data,`Condition` which specifies whether 
+the outcome is in the baseline ("A") phase or the treatment ("B") phase, 
 `Phase_num` which specifies whether the data is in the first or second phase
-pair, `direction` which specifies the improvement direction, and `N_intervals`
+pair, `Metric` which specifies whether it is percentage or count data,
+`Session_length` which specifies the length of the observation session,
+ `direction` which specifies the improvement direction, and `n_Intervals`
 which specifies the number of intervals for the percentage outcomes.
 
 ## Batch calculator arguments 
 
-There are a number of required arguments for the function.
+Here are the arguments for the batch calculator function:
+
+```{r}
+args(batch_calc_ES)
+```
+
+While there are a number of possible arguments for the function, let's first focus
+on the minimum necessary arguments for using the batch calculator function.
 
 The argument `dat` should be the dataframe containing all of the observations 
 for all of the SCDs of interest. 
 
-The `grouping_vars` argument should be a vector of strings of the names of the
-variables that uniquely identify each series. For several SCDs within a single
-study, this might simply be a variable name that identifies the participant
-pseudonym. If that study also contained multiple outcomes, for instance verbal
-outbursts and proportion of time on task, it would be a vector containing with
-the name of the variable that identifies the participant pseudonym and the
-behavior type. For multiple SCDs across multiple studies you might also include
-a variable name that identified the study from which each series was drawn.
+The `grouping` argument should the set of variables that uniquely identify each
+series. For several SCDs within a single study like the McKissick dataset, this might simply be a variable name that identifies the participant pseudonym. These variables
+can be entered as bare variable names.
 
-The `condition` argument should be a string containing the variable name that
-identifies the treatment condition for each observation in the series. The values
-for the baseline and treatment phases should be uniform across all of the series
-within a dataset. So if some series had "0" as baseline and "1" as treatment,
-whereas other series had "A" as baseline and "B" as treatment, it would be
-important to pick one or the other and clean your data appropriately before
-using the `batch_calc_ES()` function.
+The `condition` argument should be the variable that identifies the treatment
+condition for each observation in the series. The values for the baseline and
+treatment phases should be uniform across all of the series within a dataset. So
+if some series had "0" as baseline and "1" as treatment, whereas other series
+had "A" as baseline and "B" as treatment, it would be important to pick one or
+the other and clean your data appropriately before using the `batch_calc_ES()`
+function.
 
-The `outcome` argument should be a string containing the variable name that
-identifies the outcome data.
+All of the other arguments are optional, and we'll introduce them slowly as we go along.
 
-The `session_number` argument should be a string containing the name of a variable
-used to order the outcomes within each series.
+## Some Examples
 
-The `baseline_phase` argument should be a character string specifying which value
-of `condition` corresponds to the baseline phase. This has to be a single value,
-and is why it is important to pick a single scheme for identifying baseline and
-treatment phases within your dataset.
+Remember that data contains a pseudonym for each case (`Case_pseudonym`), a variable (`Condition`) corresponding to the baseline ("A")
+and treatment ("B") phases, an outcome variable containing the values of
+the outcomes. The outcomes are disruptive behaviors, so a decrease in the behavior
+is the direction of therapeutic improvement, so as with the `calc_ES()` function
+we'll need to specify that using the `improvement` argument.
+
+```{r}
+batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
+              outcome = Outcome, improvement = "decrease")
+```
+Note that all of the arguments related to variable names are bare, or unquoted
+variable names. Any argument in batch_calc_ES that accepts a variable accepts a
+bare variable name, or in the case of the `grouping` argument it will accept a
+vector of variable names (more on this later).
+
+We can also request the effect sizes in a wide format:
+
+```{r}
+batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
+              outcome = Outcome, improvement = "decrease", format = "wide")
+```
 
 The `ES` argument allows you to specify which effect size index or indices to
 calculate. It works exactly like `calc_ES()`, also allowing you to specify all
 effect sizes, parametric effect sizes, or non-overlap measures.
 
-The `improvement`, `scale`, `intervals`, and `observation_length` argument can 
-works somewhat like their parallel arguments for the `calc_ES()` functions, in 
+```{r}
+batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
+              outcome = Outcome, ES = c("PND", "PEM", "LRRd", "SMD"), improvement = "decrease")
+batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
+              outcome = Outcome, ES = "NOM", improvement = "decrease")
+batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
+              outcome = Outcome, ES = "parametric", improvement = "decrease",
+              warn = FALSE)
+batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
+              outcome = Outcome, ES = "all", improvement = "decrease",
+              warn = FALSE)
+```
+
+Note that the `warn` argument defaults to true. If you ask for the LOR effect
+size and some of your series are not proportions or percentages, the function
+will warn you that data specified as count, rate, or other will be returned as
+NA for the LOR. By default, the batch calculator specifies the outcome scale as
+"other", so when specifying `ES = "all"` or `ES = "parametric"` if you haven't
+specified another outcome scale, you will receive that warning. You can turn off this
+warning by setting `warn = FALSE` as we have done above.
+
+As we have shown with the `improvement` argument, many arguments such as `improvement` `scale`, `intervals`, and `observation_length` argument can 
+be specified like their parallel arguments for the `calc_ES()` functions, in 
 that it will accept a uniform value (such as `improvement = "decrease"` or 
 `scale = "proportion"`) if all of the series within the dataset are uniform with
 respect towards a particular argument. However, if the values indicated by these
 arguments varies from series to series, it is also possible to specify the name 
 of a variable which identifies the direction of improvement, outcome scale, number
-of intervals per observation, and  length of the observation sessions. If you are
-providing these inputs as variables, any series where the information is not
+of intervals per observation, and  length of the observation sessions. 
+
+```{r}
+batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
+              outcome = Outcome, improvement = "decrease", scale = Procedure,
+              observation_length = Session_length)
+```
+
+If you are providing these inputs as variables, any series where the information is not
 relevant or is not available specify it as missing (`NA`). For instance, data
 gathered as a count is generally not gathered for an interval recording method,
 so it would be appropriate to specify intervals as `NA` for count data.
 
 The `...` allows for arguments particular to an individual function such as `std_dev` 
 for the `SMD()` function to be passed to that function to change its default
-behavior. Note that arguments common to several functions, such as `bias_correct`
+behavior.
+
+```{r}
+batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
+              outcome = Outcome, ES = c("LRRd", "SMD"), improvement = "decrease",
+              scale = Procedure, observation_length = Session_length)
+batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
+              outcome = Outcome, ES = c("LRRd", "SMD"), improvement = "decrease",
+              scale = Procedure, observation_length = Session_length,
+              std_dev = "pool", bias_correct = FALSE)
+```
+
+Note that arguments common to several functions, such as `bias_correct`
 cannot be specified differently for different effect size functions.
 
+The `session_number` argument orders the data within each series by the specified
+variable. This argument is only important if Tau-U is being calculated, because it adjusts for trend in the baseline and so the ordering of the baseline phase is important. For any other effect size, you don't need to specify this argument.
+
+The `baseline_phase` argument works in a similar way the `calc_ES()` argument. If nothing is specified, the first phase in each series will be treated as the baseline phase. However, if the baseline phase is not always the first phase in each series, such as an SCD with four cases that use a cross-over treatment reversal design, where two of the cases follow an ABAB design and the other two cases follow a BABA design, specifying the `baseline_phase is necessary.
+
 The `confidence` argument controls the confidence intervals in the same way as all
-the other functions. The `format` argument defaults to "long" where each effect
-size for each series and any accompanying standard errors and confidence intervals
-will be returned as its own line. If the argument is set to `format = "wide"` 
-then each series will have its own line with columns corresponding to effect 
-sizes and any accompanying standard errors and confidence intervals.
+the other functions. 
 
-Finally, the `warn` argument defaults to true. If you ask for the LOR effect size
-and some of your series are not proportion or percentages, the function will
-warn you that data specified as count, rate, or other will be returned as NA
-for the LOR. You can turn off this warning by setting `warn = FALSE`.
-
-## Some Examples
-
-Remember that data contains a pseudonym for each case (`Case_pseudonym`), a within case session number
-(`Session_number`), a variable (`Condition`) corresponding to the baseline ("A")
-and treatment ("B") phases, an outcome variable containing the values of
-the outcomes, a variable specifying the length of the observation session
-(`Session_length`), as well as a variable corresponding to the measurement scale
-(`Procedure`). Note that the session length is uniform across all series (20),
-and the measurement scale also does not vary. There are a couple of ways to
-specify this using the batch calculation function.
-
-```{r}
-batch_calc_ES(dat = McKissick, grouping_vars = "Case_pseudonym", condition = "Condition",
-              outcome = "Outcome", session_number = "Session_number", baseline_phase = "A",
-              improvement = "decrease", scale = "Procedure", observation_length = "Session_length")
-
-batch_calc_ES(dat = McKissick, grouping_vars = "Case_pseudonym", condition = "Condition",
-              outcome = "Outcome", session_number = "Session_number", baseline_phase = "A",
-              improvement = "decrease", scale = "count", observation_length = 20)
-
-```
-
-We can also request the effect sizes in a wide format:
-
-```{r}
-batch_calc_ES(dat = McKissick, grouping_vars = "Case_pseudonym", condition = "Condition",
-              outcome = "Outcome", session_number = "Session_number", baseline_phase = "A",
-              improvement = "decrease", scale = "Procedure", observation_length = "Session_length",
-              format = "wide")
-```
-
-As noted, it is possible to specify arguments for requested effect sizes, such as `std_dev`
-for `SMD()`.
-
-```{r}
-batch_calc_ES(dat = McKissick, grouping_vars = "Case_pseudonym", condition = "Condition",
-              outcome = "Outcome", session_number = "Session_number", baseline_phase = "A",
-              ES = "SMD", improvement = "decrease", scale = "Procedure", 
-              observation_length = "Session_length", std_dev = "baseline")
-
-batch_calc_ES(dat = McKissick, grouping_vars = "Case_pseudonym", condition = "Condition",
-              outcome = "Outcome", session_number = "Session_number", baseline_phase = "A",
-              ES = "SMD", improvement = "decrease", scale = "Procedure", 
-              observation_length = "Session_length", std_dev = "pool")
-```
-
-The Schmidt2007 dataset are data drawn from @Schmidt2007effects. This data is somewhat
-more complicated. It has two outcomes for each participant which have differing
-directions of improvement, as well as different outcome measurement scales for
-the two outcomes. Each series also has a baseline phase, a treatment phase,
-a return to baseline phase, and a second treatment phase. We will be estimating
-effect sizes for each phase pair separately.
-
-```{r}
-data(Schmidt2007)
-
-head(Schmidt2007)
-```
-
-This demonstration will focus on a subset of the variables:
-`Behavior_type` which specifies whether the outcome is disruptive behavior or on
-task behavior, `Metric` which specifies whether it is percentage or count data,
-`Session_length` which specifies the length of the observation session, 
-`Case_Pseudonym` which specifies which participant the observation corresponds to,
-`Session_number` which specifies the within-session observation ordering,
-`Condition` which specifies whether the outcome is in the baseline ("A") phase
-or the treatment ("B") phase, `Outcome` which contains the outcome data,
-`Phase_num` which specifies whether the data is in the first or second phase
-pair, `direction` which specifies the improvement direction, and `N_intervals`
-which specifies the number of intervals for the percentage outcomes.
+If that study also contained more than one phase pair along with multiple outcomes, for instance verbal outbursts and proportion of time on task, where the direction of improvement varies by outcome type, the batch calculator can also handle this case. The data from Schmidt (2007) is an example like this.
 
 ```{r}
 schmidt_es <- batch_calc_ES(dat = Schmidt2007,
-              grouping_vars = c("Case_pseudonym", "Behavior_type", "Phase_num"),
-              condition = "Condition",
-              outcome = "Outcome",
-              session_number = "Session_number",
+              grouping = c(Case_pseudonym, Behavior_type, Phase_num),
+              condition = Condition,
+              outcome = Outcome,
+              session_number = Session_number,
               baseline_phase = "A",
-              improvemnt = "direction",
-              scale = "Metric",
-              intervals = "n_Intervals",
-              observation_length = "Session_length")
+              improvement = direction,
+              scale = Metric,
+              intervals = n_Intervals,
+              observation_length = Session_length)
 
 knitr::kable(schmidt_es)
 ```
 
 The output contains a row corresponding to each phase pair for each outcome type
 for each participant, for each type of effect size.
+
+Note that for the `grouping` argument we specified a vector of bare variable
+names, one for the case name, one for the behavior type, and one for which phase
+pair the data came from. Each unique combination of those three variables
+represents a different data series we want to estimate effect sizes for. This
+could also be used for other types of groupings, such as if we wanted effect
+sizes for each case across several different studies We have specified
+`session_number`, although this is not strictly necessary for the requested set
+of effect sizes. We have set the `baseline_phase` argument just to be sure that
+the baseline phase is always specified correctly. Because the direction of
+therapeutic improvement varies by series, we have specified `improvement =
+direction`, because the `direction` variable says whether improvement should be
+calculated as "increasing" or "decreasing". We have also specified a variable
+for `scale` because verbal outbursts were measured as a count and time on task
+was measured as a proportion. We have also specified the number of `intervals`
+for those series which were measured as a proportion, and the
+`observation_length` argument for those series which were measured as a count.
 
 # References
 
