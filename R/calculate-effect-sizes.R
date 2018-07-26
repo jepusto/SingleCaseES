@@ -263,17 +263,16 @@ batch_calc_ES <- function(dat,
   
   improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), 
                           error = function(e) stop("Improvement must be a variable name or a string specifying 'increase' or 'decrease'."))
-
-  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "percentage", "proportion", "count", "rate", "other"), !! rlang::enquo(scale)), 
-                    error = function(e) stop("Scale must be a variable name or one of the accepted scale types. See ?batch_calc_ES for more details."))
   
+  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "count", "rate", "proportion", "percentage", NA), !! rlang::enquo(scale)), 
+                    error = function(e) stop("Scale must be a variable name or one of the accepted scale types. See ?batch_calc_ES for more details."))
   
   if (improvement %in% c("increase", "decrease")) {
     dat$improvement <- improvement
     improvement <- "improvement"
   }
   
-  if (scale %in% c("count", "rate", "proportion", "percentage")) {
+  if (is.na(scale) || scale %in% c("count", "rate", "proportion", "percentage")) {
     dat$scale <- scale
     scale <- "scale"
   }
