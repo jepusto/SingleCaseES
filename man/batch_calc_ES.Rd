@@ -6,7 +6,7 @@
 \usage{
 batch_calc_ES(dat, grouping, condition, outcome, session_number = NULL,
   baseline_phase = NULL, ES = c("LRRd", "LRRi", "SMD", "Tau"),
-  improvement = "increase", scale = NA, intervals = NA,
+  improvement = "increase", scale = "other", intervals = NA,
   observation_length = NA, confidence = 0.95, format = "long",
   warn = TRUE, ...)
 }

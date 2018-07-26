@@ -17,7 +17,11 @@ summary_stats <- function(A_data, B_data, warn = TRUE) {
 
 
 trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = NULL) {
-
+  
+  #Allow for a vector of NAs from batch calculator
+  if (all(is.na(observation_length))) observation_length <- NA
+  if (all(is.na(intervals))) intervals <- NA
+  
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   if (length(observation_length) > 1L) observation_length <- mean(observation_length, na.rm = TRUE)
   if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
@@ -39,7 +43,8 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
          count = 1L,
          rate = observation_length,
          proportion = intervals,
-         percentage = intervals / 100)
+         percentage = intervals / 100,
+         other = Inf)
 }
 
 #' @name LOR

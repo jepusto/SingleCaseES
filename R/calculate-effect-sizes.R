@@ -105,7 +105,7 @@ calc_ES <- function(A_data, B_data,
   Tau_U_names <- c("Tau_U","Tau-U","TauU")
   if (any(Tau_U_names %in% ES)) ES_names <- union(setdiff(ES_names, Tau_U_names), "Tau_U") 
   ES_to_calc <- paste0("calc_", ES_names)
-  
+      
   res <- purrr::invoke_map_dfr(
     ES_to_calc,  
     A_data = A_data, B_data = B_data,
@@ -236,7 +236,7 @@ batch_calc_ES <- function(dat,
                           baseline_phase = NULL,
                           ES = c("LRRd","LRRi","SMD","Tau"), 
                           improvement = "increase",
-                          scale = NA,
+                          scale = "other",
                           intervals = NA,
                           observation_length = NA,
                           confidence = .95,
@@ -264,7 +264,7 @@ batch_calc_ES <- function(dat,
   improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), 
                           error = function(e) stop("Improvement must be a variable name or a string specifying 'increase' or 'decrease'."))
   
-  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "count", "rate", "proportion", "percentage", NA), !! rlang::enquo(scale)), 
+  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "count", "rate", "proportion", "percentage", "other"), !! rlang::enquo(scale)), 
                     error = function(e) stop("Scale must be a variable name or one of the accepted scale types. See ?batch_calc_ES for more details."))
   
   if (improvement %in% c("increase", "decrease")) {
@@ -272,7 +272,7 @@ batch_calc_ES <- function(dat,
     improvement <- "improvement"
   }
   
-  if (is.na(scale) || scale %in% c("count", "rate", "proportion", "percentage")) {
+  if (scale %in% c("count", "rate", "proportion", "percentage", "other")) {
     dat$scale <- scale
     scale <- "scale"
   }
@@ -292,7 +292,7 @@ batch_calc_ES <- function(dat,
     dat$observation_length <- observation_length
     observation_length <- "observation_length"
   } else {
-    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(observation_length)), 
+    observation_length <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(observation_length)), 
                           error = function(e) stop("Observation length variable is not in the dataset."))
   }
   
@@ -325,7 +325,7 @@ batch_calc_ES <- function(dat,
                       confidence = confidence, 
                       format = format,
                       ...,
-                      warn = FALSE)) %>%
+                      warn = warn)) %>%
     dplyr::ungroup()
 }
 
