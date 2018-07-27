@@ -562,7 +562,7 @@ The Schmidt (2007) dataset contains many variables, but for now let's focus on t
 -  `direction` specifies the direction of therapeutic improvement
 - `n_Intervals` specifies the number of intervals per session for the dependent variable measured using partial interval recording.
 
-## Batch calculator arguments 
+## Core Arguments
 
 Here are the arguments for the batch calculator function:
 
@@ -570,7 +570,7 @@ Here are the arguments for the batch calculator function:
 args(batch_calc_ES)
 ```
 
-This function has a bunch of arguments, but several of them are optional and only used for certain effect size metrics. For the moment, let's focus on the first few arguments, which are all we need to get going:
+This function has a bunch of arguments, but many of them are optional and only used for certain effect size metrics. For the moment, let's focus on the first few arguments, which are all we need to get going:
 
 - The argument `dat` should be a dataframe containing all of the observations 
 for all of the data series of interest. 
@@ -585,144 +585,199 @@ condition for each observation in the series. The values for the baseline and
 treatment phases should be uniform across all of the series within a dataset. So
 if some series had "0" as baseline and "1" as treatment, whereas other series
 had "A" as baseline and "B" as treatment, you'll first need to clean your data
-and standardize the coding before using the `batch_calc_ES()` function.
+and standardize the coding before using the `batch_calc_ES()` function. Specify
+using a bare variable name.
 
-All of the other arguments are optional, and we'll introduce them as we go
+- The `outcome` argument should be the variable that contains the outcomes of
+interest. Specify using a bare variable name.
+
+- The `ES` argument, which specifies which effect sizes are desired, is theoretically optional. By default, the batch calculator produces LRRd, LRRi, SMD, and Tau. However, you're probably going to want to specify your own effect sizes. Like `calc_ES`, you request your desired effect sizes as a character vector, with the individual options of `"LRRd"`, `"LRRi"`, `"LOR"`, `"SMD"`, `"NAP"`, 
+`"PND"`, `"PEM"`, `"PAND"`, `"IRD"`, `"Tau"`, or `"Tau-U"`, in addition to `"all"` for all effect sizes, `"NOM"` for all non-overlap measures, and `"parametric"` for all parametric effect sizes.
+
+All of the other arguments are truly optional, and we'll introduce them as we go
 along. 
 
-## Some Examples
+## Using grouping variables
 
 Let's try applying the function to the McKissick data. Remember that these data contains a pseudonym for each case (`Case_pseudonym`), a variable (`Condition`) identifying the baseline ("A")
 and treatment ("B") phases, and an outcome variable containing the values of
 the outcomes. The outcomes are disruptive behaviors, so a decrease in the behavior
 corresponds to therapeutic improvement. Just as with the `calc_ES()` function,
-we'll need to specify that using the `improvement` argument.
+we'll need to specify that using the `improvement` argument. For now, we'll focus
+on getting estimates for NAP and PND, they are relatively simple.
 
 ```{r}
-batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, 
+mckissick_ES <- batch_calc_ES(dat = McKissick,
+              grouping = Case_pseudonym, 
               condition = Condition,
               outcome = Outcome, 
-              improvement = "decrease")
+              improvement = "decrease",
+              ES = c("NAP", "PND"))
 ```
 
 Note that all of the inputs related to variable names are bare (i.e., no
-quotes). All of the arguments in `batch_calc_ES` that accept a variable should be specified using bare
-variable names.
+quotes). All of the arguments in `batch_calc_ES` that accept a variable should
+be specified using bare variable names. Let's take a look at a table of the output.
+
+```{r, echo = F}
+kable(mckissick_ES) 
+```
+
+The output will always tart with a column corresponding to each value from the `grouping` argument, followed by a column for each effect size. If *any* of the requested effect sizes
+have standard errors and confidence intervals, there will also be columns corresponding to the standard error and the upper and lower limit. Here, PND has `NA` for each of those, because it does not have a standard error or confidence interval.
+
+Now we can try a similar example using the Schmidt data. Remember that these data contain a pseudonym that uniquely identifies each of the three participants (`Case_Pseudonym`) as well as a variable that specifies whether the outcome is disruptive behavior or on-task behavior (`Behavior_type`), *and* this was a treatment reversal design so there were two phase pairs for each combination of case and behavior type (`Phase_num`). We're going to want an effect size for each combination of pseudonym, behavior, and phase pair. The data also have an outcome variable (`Outcome`) and a variable identifying whether it was in the baseline ("A") or treatment ("B")
+phase (`Condition`). Finally, the the two different behavior types have different direction therapeutic improvement, so there is a variable called `direction` that specifies `"increase"` for on-task behavior or `"decrease"` for disruptive behavior.
+
+```{r}
+schmidt_ES <- batch_calc_ES(dat = Schmidt2007,
+              grouping = c(Case_pseudonym, Behavior_type, Phase_num), 
+              condition = Condition,
+              outcome = Outcome, 
+              improvement = direction,
+              ES = c("NAP", "PND"))
+```
+
+The syntax is similar to the example with the McKissick dataset, except for two things. Here, we've provided a vector of bare variable names for `grouping` that will identify each case we want an effect size for. Instead of providing a uniform direction of improvement to the `improvement` variable, we've provided a bare variable name, `direction`, which will account for the fact that the two behavior types have different directions of therapeutic improvement. Here is a table of the output:
+
+```{r, echo = F}
+kable(schmidt_ES) %>%
+   kable_styling() %>%
+  scroll_box(width = "100%", height = "800px")
+```
+
+As before, the first three columns are the unique values from the variables supplied to `grouping`, followed by the effect sizes.
+
+## Dealing with outcome scales.
+
+By default, the batch calculator assumes the outcome scale is `"other"`, which
+means that if a phase mean is equal to zero, the logs odd ratio or the log
+response ratio will not be calculated. Like `calc_ES()`, when calculating
+parametric effect sizes, you may need to specify the outcome scales as well as
+things like the length of the observation session or the number of intervals in
+each observation session. If these values are the same for all observations in
+the dataset, it can be quite simple, like this example using the McKissick
+dataset.
+
+
+```{r}
+mckissick_ES <- batch_calc_ES(dat = McKissick,
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              improvement = "decrease",
+              scale = "count",
+              observation_length = 20,
+              ES = "parametric")
+```
+
+Here, we've specified the outcome scale is a count, and that each session lasted 20 minutes. Note that we get a warning about the log odds ratio. Let's take a look at the output:
+
+```{r, echo = F}
+kable(mckissick_ES)
+```
+
+Once gain, we have a column specifying which pseudonym the effect sizes is for, as well as a column specifying which effect sizes. The log odds ratio returns all `NA`s, because the log odds ratio can't be estimate for count outcomes.
+
+Let's assume that you are interested in estimating effect sizes for data where the measurement scale, as well as measurement details like the observation length or the number of intervals varies by the series we are estimating an effect size for. Using, the Schmidt data, we can try an example like that. Remember that the Schmidt data has a variable specifying the measurement scale of the outcome (`Metric`) which is `"percentage"` for desirable behavior and `"count"` for disruptive behaviors. It also has a variable that specifies the length of the observation session (`Session_length`), and a variable that specifies the number of intervals per session for the dependent variable measured using partial interval recording (`n_Intervals`). The value of `Session_length` is `NA` for the percentage outcomes and the value of `n_Intervals` is `NA` for the count outcomes, because those details are not relevant for those outcome measurement scales. Let's try it out:
+
+```{r}
+schmidt_ES <- batch_calc_ES(dat = Schmidt2007,
+              grouping = c(Case_pseudonym, Behavior_type, Phase_num), 
+              condition = Condition,
+              outcome = Outcome, 
+              improvement = direction,
+              scale = Metric,
+              observation_length = Session_length,
+              intervals = n_Intervals,
+              ES = c("parametric"))
+```
+
+Unlike the previous example, where we specified a uniform value for the `scale` and `observation_length`, we specified a bare variable name for `scale`, `observation_length`, and the number of `intervals`. Note that we get some warnings again about the LOR effect size. Let's take a look at the output:
+
+```{r}
+kable(schmidt_ES) %>%
+   kable_styling() %>%
+  scroll_box(width = "100%", height = "800px")
+```
+
+In this case, LOR is all `NA` for the outcomes that are disruptive behaviors because those are counts and therefore the LOR isn't an appropriate effect size. However, for the percentage of on task behavior, the LOR *was* estimated.
+
+## Further arguments
 
 We can also request the effect sizes in a wide format:
 
 ```{r}
-batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
-              outcome = Outcome, improvement = "decrease", format = "wide")
+mckissick_wide_ES <- batch_calc_ES(dat = McKissick,
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              improvement = "decrease",
+              ES = c("NAP", "PND"),
+              format = "wide")
 ```
 
-Use the `ES` argument to specify which effect size index or indices to
-calculate: 
+The default argument for the batch calculator is `format = "long"`, but if you want each case to be on a single line, specifying `format = "wide"` will provide the output that way, just like `calc_ES()`. Here's the output:
 
-```{r}
-batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
-              outcome = Outcome, ES = c("PND", "PEM", "LRRd", "SMD"), improvement = "decrease")
+```{r, echo = F}
+kable(mckissick_wide_ES)
 ```
 
-This argument works exactly like `calc_ES()`. It also allows you to specify all
-effect sizes (`ES = "all"`), parametric effect sizes (`ES = "parametric"`), or non-overlap measures (`ES = "NOM"`):
+In this case there is a column for NAP, NAP's standard error, and the upper and
+lower bound of the confidence interval. PND only has a column for the estimate,
+but remember that the values for SE and upper and lower CI were all `NA` in the
+long format. Any column that would simply contain `NA` is removed when
+specifying `format = "wide"`.
+
+Remember how, when we asked for the LOR for counts, the calculator gave us a bunch of warning messages? If you're asking for the LOR, and some of your outcomes are in a scale other than percentage or proportion, and you don't want to see a bunch of warnings, you can specify the argument `warn = "FALSE"` (by default it is set to `TRUE`). You will still get NA for any series with an inappropriate outcome scale, but it will suppress the warning messages.
 
 ```{r}
-batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
-              outcome = Outcome, ES = "parametric", improvement = "decrease",
+batch_calc_ES(dat = McKissick,
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              improvement = "decrease",
+              scale = "count",
+              observation_length = 20,
+              ES = "LOR",
               warn = FALSE)
 ```
 
-Note that the `warn` argument defaults to true. If you ask for the LOR effect
-size and some of the data series are not proportions or percentages, the
-function will warn you that data specified as count, rate, or other will be
-returned as NA for the LOR. By default, the batch calculator specifies the
-outcome scale as "other". If you've specified `ES = "all"` or `ES =
-"parametric"`, you'll need to specify an outcome scale (or a variable
-identifying the outcome scale) to avoid receiving that warning. You can turn off
-this warning by setting `warn = FALSE`, as we have done above.
 
-As we have shown with the `improvement` argument, arguments such as
-`scale`, `intervals`, and `observation_length` can be
-specified like their parallel arguments for the `calc_ES()` functions, in that
-it will accept a uniform value (such as `improvement = "decrease"` or `scale =
-"proportion"`) if all of the series within the dataset are uniform with respect
-towards a particular argument. However, if the values indicated by these
-arguments varies from series to series, it is also possible to specify the name
-of a variable which identifies the direction of improvement, outcome scale,
-number of intervals per observation, and  length of the observation sessions.
-
-```{r}
-batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
-              outcome = Outcome, improvement = "decrease", scale = Procedure,
-              observation_length = Session_length)
-```
-
-If you are providing these inputs as variables, any series where the information is not
-relevant or is not available specify it as missing (`NA`). For instance, data
-gathered as a count is generally not gathered for an interval recording method,
-so it would be appropriate to specify intervals as `NA` for count data.
-
-The `...` allows for arguments particular to an individual function such as `std_dev` 
+The `...` argument allows for arguments particular to an individual function such as `std_dev` 
 for the `SMD()` function to be passed to that function to change its default
 behavior.
 
 ```{r}
-batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
-              outcome = Outcome, ES = c("LRRd", "SMD"), improvement = "decrease",
-              scale = Procedure, observation_length = Session_length)
-batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition,
-              outcome = Outcome, ES = c("LRRd", "SMD"), improvement = "decrease",
-              scale = Procedure, observation_length = Session_length,
-              std_dev = "pool", bias_correct = FALSE)
+batch_calc_ES(dat = McKissick, 
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              ES = c("LRRd", "SMD"), 
+              improvement = "decrease",
+              scale = Procedure, 
+              observation_length = Session_length)
+
+batch_calc_ES(dat = McKissick, 
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              ES = c("LRRd", "SMD"), 
+              improvement = "decrease",
+              scale = Procedure, 
+              observation_length = Session_length,
+              std_dev = "pool", 
+              bias_correct = FALSE)
 ```
 
-Note that arguments common to several functions, such as `bias_correct`
-cannot be specified differently for different effect size functions.
+Note that arguments common to several functions, such as `bias_correct` cannot be specified differently for different effect size functions. If you wanted bias corrected values for the LRRd effect size and not for the SMD effect size, you would need to call `batch_calc_ES()` separately for the two different effect sizes.
 
 The `session_number` argument orders the data within each series by the specified
 variable. This argument is only important if Tau-U is being calculated, because it adjusts for trend in the baseline and so the ordering of the baseline phase is important. For any other effect size, you don't need to specify this argument.
 
-The `baseline_phase` argument works in a similar way the `calc_ES()` argument. If nothing is specified, the first phase in each series will be treated as the baseline phase. However, if the baseline phase is not always the first phase in each series, such as an SCD with four cases that use a cross-over treatment reversal design, where two of the cases follow an ABAB design and the other two cases follow a BABA design, specifying the `baseline_phase is necessary.
+The `baseline_phase` argument works in a similar way the `calc_ES()` argument. If nothing is specified, the first phase in each series will be treated as the baseline phase. However, if the baseline phase is not always the first phase in each series, such as an SCD with four cases that use a cross-over treatment reversal design, where two of the cases follow an ABAB design and the other two cases follow a BABA design, specifying the `baseline_phase` in the same way as the `calc_ES()` function is necessary.
 
 The `confidence` argument controls the confidence intervals in the same way as all
-the other functions. 
-
-If that study also contained more than one phase pair along with multiple outcomes, for instance verbal outbursts and proportion of time on task, where the direction of improvement varies by outcome type, the batch calculator can also handle this case. The data from Schmidt (2007) is an example like this.
-
-```{r}
-schmidt_es <- batch_calc_ES(dat = Schmidt2007,
-              grouping = c(Case_pseudonym, Behavior_type, Phase_num),
-              condition = Condition,
-              outcome = Outcome,
-              session_number = Session_number,
-              baseline_phase = "A",
-              improvement = direction,
-              scale = Metric,
-              intervals = n_Intervals,
-              observation_length = Session_length)
-
-knitr::kable(schmidt_es)
-```
-
-The output contains a row corresponding to each phase pair for each outcome type
-for each participant, for each type of effect size.
-
-Note that for the `grouping` argument we specified a vector of bare variable
-names, one for the case name, one for the behavior type, and one for which phase
-pair the data came from. Each unique combination of those three variables
-represents a different data series we want to estimate effect sizes for. This
-could also be used for other types of groupings, such as if we wanted effect
-sizes for each case across several different studies We have specified
-`session_number`, although this is not strictly necessary for the requested set
-of effect sizes. We have set the `baseline_phase` argument just to be sure that
-the baseline phase is always specified correctly. Because the direction of
-therapeutic improvement varies by series, we have specified `improvement =
-direction`, because the `direction` variable says whether improvement should be
-calculated as "increasing" or "decreasing". We have also specified a variable
-for `scale` because verbal outbursts were measured as a count and time on task
-was measured as a proportion. We have also specified the number of `intervals`
-for those series which were measured as a proportion, and the
-`observation_length` argument for those series which were measured as a count.
+the other functions.
 
 # References
