@@ -10,6 +10,7 @@ output:
     toc: true
     toc_depth: 2 
     number_sections: true
+    link-citations: true 
 csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Effect size definitions and mathematical details}
@@ -24,7 +25,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `SingleCaseES` package provides R functions for calculating basic,
+The SingleCaseES package provides R functions for calculating basic,
 within-case effect size indices for single-case designs, including several
 non-overlap measures and parametric effect size measures, and for estimating the
 gradual effects model developed by @Swan2018gradual. Standard errors and
@@ -79,7 +80,7 @@ $$
 
 ### Standard errors 
 
-The `SingleCaseES` package provides several different methods for estimating the standard error of NAP. The default method is calculated based on the exactly unbiased variance estimator described by @sen1967note [cf. @mee1990confidence], which assumes that the observations are mutually independent and are identically distributed within each phase. Let 
+The SingleCaseES package provides several different methods for estimating the standard error of NAP. The default method is calculated based on the exactly unbiased variance estimator described by @sen1967note [cf. @mee1990confidence], which assumes that the observations are mutually independent and are identically distributed within each phase. Let 
 
 $$
 Q_1 = \frac{1}{m n^2} \sum_{i=1}^m \left(\sum_{j=1}^n q_{ij}\right)^2, \qquad
@@ -379,7 +380,7 @@ However, $R_1$ will be biased when the one or both phases include only a small n
 $$
 R_2 = \ln\left(\tilde{y}_B\right) + \frac{s_B^2}{2 n \tilde{y}_B^2} - \ln\left(\tilde{y}_A\right) - \frac{s_A^2}{2 m \tilde{y}_A^2}.
 $$
-The bias-corrected estimator is the default option in `SingleCaseES`. 
+The bias-corrected estimator is the default option in SingleCaseES. 
 
 ### Standard errors and confidence intervals
 
