@@ -634,7 +634,7 @@ unique combination of values from the `grouping` argument, followed by a column
 for each effect size. If *any* of the requested effect sizes have standard
 errors and confidence intervals, there will also be columns corresponding to the
 standard error and the upper and lower limit. Here, PND has `NA` for each of
-those, because it does not have a knonw standard error or confidence interval.
+those, because it does not have a known standard error or confidence interval.
 
 Now let's look at an example using the Schmidt data. Remember that these data
 contain a pseudonym that uniquely identifies each of the three participants
