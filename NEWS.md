@@ -7,6 +7,7 @@
 * Added shiny app for estimating effect sizes based on gradual effects model.
 * Revised documentation.
 * Added unit tests.
+* Added vignettes.
 
 # SingleCaseES 0.3
 

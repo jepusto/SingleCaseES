@@ -15,7 +15,7 @@ Open an interactive tool for calculating the gradual effects model
 for SCDs.
 }
 \examples{
-\dontrun{
+\donttest{
 shine_gem_scd()
 }
 
