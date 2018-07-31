@@ -54,15 +54,18 @@ the GUI through Rstudio.
 Installation
 ============
 
-The package is currently only available on Github. To install it, you
-will first need to [install R](http://cran.r-project.org/) and
-[RStudio](http://www.rstudio.com/products/rstudio/download/). Windows
-users will also need to [install
-Rtools](http://cran.r-project.org/bin/windows/Rtools/). All of these
-programs are freely availble.
+The package is available on the Comprehensive R Archive Network. To
+install it, you will first need to [install
+R](http://cran.r-project.org/) and
+[RStudio](http://www.rstudio.com/products/rstudio/download/). Both of
+these programs are freely availble. Once you have these programs
+installed, run the following commands at the RStudio console prompt:
 
-Once you have these programs installed, run the following commands at
-the RStudio console prompt:
+``` r
+install.packages("SingleCaseES")
+```
+
+To install the latest development version directly from Github, type:
 
 ``` r
 install.packages("devtools")

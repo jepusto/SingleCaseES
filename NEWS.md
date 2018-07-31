@@ -1,3 +1,5 @@
+# SingleCaseES 0.4.0.9999
+
 # SingleCaseES 0.4.0
 
 * Added calc_ES() function for calculating multiple effect size estimates on a single data series.
