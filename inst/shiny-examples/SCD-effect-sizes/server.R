@@ -256,7 +256,7 @@ shinyServer(function(input, output, session) {
                   condition = input$b_phase, 
                   outcome = input$b_out,
                   session_number = input$session_number,
-                  grouping_vars = input$b_clusters,
+                  grouping = input$b_clusters,
                   baseline_phase = input$b_base,
                   ES = c(input$bESno, input$bESpar),
                   improvement = improvement,

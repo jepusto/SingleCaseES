@@ -159,7 +159,7 @@ greff_glm_dev <- function(omega, Trt, outcome, m, fam){
 #' @import stats
 #' 
 #' @examples 
-#' \dontrun{
+#' \donttest{
 #' shine_gem_scd()
 #' }
 #' 

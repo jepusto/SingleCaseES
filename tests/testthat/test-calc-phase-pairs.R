@@ -1,7 +1,7 @@
 context("calc_phase_pairs() works properly.")
 
-library(dplyr)
-library(tidyr)
+suppressWarnings(library(dplyr))
+suppressWarnings(library(tidyr))
 
 test_that("calc_phase_pairs() returns a vector the same length as the input.", {
   

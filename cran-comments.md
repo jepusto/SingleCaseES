@@ -1,3 +1,7 @@
+## Resubmission
+
+This is a resubmission in response to feedback from CRAN maintainers. The resubmission fixes a typo in DESCRIPTION and replaces all instances of \dontrun with \donttest, as requested.
+
 ## Test environments
 
 * local Windows 7 Enterprise, R 3.5.0
