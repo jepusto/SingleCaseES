@@ -3,6 +3,8 @@ Status](https://travis-ci.org/jepusto/SingleCaseES.svg?branch=master)](https://t
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/jepusto/SingleCaseES/master.svg)](https://codecov.io/github/jepusto/SingleCaseES?branch=master)
 [![](http://www.r-pkg.org/badges/version/SingleCaseES)](https://CRAN.R-project.org/package=SingleCaseES)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/SingleCaseES)](https://CRAN.R-project.org/package=SingleCaseES)
+[![](http://cranlogs.r-pkg.org/badges/last-month/SingleCaseES)](https://CRAN.R-project.org/package=SingleCaseES)
 
 SingleCaseES: A calculator for single-case effect size indices
 ==============================================================
