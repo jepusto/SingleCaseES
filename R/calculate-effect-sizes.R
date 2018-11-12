@@ -257,9 +257,10 @@ batch_calc_ES <- function(dat,
   outcome <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), 
                       error = function(e) stop("Outcome variable is not in the dataset."))
   
-  if(tryCatch(!is.null(session_number), error = function(e) TRUE)){
+  if (tryCatch(!is.null(session_number), error = function(e) TRUE)) {
   session_number <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(session_number)), 
-                             error = function(e) stop("Session number variable is not in the dataset."))}
+                             error = function(e) stop("Session number variable is not in the dataset."))
+  }
   
   improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), 
                           error = function(e) stop("Improvement must be a variable name or a string specifying 'increase' or 'decrease'."))

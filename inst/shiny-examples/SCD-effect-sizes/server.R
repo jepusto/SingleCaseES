@@ -50,7 +50,8 @@ shinyServer(function(input, output, session) {
   ES <- reactive({
     index <- c("Non-overlap" = input$NOM_ES, "Parametric" = input$parametric_ES)[[input$ES_family]]
     
-    arg_vals <- list(A_data = dat()$A, B_data = dat()$B,
+    arg_vals <- list(A_data = dat()$A, 
+                     B_data = dat()$B,
                      ES = index,
                      improvement = input$improvement,
                      std_dev = substr(input$SMD_denom, 1, nchar(input$SMD_denom) - 3),
@@ -69,19 +70,19 @@ shinyServer(function(input, output, session) {
       )
     }
     
-    if(input$ES_family == "Parametric" & input$outScale == "percentage"){
+    if (input$ES_family == "Parametric" & input$outScale == "percentage") {
       validate(
         need(all(c(dat()$A, dat()$B) >= 0) & all(c(dat()$A, dat()$B) <= 100), message =  "For percentage scale, values must be between 0 and 100.")
       )
     }
     
-    if(input$ES_family == "Parametric" & input$outScale == "proportion"){
+    if (input$ES_family == "Parametric" & input$outScale == "proportion") {
       validate(
         need(all(c(dat()$A, dat()$B) >= 0) & all(c(dat()$A, dat()$B) <= 1), message = "For proportion scale, values must be between 0 and 1.")
       )
     }
     
-    if (index %in% c("LOR")){
+    if (index %in% c("LOR")) {
       validate(
         need(input$outScale %in% c("proportion", "percentage"), message = "For the log odds ratio, only proportion or percentage scale data is accepted.")
       )
@@ -135,28 +136,32 @@ shinyServer(function(input, output, session) {
     
   output$clusterPhase <- renderUI({
       var_names <- names(datFile())
-      if(input$dat_type == "dat"){
-      list(
-      selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
-                     selected = NULL, multiple = TRUE),
-      selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = var_names[3]))
-      }else{
+      if (input$dat_type == "dat") {
+        list(
+        selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
+                       selected = NULL, multiple = TRUE),
+        selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = var_names[3]))
+      } else {
         curMap <- exampleMapping[[input$example]]
         list(
           selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
                          selected = curMap$cluster_vars, multiple = TRUE),
-          selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = curMap$condition))
-          }
-      })
+          selectInput("b_phase", label = "Phase Indicator", choices = var_names, selected = curMap$condition)
+        )
+        
+      }
+  })
   
   output$phaseDefine <- renderUI({
+    
     phase_choices <- unique(datFile()[input$b_phase])
-    if(input$dat_type == "dat"){
+    
+    if (input$dat_type == "dat") {
       list(
-      selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices)
-      # selectInput("b_treat", label = "Treatment Phase Value", choices = phase_choices)
+        selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices)
+        # selectInput("b_treat", label = "Treatment Phase Value", choices = phase_choices)
       )
-    }else{
+    } else {
       curMap <- exampleMapping[[input$example]]
       list(
         selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices, selected = curMap$phase_vals[1])
@@ -166,28 +171,33 @@ shinyServer(function(input, output, session) {
   })
   
   output$outOrderImp <- renderUI({
+
     var_names <- names(datFile())
-    if(input$dat_type == "dat"){
+
+    if (input$dat_type == "dat") {
       list(
         selectInput("session_number", label = "Within-Case Session Number", choices = var_names, selected = var_names[5]),
         selectInput("b_out", label = "Outcome", choices = var_names, selected = var_names[4]),
-        selectInput("bimprovement", label = "Direction of improvement", choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series")))
-    }else{
+        selectInput("bimprovement", label = "Direction of improvement", choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series"))
+      )
+    } else {
       curMap <- exampleMapping[[input$example]]
       list(
-      selectInput("session_number", label = "Within-Case Session Number", choices = var_names, selected = curMap$session_num),
-      selectInput("b_out", label = "Outcome", choices = var_names, selected = curMap$outcome),
-      selectInput("bimprovement", label = "Direction of improvement", choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series"),
-                  selected = curMap$direction))
+        selectInput("session_number", label = "Within-Case Session Number", choices = var_names, selected = curMap$session_num),
+        selectInput("b_out", label = "Outcome", choices = var_names, selected = curMap$outcome),
+        selectInput("bimprovement", label = "Direction of improvement", choices = c("all increase" = "increase", "all decrease" = "decrease", "by series" = "series"),
+                    selected = curMap$direction)
+      )
     }
     
   })
   
   output$improvementVar <- renderUI({
     var_names <- names(datFile())
-    if(input$dat_type == "dat"){
+    
+    if (input$dat_type == "dat") {
       list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names))
-    }else{
+    } else {
       curMap <- exampleMapping[[input$example]]
       list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names, selected = curMap$direction_var))
     }
@@ -203,52 +213,57 @@ shinyServer(function(input, output, session) {
   #                       textInput("bfloor", label = "Optional floor for log-prevalence odds-ratio", value = NA)),
  
   output$measurementProc <- renderUI({
+    
     var_names <- names(datFile())
-    if(input$dat_type == "dat") {  
-    list(selectInput("boutScale", label = "Outcome Scale",
-                       choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series")),
-         conditionalPanel(condition = "input.boutScale == 'series'",
-                          selectInput("bscalevar", "Select variable identifying outcome scale",
-                                      choices = var_names)),
-         selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
-                     choices = c(NA, var_names), selected = NA),
-         selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
-                     choices = c(NA, var_names), selected = NA),
-         numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
-                      value = NA, min = 0))
-      } else {
-        curMap <- exampleMapping[[input$example]]
-        list(selectInput("boutScale", label = "Outcome Scale",
+    
+    if (input$dat_type == "dat") {  
+      list(selectInput("boutScale", label = "Outcome Scale",
+                         choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series")),
+           conditionalPanel(condition = "input.boutScale == 'series'",
+                            selectInput("bscalevar", "Select variable identifying outcome scale",
+                                        choices = var_names)),
+           selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
+                       choices = c(NA, var_names), selected = NA),
+           selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
+                       choices = c(NA, var_names), selected = NA),
+           numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
+                        value = NA, min = 0)
+          )
+    } else {
+      curMap <- exampleMapping[[input$example]]
+      list(selectInput("boutScale", label = "Outcome Scale",
                     choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series"),
                     selected = curMap$scale),
-        conditionalPanel(condition = "input.boutScale == 'series'",
+           conditionalPanel(condition = "input.boutScale == 'series'",
                          selectInput("bscalevar", "Select variable identifying outcome scale",
                                      choices = var_names,
                                      selected = (if(!is.null(curMap$scale_var)){curMap$scale_var}else{NA}))),
-        selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
+           selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
                     choices = c(NA, var_names), selected = curMap$intervals),
-        selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
+           selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
                     choices = c(NA, var_names), selected = curMap$observation_length),
-        numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
-                     value = NA, min = 0)) 
-      }
+           numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
+                     value = NA, min = 0)
+        ) 
+    }
   }) 
 
 
   batchModel <- eventReactive(input$batchest, {
     
-    if(any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))){
-    if(input$boutScale == "series"){
-      scale_val <- input$bscalevar
-    } else{
-      scale_val <- input$boutScale
-    }}else{
-      scale_val <- NA
+    if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
+      if (input$boutScale == "series") {
+        scale_val <- input$bscalevar
+      } else{
+        scale_val <- input$boutScale
+      }
+    } else {
+      scale_val <- "other"
     }
     
-    if(input$bimprovement == "series"){
+    if(input$bimprovement == "series") {
       improvement <- input$bseldir
-    }else{
+    } else {
       improvement <- input$bimprovement
     }
     
