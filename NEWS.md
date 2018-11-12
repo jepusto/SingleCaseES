@@ -1,5 +1,8 @@
 # SingleCaseES 0.4.0.9999
 
+* Fixed bug in SCD_effect_sizes() shiny app that caused an error in batch calculator when LRRi, LRRd, or LOR were not selected.
+
+
 # SingleCaseES 0.4.0
 
 * Added calc_ES() function for calculating multiple effect size estimates on a single data series.
