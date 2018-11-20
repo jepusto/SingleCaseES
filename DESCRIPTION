@@ -37,7 +37,7 @@ Suggests:
   prettydoc,
   kableExtra
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Encoding: UTF-8
 Language: en-US
 VignetteBuilder: knitr

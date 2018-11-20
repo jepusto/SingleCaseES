@@ -157,7 +157,7 @@ calc_ES <- function(A_data, B_data,
 #'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the
 #'   default), the first observed value of \code{condition} within the series
 #'   will be used.
-#'   @param ES character string or character vector specifying which effect size
+#' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
 #'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
 #'   \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and

@@ -4,8 +4,9 @@
 \alias{NAP}
 \title{Non-overlap of all pairs}
 \usage{
-NAP(A_data, B_data, condition, outcome, baseline_phase = unique(condition)[1],
-  improvement = "increase", SE = "unbiased", confidence = 0.95)
+NAP(A_data, B_data, condition, outcome,
+  baseline_phase = unique(condition)[1], improvement = "increase",
+  SE = "unbiased", confidence = 0.95)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}

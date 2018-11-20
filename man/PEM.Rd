@@ -4,8 +4,8 @@
 \alias{PEM}
 \title{Percentage exceeding the median}
 \usage{
-PEM(A_data, B_data, condition, outcome, baseline_phase = unique(condition)[1],
-  improvement = "increase")
+PEM(A_data, B_data, condition, outcome,
+  baseline_phase = unique(condition)[1], improvement = "increase")
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
