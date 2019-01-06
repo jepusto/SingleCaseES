@@ -72,6 +72,9 @@ calc_ES <- function(A_data, B_data,
   
   if (missing(A_data) | missing(B_data)) {
     if (missing(outcome) | missing(condition)) stop("You must provide the data using the arguments 'A_data' and 'B_data' or 'condition' and 'outcome'.")
+    if (length(outcome) != length(condition)) stop("The outcome vector must be the same length as the condition vector.")
+    
+    if (length(condition) == 0) return(data.frame())
     
     conditions <- as.character(unique(condition))
     if (length(conditions) != 2) stop("The 'condition' variable must have exactly two unique values.")
@@ -330,3 +333,12 @@ batch_calc_ES <- function(dat,
     dplyr::ungroup()
 }
 
+
+
+regroup_character <- function(.tbl) {
+  vars <- group_vars(.tbl)
+  ungrouped <- ungroup(.tbl)
+  fgroups <- names(select_if(select_at(ungrouped, vars), is.factor))
+  charactered <- mutate_at(ungrouped, fgroups, as.character)
+  group_by_at(charactered, vars)
+}

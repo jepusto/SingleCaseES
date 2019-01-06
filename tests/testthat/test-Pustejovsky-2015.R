@@ -5,6 +5,7 @@ library(dplyr)
 data("Shogren")
 
 Shogren <- Shogren %>%
+  mutate_at(vars(Study, Measure, Case), as.character) %>%
   group_by(Study, Case, Measure) %>%
   mutate(
     session_number = row_number(),
@@ -13,6 +14,7 @@ Shogren <- Shogren %>%
     smd_improvement = ifelse(direction == "increase", "decrease", "increase")
   ) %>%
   ungroup()
+
 
 ShogrenSMD <- batch_calc_ES(dat = Shogren,
                             grouping = vars(Study, Measure, Case),
@@ -57,6 +59,7 @@ logit <- function(x) {
   x[x <= 0 | 1 <= x] <- NA
   log(x) - log(1 - x)
 } 
+
 
 ES <- 
   Shogren %>%
