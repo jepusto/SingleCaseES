@@ -333,12 +333,3 @@ batch_calc_ES <- function(dat,
     dplyr::ungroup()
 }
 
-
-
-regroup_character <- function(.tbl) {
-  vars <- group_vars(.tbl)
-  ungrouped <- ungroup(.tbl)
-  fgroups <- names(select_if(select_at(ungrouped, vars), is.factor))
-  charactered <- mutate_at(ungrouped, fgroups, as.character)
-  group_by_at(charactered, vars)
-}
