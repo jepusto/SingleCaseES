@@ -44,10 +44,11 @@ are also available as web apps hosted through
 
 -   `SCD_effect_sizes()` opens an interactive calculator for the basic
     non-overlap indices and parametric effect sizes. It is also
-    available at <https://jepusto.shinyapps.io/SCD-effect-sizes>
+    available at
+    <a href="https://jepusto.shinyapps.io/SCD-effect-sizes" class="uri">https://jepusto.shinyapps.io/SCD-effect-sizes</a>
 -   `shine_gem_scd()` opens an interactive calculator for the gradual
     effects model. It is also available at
-    <https://jepusto.shinyapps.io/gem-scd>
+    <a href="https://jepusto.shinyapps.io/gem-scd" class="uri">https://jepusto.shinyapps.io/gem-scd</a>
 
 ***Please note that the web apps should only be used for demonstration
 purposes***. For research purposes, please install the R package and run
@@ -75,6 +76,7 @@ install.packages("sourcetools")
 install.packages("shiny")
 install.packages("markdown")
 install.packages("ggplot2")
+install.packages("purrrlyr")
 devtools::install_github("jepusto/SingleCaseES", build_vignettes = TRUE, force = TRUE)
 ```
 
@@ -130,15 +132,17 @@ Citations
 Please cite this R package as follows:
 
 > Pustejovsky, J. E. & Swan, D. M. (2018). SingleCaseES: A calculator
-> for single-case effect size indices. R package version 0.4.0.
-> Retrieved from <https://github.com/jepusto/SingleCaseES>
+> for single-case effect size indices. R package version 0.4.0.9999.
+> Retrieved from
+> <a href="https://github.com/jepusto/SingleCaseES" class="uri">https://github.com/jepusto/SingleCaseES</a>
 
 Please cite the web applications as follows:
 
 > Pustejovsky, J. E. & Swan, D. M. (2018). Single-case effect size
 > calculator (Version 0.4.0) \[Web application\]. Retrieved from
-> <https://jepusto.shinyapps.io/SCD-effect-sizes>
+> <a href="https://jepusto.shinyapps.io/SCD-effect-sizes" class="uri">https://jepusto.shinyapps.io/SCD-effect-sizes</a>
 
 > Swan, D. M. & Pustejovsky, J. E. (2017). gem\_scd: A web-based
 > calculator for the Gradual Effects Model (Version 0.1.0) \[Web
-> application\]. Retrieved from: <https://jepusto.shinyapps.io/gem-scd>
+> application\]. Retrieved from:
+> <a href="https://jepusto.shinyapps.io/gem-scd" class="uri">https://jepusto.shinyapps.io/gem-scd</a>

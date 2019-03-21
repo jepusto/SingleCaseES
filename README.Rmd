@@ -56,6 +56,7 @@ install.packages("sourcetools")
 install.packages("shiny")
 install.packages("markdown")
 install.packages("ggplot2")
+install.packages("purrrlyr")
 devtools::install_github("jepusto/SingleCaseES", build_vignettes = TRUE, force = TRUE)
 ```
 

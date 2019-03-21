@@ -1,3 +1,7 @@
+# SingleCaseES 0.4.1.999
+
+* Added check for purrrlyr package when loading gem_scd calculator.
+
 # SingleCaseES 0.4.1
 
 * Fixed bug in SCD_effect_sizes() shiny app that caused an error in batch calculator when LRRi, LRRd, or LOR were not selected.

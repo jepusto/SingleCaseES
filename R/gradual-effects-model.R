@@ -175,6 +175,9 @@ shine_gem_scd <- function(browser = TRUE) {
   if (!requireNamespace("tidyr", quietly = TRUE)) {
     stop("The simulator requires the tidyr package. Please install it.", call. = FALSE)
   }
+  if (!requireNamespace("purrrlyr", quietly = TRUE)) {
+    stop("The simulator requires the purrrlyr package. Please install it.", call. = FALSE)
+  }
   if (!requireNamespace("dplyr", quietly = TRUE)) {
     stop("The simulator requires the dplyr package. Please install it.", call. = FALSE)
   }
