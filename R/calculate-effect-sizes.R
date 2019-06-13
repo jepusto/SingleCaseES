@@ -248,9 +248,7 @@ batch_calc_ES <- function(dat,
                           ...
                           ) {
   
-  group_class <- tryCatch(class(grouping), 
-                          error = function(e) "single variable")
-  if (group_class == "single variable") grouping <- rlang::enquo(grouping)
+  grouping <- rlang::enquos(grouping)
   grouping <- tryCatch(tidyselect::vars_select(names(dat), !!!grouping), 
                        error = function(e) stop("Grouping variables are not in the dataset."))
 
