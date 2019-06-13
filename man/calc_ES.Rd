@@ -5,8 +5,8 @@
 \title{Calculate effect sizes}
 \usage{
 calc_ES(A_data, B_data, condition, outcome, baseline_phase = NULL,
-  ES = c("LRRd", "LRRi", "SMD", "Tau"), improvement = "increase", ...,
-  confidence = 0.95, format = "long")
+  intervention_phase = NULL, ES = c("LRRd", "LRRi", "SMD", "Tau"),
+  improvement = "increase", ..., confidence = 0.95, format = "long")
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
@@ -21,6 +21,10 @@ observation in the series.}
 \item{baseline_phase}{character string specifying which value of
 \code{condition} corresponds to the baseline phase. Defaults to first
 observed value of \code{condition}.}
+
+\item{intervention_phase}{character string specifying which value of
+\code{condition} corresponds to the intervention phase. Defaults to second
+unique value of \code{condition}.}
 
 \item{ES}{character string or character vector specifying which effect size
 index or indices to calculate. Available effect sizes are \code{"LRRd"},

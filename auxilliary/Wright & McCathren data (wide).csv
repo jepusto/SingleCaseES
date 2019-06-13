@@ -1,0 +1,99 @@
+Participant,Session,Condition,Problem_behavior,Prosocial_behavior
+Nick,1,baseline,1,0
+Nick,2,baseline,2,0
+Nick,3,baseline,1,0
+Nick,4,baseline,1,1
+Nick,5,baseline,1,0
+Nick,6,intervention A,0,0
+Nick,7,intervention A,3,14
+Nick,8,intervention A,0,0
+Nick,9,intervention A,0,4
+Nick,10,intervention A,1,5
+Nick,11,intervention A,0,7
+Nick,12,intervention B,0,3
+Nick,13,intervention B,0,4
+Nick,14,intervention B,0,5
+Nick,15,intervention B,1,1
+Nick,16,intervention B,0,6
+Nick,17,intervention B,1,3
+Logan,1,baseline,0,0
+Logan,2,baseline,2,0
+Logan,3,baseline,2,0
+Logan,4,baseline,0,0
+Logan,5,baseline,1,0
+Logan,6,baseline,1,0
+Logan,7,baseline,0,0
+Logan,8,baseline,1,1
+Logan,9,baseline,1,0
+Logan,10,intervention A,0,2
+Logan,11,intervention A,0,3
+Logan,12,intervention A,1,2
+Logan,13,intervention A,2,3
+Logan,14,intervention A,1,4
+Logan,15,intervention A,0,1
+Logan,16,intervention B,0,2
+Logan,17,intervention B,0,3
+Logan,18,intervention B,0,1
+Logan,19,intervention B,2,0
+Logan,20,intervention B,0,1
+Logan,21,intervention B,1,1
+Trevor,1,baseline,5,0
+Trevor,2,baseline,0,0
+Trevor,3,baseline,1,1
+Trevor,4,baseline,1,0
+Trevor,5,baseline,1,0
+Trevor,6,baseline,0,0
+Trevor,7,baseline,1,1
+Trevor,8,baseline,5,3
+Trevor,9,baseline,7,1
+Trevor,10,baseline,1,0
+Trevor,11,baseline,2,0
+Trevor,12,baseline,0,0
+Trevor,13,baseline,4,0
+Trevor,14,baseline,3,1
+Trevor,15,baseline,0,0
+Trevor,16,intervention A,1,2
+Trevor,17,intervention A,2,2
+Trevor,18,intervention A,0,0
+Trevor,19,intervention A,1,3
+Trevor,20,intervention A,0,1
+Trevor,21,intervention A,1,0
+Trevor,22,intervention B,0,3
+Trevor,23,intervention B,0,0
+Trevor,24,intervention B,0,1
+Trevor,25,intervention B,0,1
+Trevor,26,intervention B,1,4
+Trevor,27,intervention B,0,1
+Peter,1,baseline,2,0
+Peter,2,baseline,0,0
+Peter,3,baseline,3,0
+Peter,4,baseline,0,1
+Peter,5,baseline,0,0
+Peter,6,baseline,2,0
+Peter,7,baseline,0,0
+Peter,8,baseline,1,0
+Peter,9,baseline,0,0
+Peter,10,baseline,0,0
+Peter,11,baseline,10,0
+Peter,12,baseline,0,1
+Peter,13,baseline,3,0
+Peter,14,baseline,11,0
+Peter,15,baseline,3,0
+Peter,16,baseline,8,0
+Peter,17,baseline,0,0
+Peter,18,baseline,1,0
+Peter,19,baseline,1,0
+Peter,20,baseline,1,0
+Peter,21,baseline,2,0
+Peter,22,intervention A,3,0
+Peter,23,intervention A,1,3
+Peter,24,intervention A,2,5
+Peter,25,intervention A,0,2
+Peter,26,intervention A,1,0
+Peter,27,intervention A,0,0
+Peter,28,intervention B,1,0
+Peter,29,intervention B,1,0
+Peter,30,intervention B,1,0
+Peter,31,intervention B,2,1
+Peter,32,intervention B,0,0
+Peter,33,intervention B,NA,3

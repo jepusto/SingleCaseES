@@ -46,6 +46,14 @@ names(Schmidt2007)[1] <- "Behavior_type"
 
 save(Schmidt2007, file = "data/Schmidt2007.RData", compress = TRUE)
 
+#--------------------
+# Wright & McCathren (2012)
+#--------------------
+
+Wright2012 <- read.csv("auxilliary/Wright & McCathren data (wide).csv", stringsAsFactors = FALSE)
+Wright2012$Participant <- factor(Wright2012$Participant, levels = c("Nick","Logan","Trevor","Peter"))
+str(Wright2012)
+save(Wright2012, file = "data/Wright2012.RData", compress = TRUE)
 
 #------------------
 # Shogren 2004

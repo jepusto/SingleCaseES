@@ -5,10 +5,10 @@
 \title{Calculate effect sizes from a dataset for multiple series}
 \usage{
 batch_calc_ES(dat, grouping, condition, outcome, session_number = NULL,
-  baseline_phase = NULL, ES = c("LRRd", "LRRi", "SMD", "Tau"),
-  improvement = "increase", scale = "other", intervals = NA,
-  observation_length = NA, confidence = 0.95, format = "long",
-  warn = TRUE, ...)
+  baseline_phase = NULL, intervention_phase = NULL, ES = c("LRRd",
+  "LRRi", "SMD", "Tau"), improvement = "increase", scale = "other",
+  intervals = NA, observation_length = NA, confidence = 0.95,
+  format = "long", warn = TRUE, ...)
 }
 \arguments{
 \item{dat}{data frame containing SCD series for which effect sizes will be
@@ -27,6 +27,11 @@ order the data within each series.}
 \item{baseline_phase}{character string specifying which value of
 \code{condition} corresponds to the baseline phase. If \code{NULL} (the
 default), the first observed value of \code{condition} within the series
+will be used.}
+
+\item{intervention_phase}{character string specifying which value of
+\code{condition} corresponds to the intervention phase. If \code{NULL} (the
+default), the second unique value of \code{condition} within the series
 will be used.}
 
 \item{ES}{character string or character vector specifying which effect size
