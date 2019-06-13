@@ -52,6 +52,11 @@ following variables:
   The calculator assumes that all baseline phases across every series have the
   same value.
 
+- __Treatment Phase Value__ : A selection box containing all unique values in
+  the __Phase Indicator__ column, excluding the __Baseline Phase Value__. Select
+  the value corresponding to the treatment (intervention) phase. The calculator
+  assumes that all intervention phases across every series have the same value.
+
 - __Within-Case Session Number__: A column that allows the calculator to
   sequentially order each case. For each case, number the first observation 1, the
   second 2, up through the final observation.

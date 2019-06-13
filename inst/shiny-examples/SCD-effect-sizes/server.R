@@ -154,22 +154,24 @@ shinyServer(function(input, output, session) {
   
   output$phaseDefine <- renderUI({
     
-    phase_choices <- unique(datFile()[input$b_phase])
+    phase_choices <- unique(datFile()[[input$b_phase]])
+    trt_choices <- setdiff(phase_choices, input$b_base)
     
     if (input$dat_type == "dat") {
       list(
-        selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices)
-        # selectInput("b_treat", label = "Treatment Phase Value", choices = phase_choices)
+        selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices),
+        selectInput("b_treat", label = "Treatment Phase Value", choices = trt_choices)
       )
     } else {
       curMap <- exampleMapping[[input$example]]
       list(
-        selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices, selected = curMap$phase_vals[1])
-        # selectInput("b_treat", label = "Treatment Phase Value", choices = phase_choices, selected = curMap$phase_vals[2])  
+        selectInput("b_base", label = "Baseline Phase Value", choices = phase_choices, selected = curMap$phase_vals[1]),
+        selectInput("b_treat", label = "Treatment Phase Value", choices = trt_choices, selected = curMap$phase_vals[2])  
       )
     }
   })
-  
+
+    
   output$outOrderImp <- renderUI({
 
     var_names <- names(datFile())
@@ -268,11 +270,12 @@ shinyServer(function(input, output, session) {
     }
     
     batch_calc_ES(dat = datFile(), 
+                  grouping = input$b_clusters,
                   condition = input$b_phase, 
                   outcome = input$b_out,
                   session_number = input$session_number,
-                  grouping = input$b_clusters,
                   baseline_phase = input$b_base,
+                  intervention_phase = input$b_treat,
                   ES = c(input$bESno, input$bESpar),
                   improvement = improvement,
                   scale = scale_val,

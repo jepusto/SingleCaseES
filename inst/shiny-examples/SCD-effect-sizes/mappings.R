@@ -5,7 +5,9 @@
 # direction describes direction type
 # direction_var is the name of the variable that applies the direction.
 
-example_list <- c("McKissick et al. (2010)" = "McKissick", "Schmidt (2007)" = "Schmidt2007")
+example_list <- c("McKissick et al. (2010)" = "McKissick", 
+                  "Schmidt (2007)" = "Schmidt2007",
+                  "Wright & McCathren (2012)" = "Wright2012")
 
 exampleMapping <- list(
   Schmidt2007 = list(condition = "Condition",
@@ -27,6 +29,15 @@ exampleMapping <- list(
                    session_num = "Session_number",
                    scale = "count",
                    intervals = NA,
-                   observation_length = "Session_length")
+                   observation_length = "Session_length"),
+  Wright2012 = list(condition = "Condition",
+                   outcome = "Prosocial_behavior",
+                   cluster_vars = "Participant",
+                   phase_vals = c("baseline", "intervention A", "intervention B"),
+                   direction = "increase",
+                   session_num = "Session",
+                   scale = "count",
+                   intervals = NA,
+                   observation_length = NA)
   
 )
