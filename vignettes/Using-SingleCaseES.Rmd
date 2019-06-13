@@ -18,6 +18,7 @@ vignette: >
 nocite: |
   @pustejovsky2015measurement, @scruggs1987quantitative
 ---
+
 ```{r setup, include = FALSE}
 library(kableExtra)
 knitr::opts_chunk$set(
@@ -112,16 +113,15 @@ outcome_dat
 NAP(condition = phase, outcome = outcome_dat)
 ```
 
-Note that if the vector provided to `condition` has more than two values,
-the effect size function will throw an error:
+If the vector provided to `condition` has more than two values,
+the effect size function will assume that the first value of `condition` is the baseline phase and the second unique value of `condition` is the intervention phase:
 
 ```{r}
 phase2 <- c(rep("A", 5), rep("B", 5), rep("C",3))
 NAP(condition = phase2, outcome = outcome_dat)
 ```
 
-By default, `NAP()` and all of the other effect size functions treat the first value of
-`condition` as the the baseline phase. However, in some single-case data series, the initial observation might not be in the
+In some single-case data series, the initial observation might not be in the
 baseline phase. For example, an SCD with four cases might use a cross-over treatment reversal design, where two of the cases follow an ABAB design and the other two cases follow a BABA design. To handle this situation, we will need to specify the baseline phase using the `baseline_phase` argument:
 
 ```{r}
@@ -129,6 +129,15 @@ phase_rev <- c(rep("B", 7), rep("A", 6))
 outcome_rev <- c(B, A)
 NAP(condition = phase_rev, outcome = outcome_rev, baseline_phase = "A")
 ```
+
+In data series that include more than two unique phases, it is also possible to specify which one should be used as the intervention phase using the `intervention_phase` argument: 
+```{r}
+NAP(condition = phase2, outcome = outcome_dat, 
+    baseline_phase = "A", intervention_phase = "C")
+NAP(condition = phase2, outcome = outcome_dat, 
+    baseline_phase = "B", intervention_phase = "C")
+```
+
 
 ## Direction of improvement 
 

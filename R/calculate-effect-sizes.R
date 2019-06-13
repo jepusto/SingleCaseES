@@ -13,6 +13,9 @@
 #' @param baseline_phase character string specifying which value of
 #'   \code{condition} corresponds to the baseline phase. Defaults to first
 #'   observed value of \code{condition}.
+#' @param intervention_phase character string specifying which value of
+#'   \code{condition} corresponds to the intervention phase. Defaults to second
+#'   unique value of \code{condition}.
 #' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
 #'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
@@ -64,6 +67,7 @@
 calc_ES <- function(A_data, B_data, 
                     condition, outcome, 
                     baseline_phase = NULL,
+                    intervention_phase = NULL,
                     ES = c("LRRd","LRRi","SMD","Tau"), 
                     improvement = "increase", 
                     ..., 
@@ -77,16 +81,26 @@ calc_ES <- function(A_data, B_data,
     if (length(condition) == 0) return(data.frame())
     
     conditions <- as.character(unique(condition))
-    if (length(conditions) != 2) stop("The 'condition' variable must have exactly two unique values.")
+    if (length(conditions) < 2) stop("The 'condition' variable must have two or more unique values.")
 
     if (is.null(baseline_phase)) baseline_phase <- conditions[1]
     if (!is.character(baseline_phase)) baseline_phase <- as.character(baseline_phase)
-    treatment_phase <- setdiff(conditions, baseline_phase)
+    
+    if (is.null(intervention_phase)) {
+      intervention_phase <- setdiff(conditions, baseline_phase)[1]
+      if (length(conditions) > 2) {
+        msg <- paste0("The 'condition' variable has more than two unique values. Treating '", intervention_phase, "' as the intervention phase.")
+        warning(msg)
+      }
+    }
+    if (!is.character(intervention_phase)) intervention_phase <- as.character(intervention_phase)
+    if (!(baseline_phase %in% conditions)) stop(paste0("The value of 'baseline_phase' must be one of the following: ", paste(paste0('"',conditions,'"'), collapse = ", "), "."))
+    if (!(intervention_phase %in% conditions)) stop(paste0("The value of 'intervention_phase' must be one of the following: ", paste(paste0('"',conditions,'"'), collapse = ", "), "."))
     
     dat <- split(outcome, condition)
     
     A_data <- dat[[baseline_phase]]
-    B_data <- dat[[treatment_phase]]
+    B_data <- dat[[intervention_phase]]
   } 
   
   if (length(improvement) > 1L) improvement <- names(sort(table(improvement), decreasing = TRUE)[1])
@@ -159,6 +173,10 @@ calc_ES <- function(A_data, B_data,
 #' @param baseline_phase character string specifying which value of
 #'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the
 #'   default), the first observed value of \code{condition} within the series
+#'   will be used.
+#' @param intervention_phase character string specifying which value of
+#'   \code{condition} corresponds to the intervention phase. If \code{NULL} (the
+#'   default), the second unique value of \code{condition} within the series
 #'   will be used.
 #' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
@@ -237,6 +255,7 @@ batch_calc_ES <- function(dat,
                           condition, outcome,
                           session_number = NULL,
                           baseline_phase = NULL,
+                          intervention_phase = NULL,
                           ES = c("LRRd","LRRi","SMD","Tau"), 
                           improvement = "increase",
                           scale = "other",
@@ -319,6 +338,7 @@ batch_calc_ES <- function(dat,
     dplyr::do(calc_ES(condition = .data[[condition]], 
                       outcome = .data[[outcome]], 
                       baseline_phase = baseline_phase,
+                      intervention_phase = intervention_phase,
                       ES = ES_names, 
                       improvement = .data[[improvement]], 
                       scale =  .data[[scale]],
