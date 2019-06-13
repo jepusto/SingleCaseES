@@ -473,7 +473,7 @@ calc_SMD <- function(A_data, B_data,
   dat <- summary_stats(A_data, B_data, warn = warn)
   
   if (std_dev == "baseline") {
-    df <- dat$n[1]
+    df <- dat$n[1] - 1
     s_sq <- dat$V[1]
     SV1 <- with(dat, 1 / n[1] + V[2] / (n[2] * V[1]))
   } else {
