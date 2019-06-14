@@ -1,9 +1,9 @@
-library(markdown)
-library(ggplot2)
-library(tidyr)
-library(dplyr)
-library(SingleCaseES)
-library(rlang)
+library(markdown, warn.conflicts = FALSE, quietly = TRUE)
+library(ggplot2, warn.conflicts = FALSE, quietly = TRUE)
+library(tidyr, warn.conflicts = FALSE, quietly = TRUE)
+library(dplyr, warn.conflicts = FALSE, quietly = TRUE)
+library(SingleCaseES, warn.conflicts = FALSE, quietly = TRUE)
+library(rlang, warn.conflicts = FALSE, quietly = TRUE)
 
 
 statistical_indices <- c("NAP","Tau","SMD","LRRi", "LRRd", "LOR")
@@ -133,7 +133,8 @@ shinyServer(function(input, output, session) {
   })
   
   output$datview <- renderTable(datFile())
-    
+  output$datview2 <- renderTable(datFile())
+  
   output$clusterPhase <- renderUI({
       var_names <- names(datFile())
       if (input$dat_type == "dat") {
@@ -154,7 +155,8 @@ shinyServer(function(input, output, session) {
   
   output$phaseDefine <- renderUI({
     
-    phase_choices <- unique(datFile()[[input$b_phase]])
+    
+    phase_choices <- if (!is.null(input$b_phase)) unique(datFile()[[input$b_phase]]) else c("A","B")
     trt_choices <- setdiff(phase_choices, input$b_base)
     
     if (input$dat_type == "dat") {

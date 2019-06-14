@@ -141,8 +141,9 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                   radioButtons('sep', 'Data seperator', c(Commas=',', Semicolons=';', Tabs='\t', Spaces=' ')),
                                                                   radioButtons('quote', 'Include quotes?', c('No'='', 'Double Quotes'='"', 'Single Quotes'="'"))
                                                                 )),
-                                                   mainPanel(tableOutput("datview")))),
-                            tabPanel("Estimate", 
+                                                   mainPanel(tableOutput("datview")))
+                                     ),
+                            tabPanel("Variables",
                                      sidebarLayout(
                                        sidebarPanel(
                                          style = "max-height: 800px; overflow-y: auto",
@@ -151,8 +152,14 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          uiOutput("treatDefine"),
                                          uiOutput("outOrderImp"),
                                          conditionalPanel(condition = "input.bimprovement == 'series'",
-                                                          uiOutput("improvementVar")),
-                                         hr(),
+                                                          uiOutput("improvementVar"))
+                                       ),
+                                       mainPanel(tableOutput("datview2"))
+                                     )
+                                     ),
+                            tabPanel("Estimate", 
+                                     sidebarLayout(
+                                       sidebarPanel(
                                          h4("Select Effect Sizes"),
                                          checkboxGroupInput("bESno", "Non-Overlap Effect Sizes", choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), inline = TRUE),
                                          checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LOR", "LRRd", "LRRi" ,"SMD"),inline = TRUE),
@@ -165,13 +172,15 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100),
                                          radioButtons("resultsformat", "Long or wide format?", c("Long" = "long", "Wide" = "wide"), inline = TRUE),
                                          conditionalPanel(condition = "input.bESpar.length > 0 || input.bESno.length > 0", 
-                                                          actionButton("batchest", "Estimate"),
-                                                          p(),
-                                                          conditionalPanel(condition = "input.batchest > 0",
-                                                                           downloadButton("downloadES", label = "Download results")))
+                                                          actionButton("batchest", "Estimate"))
                                        ),
                                        
-                                       mainPanel(tableOutput("batchTable")))
+                                       mainPanel(tableOutput("batchTable"),
+                                                 p(),
+                                                 conditionalPanel(condition = "input.batchest > 0",
+                                                                  downloadButton("downloadES", label = "Download results"))
+                                                 )
+                                    )
                                      
                             )
                           )
