@@ -1,6 +1,11 @@
-# SingleCaseES 0.4.1.999
+# SingleCaseES 0.4.2
 
 * Added check for purrrlyr package when loading gem_scd calculator.
+* Corrected bug in degrees of freedom for within-case standardized mean difference with baseline SD.
+* Tweaks for SCD_effect_sizes() shiny app.
+    * Improved UI for batch calculation mode.
+    * Added the option to select a treatment phase for batch calculation mode.
+    * Allowed for choice between baseline SD and pooled SD for the within-case standardized mean difference. Previously, the option was available but not actually used for calculation.
 
 # SingleCaseES 0.4.1
 
