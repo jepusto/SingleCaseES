@@ -5,6 +5,7 @@ library(dplyr, warn.conflicts = FALSE, quietly = TRUE)
 library(SingleCaseES, warn.conflicts = FALSE, quietly = TRUE)
 library(rlang, warn.conflicts = FALSE, quietly = TRUE)
 
+source("mappings.R")
 
 statistical_indices <- c("NAP","Tau","SMD","LRRi", "LRRd", "LOR")
 
@@ -281,6 +282,7 @@ shinyServer(function(input, output, session) {
                   ES = c(input$bESno, input$bESpar),
                   improvement = improvement,
                   scale = scale_val,
+                  std_dev = input$bSMD_denom,
                   format = input$resultsformat)
 
   })
