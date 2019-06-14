@@ -52,7 +52,7 @@ are also available as web apps hosted through
 
 ***Please note that the web apps should only be used for demonstration
 purposes***. For research purposes, please install the R package and run
-the GUI through Rstudio.
+the GUI through RStudio.
 
 Installation
 ============
@@ -61,7 +61,7 @@ The package is available on the Comprehensive R Archive Network. To
 install it, you will first need to [install
 R](http://cran.r-project.org/) and
 [RStudio](http://www.rstudio.com/products/rstudio/download/). Both of
-these programs are freely availble. Once you have these programs
+these programs are freely available. Once you have these programs
 installed, run the following commands at the RStudio console prompt:
 
 ``` r
@@ -132,7 +132,7 @@ Citations
 Please cite this R package as follows:
 
 > Pustejovsky, J. E. & Swan, D. M. (2018). SingleCaseES: A calculator
-> for single-case effect size indices. R package version 0.4.0.9999.
+> for single-case effect size indices. R package version 0.4.1.999.
 > Retrieved from
 > <a href="https://github.com/jepusto/SingleCaseES" class="uri">https://github.com/jepusto/SingleCaseES</a>
 
