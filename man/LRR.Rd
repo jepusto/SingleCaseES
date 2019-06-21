@@ -9,12 +9,14 @@
 LRRd(A_data, B_data, condition, outcome,
   baseline_phase = unique(condition)[1], improvement = "decrease",
   scale = "count", observation_length = NULL, intervals = NULL,
-  D_const = NULL, bias_correct = TRUE, confidence = 0.95)
+  D_const = NULL, bias_correct = TRUE, pct_change = FALSE,
+  confidence = 0.95)
 
 LRRi(A_data, B_data, condition, outcome,
   baseline_phase = unique(condition)[1], improvement = "increase",
   scale = "count", observation_length = NULL, intervals = NULL,
-  D_const = NULL, bias_correct = TRUE, confidence = 0.95)
+  D_const = NULL, bias_correct = TRUE, pct_change = FALSE,
+  confidence = 0.95)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
@@ -52,6 +54,9 @@ Pustejovsky, 2018). If a vector, the mean value will be used.}
 \item{bias_correct}{logical value indicating whether to use bias-correction.
 Default is \code{TRUE}.}
 
+\item{pct_change}{logical value indicating whether to convert the LRR
+estimate and confidence interval into percentage change.}
+
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
 }
@@ -70,13 +75,13 @@ The response ratio parameter is the ratio of the mean level of the
   log response ratio is the natural logarithm of the response ratio. This
   effect size is appropriate for outcomes measured on a ratio scale (so that
   zero corresponds to the true absence of the outcome. There are two versions
-  of the LRR. The LRR-increasing (\code{LRRi}) is defined so that positive values
-  correspond to therapeutic improvements. The LRR-decreasing (\code{LRRd}) is
-  defined so that negative values correspond to therapeutic improvements. For
-  outcomes measured as frequency counts or rates, the two versions will have
-  the same magnitude but opposite sign; for outcomes measured as percentages
-  or proportions, the LRRd and LRRi will differ in both sign and magnitude
-  (Pustejovsky, 2018).
+  of the LRR. The LRR-increasing (\code{LRRi}) is defined so that positive
+  values correspond to therapeutic improvements. The LRR-decreasing
+  (\code{LRRd}) is defined so that negative values correspond to therapeutic
+  improvements. For outcomes measured as frequency counts or rates, the two
+  versions will have the same magnitude but opposite sign; for outcomes
+  measured as percentages or proportions, the LRRd and LRRi will differ in
+  both sign and magnitude (Pustejovsky, 2018).
 
   Without bias correction, the log response ratio is estimated as the natural
   logarithm of the phase B sample mean, minus the natural logarithm of the
@@ -100,12 +105,17 @@ The response ratio parameter is the ratio of the mean level of the
   proportions, the argument \code{intervals} must be specified. For outcomes
   measured using continuous recording procedures, set \code{intervals} equal
   to 60 times the length of the observation session in minutes.
+
+  If \code{pct_change} is \code{TRUE}, then the LRR estimate and confidence
+  interval are converted into percentage change using the formula 
+  Percentage change = 100 * (exp(LRR) - 1).
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
 B <- c(28, 25, 24, 27, 30, 30, 29)
 LRRd(A_data = A, B_data = B, bias_correct = FALSE)
 LRRd(A_data = A, B_data = B)
+LRRd(A_data = A, B_data = B, pct_change = TRUE)
 
 }
 \references{

@@ -277,7 +277,8 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 #' B <- c(28, 25, 24, 27, 30, 30, 29)
 #' LRRd(A_data = A, B_data = B, bias_correct = FALSE)
 #' LRRd(A_data = A, B_data = B)
-#'
+#' LRRd(A_data = A, B_data = B, pct_change = TRUE)
+#' 
 #' @export
 
 # Check against calculations in Pustejovsky (2015, 2018)
