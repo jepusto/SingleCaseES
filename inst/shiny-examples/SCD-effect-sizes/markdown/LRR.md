@@ -41,6 +41,13 @@ $$
 
 where $z_{\alpha / 2}$ is $1 - \alpha / 2$ critical value from a standard normal distribution. 
 
+#### Percentage change
+
+If desired, LRR estimates and confidence intervals can be translated into the more readily interpretable metric percentage change using the formula
+$$
+\text{% Change} = 100\% \times \left[\exp(R) - 1 \right].
+$$
+
 #### Primary reference
 
 Pustejovsky, J. E. (2015). Measurement-comparable effect sizes for single-case studies of free-operant behavior. Psychological Methods, 20(3), 342–359. https://dx.doi.org/10.1037/met0000019
