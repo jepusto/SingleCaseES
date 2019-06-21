@@ -213,6 +213,8 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 #'   Pustejovsky, 2018). If a vector, the mean value will be used.
 #' @param bias_correct  logical value indicating whether to use bias-correction.
 #'   Default is \code{TRUE}.
+#' @param pct_change logical value indicating whether to convert the LRR
+#'   estimate and confidence interval into percentage change.
 #' @inheritParams calc_ES
 #'
 #' @details The response ratio parameter is the ratio of the mean level of the
@@ -220,13 +222,13 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 #'   log response ratio is the natural logarithm of the response ratio. This
 #'   effect size is appropriate for outcomes measured on a ratio scale (so that
 #'   zero corresponds to the true absence of the outcome. There are two versions
-#'   of the LRR. The LRR-increasing (\code{LRRi}) is defined so that positive values
-#'   correspond to therapeutic improvements. The LRR-decreasing (\code{LRRd}) is
-#'   defined so that negative values correspond to therapeutic improvements. For
-#'   outcomes measured as frequency counts or rates, the two versions will have
-#'   the same magnitude but opposite sign; for outcomes measured as percentages
-#'   or proportions, the LRRd and LRRi will differ in both sign and magnitude
-#'   (Pustejovsky, 2018).
+#'   of the LRR. The LRR-increasing (\code{LRRi}) is defined so that positive
+#'   values correspond to therapeutic improvements. The LRR-decreasing
+#'   (\code{LRRd}) is defined so that negative values correspond to therapeutic
+#'   improvements. For outcomes measured as frequency counts or rates, the two
+#'   versions will have the same magnitude but opposite sign; for outcomes
+#'   measured as percentages or proportions, the LRRd and LRRi will differ in
+#'   both sign and magnitude (Pustejovsky, 2018).
 #'
 #'   Without bias correction, the log response ratio is estimated as the natural
 #'   logarithm of the phase B sample mean, minus the natural logarithm of the
@@ -251,6 +253,10 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 #'   measured using continuous recording procedures, set \code{intervals} equal
 #'   to 60 times the length of the observation session in minutes.
 #'
+#'   If \code{pct_change} is \code{TRUE}, then the LRR estimate and confidence
+#'   interval are converted into percentage change using the formula 
+#'   Percentage change = 100 * (exp(LRR) - 1).
+#'
 #' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
 #'   for single-case studies of free-operant behavior. \emph{Psychological
 #'   Methods, 20}(3), 342--359.
@@ -260,6 +266,7 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 #'   single-case designs with behavioral outcomes. \emph{Journal of School
 #'   Psychology, 16}, 99-112.
 #'   doi:\href{https://doi.org/10.1016/j.jsp.2018.02.003}{10.1016/j.jsp.2018.02.003}
+#'
 #'
 #'
 #' @return A data.frame containing the estimate, standard error, and approximate
@@ -282,7 +289,8 @@ LRRd <- function(A_data, B_data, condition, outcome,
                  improvement = "decrease", 
                  scale = "count", observation_length = NULL, 
                  intervals = NULL, D_const = NULL,
-                 bias_correct = TRUE, confidence = .95) {
+                 bias_correct = TRUE, pct_change = FALSE,
+                 confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
@@ -290,7 +298,8 @@ LRRd <- function(A_data, B_data, condition, outcome,
           ES = "LRRd", improvement = improvement, 
           scale = scale, observation_length = observation_length, 
           intervals = intervals, D_const = D_const,
-          bias_correct = bias_correct, confidence = confidence)  
+          bias_correct = bias_correct, pct_change = pct_change,
+          confidence = confidence)  
 }
 
 #' @rdname LRR
@@ -301,7 +310,8 @@ LRRi <- function(A_data, B_data, condition, outcome,
                  improvement = "increase", 
                  scale = "count", observation_length = NULL, 
                  intervals = NULL, D_const = NULL,
-                 bias_correct = TRUE, confidence = .95) {
+                 bias_correct = TRUE, pct_change = FALSE, 
+                 confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
@@ -309,14 +319,18 @@ LRRi <- function(A_data, B_data, condition, outcome,
           ES = "LRRi", improvement = improvement, 
           scale = scale, observation_length = observation_length, 
           intervals = intervals, D_const = D_const,
-          bias_correct = bias_correct, confidence = confidence)  
+          bias_correct = bias_correct, pct_change = pct_change, 
+          confidence = confidence)  
   
 }
+
+pct_change <- function(LRR) 100 * (exp(LRR) - 1)
 
 calc_LRRd <- function(A_data, B_data, improvement = "decrease", 
                       scale = "count", observation_length = NULL, 
                       intervals = NULL, D_const = NULL,
-                      bias_correct = TRUE, confidence = .95, warn = TRUE, ...) {
+                      bias_correct = TRUE, pct_change = FALSE,
+                      confidence = .95, warn = TRUE, ...) {
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
@@ -352,12 +366,25 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
   res <- data.frame(ES = "LRRd", Est = lRR, 
                     SE = SE, stringsAsFactors = FALSE)
   
+  if (pct_change) {
+    pct_est <- data.frame(ES = "Pct_Change_d", Est = pct_change(lRR), 
+                          SE = NA, stringsAsFactors = FALSE)
+  }
+  
   if (!is.null(confidence)) {
     CI <- lRR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
     res$CI_lower <- CI[1]
     res$CI_upper <- CI[2] 
+    if (pct_change) {
+      pct_est$CI_lower <- pct_change(CI[1])
+      pct_est$CI_upper <- pct_change(CI[2])
+    }
   }
-  
+
+  if (pct_change) {
+    res <- rbind(res, pct_est)
+  }
+    
   res
   
 }
@@ -365,7 +392,8 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
 calc_LRRi <- function(A_data, B_data, improvement = "increase", 
                       scale = "count", observation_length = NULL, 
                       intervals = NULL, D_const = NULL,
-                      bias_correct = TRUE, confidence = .95, warn = TRUE, ...) {
+                      bias_correct = TRUE, pct_change = FALSE,
+                      confidence = .95, warn = TRUE, ...) {
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
@@ -400,12 +428,25 @@ calc_LRRi <- function(A_data, B_data, improvement = "increase",
   res <- data.frame(ES = "LRRi", Est = lRR, 
                     SE = SE, stringsAsFactors = FALSE)
   
+  if (pct_change) {
+    pct_est <- data.frame(ES = "Pct_Change_i", Est = pct_change(lRR),
+                          SE = NA, stringsAsFactors = FALSE)
+  }
+  
   if (!is.null(confidence)) {
     CI <- lRR + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
     res$CI_lower <- CI[1]
     res$CI_upper <- CI[2] 
+    if (pct_change) {
+      pct_est$CI_lower <- pct_change(CI[1])
+      pct_est$CI_upper <- pct_change(CI[2])
+    }
   }
   
+  if (pct_change) {
+    res <- rbind(res, pct_est)
+  }
+
   res
   
 }

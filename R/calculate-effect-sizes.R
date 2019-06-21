@@ -131,7 +131,15 @@ calc_ES <- function(A_data, B_data,
   
   if (format != "long") {
     
-    if(any(ES_names == "Tau_U")) ES_names[ES_names == "Tau_U"] <- "Tau-U"
+    if (any(ES_names == "Tau_U")) ES_names[ES_names == "Tau_U"] <- "Tau-U"
+    
+    if (any(c("Pct_Change_d","Pct_Change_i") %in% res$ES)) {
+      ES_names <- as.list(ES_names)
+      if ("Pct_Change_d" %in% res$ES) ES_names[[which(ES_names == "LRRd")]] <- c("LRRd","Pct_Change_d")
+      if ("Pct_Change_i" %in% res$ES) ES_names[[which(ES_names == "LRRi")]] <- c("LRRi","Pct_Change_i")
+      ES_names <- unlist(ES_names)
+    }
+    
     
     val_names <- setdiff(names(res), "ES")
     sym_val_names <- rlang::syms(val_names)
