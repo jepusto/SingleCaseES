@@ -1,0 +1,1 @@
+<span style="color:red">PND has severe limitations as an effect size index. In particular, its magnitude is influenced by the number of observations in the baseline phase (Allison & Gorman, 1994; Pustejovsky, 2018), which makes it difficult to interpret or compare PND values estimated from cases with different baseline phase lengths.</span>

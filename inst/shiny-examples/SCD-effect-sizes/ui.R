@@ -100,6 +100,8 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                       value = 3, min = 1, 
                                                       max = 16, step = 1))),
                             mainPanel(width = 8,
+                                      conditionalPanel(condition = "input.NOM_ES == 'PND'", 
+                                                       includeMarkdown("markdown/PND-message.md")),
                                       htmlOutput("result"),
                                       checkboxInput("explanation", 
                                                     label = "Show methods and references", 
@@ -148,7 +150,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                        sidebarPanel(
                                          style = "max-height: 800px; overflow-y: auto",
                                          uiOutput("clusterPhase"),
-                                         uiOutput("phaseDefine"),
+                                         uiOutput("baseDefine"),
                                          uiOutput("treatDefine"),
                                          uiOutput("outOrderImp"),
                                          conditionalPanel(condition = "input.bimprovement == 'series'",
@@ -175,11 +177,14 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                           actionButton("batchest", "Estimate"))
                                        ),
                                        
-                                       mainPanel(tableOutput("batchTable"),
-                                                 p(),
-                                                 conditionalPanel(condition = "input.batchest > 0",
-                                                                  downloadButton("downloadES", label = "Download results"))
-                                                 )
+                                       mainPanel(
+                                         conditionalPanel(condition = "input.bESno.includes('PND')", 
+                                                          includeMarkdown("markdown/PND-message.md")),
+                                         tableOutput("batchTable"),
+                                         p(),
+                                         conditionalPanel(condition = "input.batchest > 0",
+                                                          downloadButton("downloadES", label = "Download results"))
+                                       )
                                     )
                                      
                             )
