@@ -1,3 +1,11 @@
+# SingleCaseES 0.4.2.999
+
+* Tweaks for SCD_effect_sizes() shiny app.
+    * Corrected bug in the single-series calculator that ignored direction of improvement for parametric effect sizes.
+    * Fixed bug in the batch calculator phase-selection drop-down menus.
+    * Added a black-box warning any time PND is calculated.
+    * Added option to convert LRRi and LRRd to percentage change.
+
 # SingleCaseES 0.4.2
 
 * Added check for purrrlyr package when loading gem_scd calculator.

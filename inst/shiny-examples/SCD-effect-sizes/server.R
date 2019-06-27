@@ -37,6 +37,7 @@ shinyServer(function(input, output, session) {
     })
   
   output$SCDplot <- renderPlot({
+    
     if (input$plot & dat()$compute) {
       A_dat <- dat()$A
       B_dat <- dat()$B
