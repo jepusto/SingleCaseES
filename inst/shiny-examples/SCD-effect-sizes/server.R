@@ -305,6 +305,7 @@ shinyServer(function(input, output, session) {
                   pct_change = input$b_pct_change,
                   scale = scale_val,
                   std_dev = input$bSMD_denom,
+                  confidence = input$bconfidence / 100,
                   format = input$resultsformat)
 
   })
