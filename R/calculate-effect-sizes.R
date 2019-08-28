@@ -147,7 +147,7 @@ calc_ES <- function(A_data, B_data,
     
     res <- res %>%
       tidyr::gather("q", !!val, !!!sym_val_names)%>%
-      tidyr::unite("q", from = c("ES","q")) %>%
+      tidyr::unite("q", ES, q) %>%
       dplyr::filter(!is.na(val)) %>%
       tidyr::spread("q", !!val) 
     
