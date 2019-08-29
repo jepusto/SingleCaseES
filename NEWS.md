@@ -1,4 +1,4 @@
-# SingleCaseES 0.4.2.999
+# SingleCaseES 0.4.3
 
 * Updated internal functions for compatibility with tidyr 1.0.0.
 * Tweaks for SCD_effect_sizes() shiny app.
