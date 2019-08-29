@@ -1,8 +1,8 @@
 Package: SingleCaseES
 Type: Package
 Title: A Calculator for Single-Case Effect Sizes
-Version: 0.4.2.999
-Date: 2019-06-13
+Version: 0.4.3
+Date: 2019-08-29
 Authors@R: c(
   person(c("James","E."), "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre")),
   person(c("Daniel","M."), "Swan", email = "dswan@utexas.edu", role = "aut")

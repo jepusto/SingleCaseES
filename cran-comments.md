@@ -1,6 +1,6 @@
 ## Resubmission
 
-This is a resubmission and maintenance release, which includes miscellaneous bug fixes and user interface improvements for an embedded shiny app.
+This is a maintenance release, which includes updates to internal functions for compatibility with tidyr 1.0.0 and user interface improvements for an embedded shiny app.
 
 ## Test environments
 
@@ -19,15 +19,25 @@ There were no ERRORs or WARNINGs.
 
 There was 1 NOTE:
 
-* Found the following (possibly) invalid URLs:
-    URL: https://doi.org/10.2307/1165329 (moved to http://www.jstor.org/stable/1165329)
-      From: inst/doc/Effect-size-definitions.html
-      Status: 403
-      Message: Forbidden
-    URL: https://www.jstor.org/stable/25049448
-      From: man/NAP.Rd
-      Status: 403
-      Message: Forbidden
+Found the following (possibly) invalid URLs:
+  URL: https://doi.org/10.2307/1165329 (moved to http://www.jstor.org/stable/1165329)
+    From: inst/doc/Effect-size-definitions.html
+    Status: 403
+    Message: Forbidden
+  URL: https://jepusto.shinyapps.io/SCD-effect-sizes
+    From: inst/doc/Using-SingleCaseES.html
+    Status: Error
+    Message: libcurl error code 35:
+      	Unknown SSL protocol error in connection to jepusto.shinyapps.io:443
+  URL: https://jepusto.shinyapps.io/gem-scd
+    From: inst/doc/Using-SingleCaseES.html
+    Status: Error
+    Message: libcurl error code 35:
+      	Unknown SSL protocol error in connection to jepusto.shinyapps.io:443
+  URL: https://www.jstor.org/stable/25049448
+    From: man/NAP.Rd
+    Status: 403
+    Message: Forbidden
 
   The flagged URLs are correct.
 
