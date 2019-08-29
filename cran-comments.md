@@ -7,6 +7,11 @@ This is a maintenance release, which includes updates to internal functions for 
 * local Windows 7 Enterprise, R 3.6.0
 * ubuntu 14.04.5 LTS (on travis-ci), R 3.6.0, devel
 * win-builder (devel, release, oldrelease)
+* r-hub:
+  * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+  * Ubuntu Linux 16.04 LTS, R-release, GCC
+  * Fedora Linux, R-devel, clang, gfortran
+
 
 ## R CMD check results
 
