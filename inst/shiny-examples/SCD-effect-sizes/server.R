@@ -325,7 +325,4 @@ shinyServer(function(input, output, session) {
     stopApp()
   })
   
-  session$onSessionEnded(function() {
-    stopApp()
-  })
 })
