@@ -164,4 +164,8 @@ output$downcsv <- downloadHandler(
     write.csv(writeDat, file, row.names = FALSE)
     },
   contentType = "text/csv")
+
+session$onSessionEnded(function() {
+  stopApp()
+})
 })
