@@ -11,7 +11,7 @@ model_params <- function(dat, fam, m){
 }
 
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   
   Trt <- reactive(as.numeric(unlist(strsplit(input$trt, split = "\\s|\\t|\\n|,"))))
   Out <- reactive(as.numeric(unlist(strsplit(input$outcome, split = "\\s|\\t|\\n|,"))))
@@ -83,89 +83,89 @@ shinyServer(function(input, output) {
                sep=input$sep, quote=input$quote,
                stringsAsFactors = FALSE, check.names = FALSE)
   })
-    
-output$datview <- renderTable(datFile())
- 
-
-    
-output$variableMapping <- renderUI({
+  
+  output$datview <- renderTable(datFile())
+  
       
-      if(input$dat_type == "example"){
-        var_names <- exampleMapping[[input$example]]$varnames
+  output$variableMapping <- renderUI({
+        
+        if(input$dat_type == "example"){
+          var_names <- exampleMapping[[input$example]]$varnames
+          n_var <- length(var_names)
+          return(list(
+            selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = var_names[4:n_var], multiple = TRUE),
+            selectInput("b_treat", label = "Treatment Assignment", choices = var_names, selected = var_names[1]),
+            selectInput("b_outcome", label = "Outcome", choices = var_names, selected = var_names[2]),
+            checkboxInput("b_perctoprop", label = "Transform percent to proportion? (Necessary for binomial or quasi-binomial link)", value = exampleMapping[[input$example]]$transform),
+            selectInput("session_number", label = "Within-Case Session Number", choices = var_names, selected = var_names[3]),
+            helpText("Data will be ordered by session number", "within each case."),
+            textInput("m_length", label = "m", value = exampleMapping[[input$example]]$m),
+            helpText("This is the number of treatment sessions the treatment effect is pegged to."),
+            selectInput("b_family", label = "Variance Function",
+                        choices = c("quasi-binomial" = "quasibinomial","quasi-Poisson" = "quasipoisson", "binomial", "gaussian", "poisson"), 
+                        selected = exampleMapping[[input$example]]$family),
+            selectInput("b_link", label = "Link Function",
+                        choices = c("log", "logit", "identity"),
+                        selected = exampleMapping[[input$example]]$link),
+            actionButton("batchest", "Estimate Models")
+          ))
+        }
+        
+        if(input$dat_type == "dat"){
+        var_names <- names(datFile())
         n_var <- length(var_names)
         return(list(
-          selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = var_names[4:n_var], multiple = TRUE),
-          selectInput("b_treat", label = "Treatment Assignment", choices = var_names, selected = var_names[1]),
-          selectInput("b_outcome", label = "Outcome", choices = var_names, selected = var_names[2]),
-          checkboxInput("b_perctoprop", label = "Transform percent to proportion? (Necessary for binomial or quasi-binomial link)", value = exampleMapping[[input$example]]$transform),
-          selectInput("session_number", label = "Within-Case Session Number", choices = var_names, selected = var_names[3]),
-          helpText("Data will be ordered by session number", "within each case."),
-          textInput("m_length", label = "m", value = exampleMapping[[input$example]]$m),
-          helpText("This is the number of treatment sessions the treatment effect is pegged to."),
+          selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = NULL, multiple = TRUE),
+          selectInput("b_treat", label = "Treatment Assignment", choices = var_names, selected = var_names[n_var - 4]),
+          selectInput("b_outcome", label = "Outcome", choices = var_names, selected = var_names[n_var - 3]),
+          checkboxInput("b_perctoprop", label = "Transform percent to proportion? (Necessary for binomial or quasi-binomial link)"),
+          selectInput("session_number", label = "Session Number", choices = var_names, selected = var_names[n_var - 2]),
+          textInput("m_length", label = "m"),
+          helpText("This is the number of treatment sessions at which to estimate the treatment effect."),
           selectInput("b_family", label = "Variance Function",
                       choices = c("quasi-binomial" = "quasibinomial","quasi-Poisson" = "quasipoisson", "binomial", "gaussian", "poisson"), 
-                      selected = exampleMapping[[input$example]]$family),
+                      selected = "quasipoisson"),
           selectInput("b_link", label = "Link Function",
-                      choices = c("log", "logit", "identity"),
-                      selected = exampleMapping[[input$example]]$link),
-          actionButton("batchest", "Estimate Models")
-        ))
-      }
+                      choices = c("log", "logit", "identity"),selected = "log"),
+         actionButton("batchest", "Estimate Models")
+        ))}
+      })
+    
+  batchModel <- eventReactive(input$batchest, {
       
-      if(input$dat_type == "dat"){
-      var_names <- names(datFile())
-      n_var <- length(var_names)
-      return(list(
-        selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, selected = NULL, multiple = TRUE),
-        selectInput("b_treat", label = "Treatment Assignment", choices = var_names, selected = var_names[n_var - 4]),
-        selectInput("b_outcome", label = "Outcome", choices = var_names, selected = var_names[n_var - 3]),
-        checkboxInput("b_perctoprop", label = "Transform percent to proportion? (Necessary for binomial or quasi-binomial link)"),
-        selectInput("session_number", label = "Session Number", choices = var_names, selected = var_names[n_var - 2]),
-        textInput("m_length", label = "m"),
-        helpText("This is the number of treatment sessions at which to estimate the treatment effect."),
-        selectInput("b_family", label = "Variance Function",
-                    choices = c("quasi-binomial" = "quasibinomial","quasi-Poisson" = "quasipoisson", "binomial", "gaussian", "poisson"), 
-                    selected = "quasipoisson"),
-        selectInput("b_link", label = "Link Function",
-                    choices = c("log", "logit", "identity"),selected = "log"),
-       actionButton("batchest", "Estimate Models")
-      ))}
+      dat <- datFile()[c(input$b_outcome, input$b_treat, input$session_number, input$b_clusters)]
+      names(dat)[1:3] <- c("Outcome", "Trt", "session_number")
+      
+    
+      if(input$b_perctoprop) dat$Outcome <- pmax(0, pmin(1, dat$Outcome/100))
+    
+      dat <- dat %>%
+        mutate(session_number = as.numeric(session_number)) %>%
+        arrange_(.dots = c(input$b_clusters, "session_number"))
+        
+      dat %>%  slice_rows(input$b_clusters) %>%
+        by_slice(~model_params(dat = ., fam = do.call(input$b_family, args = list(link = input$b_link)), m = as.numeric(input$m_length)), .collate = "cols") %>%
+        rename(Intercept = .out1, `Intercept SE` = .out2, `Treatment Effect` = .out3,
+               `Treatment Effect SE` = .out4, Omega = .out5, `Omega SE` = .out6,
+               Dispersion = .out7)
+      
     })
   
-batchModel <- eventReactive(input$batchest, {
-    
-    dat <- datFile()[c(input$b_outcome, input$b_treat, input$session_number, input$b_clusters)]
-    names(dat)[1:3] <- c("Outcome", "Trt", "session_number")
-    
+  output$batchTable <- renderTable(batchModel())
   
-    if(input$b_perctoprop) dat$Outcome <- pmax(0, pmin(1, dat$Outcome/100))
+  output$downcsv <- downloadHandler(
+    filename = function( ){
+      fname <- if (input$dat_type == "example") input$example else input$dat
+      paste(fname, '- GEM estimates.csv')
+      },
+    content = function(file){
+      writeDat <- batchModel()
+      write.csv(writeDat, file, row.names = FALSE)
+      },
+    contentType = "text/csv")
   
-    dat <- dat %>%
-      mutate(session_number = as.numeric(session_number)) %>%
-      arrange_(.dots = c(input$b_clusters, "session_number"))
-      
-    dat %>%  slice_rows(input$b_clusters) %>%
-      by_slice(~model_params(dat = ., fam = do.call(input$b_family, args = list(link = input$b_link)), m = as.numeric(input$m_length)), .collate = "cols") %>%
-      rename(Intercept = .out1, `Intercept SE` = .out2, `Treatment Effect` = .out3,
-             `Treatment Effect SE` = .out4, Omega = .out5, `Omega SE` = .out6,
-             Dispersion = .out7)
-    
+  session$onSessionEnded(function() {
+    stopApp()
   })
-
-output$batchTable <- renderTable(batchModel())
-
-output$downcsv <- downloadHandler(
-  filename = function( ){
-    fname <- if (input$dat_type == "example") input$example else input$dat
-    paste(fname, '- GEM estimates.csv')
-    },
-  content = function(file){
-    writeDat <- batchModel()
-    write.csv(writeDat, file, row.names = FALSE)
-    },
-  contentType = "text/csv")
-
-session$onSessionEnded(function() {
-  stopApp()
-})
+  
 })
