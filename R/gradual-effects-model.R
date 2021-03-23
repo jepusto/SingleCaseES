@@ -159,7 +159,7 @@ greff_glm_dev <- function(omega, Trt, outcome, m, fam){
 #' @import stats
 #' 
 #' @examples 
-#' \donttest{
+#' \dontrun{
 #' shine_gem_scd()
 #' }
 #' 
@@ -167,19 +167,19 @@ greff_glm_dev <- function(omega, Trt, outcome, m, fam){
 
 shine_gem_scd <- function(browser = TRUE) {
   if (!requireNamespace("shiny", quietly = TRUE)) {
-    stop("The simulator requires the shiny package. Please install it.", call. = FALSE)
+    stop("The GEM calculator requires the shiny package. Please install it.", call. = FALSE)
   }
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    stop("The simulator requires the ggplot2 package. Please install it.", call. = FALSE)
+    stop("The GEM calculator requires the ggplot2 package. Please install it.", call. = FALSE)
   }
   if (!requireNamespace("tidyr", quietly = TRUE)) {
-    stop("The simulator requires the tidyr package. Please install it.", call. = FALSE)
+    stop("The GEM calculator requires the tidyr package. Please install it.", call. = FALSE)
   }
   if (!requireNamespace("purrrlyr", quietly = TRUE)) {
-    stop("The simulator requires the purrrlyr package. Please install it.", call. = FALSE)
+    stop("The GEM calculator requires the purrrlyr package. Please install it.", call. = FALSE)
   }
   if (!requireNamespace("dplyr", quietly = TRUE)) {
-    stop("The simulator requires the dplyr package. Please install it.", call. = FALSE)
+    stop("The GEM calculator requires the dplyr package. Please install it.", call. = FALSE)
   }
   
   appDir <- system.file("shiny-examples", "gem-scd", package = "SingleCaseES")
