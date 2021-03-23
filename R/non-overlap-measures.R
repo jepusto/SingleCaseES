@@ -9,8 +9,8 @@
 #'   estimator, \code{"null"} for the (known) variance under the null hypothesis
 #'   of no effect, or \code{"none"} to not calculate a standard error. Defaults
 #'   to "unbiased".
-#'
 #' @inheritParams calc_ES
+#' 
 #'
 #' @details NAP is calculated as the proportion of all pairs of one observation
 #'   from each phase in which the measurement from the B phase improves upon the
@@ -101,15 +101,18 @@ calc_NAP <- function(A_data, B_data,
   res <- data.frame(ES = "NAP", Est = NAP, stringsAsFactors = FALSE)
   
   if (SE != "none") {
-    Q1 <- sum(rowSums(Q_mat)^2) / (m * n^2)
-    Q2 <- sum(colSums(Q_mat)^2) / (m^2 * n)
+    Q1 <- sum(rowSums(Q_mat - NAP)^2) / (m * n^2)
+    Q2 <- sum(colSums(Q_mat - NAP)^2) / (m^2 * n)
+    
+    trunc <- 0.5 / (m * n)
+    NAP_trunc <- min(max(NAP, trunc), 1 - trunc)
     
     if (SE == "unbiased") {
-      X <- sum(Q_mat^2) / (m * n)
-      V <- (NAP - (m + n - 1) * NAP^2 + n * Q1 + m * Q2 - 2 * X) / ((m - 1) * (n - 1))
+      X <- sum((Q_mat - NAP)^2) / (m * n)
+      V <- (NAP_trunc * (1 - NAP_trunc) + n * Q1 + m * Q2 - 2 * X) / ((m - 1) * (n - 1))
     }
     if (SE == "Hanley") {
-      V <- (NAP * (1 - NAP) + (n - 1) * (Q1 - NAP^2) + (m - 1) * (Q2 - NAP^2)) / (m * n)  
+      V <- (NAP_trunc * (1 - NAP_trunc) + (n - 1) * Q1 + (m - 1) * Q2) / (m * n)  
     } 
     if (SE == "null") {
       V <- (m + n + 1) / (12 * m * n)
