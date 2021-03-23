@@ -56,17 +56,19 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 #' @param scale character string indicating the scale of the outcome variable.
 #'   Must be either \code{"percentage"} for percentages with range 0-100 or
 #'   \code{"proportion"} for proportions with range 0-1. If a vector, the most
-#'   frequent unique value will be used. \code{"percentage"} is assumed by default.
+#'   frequent unique value will be used. \code{"percentage"} is assumed by
+#'   default.
 #' @param D_const constant used for calculating the truncated sample mean (see
 #'   Pustejovsky, 2015). If a vector, the mean value will be used.
 #' @inheritParams LRR
 #'
-#' @details The odds ratio parameter is the ratio of the odds of the outcome. The log-odds
-#'   ratio is the natural logarithm of the odds ratio. This effect size is
-#'   appropriate for outcomes measured on a percentage or proportion scale.
-#'   Unlike the LRRd and LRRi, the LOR is symmetric in valence, so that the LOR
-#'   for an positively-valenced outcome is equal to -1 times the LOR calculated
-#'   after reversing the scale of the outcome so that it is negatively valenced.
+#' @details The odds ratio parameter is the ratio of the odds of the outcome.
+#'   The log-odds ratio is the natural logarithm of the odds ratio. This effect
+#'   size is appropriate for outcomes measured on a percentage or proportion
+#'   scale. Unlike the LRRd and LRRi, the LOR is symmetric in valence, so that
+#'   the LOR for an positively-valenced outcome is equal to -1 times the LOR
+#'   calculated after reversing the scale of the outcome so that it is
+#'   negatively valenced.
 #'
 #'   Without bias correction, the log-odds ratio is estimated by substituting
 #'   the sample mean level in each phase in place of the corresponding
@@ -79,13 +81,15 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 #'   large-sample (z) approximation.
 #'
 #'   To account for the possibility of sample means of zero, a truncated mean is
-#'   calculated following the method described in Pustejovsky (2015). The
-#'   truncation constant depends on the total number of intervals per session
-#'   (or the total number of items for other percentage/proportion scales). The
-#'   arguments \code{scale} and \code{intervals} must be specified in order to
-#'   calculate an appropriate truncation constant. For outcomes measured using
-#'   continuous recording procedures, set \code{intervals} equal to 60 times the
-#'   length of the observation session in minutes.
+#'   calculated following the method described in Pustejovsky (2015). Truncated
+#'   sample variances are also calculated to ensure that standard errors will be
+#'   strictly larger than zero. The truncation constant depends on the total
+#'   number of intervals per session (or the total number of items for other
+#'   percentage/proportion scales). The arguments \code{scale} and
+#'   \code{intervals} must be specified in order to calculate an appropriate
+#'   truncation constant. For outcomes measured using continuous recording
+#'   procedures, set \code{intervals} equal to 60 times the length of the
+#'   observation session in minutes.
 #'
 #' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
 #'   for single-case studies of free-operant behavior. \emph{Psychological
@@ -162,7 +166,11 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
   dat <- summary_stats(A_data, B_data, warn = warn)
   
   trunc_lower <- 1 / (2 * D_const * dat$n)
-  if (D_const > 0) dat$M <- pmin(1 - trunc_lower, pmax(trunc_lower, dat$M))
+  if (D_const > 0) {
+    dat$M <- pmin(1 - trunc_lower, pmax(trunc_lower, dat$M))
+    dat$V <- pmax(1 / (D_const^2 * dat$n^3), dat$V)
+  }
+    
   
   log_odds <- with(dat, log(M) - log(1 - M))
 
@@ -241,17 +249,19 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 #'   large-sample (z) approximation.
 #'
 #'   To account for the possibility of sample means of zero, a truncated mean is
-#'   calculated following the method described in Pustejovsky (2018). The
-#'   truncation constant depends on the scale of the outcome, the length of the
-#'   observation sessions used to measure the dependent variable, and (for
-#'   interval recording procedures) the total number of intervals per session
-#'   (or the total number of items for other percentage/proportion scales). The
-#'   argument \code{scale} must be specified in order to calculate an
-#'   appropriate truncation constant. For standardized rates, the argument
-#'   \code{observation_length} must also be specified; for percentages or
-#'   proportions, the argument \code{intervals} must be specified. For outcomes
-#'   measured using continuous recording procedures, set \code{intervals} equal
-#'   to 60 times the length of the observation session in minutes.
+#'   calculated following the method described in Pustejovsky (2018). Truncated
+#'   sample variances are also calculated to ensure that standard errors will be
+#'   strictly larger than zero. The truncation constant depends on the scale of
+#'   the outcome, the length of the observation sessions used to measure the
+#'   dependent variable, and (for interval recording procedures) the total
+#'   number of intervals per session (or the total number of items for other
+#'   percentage/proportion scales). The argument \code{scale} must be specified
+#'   in order to calculate an appropriate truncation constant. For standardized
+#'   rates, the argument \code{observation_length} must also be specified; for
+#'   percentages or proportions, the argument \code{intervals} must be
+#'   specified. For outcomes measured using continuous recording procedures, set
+#'   \code{intervals} equal to 60 times the length of the observation session in
+#'   minutes.
 #'
 #'   If \code{pct_change} is \code{TRUE}, then the LRR estimate and confidence
 #'   interval are converted into percentage change using the formula 
@@ -349,7 +359,11 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
   if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length, intervals)
   if (all(is.na(D_const))) D_const <- trunc_constant(scale, observation_length, intervals)
   if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
-  if (D_const > 0) dat$M <- pmax(1 / (2 * D_const * dat$n), dat$M)
+  if (D_const > 0) {
+    dat$M <- pmax(1 / (2 * D_const * dat$n), dat$M)
+    dat$V <- pmax(1 / (D_const^2 * dat$n^3), dat$V)
+  }
+  
   
   if (bias_correct == TRUE) {
     BC <- with(dat, log(M) + V / (2 * n * M^2))
@@ -412,8 +426,11 @@ calc_LRRi <- function(A_data, B_data, improvement = "increase",
   if (is.null(D_const)) D_const <- trunc_constant(scale, observation_length, intervals)
   if (all(is.na(D_const))) D_const <- trunc_constant(scale, observation_length, intervals)
   if (length(D_const) > 1) D_const <- mean(D_const, na.rm = TRUE)
-  if (D_const > 0) dat$M <- pmax(1 / (2 * D_const * dat$n), dat$M)
-  
+  if (D_const > 0) {
+    dat$M <- pmax(1 / (2 * D_const * dat$n), dat$M)
+    dat$V <- pmax(1 / (D_const^2 * dat$n^3), dat$V)
+  }
+    
   if (bias_correct == TRUE) {
     BC <- with(dat, log(M) + V / (2 * n * M^2))
     lRR <- diff(BC)
