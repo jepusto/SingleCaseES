@@ -4,7 +4,9 @@
 \name{Schmidt2007}
 \alias{Schmidt2007}
 \title{Schmidt (2007)}
-\format{A data frame with 172 rows and 13 variables}
+\format{
+A data frame with 172 rows and 13 variables
+}
 \source{
 Schmidt, A. C. (2007). The effects of a group contingency on group
   and individual behavior in an urban first-grade classroom.  Masters Thesis,

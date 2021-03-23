@@ -4,7 +4,9 @@
 \name{Shogren}
 \alias{Shogren}
 \title{Shogren et al. (2004)}
-\format{A data frame with 634 rows and 15 variables}
+\format{
+A data frame with 634 rows and 15 variables
+}
 \source{
 Shogren, K. A., Faggella-Luby, M. N., Bae, S. J., & Wehmeyer, M. L. (2004). 
 The effect of choice-making as an intervention for problem behavior. \emph{Journal 

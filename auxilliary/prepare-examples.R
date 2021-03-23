@@ -1,36 +1,52 @@
+library(dplyr)
 library(stringr)
 #--------------------
 # Schmidt
 #--------------------
 
 Schmidt2012 <- read.csv("auxilliary/Schmidt.csv", stringsAsFactors = FALSE)
-Schmidt2012 <- Schmidt2012 %>%
-  mutate(Session_length = 10,
-         Procedure = "other")
+
+Schmidt2012 <- 
+  Schmidt2012 %>%
+  mutate(
+    Session_length = 10,
+    Procedure = "other"
+  )
+
 str(Schmidt2012)
-save(Schmidt2012, file = "data/Schmidt2012.RData", compress = TRUE)
+save(Schmidt2012, file = "data/Schmidt2012.RData", compress = TRUE, version = 2)
 
 #--------------------
 # Thorne
 #--------------------
 
 Thorne <- read.csv("auxilliary/Thorne.csv", stringsAsFactors = FALSE)
-Thorne <- Thorne %>%
-  mutate(Session_length = 15,
-         Procedure = ifelse(Measure == "Academic Engagement", "other", "count"))
+
+Thorne <- 
+  Thorne %>%
+  mutate(
+    Session_length = 15,
+    Procedure = ifelse(Measure == "Academic Engagement", "other", "count")
+  )
+
 str(Thorne)
-save(Thorne, file = "data/Thorne.RData", compress = TRUE)
+save(Thorne, file = "data/Thorne.RData", compress = TRUE, version = 2)
 
 #-------------------
 # McKissick
 #-------------------
 
 McKissick <- read.csv("auxilliary/McKissick.csv", stringsAsFactors = FALSE)
-McKissick <- McKissick %>%
-  mutate(Session_length = 20,
-         Procedure = "count")
+
+McKissick <- 
+  McKissick %>%
+  mutate(
+    Session_length = 20,
+    Procedure = "count"
+  )
+
 str(McKissick)
-save(McKissick, file = "data/McKissick.RData", compress = TRUE)
+save(McKissick, file = "data/McKissick.RData", compress = TRUE, version = 2)
 
 #-------------------
 #Schmidt 2007
@@ -44,7 +60,7 @@ Schmidt2007$n_Intervals <- with(Schmidt2007, 60 * Session_length / Interval_leng
 Schmidt2007$Metric <- ifelse(Schmidt2007$Metric == "Natural Count", "count", "percentage")
 names(Schmidt2007)[1] <- "Behavior_type"
 
-save(Schmidt2007, file = "data/Schmidt2007.RData", compress = TRUE)
+save(Schmidt2007, file = "data/Schmidt2007.RData", compress = TRUE, version = 2)
 
 #--------------------
 # Wright & McCathren (2012)
@@ -53,7 +69,7 @@ save(Schmidt2007, file = "data/Schmidt2007.RData", compress = TRUE)
 Wright2012 <- read.csv("auxilliary/Wright & McCathren data (wide).csv", stringsAsFactors = FALSE)
 Wright2012$Participant <- factor(Wright2012$Participant, levels = c("Nick","Logan","Trevor","Peter"))
 str(Wright2012)
-save(Wright2012, file = "data/Wright2012.RData", compress = TRUE)
+save(Wright2012, file = "data/Wright2012.RData", compress = TRUE, version = 2)
 
 #------------------
 # Shogren 2004
@@ -67,12 +83,15 @@ Session_data <- droplevels(subset(read.csv("auxilliary/Shogren Session data.csv"
 
 Case_data <- read.csv("auxilliary/Shogren Case data.csv")
 
-Shogren <- left_join(Session_data, Case_data) %>%
+Shogren <- 
+  left_join(Session_data, Case_data) %>%
   select(-Outcome_measure, -mu) %>%
-  mutate(outcome = ifelse(is.na(Percentage),Observed, Percentage / 100),
-         outcome = ifelse(Study == "Kern" & Case == "Danny", outcome/4, outcome),
-         direction = ifelse(Measure == "Engagement", "increase", "decrease"),
-         Possible = ifelse(is.na(Possible), 0, Possible),
-         Phase = factor(Phase))
+  mutate(
+    outcome = ifelse(is.na(Percentage),Observed, Percentage / 100),
+    outcome = ifelse(Study == "Kern" & Case == "Danny", outcome/4, outcome),
+    direction = ifelse(Measure == "Engagement", "increase", "decrease"),
+    Possible = ifelse(is.na(Possible), 0, Possible),
+    Phase = factor(Phase)
+  )
 
-save(Shogren, file = "data/Shogren.RData", compress = TRUE)
+save(Shogren, file = "data/Shogren.RData", compress = TRUE, version = 2)

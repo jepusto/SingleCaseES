@@ -4,7 +4,9 @@
 \name{Schmidt2012}
 \alias{Schmidt2012}
 \title{Schmidt and Stichter (2012)}
-\format{A data frame with 180 rows and 5 variables}
+\format{
+A data frame with 180 rows and 5 variables
+}
 \source{
 Schmidt, C., & Stichter, J. P. (2012). The use of peer-mediated interventions to 
 promote the generalization of social competence for adolescents with high-functioning autism 

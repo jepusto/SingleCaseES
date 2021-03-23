@@ -4,7 +4,9 @@
 \name{McKissick}
 \alias{McKissick}
 \title{McKissick et al. (2010)}
-\format{A data frame with 35 rows and 4 variables}
+\format{
+A data frame with 35 rows and 4 variables
+}
 \source{
 McKissick, C., Hawkins, R. O., Lentz, F. E., Hailley, J., & McGuire, S. (2010). 
 Randomizing multiple contingency components to decrease disruptive behaviors and increase 
