@@ -4,9 +4,17 @@
 \alias{SMD}
 \title{Within-case standardized mean difference}
 \usage{
-SMD(A_data, B_data, condition, outcome, baseline_phase,
-  improvement = "increase", std_dev = "baseline",
-  bias_correct = TRUE, confidence = 0.95)
+SMD(
+  A_data,
+  B_data,
+  condition,
+  outcome,
+  baseline_phase,
+  improvement = "increase",
+  std_dev = "baseline",
+  bias_correct = TRUE,
+  confidence = 0.95
+)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}

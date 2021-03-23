@@ -4,9 +4,19 @@
 \alias{LOR}
 \title{Log-odds ratio}
 \usage{
-LOR(A_data, B_data, condition, outcome, baseline_phase,
-  improvement = "increase", scale = "percentage", intervals = NULL,
-  D_const = NULL, bias_correct = TRUE, confidence = 0.95)
+LOR(
+  A_data,
+  B_data,
+  condition,
+  outcome,
+  baseline_phase,
+  improvement = "increase",
+  scale = "percentage",
+  intervals = NULL,
+  D_const = NULL,
+  bias_correct = TRUE,
+  confidence = 0.95
+)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
@@ -28,7 +38,8 @@ Default is "increase".}
 \item{scale}{character string indicating the scale of the outcome variable.
 Must be either \code{"percentage"} for percentages with range 0-100 or
 \code{"proportion"} for proportions with range 0-1. If a vector, the most
-frequent unique value will be used. \code{"percentage"} is assumed by default.}
+frequent unique value will be used. \code{"percentage"} is assumed by
+default.}
 
 \item{intervals}{for interval recording procedures, the total number of
 intervals per observation session. If a vector, the mean number of
@@ -52,12 +63,13 @@ Calculates the log-odds ratio effect size index, with or without
   bias correction (Pustejovsky, 2015)
 }
 \details{
-The odds ratio parameter is the ratio of the odds of the outcome. The log-odds
-  ratio is the natural logarithm of the odds ratio. This effect size is
-  appropriate for outcomes measured on a percentage or proportion scale.
-  Unlike the LRRd and LRRi, the LOR is symmetric in valence, so that the LOR
-  for an positively-valenced outcome is equal to -1 times the LOR calculated
-  after reversing the scale of the outcome so that it is negatively valenced.
+The odds ratio parameter is the ratio of the odds of the outcome.
+  The log-odds ratio is the natural logarithm of the odds ratio. This effect
+  size is appropriate for outcomes measured on a percentage or proportion
+  scale. Unlike the LRRd and LRRi, the LOR is symmetric in valence, so that
+  the LOR for an positively-valenced outcome is equal to -1 times the LOR
+  calculated after reversing the scale of the outcome so that it is
+  negatively valenced.
 
   Without bias correction, the log-odds ratio is estimated by substituting
   the sample mean level in each phase in place of the corresponding
@@ -70,13 +82,15 @@ The odds ratio parameter is the ratio of the odds of the outcome. The log-odds
   large-sample (z) approximation.
 
   To account for the possibility of sample means of zero, a truncated mean is
-  calculated following the method described in Pustejovsky (2015). The
-  truncation constant depends on the total number of intervals per session
-  (or the total number of items for other percentage/proportion scales). The
-  arguments \code{scale} and \code{intervals} must be specified in order to
-  calculate an appropriate truncation constant. For outcomes measured using
-  continuous recording procedures, set \code{intervals} equal to 60 times the
-  length of the observation session in minutes.
+  calculated following the method described in Pustejovsky (2015). Truncated
+  sample variances are also calculated to ensure that standard errors will be
+  strictly larger than zero. The truncation constant depends on the total
+  number of intervals per session (or the total number of items for other
+  percentage/proportion scales). The arguments \code{scale} and
+  \code{intervals} must be specified in order to calculate an appropriate
+  truncation constant. For outcomes measured using continuous recording
+  procedures, set \code{intervals} equal to 60 times the length of the
+  observation session in minutes.
 }
 \examples{
 A_pct <- c(20, 20, 25, 25, 20, 25)

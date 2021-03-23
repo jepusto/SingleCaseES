@@ -6,17 +6,37 @@
 \alias{LRRi}
 \title{Log-response ratio}
 \usage{
-LRRd(A_data, B_data, condition, outcome,
-  baseline_phase = unique(condition)[1], improvement = "decrease",
-  scale = "count", observation_length = NULL, intervals = NULL,
-  D_const = NULL, bias_correct = TRUE, pct_change = FALSE,
-  confidence = 0.95)
+LRRd(
+  A_data,
+  B_data,
+  condition,
+  outcome,
+  baseline_phase = unique(condition)[1],
+  improvement = "decrease",
+  scale = "count",
+  observation_length = NULL,
+  intervals = NULL,
+  D_const = NULL,
+  bias_correct = TRUE,
+  pct_change = FALSE,
+  confidence = 0.95
+)
 
-LRRi(A_data, B_data, condition, outcome,
-  baseline_phase = unique(condition)[1], improvement = "increase",
-  scale = "count", observation_length = NULL, intervals = NULL,
-  D_const = NULL, bias_correct = TRUE, pct_change = FALSE,
-  confidence = 0.95)
+LRRi(
+  A_data,
+  B_data,
+  condition,
+  outcome,
+  baseline_phase = unique(condition)[1],
+  improvement = "increase",
+  scale = "count",
+  observation_length = NULL,
+  intervals = NULL,
+  D_const = NULL,
+  bias_correct = TRUE,
+  pct_change = FALSE,
+  confidence = 0.95
+)
 }
 \arguments{
 \item{A_data}{vector of numeric data for A phase. Missing values are dropped.}
@@ -94,17 +114,19 @@ The response ratio parameter is the ratio of the mean level of the
   large-sample (z) approximation.
 
   To account for the possibility of sample means of zero, a truncated mean is
-  calculated following the method described in Pustejovsky (2018). The
-  truncation constant depends on the scale of the outcome, the length of the
-  observation sessions used to measure the dependent variable, and (for
-  interval recording procedures) the total number of intervals per session
-  (or the total number of items for other percentage/proportion scales). The
-  argument \code{scale} must be specified in order to calculate an
-  appropriate truncation constant. For standardized rates, the argument
-  \code{observation_length} must also be specified; for percentages or
-  proportions, the argument \code{intervals} must be specified. For outcomes
-  measured using continuous recording procedures, set \code{intervals} equal
-  to 60 times the length of the observation session in minutes.
+  calculated following the method described in Pustejovsky (2018). Truncated
+  sample variances are also calculated to ensure that standard errors will be
+  strictly larger than zero. The truncation constant depends on the scale of
+  the outcome, the length of the observation sessions used to measure the
+  dependent variable, and (for interval recording procedures) the total
+  number of intervals per session (or the total number of items for other
+  percentage/proportion scales). The argument \code{scale} must be specified
+  in order to calculate an appropriate truncation constant. For standardized
+  rates, the argument \code{observation_length} must also be specified; for
+  percentages or proportions, the argument \code{intervals} must be
+  specified. For outcomes measured using continuous recording procedures, set
+  \code{intervals} equal to 60 times the length of the observation session in
+  minutes.
 
   If \code{pct_change} is \code{TRUE}, then the LRR estimate and confidence
   interval are converted into percentage change using the formula 

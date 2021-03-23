@@ -4,11 +4,24 @@
 \alias{batch_calc_ES}
 \title{Calculate effect sizes from a dataset for multiple series}
 \usage{
-batch_calc_ES(dat, grouping, condition, outcome, session_number = NULL,
-  baseline_phase = NULL, intervention_phase = NULL, ES = c("LRRd",
-  "LRRi", "SMD", "Tau"), improvement = "increase", scale = "other",
-  intervals = NA, observation_length = NA, confidence = 0.95,
-  format = "long", warn = TRUE, ...)
+batch_calc_ES(
+  dat,
+  grouping,
+  condition,
+  outcome,
+  session_number = NULL,
+  baseline_phase = NULL,
+  intervention_phase = NULL,
+  ES = c("LRRd", "LRRi", "SMD", "Tau"),
+  improvement = "increase",
+  scale = "other",
+  intervals = NA,
+  observation_length = NA,
+  confidence = 0.95,
+  format = "long",
+  warn = TRUE,
+  ...
+)
 }
 \arguments{
 \item{dat}{data frame containing SCD series for which effect sizes will be
