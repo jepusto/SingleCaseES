@@ -84,16 +84,15 @@ Peter,17,baseline,0,0
 Peter,18,baseline,1,0
 Peter,19,baseline,1,0
 Peter,20,baseline,1,0
-Peter,21,baseline,2,0
-Peter,22,intervention A,3,0
-Peter,23,intervention A,1,3
-Peter,24,intervention A,2,5
-Peter,25,intervention A,0,2
+Peter,21,intervention A,2,0
+Peter,22,intervention A,3,3
+Peter,23,intervention A,1,5
+Peter,24,intervention A,2,2
+Peter,25,intervention A,0,0
 Peter,26,intervention A,1,0
-Peter,27,intervention A,0,0
+Peter,27,intervention B,0,0
 Peter,28,intervention B,1,0
 Peter,29,intervention B,1,0
-Peter,30,intervention B,1,0
-Peter,31,intervention B,2,1
-Peter,32,intervention B,0,0
-Peter,33,intervention B,NA,3
+Peter,30,intervention B,1,1
+Peter,31,intervention B,2,0
+Peter,32,intervention B,0,3

@@ -5,7 +5,7 @@
 \alias{Wright2012}
 \title{Wright & McCathren (2012)}
 \format{
-A data frame with 98 rows and 5 variables
+A data frame with 97 rows and 5 variables
 }
 \source{
 Wright, L. A., & McCathren, R. B. (2012). 

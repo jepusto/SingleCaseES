@@ -161,7 +161,7 @@ NULL
 #' 
 #' @docType data
 #' @keywords datasets
-#' @format A data frame with 98 rows and 5 variables
+#' @format A data frame with 97 rows and 5 variables
 #' @name Wright2012
 #' @source Wright, L. A., & McCathren, R. B. (2012). 
 #' Utilizing social stories to increase prosocial behavior and reduce 
