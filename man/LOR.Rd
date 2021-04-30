@@ -109,5 +109,5 @@ LOR(A_data = A_pct, B_data = B_pct, scale = "percentage", improvement = "decreas
 Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
   for single-case studies of free-operant behavior. \emph{Psychological
   Methods, 20}(3), 342--359.
-  doi:\href{http://dx.doi.org/10.1037/met0000019}{10.1037/met0000019}
+  doi:\doi{10.1037/met0000019}
 }

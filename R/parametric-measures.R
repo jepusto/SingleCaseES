@@ -94,7 +94,7 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 #' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
 #'   for single-case studies of free-operant behavior. \emph{Psychological
 #'   Methods, 20}(3), 342--359.
-#'   doi:\href{http://dx.doi.org/10.1037/met0000019}{10.1037/met0000019}
+#'   doi:\doi{10.1037/met0000019}
 #'
 #' @return A data.frame containing the estimate, standard error, and approximate
 #'   confidence interval.
@@ -270,12 +270,12 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 #' @references Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
 #'   for single-case studies of free-operant behavior. \emph{Psychological
 #'   Methods, 20}(3), 342--359.
-#'   doi:\href{http://dx.doi.org/10.1037/met0000019}{10.1037/met0000019}
+#'   doi:\doi{10.1037/met0000019}
 #'
 #'   Pustejovsky, J. E. (2018). Using response ratios for meta-analyzing
 #'   single-case designs with behavioral outcomes. \emph{Journal of School
 #'   Psychology, 16}, 99-112.
-#'   doi:\href{https://doi.org/10.1016/j.jsp.2018.02.003}{10.1016/j.jsp.2018.02.003}
+#'   doi:\doi{10.1016/j.jsp.2018.02.003}
 #'
 #'
 #'
