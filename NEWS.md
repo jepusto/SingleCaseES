@@ -1,4 +1,4 @@
-# SingleCaseES 0.4.3.9999
+# SingleCaseES 0.4.4
 
 * Modified LOR, LRRd, and LRRi functions to use truncated sample variances. This ensures that the standard error of the effect size estimate is strictly greater than zero.
 * Modified the standard error calculations for NAP and Tau to ensure that they return values strictly greater than zero.

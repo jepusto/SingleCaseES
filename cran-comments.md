@@ -1,11 +1,11 @@
 ## Resubmission
 
-This is a maintenance release, which includes updates to internal functions for compatibility with tidyr 1.0.0 and user interface improvements for an embedded shiny app.
+This is a maintenance release, which includes small modifications to some methods to use truncated sample variances, ensuring that the functions return standard errors strictly greater than zero. It also corrects a problem in the unit tests that led to errors in CRAN check on M1mac.
 
 ## Test environments
 
-* local Windows 7 Enterprise, R 3.6.0
-* ubuntu 14.04.5 LTS (on travis-ci), R 3.6.0, devel
+* local Windows 7 Enterprise, R 4.0.2
+* ubuntu 14.04.5 LTS (on travis-ci), R release, devel
 * win-builder (devel, release, oldrelease)
 * r-hub:
   * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
