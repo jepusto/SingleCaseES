@@ -33,22 +33,22 @@
 #' Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under
 #' a receiver operating characteristic (ROC) curve. \emph{Radiology, 143},
 #' 29--36.
-#' doi:\href{http://dx.doi.org/10.1148/radiology.143.1.7063747}{10.1148/radiology.143.1.7063747}
+#' doi:\doi{10.1148/radiology.143.1.7063747}
 #'
 #' Mee, W. (1990). Confidence intervals for probabilities and tolerance regions
 #' based on a generalization of the Mann-Whitney statistic. \emph{Journal of the
 #' American Statistical Association, 85}(411), 793–800.
-#' doi:\href{http://doi.org/10.1080/01621459.1990.10474942}{10.1080/01621459.1990.10474942}
+#' doi:\doi{10.1080/01621459.1990.10474942}
 #'
 #' Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
 #' on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation.
 #' \emph{Statistics in Medicine, 25}(4), 559--573.
-#' doi:\href{http://dx.doi.org/10.1002/sim.2324}{10.1002/sim.2324}
+#' doi:\doi{10.1002/sim.2324}
 #'
 #' Parker, R. I., & Vannest, K. J. (2009). An improved effect size for
 #' single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy,
 #' 40}(4), 357--67.
-#' doi:\href{http://dx.doi.org/10.1016/j.beth.2008.10.006}{10.1016/j.beth.2008.10.006}
+#' doi:\doi{10.1016/j.beth.2008.10.006}
 #'
 #' Sen, P. K. (1967). A note on asymptotically distribution-free confidence
 #' bounds for P{X<Y}, based on two independent samples. \emph{The Annals of
@@ -150,7 +150,7 @@ calc_NAP <- function(A_data, B_data,
 #' @references Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. 
 #'   (2011). Combining nonoverlap and trend for single-case research: Tau-U. 
 #'   \emph{Behavior Therapy, 42}(2), 284--299. 
-#'   doi:\href{http://dx.doi.org/10.1016/j.beth.2010.08.006}{10.1016/j.beth.2010.08.006}
+#'   doi:\doi{10.1016/j.beth.2010.08.006}
 #'   
 #'   
 #' @export
@@ -219,7 +219,7 @@ calc_Tau <- function(A_data, B_data,
 #' @references Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. 
 #'   (2011). Combining nonoverlap and trend for single-case research: Tau-U. 
 #'   \emph{Behavior Therapy, 42}(2), 284--299. 
-#'   doi:\href{http://dx.doi.org/10.1016/j.beth.2010.08.006}{10.1016/j.beth.2010.08.006}
+#'   doi:\doi{10.1016/j.beth.2010.08.006}
 #'   
 #' @export
 #' 
@@ -276,7 +276,7 @@ calc_Tau_U <- function(A_data, B_data, improvement = "increase", ...) {
 #' @references Scruggs, T. E., Mastropieri, M. A., & Casto, G. (1987). The 
 #'   quantitative synthesis of single-subject research: Methodology and 
 #'   validation. \emph{Remedial and Special Education, 8}(2), 24--43. 
-#'   doi:\href{http://dx.doi.org/10.1177/074193258700800206}{10.1177/074193258700800206}
+#'   doi:\doi{10.1177/074193258700800206}
 #'   
 #'   
 #'   
@@ -329,7 +329,7 @@ calc_PND <- function(A_data, B_data, improvement = "increase", ...) {
 #' @references Ma, H.-H. (2006). An alternative method for quantitative 
 #'   synthesis of single-subject researches: Percentage of data points exceeding
 #'   the median. \emph{Behavior Modification, 30}(5), 598--617. 
-#'   doi:\href{http://dx.doi.org/10.1177/0145445504272974}{10.1177/0145445504272974}
+#'   doi:\doi{10.1177/0145445504272974}
 #'   
 #'   
 #'   
@@ -389,12 +389,12 @@ calc_PEM <- function(A_data, B_data, improvement = "increase", ...) {
 #' @references Parker, R. I., Hagan-Burke, S., & Vannest, K. J. (2007). 
 #'   Percentage of all non-overlapping data (PAND): An alternative to PND. 
 #'   \emph{The Journal of Special Education, 40}(4), 194--204. 
-#'   doi:\href{http://dx.doi.org/10.1177/00224669070400040101}{10.1177/00224669070400040101}
+#'   doi:\doi{10.1177/00224669070400040101}
 #'   
 #'   Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in 
 #'   single-case research: A review of nine nonoverlap techniques. 
 #'   \emph{Behavior Modification, 35}(4), 303--22. 
-#'   doi:\href{http://dx.doi.org/10.1177/0145445511399147}{10.1177/0145445511399147}
+#'   doi:\doi{10.1177/0145445511399147}
 #'   
 #'   
 #'   
@@ -452,7 +452,7 @@ calc_PAND <- function(A_data, B_data, improvement = "increase", ...) {
 #'   
 #' @references Parker, R. I., Vannest, K. J., & Brown, L. (2009). The
 #'   improvement rate difference for single-case research. \emph{Exceptional Children,
-#'   75}(2), 135--150. doi:\href{http://dx.doi.org/10.1177/001440290907500201}{10.1177/001440290907500201}
+#'   75}(2), 135--150. doi:\doi{10.1177/001440290907500201}
 #'   
 #' @export
 #' 

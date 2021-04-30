@@ -57,5 +57,5 @@ Tau_U(A_data = A, B_data = B)
 Parker, R. I., Vannest, K. J., Davis, J. L., & Sauber, S. B. 
   (2011). Combining nonoverlap and trend for single-case research: Tau-U. 
   \emph{Behavior Therapy, 42}(2), 284--299. 
-  doi:\href{http://dx.doi.org/10.1016/j.beth.2010.08.006}{10.1016/j.beth.2010.08.006}
+  doi:\doi{10.1016/j.beth.2010.08.006}
 }

@@ -5,7 +5,7 @@ This is a maintenance release, which includes small modifications to some method
 ## Test environments
 
 * local Windows 7 Enterprise, R 4.0.2
-* ubuntu 14.04.5 LTS (on travis-ci), R release, devel
+* ubuntu 16.04.6 LTS (on travis-ci), R devel, release, oldrelease
 * win-builder (devel, release, oldrelease)
 * r-hub:
   * Windows Server 2008 R2 SP1, R-devel, 32/64 bit

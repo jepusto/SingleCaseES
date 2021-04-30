@@ -55,5 +55,5 @@ PEM(A_data = A, B_data = B)
 Ma, H.-H. (2006). An alternative method for quantitative 
   synthesis of single-subject researches: Percentage of data points exceeding
   the median. \emph{Behavior Modification, 30}(5), 598--617. 
-  doi:\href{http://dx.doi.org/10.1177/0145445504272974}{10.1177/0145445504272974}
+  doi:\doi{10.1177/0145445504272974}
 }

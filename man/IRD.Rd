@@ -47,7 +47,7 @@ IRD(A_data = A, B_data = B)
 \references{
 Parker, R. I., Vannest, K. J., & Brown, L. (2009). The
   improvement rate difference for single-case research. \emph{Exceptional Children,
-  75}(2), 135--150. doi:\href{http://dx.doi.org/10.1177/001440290907500201}{10.1177/001440290907500201}
+  75}(2), 135--150. doi:\doi{10.1177/001440290907500201}
 }
 \seealso{
 \code{\link{PAND}}
