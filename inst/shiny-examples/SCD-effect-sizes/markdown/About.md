@@ -1,10 +1,10 @@
 ### Single-case effect size calculator
 
-Version 0.5
+Version 0.5.1
 
 Designed and built by James E. Pustejovsky & Daniel M. Swan
 
--   <pusto@austin.utexas.edu>
+-   <pustejovsky@wisc.edu>
 -   <https://jepusto.com/>
 
 [Source code available on
