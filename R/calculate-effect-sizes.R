@@ -122,12 +122,13 @@ calc_ES <- function(A_data, B_data,
   Tau_U_names <- c("Tau_U","Tau-U","TauU")
   if (any(Tau_U_names %in% ES)) ES_names <- union(setdiff(ES_names, Tau_U_names), "Tau_U") 
   ES_to_calc <- paste0("calc_", ES_names)
-      
-  res <- purrr::invoke_map_dfr(
-    ES_to_calc,  
-    A_data = A_data, B_data = B_data,
-    improvement = improvement, confidence = confidence, ...
-  )
+  
+  args <- list(A_data = A_data, 
+               B_data = B_data, 
+               improvement = improvement,
+               confidence = confidence,...)
+  
+  res <- purrr::map_dfr(ES_to_calc, purrr::exec, !!!args)
   
   if (format != "long") {
     
@@ -259,7 +260,8 @@ calc_ES <- function(A_data, B_data,
 
 
 batch_calc_ES <- function(dat, 
-                          grouping,
+                          grouping, aggregate = NULL,
+                          weighting = "1/V",
                           condition, outcome,
                           session_number = NULL,
                           baseline_phase = NULL,
@@ -278,7 +280,15 @@ batch_calc_ES <- function(dat,
   grouping <- rlang::enquos(grouping)
   grouping <- tryCatch(tidyselect::vars_select(names(dat), !!!grouping), 
                        error = function(e) stop("Grouping variables are not in the dataset."))
-
+  
+  if (tryCatch(!is.null(aggregate), error = function(e) TRUE)) {
+    aggregate <- tryCatch(tidyselect::vars_select(names(dat), !!!rlang::enquos(aggregate)), 
+                               error = function(e) stop("Aggregating variables are not in the dataset."))
+  }
+  
+  weighting <- tryCatch(tidyselect::vars_pull(c(names(dat), "1/V", "equal"), !! rlang::enquo(weighting)), 
+                          error = function(e) stop("Weighting must be a variable name or a string specifying '1/V' or 'euqal'."))
+  
   condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), 
                         error = function(e) stop("Condition variable is not in the dataset."))
   
@@ -341,7 +351,8 @@ batch_calc_ES <- function(dat,
   
   if (!is.null(session_number)) dat <- dplyr::arrange(dat, !!rlang::sym(session_number))
   
-  dat %>%  
+  ES_ests <- 
+    dat %>% 
     dplyr::group_by(!!!rlang::syms(grouping)) %>%
     dplyr::do(calc_ES(condition = .data[[condition]], 
                       outcome = .data[[outcome]], 
@@ -357,5 +368,37 @@ batch_calc_ES <- function(dat,
                       ...,
                       warn = warn)) %>%
     dplyr::ungroup()
+  
+  if (is.null(aggregate)) {
+    
+    res <- ES_ests
+    
+  } else {
+    
+    if (weighting == "1/V") { 
+      
+      res <- 
+        ES_ests %>% 
+        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
+        summarise(
+          ES_est = sum(Est / SE^2) / sum(1 / SE^2),
+          ES_SE = sqrt(1 / sum(1 / SE^2)))
+      
+    } else {
+      
+      res <- 
+        ES_ests %>% 
+        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
+        summarise(
+          ES_est = mean(Est),
+          n = n(),
+          ES_SE = sqrt(sum(SE^2)) / n) %>% 
+        select(-n)
+      
+    } 
+  }
+  
+  return(res)
+  
 }
 
