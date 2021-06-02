@@ -123,12 +123,11 @@ calc_ES <- function(A_data, B_data,
   if (any(Tau_U_names %in% ES)) ES_names <- union(setdiff(ES_names, Tau_U_names), "Tau_U") 
   ES_to_calc <- paste0("calc_", ES_names)
   
-  args <- list(A_data = A_data, 
-               B_data = B_data, 
-               improvement = improvement,
-               confidence = confidence,...)
-  
-  res <- purrr::map_dfr(ES_to_calc, purrr::exec, !!!args)
+  res <- purrr::invoke_map_dfr(
+    ES_to_calc,  
+    A_data = A_data, B_data = B_data,
+    improvement = improvement, confidence = confidence, ...
+  )
   
   if (format != "long") {
     
@@ -173,12 +172,17 @@ calc_ES <- function(A_data, B_data,
 #'   single-case data series.
 #' @param dat data frame containing SCD series for which effect sizes will be
 #'   calculated.
-#' @param grouping A variable name or list of (unquoted) variable names that uniquely identify each data series.
-#' @param condition A variable name that identifies the
-#'   treatment condition for each observation in the series.
-#' @param outcome A variable name for the outcome data.
-#' @param session_number A variable name used to
-#'   order the data within each series.
+#' @param grouping A variable name or list of (unquoted) variable names that
+#'   uniquely identify each data series.
+#' @param aggregate A variable name of list of (unquoted) variable names that
+#'   will be aggregated across to calculate a single effect size estimate.
+#' @param weighting character string specifying the weighting scheme. Either
+#'   "1/V" (the default) or "equal".
+#' @param condition A variable name that identifies the treatment condition for
+#'   each observation in the series.
+#' @param outcome A variable name for the outcome data. Default is
+#' @param session_number A variable name used to order the data within each
+#'   series.
 #' @param baseline_phase character string specifying which value of
 #'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the
 #'   default), the first observed value of \code{condition} within the series
@@ -229,11 +233,11 @@ calc_ES <- function(A_data, B_data,
 #'
 #' @export
 #'
-#' @return A tibble containing the estimate, standard error, and/or
-#'   confidence interval for each specified effect size.
-#'   
-#' @examples 
-#' 
+#' @return A tibble containing the estimate, standard error, and/or confidence
+#'   interval for each specified effect size.
+#'
+#' @examples
+#'
 #' data(McKissick)
 #' batch_calc_ES(McKissick,
 #'               grouping = Case_pseudonym,
@@ -244,8 +248,8 @@ calc_ES <- function(A_data, B_data,
 #'               scale = "count",
 #'               observation_length = 20,
 #'               format = "long")
-#'               
-#' data(Schmidt2007)               
+#'
+#' data(Schmidt2007)
 #' batch_calc_ES(dat = Schmidt2007,
 #'               grouping = c(Behavior_type, Case_pseudonym, Phase_num),
 #'               condition = Condition,
@@ -256,7 +260,7 @@ calc_ES <- function(A_data, B_data,
 #'               bias_correct = TRUE,
 #'               confidence = NULL,
 #'               format = "wide")
-#'
+#' 
 
 
 batch_calc_ES <- function(dat, 
@@ -351,11 +355,11 @@ batch_calc_ES <- function(dat,
   
   if (!is.null(session_number)) dat <- dplyr::arrange(dat, !!rlang::sym(session_number))
   
-  ES_ests <- 
+  ES_ests_long <- 
     dat %>% 
     dplyr::group_by(!!!rlang::syms(grouping)) %>%
-    dplyr::do(calc_ES(condition = .data[[condition]], 
-                      outcome = .data[[outcome]], 
+    dplyr::summarise(calc_ES(condition = .data[[condition]], 
+                      outcome = .data[[outcome]],
                       baseline_phase = baseline_phase,
                       intervention_phase = intervention_phase,
                       ES = ES_names, 
@@ -364,41 +368,91 @@ batch_calc_ES <- function(dat,
                       intervals = .data[[intervals]],
                       observation_length = .data[[observation_length]],
                       confidence = confidence, 
-                      format = format,
+                      format = "long",
                       ...,
                       warn = warn)) %>%
     dplyr::ungroup()
   
   if (is.null(aggregate)) {
     
-    res <- ES_ests
+    if (format == "long") {
+      ES_ests <- ES_ests_long
+    } else {
+      ES_ests <- 
+        ES_ests_long %>% 
+        tidyr::pivot_wider(
+          names_from = ES,
+          names_glue = "{ES}_{.value}",
+          values_from = - c(!!!grouping, ES)
+        ) 
+    }
+    
+    result <- ES_ests
     
   } else {
     
+    Est <- SE <- n <- CI_lower <- CI_upper <- NULL
+    
     if (weighting == "1/V") { 
+      res_agg <- 
+        ES_ests_long %>% 
+        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
+        dplyr::summarise(
+          Est = sum(Est / SE^2) / sum(1 / SE^2),
+          SE = sqrt(1 / sum(1 / SE^2)))
+    } else {
+      res_agg <- 
+        ES_ests_long %>% 
+        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
+        dplyr::summarise(
+          Est = mean(Est),
+          n = n(),
+          SE = sqrt(sum(SE^2)) / n) %>% 
+        dplyr::select(-n)
+    }
+    
+    if (!is.null(confidence)) {
       
       res <- 
-        ES_ests %>% 
-        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
-        summarise(
-          ES_est = sum(Est / SE^2) / sum(1 / SE^2),
-          ES_SE = sqrt(1 / sum(1 / SE^2)))
+        res_agg %>% 
+        dplyr::mutate(
+          CI_lower = Est - qnorm(1 - (1 - confidence) / 2) * SE,
+          CI_upper = Est + qnorm(1 - (1 - confidence) / 2) * SE
+        )
       
+      if (format == "long") {
+        result <- res
+      } else {
+        result <- 
+          res %>% 
+          tidyr::pivot_wider(
+            names_from = ES,
+            names_glue = "{ES}_{.value}",
+            values_from = c(Est, SE, CI_lower, CI_upper)
+          ) 
+      }
+  
     } else {
       
-      res <- 
-        ES_ests %>% 
-        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
-        summarise(
-          ES_est = mean(Est),
-          n = n(),
-          ES_SE = sqrt(sum(SE^2)) / n) %>% 
-        select(-n)
+      res <- res_agg
       
-    } 
+      if (format == "long") {
+        result <- res
+      } else {
+        result <- 
+          res %>% 
+          tidyr::pivot_wider(
+            names_from = ES,
+            names_glue = "{ES}_{.value}",
+            values_from = c(Est, SE)
+          ) 
+      }
+      
+    }
+    
   }
   
-  return(res)
+  return(result)
   
 }
 
