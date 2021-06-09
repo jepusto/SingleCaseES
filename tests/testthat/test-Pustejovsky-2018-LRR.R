@@ -137,8 +137,7 @@ Schmidt_batch_ES_calc <-
                 scale = Metric,
                 bias_correct = TRUE,
                 confidence = NULL,
-                format = "wide") %>% 
-  select(Behavior_type, Case_pseudonym, Phase_num, LRRi_Est, LRRi_SE, LRRd_Est, LRRd_SE)
+                format = "wide")
 
 
 test_that("batch_calc_ES() works with Schmidt (2007) data.", {
