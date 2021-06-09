@@ -1,3 +1,55 @@
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("ES", "Est", "SE", "CI_upper", "CI_lower"))
+
+# get ES names
+get_ES_names <- function(ES) {
+  ES_names <- if (identical(ES, "all")) {
+    c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+  } else if (identical(ES,"NOM")) {
+    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+  } else if (identical(ES, "parametric")) {
+    c("LRRd","LRRi","LOR","SMD")
+  } else {
+    ES
+  }
+  return(ES_names)
+}
+
+# convert long format to wide format
+covert_to_wide <- function(res, ES_names) {
+  
+  if (any(ES_names == "Tau_U")) ES_names[ES_names == "Tau_U"] <- "Tau-U"
+  
+  if (any(c("Pct_Change_d","Pct_Change_i") %in% res$ES)) {
+    ES_names <- as.list(ES_names)
+    if ("Pct_Change_d" %in% res$ES) ES_names[[which(ES_names == "LRRd")]] <- c("LRRd","Pct_Change_d")
+    if ("Pct_Change_i" %in% res$ES) ES_names[[which(ES_names == "LRRi")]] <- c("LRRi","Pct_Change_i")
+    ES_names <- unlist(ES_names)
+  }
+  
+  output_names <- c("Est", "SE", "CI_lower", "CI_upper")
+  val_names <- intersect(names(res), output_names)
+  sym_val_names <- rlang::syms(val_names)
+  val <- rlang::sym("val")
+  
+  res <- 
+    res %>%
+    tidyr::gather("q", !!val, !!!sym_val_names) %>%
+    tidyr::unite("q", ES, q) %>%
+    dplyr::filter(!is.na(val)) %>%
+    tidyr::spread("q", !!val) 
+  
+  # re-order names
+  long_names <- 
+    purrr::cross2(val_names, ES_names) %>%
+    purrr::map(.f = function(x) paste(rev(x), collapse = "_"))  %>%
+    intersect(names(res)) %>%
+    rlang::syms()
+  
+  res <- res %>% dplyr::relocate(!!!long_names, .after = tidyselect::last_col())
+  
+  return(res)
+}
+
 
 #' @title Calculate effect sizes
 #'
@@ -108,15 +160,7 @@ calc_ES <- function(A_data, B_data,
   A_data <- A_data[!is.na(A_data)]
   B_data <- B_data[!is.na(B_data)]
   
-  ES_names <- if (identical(ES, "all")) {
-    c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
-  } else if (identical(ES,"NOM")) {
-    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
-  } else if (identical(ES, "parametric")) {
-    c("LRRd","LRRi","LOR","SMD")
-  } else {
-    ES
-  }
+  ES_names <- get_ES_names(ES)
 
   # Allow for Tau-U variant names
   Tau_U_names <- c("Tau_U","Tau-U","TauU")
@@ -129,37 +173,7 @@ calc_ES <- function(A_data, B_data,
     improvement = improvement, confidence = confidence, ...
   )
   
-  if (format != "long") {
-    
-    if (any(ES_names == "Tau_U")) ES_names[ES_names == "Tau_U"] <- "Tau-U"
-    
-    if (any(c("Pct_Change_d","Pct_Change_i") %in% res$ES)) {
-      ES_names <- as.list(ES_names)
-      if ("Pct_Change_d" %in% res$ES) ES_names[[which(ES_names == "LRRd")]] <- c("LRRd","Pct_Change_d")
-      if ("Pct_Change_i" %in% res$ES) ES_names[[which(ES_names == "LRRi")]] <- c("LRRi","Pct_Change_i")
-      ES_names <- unlist(ES_names)
-    }
-    
-    
-    val_names <- setdiff(names(res), "ES")
-    sym_val_names <- rlang::syms(val_names)
-    val <- rlang::sym("val")
-    
-    res <- res %>%
-      tidyr::gather("q", !!val, !!!sym_val_names)%>%
-      tidyr::unite("q", ES, q) %>%
-      dplyr::filter(!is.na(val)) %>%
-      tidyr::spread("q", !!val) 
-    
-    # re-order names
-    long_names <- 
-      purrr::cross2(val_names, ES_names) %>%
-      purrr::map(.f = function(x) paste(rev(x), collapse = "_"))  %>%
-      intersect(names(res)) %>%
-      rlang::syms()
-    
-    res <- dplyr::select(res, !!!long_names)
-  }
+  if (format != "long") res <- covert_to_wide(res, ES_names)
   
   return(res)
 }
@@ -343,15 +357,7 @@ batch_calc_ES <- function(dat,
     warning("LOR can only be calculated for proportions or percentages. Will return NAs for other outcome scales.", call. = FALSE)
   }
   
-  ES_names <- if (identical(ES, "all")) {
-    c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
-  } else if (identical(ES,"NOM")) {
-    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
-  } else if (identical(ES, "parametric")) {
-    c("LRRd","LRRi","LOR","SMD")
-  } else {
-    ES
-  }
+  ES_names <- get_ES_names(ES)
   
   if (!is.null(session_number)) dat <- dplyr::arrange(dat, !!rlang::sym(session_number))
   
@@ -375,84 +381,55 @@ batch_calc_ES <- function(dat,
   
   if (is.null(aggregate)) {
     
-    if (format == "long") {
-      ES_ests <- ES_ests_long
-    } else {
-      ES_ests <- 
-        ES_ests_long %>% 
-        tidyr::pivot_wider(
-          names_from = ES,
-          names_glue = "{ES}_{.value}",
-          values_from = - c(!!!grouping, ES)
-        ) 
-    }
-    
-    result <- ES_ests
+    res <- ES_ests_long
     
   } else {
-    
-    Est <- SE <- n <- CI_lower <- CI_upper <- NULL
-    
+
     if (weighting == "1/V") { 
-      res_agg <- 
+      ES_weights <- 
         ES_ests_long %>% 
-        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
-        dplyr::summarise(
-          Est = sum(Est / SE^2) / sum(1 / SE^2),
-          SE = sqrt(1 / sum(1 / SE^2)))
+        dplyr::mutate(weights = 1 / (SE^2))
     } else {
-      res_agg <- 
+      n <- 
         ES_ests_long %>% 
         dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
-        dplyr::summarise(
-          Est = mean(Est),
-          n = n(),
-          SE = sqrt(sum(SE^2)) / n) %>% 
-        dplyr::select(-n)
+        dplyr::summarise(n = n()) %>% 
+        dplyr::pull()
+      
+      nn <- rep(n, n)
+      
+      ES_weights <- 
+        ES_ests_long %>%
+        dplyr::mutate(weights = 1 / nn)
     }
     
+    res_agg <- 
+      ES_weights %>% 
+      dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
+      dplyr::summarise(
+        Est = sum(Est * weights) / sum(weights),
+        SE = sqrt(sum(weights^2 * SE^2) / (sum(weights)^2))
+      )
+    
     if (!is.null(confidence)) {
-      
       res <- 
         res_agg %>% 
         dplyr::mutate(
           CI_lower = Est - qnorm(1 - (1 - confidence) / 2) * SE,
           CI_upper = Est + qnorm(1 - (1 - confidence) / 2) * SE
         )
-      
-      if (format == "long") {
-        result <- res
-      } else {
-        result <- 
-          res %>% 
-          tidyr::pivot_wider(
-            names_from = ES,
-            names_glue = "{ES}_{.value}",
-            values_from = c(Est, SE, CI_lower, CI_upper)
-          ) 
-      }
-  
     } else {
-      
       res <- res_agg
-      
-      if (format == "long") {
-        result <- res
-      } else {
-        result <- 
-          res %>% 
-          tidyr::pivot_wider(
-            names_from = ES,
-            names_glue = "{ES}_{.value}",
-            values_from = c(Est, SE)
-          ) 
-      }
-      
     }
     
   }
   
-  return(result)
+  if (format == "long") {
+    result <- res
+  } else {
+    result <- covert_to_wide(res, ES_names)
+  }
   
+  return(result)
 }
 
