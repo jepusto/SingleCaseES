@@ -15,7 +15,7 @@ get_ES_names <- function(ES) {
 }
 
 # convert long format to wide format
-covert_to_wide <- function(res, ES_names) {
+convert_to_wide <- function(res, ES_names) {
   
   if (any(ES_names == "Tau_U")) ES_names[ES_names == "Tau_U"] <- "Tau-U"
   
@@ -173,7 +173,7 @@ calc_ES <- function(A_data, B_data,
     improvement = improvement, confidence = confidence, ...
   )
   
-  if (format != "long") res <- covert_to_wide(res, ES_names)
+  if (format != "long") res <- convert_to_wide(res, ES_names)
   
   return(res)
 }
@@ -427,7 +427,7 @@ batch_calc_ES <- function(dat,
   if (format == "long") {
     result <- res
   } else {
-    result <- covert_to_wide(res, ES_names)
+    result <- convert_to_wide(res, ES_names)
   }
   
   return(result)
