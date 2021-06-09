@@ -15,7 +15,7 @@ test_that("batch_calc_ES() returns the same output
   # use batch_calc_ES()
   res_batch_calc_ES <- batch_calc_ES(dat = dat1, condition = Condition, outcome = Outcome, baseline_phase = "A")
   
-  expect_identical(res_calc_ES, res_batch_calc_ES)
+  expect_equal(res_calc_ES, res_batch_calc_ES)
   
 })
 
@@ -25,7 +25,7 @@ test_that("The aggregate argument works in batch_calc_ES().", {
   data("Schmidt2007")
   
   # long format using 1/V
-  ## calculate aggregate in two steps by hand
+  ## calculate aggregate by hand
   ES_ests <- 
     batch_calc_ES(dat = Schmidt2007,
                   grouping = c(Behavior_type, Case_pseudonym, Phase_num),
@@ -60,10 +60,10 @@ test_that("The aggregate argument works in batch_calc_ES().", {
                   bias_correct = TRUE,
                   confidence = NULL,
                   format = "long")
-  expect_identical(ES_agg_calculated, ES_agg)
+  expect_equal(ES_agg_calculated, ES_agg)
   
-  # confidence interval
-  ES_SE_CI_agg <- 
+  # CI and wide format
+  ES_agg_CI <- 
     batch_calc_ES(dat = Schmidt2007,
                   grouping = c(Behavior_type, Case_pseudonym, Phase_num),
                   aggregate = c(Behavior_type, Case_pseudonym),
@@ -76,10 +76,18 @@ test_that("The aggregate argument works in batch_calc_ES().", {
                   bias_correct = TRUE,
                   confidence = .95,
                   format = "long")
-  expect_output(str(ES_SE_CI_agg), "tibble")
   
-  # wide format using 1/V
-  ES_agg_wide <- 
+  ES_agg_CI_long2wide <- 
+    ES_agg_CI %>% 
+    tidyr::pivot_wider(
+      names_from = ES,
+      names_glue = "{ES}_{.value}",
+      values_from = Est:CI_upper
+    ) %>% 
+    select(Behavior_type, Case_pseudonym, 
+           starts_with("LRRi_"), starts_with("LRRd_"), starts_with("Tau_"))
+  
+  ES_agg_CI_wide <- 
     batch_calc_ES(dat = Schmidt2007,
                   grouping = c(Behavior_type, Case_pseudonym, Phase_num),
                   aggregate = c(Behavior_type, Case_pseudonym),
@@ -90,18 +98,10 @@ test_that("The aggregate argument works in batch_calc_ES().", {
                   improvement = direction,
                   scale = "count",
                   bias_correct = TRUE,
-                  confidence = NULL,
+                  confidence = .95,
                   format = "wide")
   
-  ES_agg_long_to_wide <- 
-    ES_agg %>% 
-    tidyr::pivot_wider(
-      names_from = ES,
-      names_glue = "{ES}_{.value}",
-      values_from = c(Est, SE)
-    )
-  
-  expect_identical(ES_agg_wide, ES_agg_long_to_wide)
+  expect_equal(ES_agg_CI_long2wide, ES_agg_CI_wide)
   
   # long format using equal weights
   ES_agg_equal_calculated <- 
@@ -126,6 +126,6 @@ test_that("The aggregate argument works in batch_calc_ES().", {
                   confidence = NULL,
                   format = "long")
   
-  expect_identical(ES_agg_equal_calculated, ES_agg_equal)
+  expect_equal(ES_agg_equal_calculated, ES_agg_equal)
     
 })
