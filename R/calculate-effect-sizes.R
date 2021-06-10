@@ -167,11 +167,8 @@ calc_ES <- function(A_data, B_data,
   if (any(Tau_U_names %in% ES)) ES_names <- union(setdiff(ES_names, Tau_U_names), "Tau_U") 
   ES_to_calc <- paste0("calc_", ES_names)
   
-  res <- purrr::invoke_map_dfr(
-    ES_to_calc,  
-    A_data = A_data, B_data = B_data,
-    improvement = improvement, confidence = confidence, ...
-  )
+  args <- list(A_data = A_data, B_data = B_data, improvement = improvement, confidence = confidence, ...)
+  res <- purrr::map_dfr(ES_to_calc, function(fn) purrr::exec(fn, !!!args))
   
   if (format != "long") res <- convert_to_wide(res, ES_names)
   
