@@ -7,6 +7,8 @@
 batch_calc_ES(
   dat,
   grouping,
+  aggregate = NULL,
+  weighting = "1/V",
   condition,
   outcome,
   session_number = NULL,
@@ -27,15 +29,22 @@ batch_calc_ES(
 \item{dat}{data frame containing SCD series for which effect sizes will be
 calculated.}
 
-\item{grouping}{A variable name or list of (unquoted) variable names that uniquely identify each data series.}
+\item{grouping}{A variable name or list of (unquoted) variable names that
+uniquely identify each data series.}
 
-\item{condition}{A variable name that identifies the
-treatment condition for each observation in the series.}
+\item{aggregate}{A variable name of list of (unquoted) variable names that
+will be aggregated across to calculate a single effect size estimate.}
 
-\item{outcome}{A variable name for the outcome data.}
+\item{weighting}{character string specifying the weighting scheme. Either
+"1/V" (the default) or "equal".}
 
-\item{session_number}{A variable name used to
-order the data within each series.}
+\item{condition}{A variable name that identifies the treatment condition for
+each observation in the series.}
+
+\item{outcome}{A variable name for the outcome data. Default is}
+
+\item{session_number}{A variable name used to order the data within each
+series.}
 
 \item{baseline_phase}{character string specifying which value of
 \code{condition} corresponds to the baseline phase. If \code{NULL} (the
@@ -98,8 +107,8 @@ is \code{TRUE}.}
 indices.}
 }
 \value{
-A tibble containing the estimate, standard error, and/or
-  confidence interval for each specified effect size.
+A tibble containing the estimate, standard error, and/or confidence
+  interval for each specified effect size.
 }
 \description{
 Calculates one or more effect size estimates, along with
@@ -122,8 +131,8 @@ batch_calc_ES(McKissick,
               scale = "count",
               observation_length = 20,
               format = "long")
-              
-data(Schmidt2007)               
+
+data(Schmidt2007)
 batch_calc_ES(dat = Schmidt2007,
               grouping = c(Behavior_type, Case_pseudonym, Phase_num),
               condition = Condition,
