@@ -1,4 +1,4 @@
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("ES", "Est", "SE", "CI_upper", "CI_lower"))
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("n", "ES", "Est", "SE", "CI_upper", "CI_lower"))
 
 # get ES names
 get_ES_names <- function(ES) {
@@ -387,17 +387,11 @@ batch_calc_ES <- function(dat,
         ES_ests_long %>% 
         dplyr::mutate(weights = 1 / (SE^2))
     } else {
-      n <- 
-        ES_ests_long %>% 
-        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
-        dplyr::summarise(n = n()) %>% 
-        dplyr::pull()
-      
-      nn <- rep(n, n)
-      
       ES_weights <- 
         ES_ests_long %>%
-        dplyr::mutate(weights = 1 / nn)
+        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
+        dplyr::mutate(weights = 1 / n()) %>%
+        dplyr::ungroup()
     }
     
     res_agg <- 

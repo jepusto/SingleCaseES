@@ -107,7 +107,7 @@ test_that("The aggregate argument works in batch_calc_ES().", {
   ES_agg_equal_calculated <- 
     ES_ests %>% 
     group_by(Behavior_type, Case_pseudonym, ES) %>% 
-    mutate(ES_wt = 0.5) %>% # ABAB so use 0.5, better average within summarise()
+    mutate(ES_wt = 1/n()) %>% 
     summarise(
       Est = weighted.mean(Est, w = ES_wt),
       SE = sqrt(sum(SE^2 * ES_wt^2) / sum(ES_wt)^2))
