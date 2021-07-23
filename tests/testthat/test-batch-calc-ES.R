@@ -20,7 +20,7 @@ test_that("batch_calc_ES() returns the same output
 })
 
 
-test_that("The aggregate argument works in batch_calc_ES().", {
+test_that("The aggregate argument in batch_calc_ES() works in long format.", {
   
   data("Schmidt2007")
   
@@ -31,7 +31,7 @@ test_that("The aggregate argument works in batch_calc_ES().", {
                   grouping = c(Behavior_type, Case_pseudonym, Phase_num),
                   condition = Condition,
                   outcome = Outcome,
-                  ES = c("LRRi","LRRd", "Tau"),
+                  ES = c("LRRi","LRRd","SMD","Tau"),
                   improvement = direction,
                   scale = "count",
                   bias_correct = TRUE,
@@ -44,33 +44,69 @@ test_that("The aggregate argument works in batch_calc_ES().", {
     mutate(ES_wt = 1 / SE^2) %>% 
     summarise(
       Est = sum(Est * ES_wt) / sum(ES_wt),
-      SE = sqrt(1 / sum(ES_wt)))
+      SE = sqrt(1 / sum(ES_wt)),
+      .groups = "drop"
+    )
   
   ## calculate aggregate by specifying the aggregating variables
   ES_agg <- 
     batch_calc_ES(dat = Schmidt2007,
-                  grouping = c(Behavior_type, Case_pseudonym, Phase_num),
-                  aggregate = c(Behavior_type, Case_pseudonym),
+                  grouping = c(Behavior_type, Case_pseudonym),
+                  aggregate = Phase_num,
                   weighting = "1/V",
                   condition = Condition,
                   outcome = Outcome,
-                  ES = c("LRRi","LRRd", "Tau"),
+                  ES = c("LRRi", "LRRd", "SMD", "Tau"),
                   improvement = direction,
                   scale = "count",
                   bias_correct = TRUE,
                   confidence = NULL,
                   format = "long")
+  
   expect_equal(ES_agg_calculated, ES_agg)
   
-  # CI and wide format
+  # long format using equal weights
+  ES_agg_equal_calculated <- 
+    ES_ests %>% 
+    group_by(Behavior_type, Case_pseudonym, ES) %>% 
+    mutate(ES_wt = 1/n()) %>% 
+    summarise(
+      Est = weighted.mean(Est, w = ES_wt),
+      SE = sqrt(sum(SE^2 * ES_wt^2) / sum(ES_wt)^2),
+      .groups = "drop"
+    )
+  
+  ES_agg_equal <- 
+    batch_calc_ES(dat = Schmidt2007,
+                  grouping = c(Behavior_type, Case_pseudonym),
+                  aggregate = Phase_num,
+                  weighting = "equal",
+                  condition = Condition,
+                  outcome = Outcome,
+                  ES = c("LRRi","LRRd", "SMD","Tau"),
+                  improvement = direction,
+                  scale = "count",
+                  bias_correct = TRUE,
+                  confidence = NULL,
+                  format = "long")
+  
+  expect_equal(ES_agg_equal_calculated, ES_agg_equal)
+    
+})
+
+
+test_that("The aggregate argument in batch_calc_ES() works in wide format and with CIs.", {
+  
+  data("Schmidt2007")
+  
   ES_agg_CI <- 
     batch_calc_ES(dat = Schmidt2007,
-                  grouping = c(Behavior_type, Case_pseudonym, Phase_num),
-                  aggregate = c(Behavior_type, Case_pseudonym),
+                  grouping = c(Behavior_type, Case_pseudonym),
+                  aggregate = Phase_num,
                   weighting = "1/V",
                   condition = Condition,
                   outcome = Outcome,
-                  ES = c("LRRi","LRRd", "Tau"),
+                  ES = c("LRRi","LRRd","SMD","Tau"),
                   improvement = direction,
                   scale = "count",
                   bias_correct = TRUE,
@@ -85,16 +121,17 @@ test_that("The aggregate argument works in batch_calc_ES().", {
       values_from = Est:CI_upper
     ) %>% 
     select(Behavior_type, Case_pseudonym, 
-           starts_with("LRRi_"), starts_with("LRRd_"), starts_with("Tau_"))
+           starts_with("LRRi_"), starts_with("LRRd_"), 
+           starts_with("SMD_"), starts_with("Tau_"))
   
   ES_agg_CI_wide <- 
     batch_calc_ES(dat = Schmidt2007,
-                  grouping = c(Behavior_type, Case_pseudonym, Phase_num),
-                  aggregate = c(Behavior_type, Case_pseudonym),
+                  grouping = c(Behavior_type, Case_pseudonym),
+                  aggregate = Phase_num,
                   weighting = "1/V",
                   condition = Condition,
                   outcome = Outcome,
-                  ES = c("LRRi","LRRd", "Tau"),
+                  ES = c("LRRi","LRRd","SMD", "Tau"),
                   improvement = direction,
                   scale = "count",
                   bias_correct = TRUE,
@@ -103,29 +140,108 @@ test_that("The aggregate argument works in batch_calc_ES().", {
   
   expect_equal(ES_agg_CI_long2wide, ES_agg_CI_wide)
   
-  # long format using equal weights
-  ES_agg_equal_calculated <- 
-    ES_ests %>% 
-    group_by(Behavior_type, Case_pseudonym, ES) %>% 
-    mutate(ES_wt = 1/n()) %>% 
-    summarise(
-      Est = weighted.mean(Est, w = ES_wt),
-      SE = sqrt(sum(SE^2 * ES_wt^2) / sum(ES_wt)^2))
+})
+
+test_that("The aggregate argument in batch_calc_ES() works with multiple aggregation variables.", {
   
-  ES_agg_equal <- 
+  data("Schmidt2007")
+  
+  ES_ests <- 
     batch_calc_ES(dat = Schmidt2007,
                   grouping = c(Behavior_type, Case_pseudonym, Phase_num),
-                  aggregate = c(Behavior_type, Case_pseudonym),
-                  weighting = "equal",
                   condition = Condition,
                   outcome = Outcome,
-                  ES = c("LRRi","LRRd", "Tau"),
+                  ES = c("LRRi","LRRd","SMD","Tau"),
                   improvement = direction,
                   scale = "count",
                   bias_correct = TRUE,
                   confidence = NULL,
                   format = "long")
   
-  expect_equal(ES_agg_equal_calculated, ES_agg_equal)
-    
+  ES_agg_calculated <- 
+    ES_ests %>% 
+    group_by(Case_pseudonym, ES) %>% 
+    mutate(ES_wt = 1 / SE^2) %>% 
+    summarise(
+      Est = sum(Est * ES_wt) / sum(ES_wt),
+      SE = sqrt(1 / sum(ES_wt)),
+      .groups = "drop"
+    )
+  
+  ## calculate aggregate by specifying the aggregating variables
+  ES_agg <- 
+    batch_calc_ES(dat = Schmidt2007,
+                  grouping = Case_pseudonym,
+                  aggregate = c(Behavior_type, Phase_num),
+                  weighting = "1/V",
+                  condition = Condition,
+                  outcome = Outcome,
+                  ES = c("LRRi", "LRRd", "SMD", "Tau"),
+                  improvement = direction,
+                  scale = "count",
+                  bias_correct = TRUE,
+                  confidence = NULL,
+                  format = "long")
+  
+  expect_equal(ES_agg_calculated, ES_agg)
+
+  ## aggregating across all cases, behaviors, and phase-pairs
+  
+  ES_FE_calculated <- 
+    ES_ests %>% 
+    group_by(ES) %>% 
+    mutate(ES_wt = 1 / SE^2) %>% 
+    summarise(
+      Est = sum(Est * ES_wt) / sum(ES_wt),
+      SE = sqrt(1 / sum(ES_wt)),
+      .groups = "drop"
+    )
+  
+  ES_FE <- 
+    batch_calc_ES(dat = Schmidt2007,
+                  aggregate = c(Case_pseudonym, Behavior_type, Phase_num),
+                  weighting = "1/V",
+                  condition = Condition,
+                  outcome = Outcome,
+                  ES = c("LRRi", "LRRd", "SMD", "Tau"),
+                  improvement = direction,
+                  scale = "count",
+                  bias_correct = TRUE,
+                  confidence = NULL,
+                  format = "long")
+  
+  expect_equal(ES_FE_calculated, ES_FE)
+})
+
+test_that("The aggregate argument in batch_calc_ES() has proper error handling.", {
+  
+  expect_error(
+    batch_calc_ES(dat = Schmidt2007,
+                  grouping = Case_pseudonym,
+                  aggregate = c(Behavior_type, Phase_num),
+                  weighting = Outcome,
+                  condition = Condition,
+                  outcome = Outcome,
+                  ES = c("LRRi", "LRRd", "SMD", "Tau"),
+                  improvement = direction,
+                  scale = "count",
+                  bias_correct = TRUE,
+                  confidence = NULL,
+                  format = "long")
+  )
+  
+  expect_error(
+    batch_calc_ES(dat = Schmidt2007,
+                  grouping = Case_pseudonym,
+                  aggregate = c(Behavior_type, Phase_num),
+                  weighting = Case_pseudonym,
+                  condition = Condition,
+                  outcome = Outcome,
+                  ES = c("LRRi", "LRRd", "SMD", "Tau"),
+                  improvement = direction,
+                  scale = "count",
+                  bias_correct = TRUE,
+                  confidence = NULL,
+                  format = "long")
+  )
 })
