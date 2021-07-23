@@ -7,10 +7,10 @@
 batch_calc_ES(
   dat,
   grouping,
-  aggregate = NULL,
-  weighting = "1/V",
   condition,
   outcome,
+  aggregate = NULL,
+  weighting = "1/V",
   session_number = NULL,
   baseline_phase = NULL,
   intervention_phase = NULL,
@@ -32,16 +32,20 @@ calculated.}
 \item{grouping}{A variable name or list of (unquoted) variable names that
 uniquely identify each data series.}
 
-\item{aggregate}{A variable name of list of (unquoted) variable names that
-will be aggregated across to calculate a single effect size estimate.}
-
-\item{weighting}{character string specifying the weighting scheme. Either
-"1/V" (the default) or "equal".}
-
 \item{condition}{A variable name that identifies the treatment condition for
 each observation in the series.}
 
 \item{outcome}{A variable name for the outcome data. Default is}
+
+\item{aggregate}{A variable name of list of (unquoted) variable names that
+identify additional grouping variables. Effect sizes will be calculated
+separately for each unique value of these variables, after which the effect
+size estimates will be averaged across values of these variables (but not
+across the values of the \code{grouping} variables).}
+
+\item{weighting}{character string specifying the weighting scheme for use
+when variables are specified in \code{aggregate}. Either \code{"1/V"} (the
+default) or \code{"equal"}.}
 
 \item{session_number}{A variable name used to order the data within each
 series.}

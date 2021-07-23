@@ -1,10 +1,11 @@
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("n", "ES", "Est", "SE", "CI_upper", "CI_lower"))
+
+if (getRversion() >= "2.15.1") utils::globalVariables(c("n", "ES", "Est", "SE", "CI_upper", "CI_lower"))
 
 # get ES names
 get_ES_names <- function(ES) {
   ES_names <- if (identical(ES, "all")) {
     c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
-  } else if (identical(ES,"NOM")) {
+  } else if (identical(ES, "NOM")) {
     c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
   } else if (identical(ES, "parametric")) {
     c("LRRd","LRRi","LOR","SMD")
@@ -111,6 +112,7 @@ convert_to_wide <- function(res, ES_names) {
 #' @importFrom magrittr %>%
 #' @importFrom rlang !!!
 #' @importFrom rlang !!
+#' @importFrom rlang exec
 #' @importFrom dplyr .data
 #' @importFrom dplyr vars
 #'
@@ -145,6 +147,7 @@ calc_ES <- function(A_data, B_data,
         warning(msg)
       }
     }
+    
     if (!is.character(intervention_phase)) intervention_phase <- as.character(intervention_phase)
     if (!(baseline_phase %in% conditions)) stop(paste0("The value of 'baseline_phase' must be one of the following: ", paste(paste0('"',conditions,'"'), collapse = ", "), "."))
     if (!(intervention_phase %in% conditions)) stop(paste0("The value of 'intervention_phase' must be one of the following: ", paste(paste0('"',conditions,'"'), collapse = ", "), "."))
@@ -168,7 +171,7 @@ calc_ES <- function(A_data, B_data,
   ES_to_calc <- paste0("calc_", ES_names)
   
   args <- list(A_data = A_data, B_data = B_data, improvement = improvement, confidence = confidence, ...)
-  res <- purrr::map_dfr(ES_to_calc, function(fn) purrr::exec(fn, !!!args))
+  res <- purrr::map_dfr(ES_to_calc, function(fn) exec(fn, !!!args))
   
   if (format != "long") res <- convert_to_wide(res, ES_names)
   
@@ -186,9 +189,13 @@ calc_ES <- function(A_data, B_data,
 #' @param grouping A variable name or list of (unquoted) variable names that
 #'   uniquely identify each data series.
 #' @param aggregate A variable name of list of (unquoted) variable names that
-#'   will be aggregated across to calculate a single effect size estimate.
-#' @param weighting character string specifying the weighting scheme. Either
-#'   "1/V" (the default) or "equal".
+#'   identify additional grouping variables. Effect sizes will be calculated
+#'   separately for each unique value of these variables, after which the effect
+#'   size estimates will be averaged across values of these variables (but not
+#'   across the values of the \code{grouping} variables).
+#' @param weighting character string specifying the weighting scheme for use
+#'   when variables are specified in \code{aggregate}. Either \code{"1/V"} (the
+#'   default) or \code{"equal"}.
 #' @param condition A variable name that identifies the treatment condition for
 #'   each observation in the series.
 #' @param outcome A variable name for the outcome data. Default is
@@ -275,9 +282,10 @@ calc_ES <- function(A_data, B_data,
 
 
 batch_calc_ES <- function(dat, 
-                          grouping, aggregate = NULL,
-                          weighting = "1/V",
+                          grouping, 
                           condition, outcome,
+                          aggregate = NULL,
+                          weighting = "1/V",
                           session_number = NULL,
                           baseline_phase = NULL,
                           intervention_phase = NULL,
@@ -302,7 +310,7 @@ batch_calc_ES <- function(dat,
   }
   
   weighting <- tryCatch(tidyselect::vars_pull(c(names(dat), "1/V", "equal"), !! rlang::enquo(weighting)), 
-                          error = function(e) stop("Weighting must be a variable name or a string specifying '1/V' or 'euqal'."))
+                          error = function(e) stop("Weighting must be a variable name or a string specifying '1/V' or 'equal'."))
   
   condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), 
                         error = function(e) stop("Condition variable is not in the dataset."))
@@ -358,22 +366,26 @@ batch_calc_ES <- function(dat,
   
   if (!is.null(session_number)) dat <- dplyr::arrange(dat, !!rlang::sym(session_number))
   
-  ES_ests_long <- 
-    dat %>% 
+  ES_ests_long <-
+    dat %>%
     dplyr::group_by(!!!rlang::syms(grouping)) %>%
-    dplyr::summarise(calc_ES(condition = .data[[condition]], 
-                      outcome = .data[[outcome]],
-                      baseline_phase = baseline_phase,
-                      intervention_phase = intervention_phase,
-                      ES = ES_names, 
-                      improvement = .data[[improvement]], 
-                      scale =  .data[[scale]],
-                      intervals = .data[[intervals]],
-                      observation_length = .data[[observation_length]],
-                      confidence = confidence, 
-                      format = "long",
-                      ...,
-                      warn = warn)) %>%
+    dplyr::summarise(
+      calc_ES(
+        condition = .data[[condition]],
+        outcome = .data[[outcome]],
+        baseline_phase = baseline_phase,
+        intervention_phase = intervention_phase,
+        ES = ES_names,
+        improvement = .data[[improvement]],
+        scale =  .data[[scale]],
+        intervals = .data[[intervals]],
+        observation_length = .data[[observation_length]],
+        confidence = confidence,
+        format = "long",
+        ...,
+        warn = warn
+      )
+    ) %>%
     dplyr::ungroup()
   
   if (is.null(aggregate)) {
@@ -389,9 +401,7 @@ batch_calc_ES <- function(dat,
     } else {
       ES_weights <- 
         ES_ests_long %>%
-        dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
-        dplyr::mutate(weights = 1 / n()) %>%
-        dplyr::ungroup()
+        dplyr::mutate(weights = 1L)
     }
     
     res_agg <- 
@@ -399,7 +409,8 @@ batch_calc_ES <- function(dat,
       dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
       dplyr::summarise(
         Est = sum(Est * weights) / sum(weights),
-        SE = sqrt(sum(weights^2 * SE^2) / (sum(weights)^2))
+        SE = sqrt(sum(weights^2 * SE^2) / (sum(weights)^2)),
+        .groups = "drop"
       )
     
     if (!is.null(confidence)) {
