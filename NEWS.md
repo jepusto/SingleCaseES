@@ -1,3 +1,7 @@
+# SingleCaseES 0.4.4.9000
+
+* batch_calc_ES() gains an argument aggregate, for post-processing effect sizes by averaging across the levels of a variable.
+
 # SingleCaseES 0.4.4
 
 * Modified LOR, LRRd, and LRRi functions to use truncated sample variances. This ensures that the standard error of the effect size estimate is strictly greater than zero.

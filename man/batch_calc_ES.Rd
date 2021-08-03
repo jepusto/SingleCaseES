@@ -148,7 +148,7 @@ batch_calc_ES(dat = Schmidt2007,
               confidence = NULL,
               format = "wide")
 
-data(Schmidt2007)
+# Aggregate across phase-pairs
 batch_calc_ES(dat = Schmidt2007,
               grouping = c(Behavior_type, Case_pseudonym),
               aggregate = Phase_num,
