@@ -279,6 +279,20 @@ calc_ES <- function(A_data, B_data,
 #'               confidence = NULL,
 #'               format = "wide")
 #' 
+#' data(Schmidt2007)
+#' batch_calc_ES(dat = Schmidt2007,
+#'               grouping = c(Behavior_type, Case_pseudonym),
+#'               aggregate = Phase_num,
+#'               weighting = "1/V",
+#'               condition = Condition,
+#'               outcome = Outcome,
+#'               ES = c("LRRi", "LRRd", "SMD", "Tau"),
+#'               improvement = direction,
+#'               scale = "count",
+#'               bias_correct = TRUE,
+#'               confidence = NULL,
+#'               format = "long")
+#' 
 
 
 batch_calc_ES <- function(dat, 
@@ -309,8 +323,8 @@ batch_calc_ES <- function(dat,
                                error = function(e) stop("Aggregating variables are not in the dataset."))
   }
   
-  weighting <- tryCatch(tidyselect::vars_pull(c(names(dat), "1/V", "equal"), !! rlang::enquo(weighting)), 
-                          error = function(e) stop("Weighting must be a variable name or a string specifying '1/V' or 'equal'."))
+  weighting <- tryCatch(tidyselect::vars_pull(c("1/V", "equal"), !! rlang::enquo(weighting)), 
+                          error = function(e) stop("Weighting must be a string specifying '1/V' or 'equal'."))
   
   condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), 
                         error = function(e) stop("Condition variable is not in the dataset."))
@@ -368,7 +382,7 @@ batch_calc_ES <- function(dat,
   
   ES_ests_long <-
     dat %>%
-    dplyr::group_by(!!!rlang::syms(grouping)) %>%
+    dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) %>%
     dplyr::summarise(
       calc_ES(
         condition = .data[[condition]],
@@ -406,7 +420,7 @@ batch_calc_ES <- function(dat,
     
     res_agg <- 
       ES_weights %>% 
-      dplyr::group_by(!!!rlang::syms(aggregate), ES) %>%
+      dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
       dplyr::summarise(
         Est = sum(Est * weights) / sum(weights),
         SE = sqrt(sum(weights^2 * SE^2) / (sum(weights)^2)),
