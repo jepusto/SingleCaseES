@@ -1,4 +1,57 @@
 
+if (getRversion() >= "2.15.1") utils::globalVariables(c("n", "ES", "Est", "SE", "CI_upper", "CI_lower"))
+
+# get ES names
+get_ES_names <- function(ES) {
+  ES_names <- if (identical(ES, "all")) {
+    c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+  } else if (identical(ES, "NOM")) {
+    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+  } else if (identical(ES, "parametric")) {
+    c("LRRd","LRRi","LOR","SMD")
+  } else {
+    ES
+  }
+  return(ES_names)
+}
+
+# convert long format to wide format
+convert_to_wide <- function(res, ES_names) {
+  
+  if (any(ES_names == "Tau_U")) ES_names[ES_names == "Tau_U"] <- "Tau-U"
+  
+  if (any(c("Pct_Change_d","Pct_Change_i") %in% res$ES)) {
+    ES_names <- as.list(ES_names)
+    if ("Pct_Change_d" %in% res$ES) ES_names[[which(ES_names == "LRRd")]] <- c("LRRd","Pct_Change_d")
+    if ("Pct_Change_i" %in% res$ES) ES_names[[which(ES_names == "LRRi")]] <- c("LRRi","Pct_Change_i")
+    ES_names <- unlist(ES_names)
+  }
+  
+  output_names <- c("Est", "SE", "CI_lower", "CI_upper")
+  val_names <- intersect(names(res), output_names)
+  sym_val_names <- rlang::syms(val_names)
+  val <- rlang::sym("val")
+  
+  res <- 
+    res %>%
+    tidyr::gather("q", !!val, !!!sym_val_names) %>%
+    tidyr::unite("q", ES, q) %>%
+    dplyr::filter(!is.na(val)) %>%
+    tidyr::spread("q", !!val) 
+  
+  # re-order names
+  long_names <- 
+    purrr::cross2(val_names, ES_names) %>%
+    purrr::map(.f = function(x) paste(rev(x), collapse = "_"))  %>%
+    intersect(names(res)) %>%
+    rlang::syms()
+  
+  res <- res %>% dplyr::relocate(!!!long_names, .after = tidyselect::last_col())
+  
+  return(res)
+}
+
+
 #' @title Calculate effect sizes
 #'
 #' @description Calculates one or more effect size estimates, along with
@@ -59,6 +112,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang !!!
 #' @importFrom rlang !!
+#' @importFrom rlang exec
 #' @importFrom dplyr .data
 #' @importFrom dplyr vars
 #'
@@ -93,6 +147,7 @@ calc_ES <- function(A_data, B_data,
         warning(msg)
       }
     }
+    
     if (!is.character(intervention_phase)) intervention_phase <- as.character(intervention_phase)
     if (!(baseline_phase %in% conditions)) stop(paste0("The value of 'baseline_phase' must be one of the following: ", paste(paste0('"',conditions,'"'), collapse = ", "), "."))
     if (!(intervention_phase %in% conditions)) stop(paste0("The value of 'intervention_phase' must be one of the following: ", paste(paste0('"',conditions,'"'), collapse = ", "), "."))
@@ -108,58 +163,17 @@ calc_ES <- function(A_data, B_data,
   A_data <- A_data[!is.na(A_data)]
   B_data <- B_data[!is.na(B_data)]
   
-  ES_names <- if (identical(ES, "all")) {
-    c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
-  } else if (identical(ES,"NOM")) {
-    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
-  } else if (identical(ES, "parametric")) {
-    c("LRRd","LRRi","LOR","SMD")
-  } else {
-    ES
-  }
+  ES_names <- get_ES_names(ES)
 
   # Allow for Tau-U variant names
   Tau_U_names <- c("Tau_U","Tau-U","TauU")
   if (any(Tau_U_names %in% ES)) ES_names <- union(setdiff(ES_names, Tau_U_names), "Tau_U") 
   ES_to_calc <- paste0("calc_", ES_names)
-      
-  res <- purrr::invoke_map_dfr(
-    ES_to_calc,  
-    A_data = A_data, B_data = B_data,
-    improvement = improvement, confidence = confidence, ...
-  )
   
-  if (format != "long") {
-    
-    if (any(ES_names == "Tau_U")) ES_names[ES_names == "Tau_U"] <- "Tau-U"
-    
-    if (any(c("Pct_Change_d","Pct_Change_i") %in% res$ES)) {
-      ES_names <- as.list(ES_names)
-      if ("Pct_Change_d" %in% res$ES) ES_names[[which(ES_names == "LRRd")]] <- c("LRRd","Pct_Change_d")
-      if ("Pct_Change_i" %in% res$ES) ES_names[[which(ES_names == "LRRi")]] <- c("LRRi","Pct_Change_i")
-      ES_names <- unlist(ES_names)
-    }
-    
-    
-    val_names <- setdiff(names(res), "ES")
-    sym_val_names <- rlang::syms(val_names)
-    val <- rlang::sym("val")
-    
-    res <- res %>%
-      tidyr::gather("q", !!val, !!!sym_val_names)%>%
-      tidyr::unite("q", ES, q) %>%
-      dplyr::filter(!is.na(val)) %>%
-      tidyr::spread("q", !!val) 
-    
-    # re-order names
-    long_names <- 
-      purrr::cross2(val_names, ES_names) %>%
-      purrr::map(.f = function(x) paste(rev(x), collapse = "_"))  %>%
-      intersect(names(res)) %>%
-      rlang::syms()
-    
-    res <- dplyr::select(res, !!!long_names)
-  }
+  args <- list(A_data = A_data, B_data = B_data, improvement = improvement, confidence = confidence, ...)
+  res <- purrr::map_dfr(ES_to_calc, function(fn) exec(fn, !!!args))
+  
+  if (format != "long") res <- convert_to_wide(res, ES_names)
   
   return(res)
 }
@@ -172,12 +186,21 @@ calc_ES <- function(A_data, B_data,
 #'   single-case data series.
 #' @param dat data frame containing SCD series for which effect sizes will be
 #'   calculated.
-#' @param grouping A variable name or list of (unquoted) variable names that uniquely identify each data series.
-#' @param condition A variable name that identifies the
-#'   treatment condition for each observation in the series.
-#' @param outcome A variable name for the outcome data.
-#' @param session_number A variable name used to
-#'   order the data within each series.
+#' @param grouping A variable name or list of (unquoted) variable names that
+#'   uniquely identify each data series.
+#' @param aggregate A variable name of list of (unquoted) variable names that
+#'   identify additional grouping variables. Effect sizes will be calculated
+#'   separately for each unique value of these variables, after which the effect
+#'   size estimates will be averaged across values of these variables (but not
+#'   across the values of the \code{grouping} variables).
+#' @param weighting character string specifying the weighting scheme for use
+#'   when variables are specified in \code{aggregate}. Either \code{"1/V"} (the
+#'   default) or \code{"equal"}.
+#' @param condition A variable name that identifies the treatment condition for
+#'   each observation in the series.
+#' @param outcome A variable name for the outcome data. Default is
+#' @param session_number A variable name used to order the data within each
+#'   series.
 #' @param baseline_phase character string specifying which value of
 #'   \code{condition} corresponds to the baseline phase. If \code{NULL} (the
 #'   default), the first observed value of \code{condition} within the series
@@ -228,11 +251,11 @@ calc_ES <- function(A_data, B_data,
 #'
 #' @export
 #'
-#' @return A tibble containing the estimate, standard error, and/or
-#'   confidence interval for each specified effect size.
-#'   
-#' @examples 
-#' 
+#' @return A tibble containing the estimate, standard error, and/or confidence
+#'   interval for each specified effect size.
+#'
+#' @examples
+#'
 #' data(McKissick)
 #' batch_calc_ES(McKissick,
 #'               grouping = Case_pseudonym,
@@ -243,8 +266,8 @@ calc_ES <- function(A_data, B_data,
 #'               scale = "count",
 #'               observation_length = 20,
 #'               format = "long")
-#'               
-#' data(Schmidt2007)               
+#'
+#' data(Schmidt2007)
 #' batch_calc_ES(dat = Schmidt2007,
 #'               grouping = c(Behavior_type, Case_pseudonym, Phase_num),
 #'               condition = Condition,
@@ -255,12 +278,28 @@ calc_ES <- function(A_data, B_data,
 #'               bias_correct = TRUE,
 #'               confidence = NULL,
 #'               format = "wide")
-#'
+#' 
+#' # Aggregate across phase-pairs
+#' batch_calc_ES(dat = Schmidt2007,
+#'               grouping = c(Behavior_type, Case_pseudonym),
+#'               aggregate = Phase_num,
+#'               weighting = "1/V",
+#'               condition = Condition,
+#'               outcome = Outcome,
+#'               ES = c("LRRi", "LRRd", "SMD", "Tau"),
+#'               improvement = direction,
+#'               scale = "count",
+#'               bias_correct = TRUE,
+#'               confidence = NULL,
+#'               format = "long")
+#' 
 
 
 batch_calc_ES <- function(dat, 
-                          grouping,
+                          grouping, 
                           condition, outcome,
+                          aggregate = NULL,
+                          weighting = "1/V",
                           session_number = NULL,
                           baseline_phase = NULL,
                           intervention_phase = NULL,
@@ -278,7 +317,15 @@ batch_calc_ES <- function(dat,
   grouping <- rlang::enquos(grouping)
   grouping <- tryCatch(tidyselect::vars_select(names(dat), !!!grouping), 
                        error = function(e) stop("Grouping variables are not in the dataset."))
-
+  
+  if (tryCatch(!is.null(aggregate), error = function(e) TRUE)) {
+    aggregate <- tryCatch(tidyselect::vars_select(names(dat), !!!rlang::enquos(aggregate)), 
+                               error = function(e) stop("Aggregating variables are not in the dataset."))
+  }
+  
+  weighting <- tryCatch(tidyselect::vars_pull(c("1/V", "equal"), !! rlang::enquo(weighting)), 
+                          error = function(e) stop("Weighting must be a string specifying '1/V' or 'equal'."))
+  
   condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), 
                         error = function(e) stop("Condition variable is not in the dataset."))
   
@@ -329,33 +376,76 @@ batch_calc_ES <- function(dat,
     warning("LOR can only be calculated for proportions or percentages. Will return NAs for other outcome scales.", call. = FALSE)
   }
   
-  ES_names <- if (identical(ES, "all")) {
-    c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
-  } else if (identical(ES,"NOM")) {
-    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
-  } else if (identical(ES, "parametric")) {
-    c("LRRd","LRRi","LOR","SMD")
-  } else {
-    ES
-  }
+  ES_names <- get_ES_names(ES)
   
   if (!is.null(session_number)) dat <- dplyr::arrange(dat, !!rlang::sym(session_number))
   
-  dat %>%  
-    dplyr::group_by(!!!rlang::syms(grouping)) %>%
-    dplyr::do(calc_ES(condition = .data[[condition]], 
-                      outcome = .data[[outcome]], 
-                      baseline_phase = baseline_phase,
-                      intervention_phase = intervention_phase,
-                      ES = ES_names, 
-                      improvement = .data[[improvement]], 
-                      scale =  .data[[scale]],
-                      intervals = .data[[intervals]],
-                      observation_length = .data[[observation_length]],
-                      confidence = confidence, 
-                      format = format,
-                      ...,
-                      warn = warn)) %>%
+  ES_ests_long <-
+    dat %>%
+    dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) %>%
+    dplyr::summarise(
+      calc_ES(
+        condition = .data[[condition]],
+        outcome = .data[[outcome]],
+        baseline_phase = baseline_phase,
+        intervention_phase = intervention_phase,
+        ES = ES_names,
+        improvement = .data[[improvement]],
+        scale =  .data[[scale]],
+        intervals = .data[[intervals]],
+        observation_length = .data[[observation_length]],
+        confidence = confidence,
+        format = "long",
+        ...,
+        warn = warn
+      )
+    ) %>%
     dplyr::ungroup()
+  
+  if (is.null(aggregate)) {
+    
+    res <- ES_ests_long
+    
+  } else {
+
+    if (weighting == "1/V") { 
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::mutate(weights = 1 / (SE^2))
+    } else {
+      ES_weights <- 
+        ES_ests_long %>%
+        dplyr::mutate(weights = 1L)
+    }
+    
+    res_agg <- 
+      ES_weights %>% 
+      dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
+      dplyr::summarise(
+        Est = sum(Est * weights) / sum(weights),
+        SE = sqrt(sum(weights^2 * SE^2) / (sum(weights)^2)),
+        .groups = "drop"
+      )
+    
+    if (!is.null(confidence)) {
+      res <- 
+        res_agg %>% 
+        dplyr::mutate(
+          CI_lower = Est - qnorm(1 - (1 - confidence) / 2) * SE,
+          CI_upper = Est + qnorm(1 - (1 - confidence) / 2) * SE
+        )
+    } else {
+      res <- res_agg
+    }
+    
+  }
+  
+  if (format == "long") {
+    result <- res
+  } else {
+    result <- convert_to_wide(res, ES_names)
+  }
+  
+  return(result)
 }
 
