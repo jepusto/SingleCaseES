@@ -12,7 +12,8 @@ Tau_BC(
   baseline_phase = unique(condition)[1],
   improvement = "increase",
   SE = "unbiased",
-  confidence = 0.95
+  confidence = 0.95,
+  report_correction = FALSE
 )
 }
 \arguments{
@@ -33,29 +34,34 @@ observed value of \code{condition}.}
 Default is "increase".}
 
 \item{SE}{character value indicating which formula to use for calculating the
-standard error of NAP, with possible values \code{"unbiased"} for the
+standard error of Tau_BC, with possible values \code{"unbiased"} for the
 exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
 estimator, \code{"null"} for the (known) variance under the null hypothesis
 of no effect, or \code{"none"} to not calculate a standard error. Defaults
-to "unbiased". Note that the "unbiased" standard error is unbiased 
-for \code{\link{Tau}}, not unbiased for \code{\link{Tau_BC}}.}
+to "unbiased". Note that the "unbiased" standard error is unbiased for
+\code{\link{Tau}}, but not necessarily unbiased for \code{\link{Tau_BC}}.
+None of the standard error formulas account for the additional uncertainty
+due to use of the baseline trend correction.}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
 }
 \value{
-A list containing the estimate, standard error, and/or confidence 
+A list containing the estimate, standard error, and/or confidence
   interval.
 }
 \description{
-Calculates the baseline corrected Tau index (Tarlow 2017).
+Calculates the baseline-corrected Tau index (Tarlow 2017).
 }
 \details{
-Tau_BC is an elaboration of the \code{\link{Tau}} that includes a 
-  correction for baseline trend. The calculation of Tau_BC involves two steps. 
-  First, Theil-Sen regression is applied to remove the baseline trend
-  at the baseline and treatment phases. Second, the residuals from Theil-Sen regression 
-  are used to calculate the \code{\link{Tau}} (non-overlap) index.
+Tau_BC is an elaboration of the \code{\link{Tau}} that includes a
+  correction for baseline trend. The calculation of Tau_BC involves two
+  steps. First, Theil-Sen regression is applied to remove the baseline trend
+  at the baseline and treatment phases. Second, the residuals from Theil-Sen
+  regression are used to calculate the \code{\link{Tau}} (non-overlap) index.
+  Note that the standard error formulas are based on the standard errors for
+  \code{\link{Tau}} (non-overlap) and they do not account for the additional
+  uncertainty due to use of the baseline trend correction.
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
@@ -65,8 +71,7 @@ Tau_BC(A_data = A, B_data = B)
 
 }
 \references{
-Tarlow, K. R. (2017). An improved rank correlation effect size 
-  statistic for single-case designs: Baseline corrected Tau. 
-  \emph{Behavior modification, 41}(4), 427-467. 
-  doi:\doi{10.1177/0145445516676750}
+Tarlow, K. R. (2017). An improved rank correlation effect size
+  statistic for single-case designs: Baseline corrected Tau. \emph{Behavior
+  modification, 41}(4), 427-467. doi:\doi{10.1177/0145445516676750}
 }

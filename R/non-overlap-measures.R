@@ -262,45 +262,51 @@ calc_Tau_U <- function(A_data, B_data, improvement = "increase", ...) {
 
 
 #' @title Tau_BC
-#'   
-#' @description Calculates the baseline corrected Tau index (Tarlow 2017). 
-#'  
+#'
+#' @description Calculates the baseline-corrected Tau index (Tarlow 2017).
+#'
 #' @param SE character value indicating which formula to use for calculating the
-#'   standard error of NAP, with possible values \code{"unbiased"} for the
+#'   standard error of Tau_BC, with possible values \code{"unbiased"} for the
 #'   exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
 #'   estimator, \code{"null"} for the (known) variance under the null hypothesis
 #'   of no effect, or \code{"none"} to not calculate a standard error. Defaults
-#'   to "unbiased". Note that the "unbiased" standard error is unbiased 
-#'   for \code{\link{Tau}}, not unbiased for \code{\link{Tau_BC}}.
+#'   to "unbiased". Note that the "unbiased" standard error is unbiased for
+#'   \code{\link{Tau}}, but not necessarily unbiased for \code{\link{Tau_BC}}.
+#'   None of the standard error formulas account for the additional uncertainty
+#'   due to use of the baseline trend correction.
 #' @inheritParams NAP
-#'   
-#' @details Tau_BC is an elaboration of the \code{\link{Tau}} that includes a 
-#'   correction for baseline trend. The calculation of Tau_BC involves two steps. 
-#'   First, Theil-Sen regression is applied to remove the baseline trend
-#'   at the baseline and treatment phases. Second, the residuals from Theil-Sen regression 
-#'   are used to calculate the \code{\link{Tau}} (non-overlap) index.
-#'   
-#'  
-#' @references Tarlow, K. R. (2017). An improved rank correlation effect size 
-#'   statistic for single-case designs: Baseline corrected Tau. 
-#'   \emph{Behavior modification, 41}(4), 427-467. 
-#'   doi:\doi{10.1177/0145445516676750}
-#'   
+#'
+#' @details Tau_BC is an elaboration of the \code{\link{Tau}} that includes a
+#'   correction for baseline trend. The calculation of Tau_BC involves two
+#'   steps. First, Theil-Sen regression is applied to remove the baseline trend
+#'   at the baseline and treatment phases. Second, the residuals from Theil-Sen
+#'   regression are used to calculate the \code{\link{Tau}} (non-overlap) index.
+#'   Note that the standard error formulas are based on the standard errors for
+#'   \code{\link{Tau}} (non-overlap) and they do not account for the additional
+#'   uncertainty due to use of the baseline trend correction.
+#'
+#'
+#' @references Tarlow, K. R. (2017). An improved rank correlation effect size
+#'   statistic for single-case designs: Baseline corrected Tau. \emph{Behavior
+#'   modification, 41}(4), 427-467. doi:\doi{10.1177/0145445516676750}
+#'
 #' @export
-#' 
-#' @return A list containing the estimate, standard error, and/or confidence 
+#'
+#' @return A list containing the estimate, standard error, and/or confidence
 #'   interval.
-#'   
+#'
 #' @examples
 #' A <- c(20, 20, 26, 25, 22, 23)
 #' B <- c(28, 25, 24, 27, 30, 30, 29)
 #' Tau_BC(A_data = A, B_data = B)
+#'
 #' 
-#' 
+
 Tau_BC <- function(A_data, B_data, condition, outcome, 
                   baseline_phase = unique(condition)[1],
                   improvement = "increase", 
-                  SE = "unbiased", confidence = .95) {
+                  SE = "unbiased", confidence = .95, 
+                  report_correction = FALSE) {
   
   if (!requireNamespace("mblm", quietly = TRUE)) {
     stop("This effect size calculation requires the mblm package. Please install it.", call. = FALSE)
@@ -310,13 +316,15 @@ Tau_BC <- function(A_data, B_data, condition, outcome,
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
           ES = "Tau_BC", improvement = improvement,
-          SE = SE, confidence = confidence)
+          SE = SE, confidence = confidence,
+          report_correction = report_correction)
 }
 
 calc_Tau_BC <- function(A_data, B_data, 
                         improvement = "increase", 
                         SE = "unbiased", CI = TRUE,
-                        confidence = .95, ...) {
+                        confidence = .95, report_correction = FALSE, 
+                        ...) {
   
   if (improvement=="decrease") {
     A_data <- -1 * A_data
@@ -327,13 +335,13 @@ calc_Tau_BC <- function(A_data, B_data,
   n <- length(B_data)
   session_A <- 1:m
   session_B <- (m + 1) : (m + n)
-  session_dummy <- c(rep(0, m), rep(1, n))
   
-  theilsen <- mblm::mblm(A_data ~ session_A)
-  intercept <- as.numeric(theilsen$coefficients[1])
-  slope <- as.numeric(theilsen$coefficients[2])
-  A_data_corrected <- as.numeric(theilsen$residuals)
-  B_data_corrected <- B_data - (slope*(session_B) + intercept)
+  slopes <- apply(combn(m, 2), 2, function(x) diff(A_data[x]) / diff(session_A[x]))
+  slope <- median(slopes)
+  intercept <- median(A_data - session_A * slope)
+  
+  A_data_corrected <- A_data - intercept - slope * session_A
+  B_data_corrected <- B_data - intercept - slope * session_B
   
   # Use calc_Tau()
   res <- calc_Tau(A_data = A_data_corrected, 
@@ -341,6 +349,12 @@ calc_Tau_BC <- function(A_data, B_data,
                   improvement = improvement,
                   SE = SE, CI = CI, confidence = confidence)
   res$ES <- "Tau-BC"
+  
+  if (report_correction) {
+    res$slope <- slope
+    res$intercept <- intercept
+  }
+  
   return(res)
   
 }
