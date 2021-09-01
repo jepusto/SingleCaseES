@@ -566,29 +566,29 @@ calc_SMD <- function(A_data, B_data,
 
 # Calculate statistics to be used in calculating log ratio of medians
 
-stats_LRM <- function(data, warn = TRUE) {
+stats_LRM <- function(data, delta_method = FALSE, warn = TRUE) {
   
   n <- length(data)
-  median <- median(data)
-  o1 <- round(n/2 - sqrt(n))
-  if (o1 < 1) {o1 = 1}
+  median_est <- median(data)
+  o1 <- pmax(round(n / 2 - sqrt(n)), 1L)
   o2 <- n - o1 + 1
   p <- pbinom(o1 - 1, size = n, prob = .5)
   z0 <- qnorm(1 - p)
   y <- sort(data)
   L1 <- y[o1]
   U1 <- y[o2]
-  var <- ((U1 - L1) / (2 * z0))^2
-  var_log_delta <- var / (median)^2
-  var_log_bar <- ((log(U1) - log(L1)) / (2 * z0))^2
+  
+  if (delta_method) {
+    var_log_median <- ((U1 - L1) / (2 * z0))^2 / (median_est)^2
+  } else {
+    var_log_median <- ((log(U1) - log(L1)) / (2 * z0))^2  
+  }
   
   if (warn & n < 2) {
     warning("This phase contains less than 2 observations.")
   }
   
-  data.frame(median = median, 
-             var_log_delta = var_log_delta,
-             var_log_bar = var_log_bar)
+  data.frame(log_median = log(median_est), var_log_median = var_log_median)
 }
 
 #' @title Log ratio of medians
@@ -606,7 +606,7 @@ stats_LRM <- function(data, warn = TRUE) {
 #'   ratio of the medians of the outcomes in different phases. The log ratio 
 #'   of the medians is the natural logarithm of the ratio of medians. This effect
 #'   size is appropriate for outcomes that are skewed, symmetric but highly leptokurtic,
-#'   or right censored (Bonett & Price Jr, 2020).  
+#'   or right-censored (Bonett & Price Jr, 2020).  
 #'
 #' @references Bonett, D. G. & Price Jr, R. M. (2020). Confidence Intervals for Ratios of 
 #'   Means and Medians. \emph{Journal of Educational and Behavioral Statistics, 45}(6),
@@ -615,7 +615,6 @@ stats_LRM <- function(data, warn = TRUE) {
 #'  Bonett, D. G., & Price, R. M. (2020). Interval estimation for linear functions of 
 #'  medians in within-subjects and mixed designs. \emph{British Journal of Mathematical 
 #'  and Statistical Psychology, 73}(2), 333-346. doi:\doi{10.1111/bmsp.12171}
-#'
 #'
 #' @return A data frame containing the estimate, standard error, and confidence
 #'   interval.
@@ -646,21 +645,18 @@ calc_LRM <- function(A_data, B_data,
                      delta_method = FALSE,
                      confidence = .95, warn = TRUE, ...) {
   
-  stats_A <- stats_LRM(data = A_data, warn = warn)
-  stats_B <- stats_LRM(data = B_data, warn = warn)
+  stats_A <- stats_LRM(data = A_data, delta_method = delta_method, warn = warn)
+  stats_B <- stats_LRM(data = B_data, delta_method = delta_method, warn = warn)
   
-  LRM <- log(stats_B$median) - log(stats_A$median)
-  var_log_delta <- stats_A$var_log_delta + stats_B$var_log_delta
-  SE_log_delta <- sqrt(var_log_delta)
-  var_log_bar <- stats_A$var_log_bar + stats_B$var_log_bar
-  SE_log_bar <- sqrt(var_log_bar)
+  LRM <- stats_B$log_median - stats_A$log_median
+  var_LRM <- stats_A$var_log_median + stats_B$var_log_median
+  SE_LRM <- sqrt(var_LRM)
   
-  SE <- if (delta_method) SE_log_delta else SE_log_bar
   res <- data.frame(ES = "LRM", Est = LRM, 
-                    SE = SE, stringsAsFactors = FALSE)
+                    SE = SE_LRM, stringsAsFactors = FALSE)
   
   if (!is.null(confidence)) {
-    CI <- LRM + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE
+    CI <- LRM + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE_LRM
     res$CI_lower <- CI[1]
     res$CI_upper <- CI[2] 
     

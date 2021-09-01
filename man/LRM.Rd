@@ -53,7 +53,7 @@ The ratio of medians effect size parameter is defined as the
   ratio of the medians of the outcomes in different phases. The log ratio 
   of the medians is the natural logarithm of the ratio of medians. This effect
   size is appropriate for outcomes that are skewed, symmetric but highly leptokurtic,
-  or right censored (Bonett & Price Jr, 2020).
+  or right-censored (Bonett & Price Jr, 2020).
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
