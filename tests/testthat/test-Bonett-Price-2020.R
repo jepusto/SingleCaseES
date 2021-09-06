@@ -1,8 +1,5 @@
 context("Bonett & Price Jr (2020) examples.")
 
-library(tidyr)
-library(dplyr)
-
 #------------------------------------------
 # Example 1: Independent-Samples Design
 #------------------------------------------
@@ -143,7 +140,7 @@ test_that("LRM works within calc_ES() and batch_calc_ES().", {
       ES = "all",
       warn = FALSE
     ) %>%
-    filter(ES == "LRM") %>%
+    dplyr::filter(ES == "LRM") %>%
     select(-ES) %>%
     rename_with(.fn = ~ paste("LRM", ., sep = "_"), .cols = -Case_pseudonym)
   
@@ -158,7 +155,7 @@ test_that("LRM works within calc_ES() and batch_calc_ES().", {
       ES = "parametric",
       warn = FALSE
     ) %>%
-    filter(ES == "LRM") %>%
+    dplyr::filter(ES == "LRM") %>%
     select(-ES) %>%
     rename_with(.fn = ~ paste("LRM", ., sep = "_"), .cols = -Case_pseudonym)
   
