@@ -4,11 +4,11 @@ if (getRversion() >= "2.15.1") utils::globalVariables(c("n", "ES", "Est", "SE", 
 # get ES names
 get_ES_names <- function(ES) {
   ES_names <- if (identical(ES, "all")) {
-    c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+    c("LRRd","LRRi","LOR","SMD","LRM","NAP","IRD","PAND","PND","PEM","Tau","Tau_U","Tau_BC")
   } else if (identical(ES, "NOM")) {
-    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U")
+    c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U", "Tau_BC")
   } else if (identical(ES, "parametric")) {
-    c("LRRd","LRRi","LOR","SMD")
+    c("LRRd","LRRi","LOR","SMD", "LRM")
   } else {
     ES
   }
@@ -19,6 +19,7 @@ get_ES_names <- function(ES) {
 convert_to_wide <- function(res, ES_names) {
   
   if (any(ES_names == "Tau_U")) ES_names[ES_names == "Tau_U"] <- "Tau-U"
+  if (any(ES_names == "Tau_BC")) ES_names[ES_names == "Tau_BC"] <- "Tau-BC"
   
   if (any(c("Pct_Change_d","Pct_Change_i") %in% res$ES)) {
     ES_names <- as.list(ES_names)
@@ -71,12 +72,12 @@ convert_to_wide <- function(res, ES_names) {
 #'   unique value of \code{condition}.
 #' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
-#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
-#'   \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and
-#'   \code{"Tau-U"}. Set to \code{"all"} for all available effect sizes. Set to
-#'   \code{"parametric"} for all parametric effect sizes. Set to \code{"NOM"}
-#'   for all non-overlap measures. Defaults to calculating the LRRd, LRRi, SMD,
-#'   and Tau indices.
+#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"LRM"}, \code{"NAP"},
+#'   \code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"},
+#'   \code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for all available
+#'   effect sizes. Set to \code{"parametric"} for all parametric effect sizes.
+#'   Set to \code{"NOM"} for all non-overlap measures. Defaults to calculating
+#'   the LRRd, LRRi, SMD, and Tau indices.
 #' @param improvement character string indicating direction of improvement.
 #'   Default is "increase".
 #' @param ... further arguments used for calculating some of the effect size
@@ -168,6 +169,10 @@ calc_ES <- function(A_data, B_data,
   # Allow for Tau-U variant names
   Tau_U_names <- c("Tau_U","Tau-U","TauU")
   if (any(Tau_U_names %in% ES)) ES_names <- union(setdiff(ES_names, Tau_U_names), "Tau_U") 
+  
+  Tau_BC_names <- c("Tau_BC", "Tau-BC", "TauBC")
+  if (any(Tau_BC_names %in% ES)) ES_names <- union(setdiff(ES_names, Tau_BC_names), "Tau_BC")
+  
   ES_to_calc <- paste0("calc_", ES_names)
   
   args <- list(A_data = A_data, B_data = B_data, improvement = improvement, confidence = confidence, ...)
@@ -211,12 +216,12 @@ calc_ES <- function(A_data, B_data,
 #'   will be used.
 #' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
-#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
-#'   \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and
-#'   \code{"Tau-U"}. Set to \code{"all"} for all available effect sizes. Set to
-#'   \code{"parametric"} for all parametric effect sizes. Set to \code{"NOM"}
-#'   for all non-overlap measures. Defaults to calculating the LRRd, LRRi, SMD,
-#'   and Tau indices.
+#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"LRM"}, \code{"NAP"},
+#'   \code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"},
+#'   \code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for all available
+#'   effect sizes. Set to \code{"parametric"} for all parametric effect sizes.
+#'   Set to \code{"NOM"} for all non-overlap measures. Defaults to calculating
+#'   the LRRd, LRRi, SMD, and Tau indices.
 #' @param improvement character string either indicating the direction of
 #'   uniform improvement ("increase" or "decrease") or the variable name of a
 #'   variable identifying the direction of improvement for each series. Default
