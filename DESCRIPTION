@@ -24,7 +24,8 @@ Imports:
   dplyr,
   tidyr,
   rlang,
-  tidyselect
+  tidyselect,
+  utils
 Suggests:
   spelling, 
   shiny,
