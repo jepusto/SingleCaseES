@@ -32,11 +32,12 @@ observed value of \code{condition}.}
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase".}
 
-\item{delta_method}{logical value indicating whether to use delta method to 
-approximate variance of log ratio of medians. Default is \code{FALSE}, 
-which estimates the variance based on the fact that the logarithm of a median 
-is the same as the median of the log-transformed outcomes. If \code{TRUE}, 
-the variance of log ratio of medians is approximated using delta method.}
+\item{delta_method}{logical value indicating whether to use delta method to
+approximate variance of log ratio of medians. Default is \code{FALSE},
+which estimates the variance based on the fact that the logarithm of a
+median is the same as the median of the log-transformed outcomes. If
+\code{TRUE}, the variance of log ratio of medians is approximated using
+delta method.}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
@@ -49,11 +50,11 @@ A data frame containing the estimate, standard error, and confidence
 Calculates the log ratio of medians effect size index
 }
 \details{
-The ratio of medians effect size parameter is defined as the
-  ratio of the medians of the outcomes in different phases. The log ratio 
-  of the medians is the natural logarithm of the ratio of medians. This effect
-  size is appropriate for outcomes that are skewed, symmetric but highly leptokurtic,
-  or right-censored (Bonett & Price Jr, 2020).
+The ratio of medians effect size parameter is defined as the ratio
+  of the medians of the outcomes in different phases. The log ratio of the
+  medians is the natural logarithm of the ratio of medians. This effect size
+  is appropriate for outcomes that are skewed, symmetric but highly
+  leptokurtic, or right-censored (Bonett & Price Jr, 2020).
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
@@ -62,11 +63,12 @@ LRM(A_data = A, B_data = B)
 
 }
 \references{
-Bonett, D. G. & Price Jr, R. M. (2020). Confidence Intervals for Ratios of 
-  Means and Medians. \emph{Journal of Educational and Behavioral Statistics, 45}(6),
-  750--770. doi:\doi{10.3102/1076998620934125}
+Bonett, D. G. & Price Jr, R. M. (2020). Confidence Intervals for
+  Ratios of Means and Medians. \emph{Journal of Educational and Behavioral
+  Statistics, 45}(6), 750--770. doi:\doi{10.3102/1076998620934125}
 
- Bonett, D. G., & Price, R. M. (2020). Interval estimation for linear functions of 
- medians in within-subjects and mixed designs. \emph{British Journal of Mathematical 
- and Statistical Psychology, 73}(2), 333-346. doi:\doi{10.1111/bmsp.12171}
+ Bonett, D. G., & Price, R. M. (2020). Interval estimation for linear
+ functions of medians in within-subjects and mixed designs. \emph{British
+ Journal of Mathematical and Statistical Psychology, 73}(2), 333-346.
+ doi:\doi{10.1111/bmsp.12171}
 }

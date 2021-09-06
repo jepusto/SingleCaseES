@@ -2,7 +2,7 @@
 % Please edit documentation in R/non-overlap-measures.R
 \name{Tau_BC}
 \alias{Tau_BC}
-\title{Tau_BC}
+\title{Tau-BC}
 \usage{
 Tau_BC(
   A_data,
@@ -13,6 +13,7 @@ Tau_BC(
   improvement = "increase",
   SE = "unbiased",
   confidence = 0.95,
+  pretest_trend = FALSE,
   report_correction = FALSE
 )
 }
@@ -34,7 +35,7 @@ observed value of \code{condition}.}
 Default is "increase".}
 
 \item{SE}{character value indicating which formula to use for calculating the
-standard error of Tau_BC, with possible values \code{"unbiased"} for the
+standard error of Tau-BC, with possible values \code{"unbiased"} for the
 exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
 estimator, \code{"null"} for the (known) variance under the null hypothesis
 of no effect, or \code{"none"} to not calculate a standard error. Defaults
@@ -45,6 +46,15 @@ due to use of the baseline trend correction.}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
+
+\item{pretest_trend}{significance level for the initial baseline trend test.
+The raw data are corrected and \code{\link{Tau_BC}} is calculated only if
+the baseline trend is statistically significant. \code{\link{Tau}} is
+calculated otherwise. Default is \code{FALSE}, which always adjusts for the
+baseline trend.}
+
+\item{report_correction}{logical value indicating whether to report the
+baseline corrected slope and intercept values. Default is \code{FALSE}.}
 }
 \value{
 A list containing the estimate, standard error, and/or confidence
@@ -54,7 +64,7 @@ A list containing the estimate, standard error, and/or confidence
 Calculates the baseline-corrected Tau index (Tarlow 2017).
 }
 \details{
-Tau_BC is an elaboration of the \code{\link{Tau}} that includes a
+Tau-BC is an elaboration of the \code{\link{Tau}} that includes a
   correction for baseline trend. The calculation of Tau_BC involves two
   steps. First, Theil-Sen regression is applied to remove the baseline trend
   at the baseline and treatment phases. Second, the residuals from Theil-Sen
@@ -67,7 +77,6 @@ Tau_BC is an elaboration of the \code{\link{Tau}} that includes a
 A <- c(20, 20, 26, 25, 22, 23)
 B <- c(28, 25, 24, 27, 30, 30, 29)
 Tau_BC(A_data = A, B_data = B)
-
 
 }
 \references{
