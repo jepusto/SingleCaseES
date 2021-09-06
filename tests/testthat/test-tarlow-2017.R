@@ -25,6 +25,24 @@ test_that("Tau-BC is correct.", {
   expect_equal(tauBC, subset(NOMs, ES == "Tau-BC"), check.attributes = FALSE)
 })
 
+test_that("Tau-BC is correct regarding pretest_trend argument.", {
+  A <- c(20, 20, 26, 25, 22, 23)
+  B <- c(28, 25, 24, 27, 30, 30, 29)
+  
+  NOMs <- suppressWarnings(
+    calc_ES(A, B, improvement = "increase", 
+            ES = c("Tau", "Tau_BC"),
+            SE = "none", confidence = NULL, 
+            pretest_trend = .05)
+  )
+  expect_equal(NOMs[1, ], NOMs[2, ], check.attributes = FALSE)
+  
+  TauBC <- Tau_BC(A, B, improvement = "increase", SE = "none", confidence = NULL)
+  expect_error(expect_equal(TauBC$Est, NOMs$Est[2]))
+  
+  expect_warning(Tau_BC(A, B, pretest_trend = .05))
+  
+})
 
 library(Kendall)
 source("http://ktarlow.com/stats/r/bctau.txt")
@@ -112,7 +130,7 @@ test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {
       ES = "all",
       warn = FALSE
     ) %>%
-    filter(ES == "Tau-BC") %>%
+    dplyr::filter(ES == "Tau-BC") %>%
     select(-ES) %>%
     rename_with(.fn = ~ paste("Tau-BC", ., sep = "_"), .cols = -Case_pseudonym)
   
