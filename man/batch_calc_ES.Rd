@@ -62,12 +62,12 @@ will be used.}
 
 \item{ES}{character string or character vector specifying which effect size
 index or indices to calculate. Available effect sizes are \code{"LRRd"},
-\code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"}, \code{"IRD"},
-\code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"}, and
-\code{"Tau-U"}. Set to \code{"all"} for all available effect sizes. Set to
-\code{"parametric"} for all parametric effect sizes. Set to \code{"NOM"}
-for all non-overlap measures. Defaults to calculating the LRRd, LRRi, SMD,
-and Tau indices.}
+\code{"LRRi"}, \code{"LRM"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"},
+\code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"},
+\code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for all available
+effect sizes. Set to \code{"parametric"} for all parametric effect sizes.
+Set to \code{"NOM"} for all non-overlap measures. Defaults to calculating
+the LRRd, LRRi, SMD, and Tau indices.}
 
 \item{improvement}{character string either indicating the direction of
 uniform improvement ("increase" or "decrease") or the variable name of a

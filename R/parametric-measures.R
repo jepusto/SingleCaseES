@@ -563,3 +563,107 @@ calc_SMD <- function(A_data, B_data,
   res
 
 }
+
+# Calculate statistics to be used in calculating log ratio of medians
+
+stats_LRM <- function(data, delta_method = FALSE, warn = TRUE) {
+  
+  n <- length(data)
+  median_est <- median(data)
+  o1 <- pmax(round(n / 2 - sqrt(n)), 1L)
+  o2 <- n - o1 + 1
+  p <- pbinom(o1 - 1, size = n, prob = .5)
+  z0 <- qnorm(1 - p)
+  y <- sort(data)
+  L1 <- y[o1]
+  U1 <- y[o2]
+  
+  if (delta_method) {
+    var_log_median <- ((U1 - L1) / (2 * z0))^2 / (median_est)^2
+  } else {
+    var_log_median <- ((log(U1) - log(L1)) / (2 * z0))^2  
+  }
+  
+  if (warn & n < 2) {
+    warning("This phase contains less than 2 observations.")
+  }
+  
+  data.frame(log_median = log(median_est), var_log_median = var_log_median)
+}
+
+#' @title Log ratio of medians
+#'
+#' @description Calculates the log ratio of medians effect size index
+#'
+#' @inheritParams calc_ES
+#' @param delta_method logical value indicating whether to use delta method to
+#'   approximate variance of log ratio of medians. Default is \code{FALSE},
+#'   which estimates the variance based on the fact that the logarithm of a
+#'   median is the same as the median of the log-transformed outcomes. If
+#'   \code{TRUE}, the variance of log ratio of medians is approximated using
+#'   delta method.
+#'
+#' @details The ratio of medians effect size parameter is defined as the ratio
+#'   of the medians of the outcomes in different phases. The log ratio of the
+#'   medians is the natural logarithm of the ratio of medians. This effect size
+#'   is appropriate for outcomes that are skewed, symmetric but highly
+#'   leptokurtic, or right-censored (Bonett & Price Jr, 2020).
+#'
+#' @references Bonett, D. G. & Price Jr, R. M. (2020). Confidence Intervals for
+#'   Ratios of Means and Medians. \emph{Journal of Educational and Behavioral
+#'   Statistics, 45}(6), 750--770. doi:\doi{10.3102/1076998620934125}
+#'
+#'  Bonett, D. G., & Price, R. M. (2020). Interval estimation for linear
+#'  functions of medians in within-subjects and mixed designs. \emph{British
+#'  Journal of Mathematical and Statistical Psychology, 73}(2), 333-346.
+#'  doi:\doi{10.1111/bmsp.12171}
+#'
+#' @return A data frame containing the estimate, standard error, and confidence
+#'   interval.
+#'
+#' @examples
+#' A <- c(20, 20, 26, 25, 22, 23)
+#' B <- c(28, 25, 24, 27, 30, 30, 29)
+#' LRM(A_data = A, B_data = B)
+#'
+#' @export
+
+
+LRM <- function(A_data, B_data, condition, outcome, baseline_phase,
+                improvement = "increase",
+                delta_method = FALSE,
+                confidence = .95) {
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, 
+          baseline_phase = baseline_phase,
+          ES = "LRM", improvement = improvement,
+          delta_method = delta_method, confidence = confidence)
+}
+
+
+calc_LRM <- function(A_data, B_data, 
+                     improvement = "increase",
+                     delta_method = FALSE,
+                     confidence = .95, warn = TRUE, ...) {
+  
+  stats_A <- stats_LRM(data = A_data, delta_method = delta_method, warn = warn)
+  stats_B <- stats_LRM(data = B_data, delta_method = delta_method, warn = warn)
+  
+  LRM <- stats_B$log_median - stats_A$log_median
+  var_LRM <- stats_A$var_log_median + stats_B$var_log_median
+  SE_LRM <- sqrt(var_LRM)
+  
+  res <- data.frame(ES = "LRM", Est = LRM, 
+                    SE = SE_LRM, stringsAsFactors = FALSE)
+  
+  if (!is.null(confidence)) {
+    CI <- LRM + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE_LRM
+    res$CI_lower <- CI[1]
+    res$CI_upper <- CI[2] 
+    
+  }
+  
+  res
+  
+}

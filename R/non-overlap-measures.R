@@ -260,6 +260,153 @@ calc_Tau_U <- function(A_data, B_data, improvement = "increase", ...) {
   
 }
 
+
+#' @title Tau-BC
+#'
+#' @description Calculates the baseline-corrected Tau index (Tarlow 2017).
+#'
+#' @param SE character value indicating which formula to use for calculating the
+#'   standard error of Tau-BC, with possible values \code{"unbiased"} for the
+#'   exactly unbiased estimator, \code{"Hanley"} for the Hanley-McNeil
+#'   estimator, \code{"null"} for the (known) variance under the null hypothesis
+#'   of no effect, or \code{"none"} to not calculate a standard error. Defaults
+#'   to "unbiased". Note that the "unbiased" standard error is unbiased for
+#'   \code{\link{Tau}}, but not necessarily unbiased for \code{\link{Tau_BC}}.
+#'   None of the standard error formulas account for the additional uncertainty
+#'   due to use of the baseline trend correction.
+#' @param pretest_trend significance level for the initial baseline trend test.
+#'   The raw data are corrected and \code{\link{Tau_BC}} is calculated only if
+#'   the baseline trend is statistically significant. Otherwise,
+#'   \code{\link{Tau_BC}} is equal to \code{\link{Tau}}. Default is
+#'   \code{FALSE}, which always adjusts for the baseline trend.
+#' @param report_correction logical value indicating whether to report the
+#'   baseline corrected slope and intercept values. Default is \code{FALSE}.
+#' @inheritParams NAP
+#'
+#' @details Tau-BC is an elaboration of the \code{\link{Tau}} that includes a
+#'   correction for baseline trend. The calculation of Tau-BC involves two or
+#'   three steps, depending on the \code{pretest_trend} argument.
+#'
+#'   If \code{pretest_trend = FALSE} (the default), the first step involves
+#'   adjusting the outcomes for baseline trend estimated using Theil-Sen
+#'   regression. In the second step, the residuals from Theil-Sen regression are
+#'   used to calculate the \code{\link{Tau}} (non-overlap) index.
+#'
+#'   Alternately, \code{pretest_trend} can be set equal to a significance level
+#'   between 0 and 1 (e.g. \code{pretest_trend = .05}, as suggested by Tarlow,
+#'   2017). In this case, the first step involves a significance test for the
+#'   slope of the baseline trend based on Kendall's rank correlation. If the
+#'   slope is not significantly different from zero, then no baseline trend
+#'   adjustment is made and Tau-BC is set equal to \code{\link{Tau}}. If the
+#'   slope is significantly different from zero, then in the second step, the
+#'   outcomes are adjusted for baseline trend using Theil-Sen regression and, in
+#'   the third step, the residuals from Theil-Sen regression are used to
+#'   calculate the \code{\link{Tau}} (non-overlap) index.
+#'
+#'   Note that the standard error formulas are based on the standard errors for
+#'   \code{\link{Tau}} (non-overlap) and they do not account for the additional
+#'   uncertainty due to use of the baseline trend correction (nor to the
+#'   pre-test for statistical significance of baseline trend, if used).
+#'
+#' @references Tarlow, K. R. (2017). An improved rank correlation effect size
+#'   statistic for single-case designs: Baseline corrected Tau. \emph{Behavior
+#'   modification, 41}(4), 427-467. doi:\doi{10.1177/0145445516676750}
+#'
+#' @export
+#'
+#' @return A list containing the estimate, standard error, and/or confidence
+#'   interval.
+#'
+#' @examples
+#' A <- c(20, 20, 26, 25, 22, 23)
+#' B <- c(28, 25, 24, 27, 30, 30, 29)
+#' Tau_BC(A_data = A, B_data = B)
+#'
+#' @importFrom utils combn
+#'   
+
+Tau_BC <- function(A_data, B_data, condition, outcome, 
+                  baseline_phase = unique(condition)[1],
+                  improvement = "increase", 
+                  SE = "unbiased", confidence = .95,
+                  pretest_trend = FALSE,
+                  report_correction = FALSE) {
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, 
+          baseline_phase = baseline_phase,
+          ES = "Tau_BC", improvement = improvement,
+          SE = SE, confidence = confidence,
+          pretest_trend = pretest_trend,
+          report_correction = report_correction)
+}
+
+calc_Tau_BC <- function(A_data, B_data, 
+                        improvement = "increase", 
+                        SE = "unbiased", CI = TRUE,
+                        confidence = .95, pretest_trend = FALSE,
+                        report_correction = FALSE, 
+                        ...) {
+  
+  if (improvement=="decrease") {
+    A_data <- -1 * A_data
+    B_data <- -1 * B_data
+  }
+  
+  m <- length(A_data)
+  n <- length(B_data)
+  session_A <- 1:m
+  session_B <- (m + 1) : (m + n)
+  
+  if (pretest_trend > 0 & pretest_trend < 1) {
+    
+    if (!requireNamespace("Kendall", quietly = TRUE)) {
+      stop("The baseline trend test requires the Kendall package. Please install it.", call. = FALSE)
+    }
+    
+    pval_slope_A <- Kendall::Kendall(A_data, session_A)$sl
+    
+    if (pval_slope_A > pretest_trend) {
+      
+      message("The baseline trend is not statistically significant. Tau is calculated without trend correction.")
+      
+      res <- calc_Tau(A_data = A_data, B_data = B_data, 
+                      improvement = improvement, SE = SE, 
+                      CI = CI, confidence = confidence)
+      res$ES <- "Tau"
+      return(res)
+    }
+    
+  } else if (pretest_trend != FALSE) {
+    
+    stop("The pretest_trend argument must be FALSE or a number between 0 and 1.")
+    
+  } else {
+    
+    slopes <- apply(combn(m, 2), 2, function(x) diff(A_data[x]) / diff(session_A[x]))
+    slope <- median(slopes)
+    intercept <- median(A_data - session_A * slope)
+    
+    A_data_corrected <- A_data - intercept - slope * session_A
+    B_data_corrected <- B_data - intercept - slope * session_B
+    
+    # Use calc_Tau()
+    res <- calc_Tau(A_data = A_data_corrected, B_data = B_data_corrected,
+                    improvement = improvement, SE = SE, 
+                    CI = CI, confidence = confidence)
+    res$ES <- "Tau-BC"
+    
+    if (report_correction) {
+      res$slope <- slope
+      res$intercept <- intercept
+    }
+    
+    return(res)
+    
+  }
+  
+}
+
 #' @title Percentage of non-overlapping data
 #'   
 #' @description Calculates the percentage of non-overlapping data index 

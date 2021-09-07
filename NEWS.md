@@ -1,6 +1,7 @@
 # SingleCaseES 0.4.4.9000
 
 * batch_calc_ES() gains an argument aggregate, for post-processing effect sizes by averaging across the levels of a variable.
+* Added log ratio of medians effect size measure and baseline-corrected Tau effect size measure.
 
 # SingleCaseES 0.4.4
 

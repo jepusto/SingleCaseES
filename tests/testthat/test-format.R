@@ -18,8 +18,8 @@ test_that("Long format works properly.", {
 
   expect_identical(names(ES_long), c("ES","Est","SE","CI_lower","CI_upper"))
   expect_true(all(is.na(with(ES_long, SE[ES %in% c("IRD","PAND","PND","PEM","Tau-U")]))))
-  expect_true(all(!is.na(with(ES_long, SE[ES %in% c("LRRd","LRRi","LOR","SMD","NAP","Tau")]))))
-  expect_identical(ES_long$ES, sort(c("LRRd","LRRi","LOR","SMD","NAP","IRD","PAND","PND","PEM","Tau","Tau-U")))
+  expect_true(all(!is.na(with(ES_long, SE[ES %in% c("LRRd","LRRi","LOR","SMD","NAP","Tau", "Tau-BC")]))))
+  expect_identical(ES_long$ES, sort(c("LRRd","LRRi","LOR","SMD","LRM","NAP","IRD","PAND","PND","PEM","Tau","Tau-U","Tau-BC")))
 
 })
 
@@ -69,7 +69,7 @@ test_that("Wide format works for ES = 'parametric', when confidence is specified
     spread(q, v, fill = NA) %>%
     select(ES, Est, SE, CI_lower, CI_upper)
   
-  parametric_long <- ES_long %>% dplyr::filter(ES %in% c("LOR","LRRd","LRRi","SMD"))
+  parametric_long <- ES_long %>% dplyr::filter(ES %in% c("LOR","LRRd","LRRi","SMD","LRM"))
   
   expect_identical(parametric_long, ES_to_long)
 })
@@ -87,7 +87,7 @@ test_that("Wide format works for ES = 'parametric', when confidence is NULL", {
     spread(q, v, fill = NA) %>%
     select(ES, Est, SE)
   
-  parametric_long <- ES_long %>% dplyr::filter(ES %in% c("LOR","LRRd","LRRi","SMD"))
+  parametric_long <- ES_long %>% dplyr::filter(ES %in% c("LOR","LRRd","LRRi","SMD","LRM"))
   
   expect_identical(parametric_long$ES, ES_to_long$ES)
   expect_identical(parametric_long$Est, ES_to_long$Est)
@@ -107,7 +107,7 @@ test_that("Wide format works for ES = 'NOM', when confidence is specified", {
     spread(q, v, fill = NA)  %>%
     select(ES, Est, SE, CI_lower, CI_upper)
   
-  NOM_long <- ES_long %>% dplyr::filter(ES %in% c("NAP","IRD","PAND","PND","PEM","Tau","Tau-U"))
+  NOM_long <- ES_long %>% dplyr::filter(ES %in% c("NAP","IRD","PAND","PND","PEM","Tau","Tau-U","Tau-BC"))
   
   expect_identical(NOM_long, ES_to_long)
 })
@@ -125,7 +125,7 @@ test_that("Wide format works for ES = 'NOM', when confidence is NULL", {
     separate(q, into = c("ES","q"), sep = "_", extra = "merge") %>%
     spread(q, v, fill = NA)
   
-  NOM_long <- ES_long %>% dplyr::filter(ES %in% c("NAP","IRD","PAND","PND","PEM","Tau","Tau-U"))
+  NOM_long <- ES_long %>% dplyr::filter(ES %in% c("NAP","IRD","PAND","PND","PEM","Tau","Tau-U","Tau-BC"))
   
   expect_identical(NOM_long$ES, ES_to_long$ES)
   expect_identical(NOM_long$Est, ES_to_long$Est)
