@@ -292,15 +292,16 @@ calc_Tau_U <- function(A_data, B_data, improvement = "increase", ...) {
 #'   regression. In the second step, the residuals from Theil-Sen regression are
 #'   used to calculate the \code{\link{Tau}} (non-overlap) index.
 #'
-#'   If \code{pretest_trend = a}, for some significance level \code{a} between 0
-#'   and 1, then the firs step involves a significance test for the slope of the
-#'   baseline trend based on Kendall's rank correlation. If the slope is not
-#'   significantly different from zero, then no baseline trend adjustment is
-#'   made and Tau-BC is set equal to \code{\link{Tau}}. If the slope is
-#'   significantly different from zero, then in the second step, the outcomes
-#'   are adjusted for baseline trend using Theil-Sen regression and, in the
-#'   third step, the residuals from Theil-Sen regression are used to calculate
-#'   the \code{\link{Tau}} (non-overlap) index.
+#'   Alternately, \code{pretest_trend} can be set equal to a significance level
+#'   between 0 and 1 (e.g. \code{pretest_trend = .05}, as suggested by Tarlow,
+#'   2017). In this case, the first step involves a significance test for the
+#'   slope of the baseline trend based on Kendall's rank correlation. If the
+#'   slope is not significantly different from zero, then no baseline trend
+#'   adjustment is made and Tau-BC is set equal to \code{\link{Tau}}. If the
+#'   slope is significantly different from zero, then in the second step, the
+#'   outcomes are adjusted for baseline trend using Theil-Sen regression and, in
+#'   the third step, the residuals from Theil-Sen regression are used to
+#'   calculate the \code{\link{Tau}} (non-overlap) index.
 #'
 #'   Note that the standard error formulas are based on the standard errors for
 #'   \code{\link{Tau}} (non-overlap) and they do not account for the additional
