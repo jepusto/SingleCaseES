@@ -72,7 +72,7 @@ convert_to_wide <- function(res, ES_names) {
 #'   unique value of \code{condition}.
 #' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
-#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"LRM"}, \code{"NAP"},
+#'   \code{"LRRi"}, \code{"LRM"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"},
 #'   \code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"},
 #'   \code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for all available
 #'   effect sizes. Set to \code{"parametric"} for all parametric effect sizes.
@@ -216,7 +216,7 @@ calc_ES <- function(A_data, B_data,
 #'   will be used.
 #' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
-#'   \code{"LRRi"}, \code{"LOR"}, \code{"SMD"}, \code{"LRM"}, \code{"NAP"},
+#'   \code{"LRRi"}, \code{"LRM"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"},
 #'   \code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"},
 #'   \code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for all available
 #'   effect sizes. Set to \code{"parametric"} for all parametric effect sizes.

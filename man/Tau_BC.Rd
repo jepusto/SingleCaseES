@@ -49,9 +49,9 @@ due to use of the baseline trend correction.}
 
 \item{pretest_trend}{significance level for the initial baseline trend test.
 The raw data are corrected and \code{\link{Tau_BC}} is calculated only if
-the baseline trend is statistically significant. \code{\link{Tau}} is
-calculated otherwise. Default is \code{FALSE}, which always adjusts for the
-baseline trend.}
+the baseline trend is statistically significant. Otherwise,
+\code{\link{Tau_BC}} is equal to \code{\link{Tau}}. Default is
+\code{FALSE}, which always adjusts for the baseline trend.}
 
 \item{report_correction}{logical value indicating whether to report the
 baseline corrected slope and intercept values. Default is \code{FALSE}.}
@@ -65,13 +65,28 @@ Calculates the baseline-corrected Tau index (Tarlow 2017).
 }
 \details{
 Tau-BC is an elaboration of the \code{\link{Tau}} that includes a
-  correction for baseline trend. The calculation of Tau_BC involves two
-  steps. First, Theil-Sen regression is applied to remove the baseline trend
-  at the baseline and treatment phases. Second, the residuals from Theil-Sen
-  regression are used to calculate the \code{\link{Tau}} (non-overlap) index.
+  correction for baseline trend. The calculation of Tau-BC involves two or
+  three steps, depending on the \code{pretest_trend} argument.
+
+  If \code{pretest_trend = FALSE} (the default), the first step involves
+  adjusting the outcomes for baseline trend estimated using Theil-Sen
+  regression. In the second step, the residuals from Theil-Sen regression are
+  used to calculate the \code{\link{Tau}} (non-overlap) index.
+
+  If \code{pretest_trend = a}, for some significance level \code{a} between 0
+  and 1, then the firs step involves a significance test for the slope of the
+  baseline trend based on Kendall's rank correlation. If the slope is not
+  significantly different from zero, then no baseline trend adjustment is
+  made and Tau-BC is set equal to \code{\link{Tau}}. If the slope is
+  significantly different from zero, then in the second step, the outcomes
+  are adjusted for baseline trend using Theil-Sen regression and, in the
+  third step, the residuals from Theil-Sen regression are used to calculate
+  the \code{\link{Tau}} (non-overlap) index.
+
   Note that the standard error formulas are based on the standard errors for
   \code{\link{Tau}} (non-overlap) and they do not account for the additional
-  uncertainty due to use of the baseline trend correction.
+  uncertainty due to use of the baseline trend correction (nor to the
+  pre-test for statistical significance of baseline trend, if used).
 }
 \examples{
 A <- c(20, 20, 26, 25, 22, 23)
