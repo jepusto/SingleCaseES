@@ -40,7 +40,7 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
   TauBC <- Tau_BC(A, B, improvement = "increase", SE = "none", confidence = NULL)
   expect_error(expect_equal(TauBC$Est, NOMs$Est[2]))
   
-  expect_warning(Tau_BC(A, B, pretest_trend = .05))
+  expect_message(Tau_BC(A, B, pretest_trend = .05))
   
 })
 
