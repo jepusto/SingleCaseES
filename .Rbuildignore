@@ -8,3 +8,6 @@ README.md
 .travis.yml
 inst/shiny-examples/SCD-effect-sizes/rsconnect/shinyapps.io/jepusto/SCD-effect-sizes.dcf
 ^cran-comments\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
