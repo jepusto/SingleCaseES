@@ -7,7 +7,7 @@ library(rlang, warn.conflicts = FALSE, quietly = TRUE)
 
 source("mappings.R")
 
-statistical_indices <- c("NAP","Tau","SMD","LRRi", "LRRd", "LOR")
+statistical_indices <- c("NAP","Tau", "SMD","LRRi", "LRRd", "LOR", "LRM")
 
 full_names <- list(IRD = "Robust Improvement Rate Difference",
                    NAP = "Non-overlap of All Pairs",
@@ -15,10 +15,12 @@ full_names <- list(IRD = "Robust Improvement Rate Difference",
                    PEM = "Percent Exceeding the Median",
                    PND = "Percentage of Non-overlapping Data",
                    Tau = "Tau",
+                   Tau_BC = "Tau-BC",
                    Tau_U = "Tau-U",
                    LOR = "Log Odds Ratio",
                    LRRd = "Log Response Ratio (decreasing)",
                    LRRi = "Log Response Ratio (increasing)",
+                   LRM = "Log Ratio of Medians",
                    SMD = "Standardized Mean Difference (within-case)")
 
 
@@ -57,6 +59,12 @@ shinyServer(function(input, output, session) {
   ES <- reactive({
     index <- c("Non-overlap" = input$NOM_ES, "Parametric" = input$parametric_ES)[[input$ES_family]]
     
+    if (input$baseline_check == "No") {
+      pretest_trend <- FALSE
+    } else {
+      pretest_trend <- input$significance_level
+    }
+    
     arg_vals <- list(A_data = dat()$A, 
                      B_data = dat()$B,
                      ES = index,
@@ -67,7 +75,8 @@ shinyServer(function(input, output, session) {
                      scale = input$outScale,
                      observation_length = input$obslength,
                      intervals = input$intervals,
-                     D_const = input$lrrfloor
+                     D_const = input$lrrfloor,
+                     pretest_trend = pretest_trend
                      )
     
     est <- tryCatch(do.call(calc_ES, arg_vals), warning = function(w) w, error = function(e) e)
@@ -75,6 +84,12 @@ shinyServer(function(input, output, session) {
     if (index %in% c("LRRi", "LRRd", "LOR")){
       validate(
         need(all(c(dat()$A, dat()$B) >= 0), message = "For the log response or log odds ratio, all data must be greater than or equal to zero. ")
+      )
+    }
+    
+    if (index == "LRM"){
+      validate(
+        need(all(c(median(dat()$A), median(dat()$B)) > 0), message = "For the log ratio of medians, medians of phase A or B must be greater than zero. ")
       )
     }
     
@@ -125,6 +140,21 @@ shinyServer(function(input, output, session) {
         }
         note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
         HTML(paste(Est_txt, SE_txt, CI_txt, pct_txt, note_txt, sep = "<br/>"))
+        
+      } else if (ES()$index == "Tau_BC") {
+        
+        if (ES()$est$ES == "Tau-BC") {
+          Est_txt <- paste("Effect size estimate:", fmt(est$Est[1]))
+          SE_txt <- paste("Standard error:", fmt(est$SE[1]))
+          CI_txt <- paste0(input$confidence,"% CI: [", fmt(est$CI_lower[1]), ", ", fmt(est$CI_upper[1]), "]")
+          note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
+          HTML(paste(Est_txt, SE_txt, CI_txt, note_txt, sep = "<br/>"))
+        } else {
+          Est_txt <- paste("Effect size estimate:", fmt(est$Est))
+          note_txt <- strong(style="color:red", "The baseline trend is not statistically significant. Tau is calculated without trend correction.")
+          HTML(paste(Est_txt, note_txt, sep = "<br/>"))
+        }
+        
       } else {
         Est_txt <- paste("Effect size estimate:", fmt(est$Est))
         HTML(Est_txt)
@@ -293,6 +323,12 @@ shinyServer(function(input, output, session) {
       improvement <- input$bimprovement
     }
     
+    if (input$bbaseline_check == "No") {
+      pretest_trend <- FALSE
+    } else {
+      pretest_trend <- input$bsignificance_level
+    }
+    
     batch_calc_ES(dat = datFile(), 
                   grouping = input$b_clusters,
                   condition = input$b_phase, 
@@ -306,6 +342,7 @@ shinyServer(function(input, output, session) {
                   scale = scale_val,
                   std_dev = input$bSMD_denom,
                   confidence = input$bconfidence / 100,
+                  pretest_trend = pretest_trend,
                   format = input$resultsformat)
 
   })

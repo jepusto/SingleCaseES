@@ -1,6 +1,6 @@
 ### Single-case effect size calculator
 
-Version 0.5.1
+Version 0.5.1.9000
 
 Designed and built by James E. Pustejovsky & Daniel M. Swan
 
