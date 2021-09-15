@@ -348,11 +348,6 @@ calc_Tau_BC <- function(A_data, B_data,
                         report_correction = FALSE, 
                         ...) {
   
-  if (improvement=="decrease") {
-    A_data <- -1 * A_data
-    B_data <- -1 * B_data
-  }
-  
   m <- length(A_data)
   n <- length(B_data)
   session_A <- 1:m
@@ -392,7 +387,7 @@ calc_Tau_BC <- function(A_data, B_data,
     
   # Use calc_Tau()
   res <- calc_Tau(A_data = A_data_corrected, B_data = B_data_corrected,
-                  improvement = "increase", SE = SE, 
+                  improvement = improvement, SE = SE, 
                   CI = CI, confidence = confidence)
   res$ES <- "Tau-BC"
     

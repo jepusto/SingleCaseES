@@ -652,6 +652,7 @@ calc_LRM <- function(A_data, B_data,
   
   LRM <- stats_B$log_median - stats_A$log_median
   if (improvement=="decrease") LRM <- -LRM
+  
   var_LRM <- stats_A$var_log_median + stats_B$var_log_median
   SE_LRM <- sqrt(var_LRM)
   
