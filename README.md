@@ -1,13 +1,14 @@
-[![Travis-CI Build
-Status](https://travis-ci.org/jepusto/SingleCaseES.svg?branch=master)](https://travis-ci.org/jepusto/SingleCaseES)
-[![Coverage
-Status](https://img.shields.io/codecov/c/github/jepusto/SingleCaseES/master.svg)](https://codecov.io/github/jepusto/SingleCaseES?branch=master)
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/jepusto/SingleCaseES/workflows/R-CMD-check/badge.svg)](https://github.com/jepusto/SingleCaseES/actions)
+[![Codecov
+Status](https://codecov.io/gh/jepusto/SingleCaseES/branch/master/graph/badge.svg)](https://codecov.io/gh/jepusto/SingleCaseES?branch=master)
 [![](http://www.r-pkg.org/badges/version/SingleCaseES)](https://CRAN.R-project.org/package=SingleCaseES)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/SingleCaseES)](https://CRAN.R-project.org/package=SingleCaseES)
 [![](http://cranlogs.r-pkg.org/badges/last-month/SingleCaseES)](https://CRAN.R-project.org/package=SingleCaseES)
+<!-- badges: end -->
 
-SingleCaseES: A calculator for single-case effect size indices
-==============================================================
+# SingleCaseES: A calculator for single-case effect size indices
 
 This package provides R functions for calculating basic effect size
 indices for single-case designs, including several non-overlap measures
@@ -26,6 +27,7 @@ The available **non-overlap indices** are:
 -   Percentage exceeding the median (PEM)
 -   Non-overlap of all pairs (NAP)
 -   Tau non-overlap (Tau)
+-   Baseline-corrected Tau (Tau-BC)
 -   Tau-U (including baseline trend adjustment)
 
 The available **parametric effect sizes** are:
@@ -33,6 +35,7 @@ The available **parametric effect sizes** are:
 -   Within-case standardized mean difference
 -   Log response ratio (decreasing and increasing)
 -   Log odds ratio
+-   Log ratio of medians
 -   The gradual effects model, which can be used to estimate log
     response ratios or log odds ratios in the presence of time trends
     during treatment and return-to-baseline phases.
@@ -44,18 +47,16 @@ are also available as web apps hosted through
 
 -   `SCD_effect_sizes()` opens an interactive calculator for the basic
     non-overlap indices and parametric effect sizes. It is also
-    available at
-    <a href="https://jepusto.shinyapps.io/SCD-effect-sizes" class="uri">https://jepusto.shinyapps.io/SCD-effect-sizes</a>
+    available at <https://jepusto.shinyapps.io/SCD-effect-sizes>
 -   `shine_gem_scd()` opens an interactive calculator for the gradual
     effects model. It is also available at
-    <a href="https://jepusto.shinyapps.io/gem-scd" class="uri">https://jepusto.shinyapps.io/gem-scd</a>
+    <https://jepusto.shinyapps.io/gem-scd>
 
 ***Please note that the web apps should only be used for demonstration
 purposes***. For research purposes, please install the R package and run
 the GUI through RStudio.
 
-Installation
-============
+# Installation
 
 The package is available on the Comprehensive R Archive Network. To
 install it, you will first need to [install
@@ -80,8 +81,7 @@ install.packages("purrrlyr")
 devtools::install_github("jepusto/SingleCaseES", build_vignettes = TRUE, force = TRUE)
 ```
 
-Getting started
-===============
+# Getting started
 
 The package includes two vignettes that demonstrate the syntax of the
 main functions and provide precise definitions and details about how
@@ -100,8 +100,7 @@ open the introductory vignette:
 vignette("Using-SingleCaseES")
 ```
 
-Graphical user interface
-========================
+# Graphical user interface
 
 To use the graphical user interface for basic effect sizes, you must
 first ensure that the `SingleCaseES` package is installed (following the
@@ -126,23 +125,20 @@ shine_gem_scd()
 
 The calculator should then open in your default web browser.
 
-Citations
-=========
+# Citations
 
 Please cite this R package as follows:
 
-> Pustejovsky, J. E. & Swan, D. M. (2018). SingleCaseES: A calculator
-> for single-case effect size indices. R package version 0.4.1.999.
-> Retrieved from
-> <a href="https://github.com/jepusto/SingleCaseES" class="uri">https://github.com/jepusto/SingleCaseES</a>
+> Pustejovsky, J. E., Chen, M., & Swan, D. M. (2021). SingleCaseES: A
+> calculator for single-case effect size indices. R package version
+> 0.4.4.9000. Retrieved from <https://github.com/jepusto/SingleCaseES>
 
 Please cite the web applications as follows:
 
-> Pustejovsky, J. E. & Swan, D. M. (2018). Single-case effect size
-> calculator (Version 0.4.0) \[Web application\]. Retrieved from
-> <a href="https://jepusto.shinyapps.io/SCD-effect-sizes" class="uri">https://jepusto.shinyapps.io/SCD-effect-sizes</a>
+> Pustejovsky, J. E., Chen, M., & Swan, D. M. (2021). Single-case effect
+> size calculator (Version 0.4.4.9000) \[Web application\]. Retrieved
+> from <https://jepusto.shinyapps.io/SCD-effect-sizes>
 
-> Swan, D. M. & Pustejovsky, J. E. (2017). gem\_scd: A web-based
+> Swan, D. M. & Pustejovsky, J. E. (2017). gem_scd: A web-based
 > calculator for the Gradual Effects Model (Version 0.1.0) \[Web
-> application\]. Retrieved from:
-> <a href="https://jepusto.shinyapps.io/gem-scd" class="uri">https://jepusto.shinyapps.io/gem-scd</a>
+> application\]. Retrieved from: <https://jepusto.shinyapps.io/gem-scd>

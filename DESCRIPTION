@@ -4,7 +4,8 @@ Title: A Calculator for Single-Case Effect Sizes
 Version: 0.4.4.9000
 Authors@R: c(
   person(c("James","E."), "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre")),
-  person(c("Daniel","M."), "Swan", email = "dswan@utexas.edu", role = "aut")
+  person("Man", "Chen", email = "manchen9005@gmail.com", role = "aut"),
+  person(c("Daniel","M."), "Swan", email = "dms031000@gmail.com", role = "aut")
   )
 Description: 
   Provides R functions for calculating basic effect size indices for 
@@ -27,17 +28,18 @@ Imports:
   tidyselect,
   utils
 Suggests:
-  spelling, 
-  shiny,
-  ggplot2,
-  purrrlyr,
-  testthat,
-  markdown,
-  knitr,
-  rmarkdown,
-  prettydoc,
-  Kendall,
-  kableExtra
+    spelling,
+    shiny,
+    ggplot2,
+    purrrlyr,
+    testthat,
+    markdown,
+    knitr,
+    rmarkdown,
+    prettydoc,
+    Kendall,
+    kableExtra,
+    covr
 LazyData: TRUE
 RoxygenNote: 7.1.1
 Encoding: UTF-8
