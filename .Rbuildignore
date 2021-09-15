@@ -12,3 +12,4 @@ inst/shiny-examples/SCD-effect-sizes/rsconnect/shinyapps.io/jepusto/SCD-effect-s
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^codecov\.yml$
