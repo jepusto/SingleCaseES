@@ -1,4 +1,5 @@
 library(shiny)
+library(rclipboard)
 source("mappings.R")
 
 ui <- navbarPage(title = "Single-case effect size calculator",
@@ -172,6 +173,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                        sidebarPanel(
                                          style = "max-height: 800px; overflow-y: auto",
                                          uiOutput("clusterPhase"),
+                                         uiOutput("weightingScheme"),
                                          uiOutput("baseDefine"),
                                          uiOutput("treatDefine"),
                                          uiOutput("outOrderImp"),
@@ -189,8 +191,8 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LOR", "LRRd", "LRRi", "LRM", "SMD"),inline = TRUE),
                                          conditionalPanel(condition = "input.bESno.includes('Tau_BC')", 
                                                           radioButtons("bbaseline_check", label = "Baseline trend test", 
-                                                                       choices = c("No" = "no", "Yes" = "yes"), inline = TRUE)),
-                                         conditionalPanel(condition = "input.bESno.includes('Tau_BC') & input.bbaseline_check == 'yes'",
+                                                                       choices = c("No", "Yes"), inline = TRUE)),
+                                         conditionalPanel(condition = "input.bESno.includes('Tau_BC') & input.bbaseline_check == 'Yes'",
                                                           numericInput("bsignificance_level", 
                                                                        label = "Significance level for the baseline trend test", 
                                                                        value = 0.05, 
@@ -221,7 +223,13 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                        )
                                     )
                                      
-                            )
+                            ),
+                            
+                            tabPanel("Syntax for R",
+                                     rclipboardSetup(),
+                                     uiOutput("clip"),
+                                     verbatimTextOutput("syntax")
                           )
                           
+                      )
                  ))

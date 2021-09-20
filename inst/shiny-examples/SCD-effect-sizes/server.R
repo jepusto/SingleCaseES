@@ -6,6 +6,7 @@ library(SingleCaseES, warn.conflicts = FALSE, quietly = TRUE)
 library(rlang, warn.conflicts = FALSE, quietly = TRUE)
 
 source("mappings.R")
+source("helper-functions.R", local = TRUE)
 
 statistical_indices <- c("NAP","Tau", "SMD","LRRi", "LRRd", "LOR", "LRM")
 
@@ -127,10 +128,11 @@ shinyServer(function(input, output, session) {
       pct <- function(x) formatC(x, digits = input$digits - 2, format = "f")
       est <- ES()$est
       
-      if (ES()$index %in% statistical_indices) {
+      if (ES()$index %in% statistical_indices | ES()$index == "Tau_BC") {
         Est_txt <- paste("Effect size estimate:", fmt(est$Est[1]))
         SE_txt <- paste("Standard error:", fmt(est$SE[1]))
         CI_txt <- paste0(input$confidence,"% CI: [", fmt(est$CI_lower[1]), ", ", fmt(est$CI_upper[1]), "]")
+        
         if (nrow(est) > 1) {
           pct_est <- paste("<br/>Percentage change:", pct(est$Est[2]))
           pct_CI <- paste0(input$confidence,"% CI: [", pct(est$CI_lower[2]), ", ", pct(est$CI_upper[2]), "]")
@@ -138,22 +140,15 @@ shinyServer(function(input, output, session) {
         } else {
           pct_txt <- NULL
         }
-        note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
-        HTML(paste(Est_txt, SE_txt, CI_txt, pct_txt, note_txt, sep = "<br/>"))
         
-      } else if (ES()$index == "Tau_BC") {
-        
-        if (ES()$est$ES == "Tau-BC") {
-          Est_txt <- paste("Effect size estimate:", fmt(est$Est[1]))
-          SE_txt <- paste("Standard error:", fmt(est$SE[1]))
-          CI_txt <- paste0(input$confidence,"% CI: [", fmt(est$CI_lower[1]), ", ", fmt(est$CI_upper[1]), "]")
-          note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
-          HTML(paste(Est_txt, SE_txt, CI_txt, note_txt, sep = "<br/>"))
+        if (ES()$index == "Tau_BC" & ES()$est$ES == "Tau") {
+          note_txt_TauBC <- strong(style="color:red", "The baseline trend is not statistically significant. Tau is calculated without trend correction.")
         } else {
-          Est_txt <- paste("Effect size estimate:", fmt(est$Est))
-          note_txt <- strong(style="color:red", "The baseline trend is not statistically significant. Tau is calculated without trend correction.")
-          HTML(paste(Est_txt, note_txt, sep = "<br/>"))
+          note_txt_TauBC <- NULL
         }
+        
+        note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
+        HTML(paste(Est_txt, SE_txt, CI_txt, pct_txt, note_txt_TauBC, note_txt, sep = "<br/>"))
         
       } else {
         Est_txt <- paste("Effect size estimate:", fmt(est$Est))
@@ -188,16 +183,30 @@ shinyServer(function(input, output, session) {
         list(
         selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
                        selected = NULL, multiple = TRUE),
+        selectizeInput("b_aggregate", label = "Select all variables that the effect size estimates are averaged across.", choices = var_names, 
+                       selected = NULL, multiple = TRUE),
         selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = var_names[3]))
       } else {
         curMap <- exampleMapping[[input$example]]
         list(
           selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
                          selected = curMap$cluster_vars, multiple = TRUE),
+          selectizeInput("b_aggregate", label = "Select all variables that the effect size estimates are averaged across.", choices = var_names, 
+                         selected = curMap$aggregate_vars, multiple = TRUE),
           selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = curMap$condition)
         )
         
       }
+  })
+  
+  output$weightingScheme <- renderUI({
+    
+    if (is.null(input$b_aggregate)) return(NULL)
+    else {
+    radioButtons('weighting_scheme', 
+                 label = "Please select the weighting scheme.",
+                 choices = c("1/V", "Equal"))
+    }
   })
   
   output$baseDefine <- renderUI({
@@ -329,21 +338,43 @@ shinyServer(function(input, output, session) {
       pretest_trend <- input$bsignificance_level
     }
     
-    batch_calc_ES(dat = datFile(), 
-                  grouping = input$b_clusters,
-                  condition = input$b_phase, 
-                  outcome = input$b_out,
-                  session_number = input$session_number,
-                  baseline_phase = input$b_base,
-                  intervention_phase = input$b_treat,
-                  ES = c(input$bESno, input$bESpar),
-                  improvement = improvement,
-                  pct_change = input$b_pct_change,
-                  scale = scale_val,
-                  std_dev = input$bSMD_denom,
-                  confidence = input$bconfidence / 100,
-                  pretest_trend = pretest_trend,
-                  format = input$resultsformat)
+    if(is.null(input$b_aggregate)) {
+      output <- batch_calc_ES(dat = datFile(), 
+                              grouping = input$b_clusters,
+                              condition = input$b_phase, 
+                              outcome = input$b_out,
+                              session_number = input$session_number,
+                              baseline_phase = input$b_base,
+                              intervention_phase = input$b_treat,
+                              ES = c(input$bESno, input$bESpar),
+                              improvement = improvement,
+                              pct_change = input$b_pct_change,
+                              scale = scale_val,
+                              std_dev = input$bSMD_denom,
+                              confidence = input$bconfidence / 100,
+                              pretest_trend = pretest_trend,
+                              format = input$resultsformat)
+    } else{
+      output <- batch_calc_ES(dat = datFile(), 
+                              grouping = input$b_clusters,
+                              condition = input$b_phase, 
+                              outcome = input$b_out,
+                              aggregate = input$b_aggregate,
+                              weighting = input$weighting_scheme,
+                              session_number = input$session_number,
+                              baseline_phase = input$b_base,
+                              intervention_phase = input$b_treat,
+                              ES = c(input$bESno, input$bESpar),
+                              improvement = improvement,
+                              pct_change = input$b_pct_change,
+                              scale = scale_val,
+                              std_dev = input$bSMD_denom,
+                              confidence = input$bconfidence / 100,
+                              pretest_trend = pretest_trend,
+                              format = input$resultsformat)
+    }
+    
+    return(output)
 
   })
   
@@ -357,6 +388,126 @@ shinyServer(function(input, output, session) {
   )
   
   output$batchTable <- renderTable(batchModel(), na = "-")
+  
+  #------------------------------
+  # Syntax for replication in R
+  #------------------------------
+  
+  batch_syntax <- reactive({
+    header_res <- c(
+      '# Load packages',
+      'library(SingleCaseES)',
+      ''
+    )
+    
+    # read in data
+    if (input$dat_type == "example") {
+      read_res <- c(
+       parse_code_chunk("load-example", args = list(example_name = input$example)),
+       ''
+      )
+    } else {
+      inFile <- input$dat
+      read_res <- c(
+        parse_code_chunk("load-data", args = list(user_path = inFile$name, user_header = input$header, 
+                                                  user_sep = input$sep, user_quote = input$quote)),
+        ''
+      )
+    }
+    
+    # batch calculation
+      if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
+        if (input$boutScale == "series") {
+          scale_val <- input$bscalevar
+        } else{
+          scale_val <- input$boutScale
+        }
+      } else {
+        scale_val <- "other"
+      }
+      
+      if(input$bimprovement == "series") {
+        improvement <- input$bseldir
+      } else {
+        improvement <- input$bimprovement
+      }
+      
+      if (input$bbaseline_check == "No") {
+        pretest_trend <- FALSE
+      } else {
+        pretest_trend <- input$bsignificance_level
+      }
+      
+      grouping <- paste0('c(', paste(input$b_clusters, collapse=', '), ')')
+      condition <- input$b_phase
+      outcome <- input$b_out
+      aggregate <- paste0('c(', paste(input$b_aggregate, collapse=', '), ')')
+      weighting <- input$weighting_scheme
+      session_number <- input$session_number
+      baseline_phase <- input$b_base
+      intervention_phase <- input$b_treat
+      ES <- paste0('c("', paste(c(input$bESno, input$bESpar), collapse='", "'), '")')
+      improvement <- improvement
+      pct_change <- input$b_pct_change
+      scale <- scale_val
+      std_dev <- input$bSMD_denom
+      confidence <- input$bconfidence / 100
+      pretest_trend <- pretest_trend
+      format <- input$resultsformat
+      
+      if (is.null(input$b_aggregate)) {
+        output_res <-
+          c(
+          parse_code_chunk("bcalc-noaggregate-inputdata",
+                           args = list(user_grouping = grouping,
+                                       user_condition = condition,
+                                       user_outcome = outcome,
+                                       user_session_number = session_number,
+                                       user_baseline_phase = baseline_phase,
+                                       user_intervention_phase = intervention_phase,
+                                       user_ES = ES,
+                                       user_improvement = improvement,
+                                       user_pct_change = pct_change,
+                                       user_scale = scale,
+                                       user_std_dev = std_dev,
+                                       user_confidence = confidence,
+                                       user_pretest_trend = pretest_trend,
+                                       user_format = format)),
+          '')
+      } else {
+        output_res <-
+          c(
+          parse_code_chunk("bcalc-aggregate-inputdata",
+                           args = list(user_grouping = grouping,
+                                       user_condition = condition,
+                                       user_outcome = outcome,
+                                       user_aggregate = aggregate,
+                                       user_weighting = weighting,
+                                       user_session_number = session_number,
+                                       user_baseline_phase = baseline_phase,
+                                       user_intervention_phase = intervention_phase,
+                                       user_ES = ES,
+                                       user_improvement = improvement,
+                                       user_pct_change = pct_change,
+                                       user_scale = scale,
+                                       user_std_dev = std_dev,
+                                       user_confidence = confidence,
+                                       user_pretest_trend = pretest_trend,
+                                       user_format = format)),
+          '')
+      }
+    
+    res <- c(header_res, '', read_res, '', output_res)
+    paste(res, collapse = "\n")
+  })
+  
+  output$syntax <- renderPrint({
+    cat(batch_syntax(), sep = "\n")
+  })
+  
+  output$clip <- renderUI({
+    rclipButton("clipbtn", "Copy", batch_syntax(), icon("clipboard"))
+  })
   
   session$onSessionEnded(function() {
     stopApp()
