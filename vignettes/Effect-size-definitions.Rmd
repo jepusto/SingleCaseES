@@ -2,7 +2,7 @@
 title: "Effect size definitions and mathematical details"
 author: "James E. Pustejovsky and Daniel M. Swan"
 bibliography: references.bibtex
-date: "July 11, 2018"
+date: "`r Sys.Date()`"
 output: 
   prettydoc::html_pretty:
     theme: cayman
@@ -262,6 +262,9 @@ $$
 
 where $L_{\theta}$ and $U_{\theta}$ are the lower and upper bounds of the CI for $\theta$, calculated using a method proposed by @newcombe2006confidence.
 
+## Tau-BC
+@tarlow2017improved proposed the Tau-BC effect size, which is a variation of Tau but includes a baseline trend correction. The method first tests whether the slope of the baseline trend is statistically significant based on Kendall's rank correlation. If the baseline slope is significantly different from zero, the outcome data are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Tau (non-overlap) index. If the baseline slope is not significantly different from zero, then no baseline trend adjustment is made, and the Tau-BC effect size is the same as Tau.
+
 ## Tau-U
 
 Tau-U is one of several effect sizes proposed by @parker2011combining. The Tau-U variant is similar to Tau, but includes an adjustment for baseline time trends. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, plus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
@@ -449,5 +452,36 @@ Under the same assumption, an approximate confidence interval for $\psi$ is
 $$
 [LOR - z_\alpha \times SE_{LOR},\quad LOR + z_\alpha \times SE_{LOR}],
 $$
+
+## LRM
+@bonett2020interval proposed the log ratio of medians (LRM) effect size to quantify the change in the medians from phase A to phase B. It is the natural logarithm of the ratio of medians. This effect size is appropriate for outcomes that are skewed or right-censored [@bonett2020interval]. For an outcome where increase is desirable, the LRM parameter is defined as
+
+$$
+\theta = \ln\left(\eta_B / \eta_A\right),
+$$
+where $\eta_B$ and $\eta_A$ are the population median for phase B and phase A, respectively.
+
+### Estimation
+A basic estimator of the $\theta$ is given by
+
+$$
+LRM = \ln\left(m_B\right) - \ln\left(m_A\right),
+$$
+where $m_B$ and $m_A$ are the sample medians for phase B and phase A, respectively. Note that the sample median might be zero for either phase B and phase A in some single-case design data, resulting in infinite LRM. 
+
+### Standard errors and confidence intervals
+Under the assumption that the outcome data in each phase are mutually independent, based on the fact that the logarithm of the median is the same or close to the median of the log-transformed outcomes, the standard error for $LRM$ is given by
+
+$$
+SE_{LRM} = \sqrt{\frac{\ln(y_{o2})-\ln(y_{o1})}{2\ z_{\alpha^*/2} }},
+$$
+[@bonett2020confidence] where $o1 = \text{max} (n/2 - \sqrt{n}, 1)$, $o2 = n - o1 + 1$, and $\alpha^*/2 = 0.5^n \sum_{i=0}^{o1-1}[n!/(i!(n-i)!]$. $y_{o2}$ and $y_{o1}$ are the $o2_\text{th}$ and $o1_\text{th}$ outcome for the sorted phase B or phase A data.
+
+The confidence interval for $\theta$ is 
+
+$$
+[LRM - z_{\alpha/2} \times SE_{LRM},\quad LRM + z_{\alpha/2} \times SE_{LRM}],
+$$
+where $z_{\alpha/2}$ is $1 - \alpha/2$ critical value from a standard normal distribution.
 
 # References
