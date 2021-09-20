@@ -366,7 +366,7 @@ calc_Tau_BC <- function(A_data, B_data,
       message("The baseline trend is not statistically significant. Tau is calculated without trend correction.")
       
       res <- calc_Tau(A_data = A_data, B_data = B_data, 
-                      improvement = "increase", SE = SE, 
+                      improvement = improvement, SE = SE, 
                       CI = CI, confidence = confidence)
       res$ES <- "Tau"
       return(res)
