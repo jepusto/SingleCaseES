@@ -369,6 +369,7 @@ calc_Tau_BC <- function(A_data, B_data,
                       improvement = improvement, SE = SE, 
                       CI = CI, confidence = confidence)
       res$ES <- "Tau"
+      if (report_correction) res$pval_slope_A <- pval_slope_A
       return(res)
     }
     
@@ -394,6 +395,7 @@ calc_Tau_BC <- function(A_data, B_data,
   if (report_correction) {
     res$slope <- slope
     res$intercept <- intercept
+    if (pretest_trend != FALSE) res$pval_slope_A <- pval_slope_A
   }
     
   return(res)
