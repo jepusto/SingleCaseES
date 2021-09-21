@@ -1,6 +1,6 @@
 ---
 title: "Effect size definitions and mathematical details"
-author: "James E. Pustejovsky and Daniel M. Swan"
+author: "James E. Pustejovsky, Daniel M. Swan, and Man Chen"
 bibliography: references.bibtex
 date: "`r Sys.Date()`"
 output: 
@@ -8,9 +8,10 @@ output:
     theme: cayman
     highlight: github
     toc: true
-    toc_depth: 2 
+    toc_depth: 2
     number_sections: true
     link-citations: true 
+link-citations: yes
 csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Effect size definitions and mathematical details}
@@ -51,8 +52,6 @@ The parametric effect size measures are all defined under a simple model for the
 
 ## NAP
 
-### Parameter definition 
-
 @parker2009improved proposed non-overlap of all pairs (NAP) as an effect size index for use in single-case research. NAP is defined in terms of all pair-wise comparisons between the data points in two different phases for a given case (i.e., a treatment phase versus a baseline phase). For an outcome that is desirable to increase, NAP is the proportion of all such pair-wise comparisons where the treatment phase observation exceeds the baseline phase observation, with pairs that are exactly tied getting a weight of 1/2. NAP is exactly equivalent to the modified Common Language Effect Size [@Vargha2000critique] and has been proposed as an effect size index in other contexts too [e.g., @Acion2006probabilistic].
 
 NAP can be interpreted as an estimate of the probability that a randomly selected observation from the B phase improves upon a randomly selected observation from the A phase. For an outcome where increase is desirable, the effect size parameter is
@@ -68,8 +67,7 @@ $$\theta = \text{Pr}(Y^B < Y^A) + 0.5 \times \text{Pr}(Y^B = Y^A).$$
 For an outcome where increase is desirable, calculate 
 
 $$q_{ij} = I(y^B_j > y^A_i) + 0.5 I(y^B_j = y^A_i)$$
-
-For an outcome where decrease is desirable, one would instead use 
+for $i = 1,...,m$ and $j = 1,...,n$. For an outcome where decrease is desirable, one would instead use 
 
 $$q_{ij} = I(y^B_j < y^A_i) + 0.5 I(y^B_j = y^A_i).$$ 
 
@@ -112,7 +110,7 @@ $$
 
 ### Confidence interval 
 
-Confidence intervals for $\theta$ are calculated based on a method proposed by Newcombe [@newcombe2006confidence; Method 5], which assumes that the observations are mutually independent and are identically distributed within each phase. Using a confidence level of $100\% \times (1 - \alpha)$, the endpoints of the confidence interval are defined as the values of $\theta$ that satisfy the equality 
+A confidence interval for $\theta$ can be calculated using a method proposed by Newcombe [@newcombe2006confidence; Method 5], which assumes that the observations are mutually independent and are identically distributed within each phase. Using a confidence level of $100\% \times (1 - \alpha)$, the endpoints of the confidence interval are defined as the values of $\theta$ that satisfy the equality 
 
 $$
 (\text{NAP} - \theta)^2 = \frac{z^2_{\alpha / 2} h \theta (1 - \theta)}{mn}\left[\frac{1}{h} + \frac{1 - \theta}{2 - \theta} + \frac{\theta}{1 + \theta}\right],
@@ -124,7 +122,7 @@ where $h = (m + n) / 2 - 1$ and $z_{\alpha / 2}$ is $1 - \alpha / 2$ critical va
 
 @scruggs1987quantitative proposed the percentage of non-overlapping data (PND) as an effect size index for single-case designs. For an outcome where increase is desirable, PND is defined as the proportion of observations in the B phase that exceed the highest observation from the A phase. For an outcome where decrease is desirable, PND is the proportion of observations in the B phase that are less than the lowest observation from the A phase. 
 
-This effect size does not have a stable parameter definition because the magnitude of the maximum (or minimum) value from phase A depends on the number of observations in the phase [@allison1994make; @pustejovsky2018procedural] 
+This effect size does not have a stable parameter definition because the magnitude of the maximum (or minimum) value from phase A depends on the number of observations in the phase [@allison1994make; @pustejovsky2018procedural].
 
 ### Estimation
 
@@ -142,9 +140,18 @@ $$
 
 where $y^A_{(1)}$ is the minimum value of $y^A_1,...,y^A_m$. 
 
+The sampling distribution of PND has not been described, and so standard errors and confidence intervals are not available.
+
 ## PEM
 
-@ma2006alternative proposed the percent exceeding the median, defined as the proportion of observations in phase B that improve upon the median of phase A. @ma2006alternative did not specify an effect size parameter corresponding to this index.
+@ma2006alternative proposed the percent exceeding the median, defined as the proportion of observations in phase B that improve upon the median of phase A. @ma2006alternative did not specify an effect size parameter corresponding to this index. However, it would be reasonable to define the parameter as the probability that a randomly selected observation from the B phase represents an improvement over the median of the distribution of A phase outcomes. Let $\eta_A$ denote the median of the distribution of outcomes in phase A. For an outcome where increase is desirable, the PEM parameter would then be
+$$
+\xi = \text{Pr}\left(Y_B > \eta_A\right) + 0.5 \times \text{Pr}\left(Y_B = \eta_A\right).
+$$
+For an outcome where decrease is desirable, it would be
+$$
+\xi = \text{Pr}\left(Y_B < \psi_A\right) + 0.5 \times \text{Pr}\left(Y_B = \psi_A\right).
+$$
 
 ### Estimation
 
@@ -159,6 +166,8 @@ where $m_A = \text{median}(y^A_1,...,y^A_m)$. For an outcome where decrease is d
 $$
 \text{PEM} = \frac{1}{n}\sum_{j=1}^n \left[ I(y^B_j < y^A_{(1)}) + 0.5 \times I(y^B_j = m_A) \right].
 $$
+
+The sampling distribution of PEM has not been described, and so standard errors and confidence intervals are not available.
 
 ## PAND
 
@@ -182,10 +191,11 @@ $$
 
 where $y^A_{(m + 1)} = \infty$, $y^B_{(0)} = -\infty$, and the maximum is taken over the values $0 \leq i \leq m$ and $0 \leq j \leq n$.
 
+The sampling distribution of PAND has not been described, and so standard errors and confidence intervals are not available.
+
 ## IRD
 
 The robust improvement rate difference is defined as the robust phi coefficient corresponding to a certain $2 \times 2$ table that is a function of the degree of overlap between the observations each phase [@parker2011effect]. 
-
 This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase [@pustejovsky2018procedural]. 
 
 ### Estimation
@@ -221,6 +231,8 @@ Robust IRD is algebraically related to PAND as
 $$
 \text{IRD} = 1 - \frac{(m + n)^2}{2mn}\left(1 - \text{PAND}\right). 
 $$
+
+Just as with PAND, the sampling distribution of robust IRD has not been described, and so standard errors and confidence intervals are not available.
 
 ## Tau
 
@@ -263,11 +275,20 @@ $$
 where $L_{\theta}$ and $U_{\theta}$ are the lower and upper bounds of the CI for $\theta$, calculated using a method proposed by @newcombe2006confidence.
 
 ## Tau-BC
-@tarlow2017improved proposed the Tau-BC effect size, which is a variation of Tau but includes a baseline trend correction. The method first tests whether the slope of the baseline trend is statistically significant based on Kendall's rank correlation. If the baseline slope is significantly different from zero, the outcome data are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Tau (non-overlap) index. If the baseline slope is not significantly different from zero, then no baseline trend adjustment is made, and the Tau-BC effect size is the same as Tau.
+
+@tarlow2017improved proposed to modify the Tau effect size index by first adjusting the observations for a linear trend in the A phase. The index can be calculated with or without conducting a pre-test for significance of the A phase time trend. 
+
+If the A phase trend pre-test is used, then slope of the baseline trend is first tested using Kendall's rank correlation. If the baseline slope is significantly different from zero, the outcomes are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Tau (non-overlap) index. If the baseline slope is not significantly different from zero, then no baseline trend adjustment is made, and the Tau-BC effect size is the same as Tau.
+
+If the A phase trend pre-test is not used, then the outcomes are adjusted for baseline trend using Theil-Sen regression (regardless of whether the slope is significantly different from zero). The residuals from Theil-Sen regression are then used to calculate the Tau (non-overlap) index.
+
+### Estimation
+
+### Standard errors and confidence intervals
 
 ## Tau-U
 
-Tau-U is one of several effect sizes proposed by @parker2011combining. The Tau-U variant is similar to Tau, but includes an adjustment for baseline time trends. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, plus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
+Tau-U is one of several effect sizes proposed by @parker2011combining. The Tau-U variant is similar to Tau, but includes an adjustment term that is a function of the baseline time trend. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, plus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
 
 This effect size does not have a stable parameter definition [@tarlow2017improved]. 
 
@@ -295,11 +316,13 @@ $$
 \text{Tau-U} = \frac{1}{m n} \left(\sum_{i=1}^m \sum_{j=1}^n w^{AB}_{ij} - \sum_{i=1}^{m - 1} \sum_{j=i + 1}^m w^{AA}_{ij}\right). 
 $$
 
+The sampling distribution of Tau-U has not been described, and so standard errors and confidence intervals are not available.
+
 # Parametric effect sizes
 
 ## SMD
 
-@gingerich1984meta and @serlin2015meta proposed a within-case standardized mean difference for use in single-case designs (within-case because it is based on the data for a single individual, rather than across individuals). The standardized mean difference parameter $\delta$ is defined as the difference in means between phase B and phase A, scaled by the standard deviation of the outcome within phase A:
+@gingerich1984meta and @serlin2015meta proposed a within-case standardized mean difference for use in single-case designs (within-case because it is based on the data for a single individual, rather than across individuals). The standardized mean difference parameter $\delta$ is defined as the difference in means between phase B and phase A, scaled by the standard deviation of the phase A outcome distribution:
 
 $$
 \delta = \frac{\mu_B - \mu_A}{\sigma_A}.
@@ -325,7 +348,7 @@ $$
 
 ### Pooled SD 
 
-If it is reasonable to assume that the SDs are constant across phases, then one can use the pooled sample SD to calculate the SMD, defined as
+If it is reasonable to assume that the SDs are constant across phases, then one can use the pooled sample SD, defined as
 
 $$
 s_p = \sqrt{\frac{(m - 1)s_A^2 + (n - 1) s_B^2}{m + n - 2}}.
@@ -337,7 +360,7 @@ $$
 d_p = \left(1 - \frac{3}{4(m + n) - 9}\right) \frac{\bar{y}_B - \bar{y}_A}{s_p},
 $$
 
-with standard error
+with approximate standard error
 
 $$
 SE_{d_A} = \left(1 - \frac{3}{4(m + n) - 9}\right)\sqrt{\frac{1}{m} + \frac{1}{n} + \frac{d_p^2}{2(m + n - 2)}}.
@@ -348,7 +371,7 @@ $$
 Whether the estimator is based on the baseline or pooled standard deviation, an approximate confidence interval for $\delta$ is given by 
 
 $$
-[d - z_\alpha \times SE_d,\quad d + z_\alpha \times SE_d].
+[d - z_{\alpha/2} \times SE_d,\quad d + z_{\alpha/2} \times SE_d].
 $$
 
 ## LRR
@@ -454,6 +477,7 @@ $$
 $$
 
 ## LRM
+
 @bonett2020interval proposed the log ratio of medians (LRM) effect size to quantify the change in the medians from phase A to phase B. It is the natural logarithm of the ratio of medians. This effect size is appropriate for outcomes that are skewed or right-censored [@bonett2020interval]. For an outcome where increase is desirable, the LRM parameter is defined as
 
 $$
