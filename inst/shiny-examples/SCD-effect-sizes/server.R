@@ -183,7 +183,7 @@ shinyServer(function(input, output, session) {
         list(
         selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
                        selected = NULL, multiple = TRUE),
-        selectizeInput("b_aggregate", label = "Select all variables that the effect size estimates are averaged across.", choices = var_names, 
+        selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", choices = var_names, 
                        selected = NULL, multiple = TRUE),
         selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = var_names[3]))
       } else {
@@ -191,7 +191,7 @@ shinyServer(function(input, output, session) {
         list(
           selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
                          selected = curMap$cluster_vars, multiple = TRUE),
-          selectizeInput("b_aggregate", label = "Select all variables that the effect size estimates are averaged across.", choices = var_names, 
+          selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", choices = var_names, 
                          selected = curMap$aggregate_vars, multiple = TRUE),
           selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = curMap$condition)
         )
@@ -204,7 +204,7 @@ shinyServer(function(input, output, session) {
     if (is.null(input$b_aggregate)) return(NULL)
     else {
     radioButtons('weighting_scheme', 
-                 label = "Please select the weighting scheme.",
+                 label = "Please select the weighting scheme to use for aggregating.",
                  choices = c("1/V", "Equal"))
     }
   })
