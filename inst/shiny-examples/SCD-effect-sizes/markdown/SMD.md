@@ -1,6 +1,13 @@
 #### Parameter definition 
 
-Gingerich (1984) and Busk and Serlin (1992) proposed a within-case standardized mean difference for use in single-case designs (within-case because it is based on the data for a single individual, rather than across individuals). Let $\mu_A$ and $\mu_B$ denote the mean levels of phases A and B, respectively; let $\sigma_A$ and $\sigma_B$ denote the standard deviations of the outcomes within phases A and B, respectively. The standardized mean difference parameter $\delta$ is defined as the difference in means between phase B and phase A, scaled by the standard deviation of the outcome within phase A:
+Gingerich (1984) and Busk and Serlin (1992) proposed a within-case standardized
+mean difference for use in single-case designs (within-case because it is based
+on the data for a single individual, rather than across individuals). Let
+$\mu_A$ and $\mu_B$ denote the mean levels of phases A and B, respectively; let
+$\sigma_A$ and $\sigma_B$ denote the standard deviations of the outcomes within
+phases A and B, respectively. The standardized mean difference parameter
+$\delta$ is defined as the difference in means between phase B and phase A,
+scaled by the standard deviation of the outcome within phase A:
 
 $$
 \delta = \frac{\mu_B - \mu_A}{\sigma_A}.
@@ -47,10 +54,10 @@ $$
 __Confidence interval.__ Whether the estimator is based on the baseline or pooled standard deviation, an approximate confidence interval for $\delta$ is given by 
 
 $$
-[d - z_\alpha \times SE_d,\quad d + z_\alpha \times SE_d],
+[d - z_{\alpha / 2} \times SE_d,\quad d + z_{\alpha / 2} \times SE_d],
 $$
 
-where $z_{\alpha / 2}$ is $1 - \alpha / 2$ critical value from a standard normal distribution. 
+where $z_{\alpha / 2}$ is the $1 - \alpha / 2$ critical value from a standard normal distribution. 
 
 #### Primary references
 

@@ -4,7 +4,7 @@ Tau is one of several effect sizes proposed by Parker, Vannest, Davis, and Saube
 
 $$\tau = \text{Pr}(Y^B > Y^A) - \text{Pr}(Y^B < Y^A)$$
 
-(for an outcome where decrease is desirable, the effect size parameter would have the opposite sign). This parameter is a simple linear transformation of the NAP parameter $\theta$:
+(for an outcome where decrease is desirable, the effect size parameter would have the opposite sign). This parameter is a linear transformation of the NAP parameter $\theta$:
 
 $$\tau = 2 \theta - 1.$$
 
@@ -20,13 +20,13 @@ $$
 \text{Tau} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w_{ij} = 2 \times \text{NAP} - 1.
 $$
 
-Standard errors and confidence intervals for Tau are calculated using transformations of the corresponding SEs and CIs for NAP. All of the methods assume that the observations are mutually independent and are identically distributed within each phase. The standard error for Tau is calculated as $SE_{\text{Tau}} = 2 SE_{\text{NAP}}$, where $SE_{\text{NAP}}$ is the standard error for NAP from Sen (1967). The CI for $\tau$ is calculated as 
+Standard errors and confidence intervals for Tau are calculated using transformations of the corresponding SEs and CIs for NAP. All of the methods assume that the observations are mutually independent and are identically distributed within each phase. The standard error for Tau is calculated as $SE_{\text{Tau}} = 2 SE_{\text{NAP}}$, where $SE_{\text{NAP}}$ is the unbiased standard error for NAP from Sen (1967). The CI for $\tau$ is calculated as 
 
 $$
 [L_{\tau}, U_{\tau}] = [2 L_{\theta} - 1, 2 U_{\theta} - 1],
 $$
 
-where $L_{\theta}$ and $U_{\theta}$ are the lower and upper bounds of the CI for $\theta$, calculated using a method proposed by Newcombe (2006, method 5).
+where $L_{\theta}$ and $U_{\theta}$ are the lower and upper bounds of the CI for the NAP parameter $\theta$, calculated using a method proposed by Newcombe (2006, method 5).
 
 #### Primary reference
 

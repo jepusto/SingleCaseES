@@ -309,7 +309,7 @@ for $i=1,...,m$ and $j = 1,...,n$.
 
 ### Estimation
 
-Estimation of $\tau_BC$ entails correcting the data series for the baseline slope $\beta$. If using the baseline trend pre-test, the null hypothesis of $H_0: \beta = 0$ is first tested using Kendall's rank correlation. If the test is not significant, then set $\hat\beta = 0$ and $\hat\alpha = 0$. If the test is significant or if the baseline trend pre-test is eschewed, then the slope is estimated by Theil-Sen regression. Specifically, we calculate the slope between every pair of observations in the A phase:
+Estimation of $\tau_{BC}$ entails correcting the data series for the baseline slope $\beta$. If using the baseline trend pre-test, the null hypothesis of $H_0: \beta = 0$ is first tested using Kendall's rank correlation. If the test is not significant, then set $\hat\beta = 0$ and $\hat\alpha = 0$. If the test is significant or if the baseline trend pre-test is eschewed, then the slope is estimated by Theil-Sen regression. Specifically, we calculate the slope between every pair of observations in the A phase:
 $$
 s_{hi} = \frac{y_i^A - y_h^A}{i - h}
 $$
@@ -549,7 +549,7 @@ $$
 
 ### Estimation
 
-A natural estimator of the $\theta$ is given by
+A natural estimator of the $\lambda$ is given by
 $$
 LRM = \ln\left(m_B\right) - \ln\left(m_A\right),
 $$

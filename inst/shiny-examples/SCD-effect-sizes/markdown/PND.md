@@ -20,6 +20,8 @@ $$
 
 where $y^A_{(1)}$ is the minimum value of $y^A_1,...,y^A_m$. 
 
+The sampling distribution of PND has not been described, and so standard errors and confidence intervals are not available.
+
 #### Primary reference
 
 Allison, D. B., & Gorman, B. S. (1994). "Make things as simple as possible, but no simpler." A rejoinder to Scruggs and Mastropieri. _Behaviour Research and Therapy, 32_(8), 885–890. https://doi.org/10.1016/0005-7967(94)90170-8

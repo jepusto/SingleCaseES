@@ -20,6 +20,8 @@ $$
 
 where $y^A_{(m + 1)} = \infty$, $y^B_{(0)} = -\infty$, and the maximum is taken over the values $0 \leq i \leq m$ and $0 \leq j \leq n$.
 
+The sampling distribution of PAND has not been described, and so standard errors and confidence intervals are not available.
+
 #### Primary reference
 
 Parker, R. I., Vannest, K. J., & Davis, J. L. (2011). Effect size in single-case research: A review of nine nonoverlap techniques. _Behavior Modification, 35_(4), 303--22. https://dx.doi.org/10.1177/0145445511399147
