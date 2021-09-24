@@ -2,6 +2,8 @@ library(markdown, warn.conflicts = FALSE, quietly = TRUE)
 library(ggplot2, warn.conflicts = FALSE, quietly = TRUE)
 library(tidyr, warn.conflicts = FALSE, quietly = TRUE)
 library(dplyr, warn.conflicts = FALSE, quietly = TRUE)
+library(readxl, warn.conflicts = FALSE, quietly = TRUE)
+library(janitor, warn.conflicts = FALSE, quietly = TRUE)
 library(SingleCaseES, warn.conflicts = FALSE, quietly = TRUE)
 library(rlang, warn.conflicts = FALSE, quietly = TRUE)
 
@@ -94,13 +96,13 @@ shinyServer(function(input, output, session) {
       )
     }
     
-    if (input$ES_family == "Parametric" & input$outScale == "percentage") {
+    if (input$ES_family == "Parametric" & input$parametric_ES %in% c("LOR", "LRRi", "LRRd") & input$outScale == "percentage") {
       validate(
         need(all(c(dat()$A, dat()$B) >= 0) & all(c(dat()$A, dat()$B) <= 100), message =  "For percentage scale, values must be between 0 and 100.")
       )
     }
     
-    if (input$ES_family == "Parametric" & input$outScale == "proportion") {
+    if (input$ES_family == "Parametric" & input$parametric_ES %in% c("LOR", "LRRi", "LRRd") & input$outScale == "proportion") {
       validate(
         need(all(c(dat()$A, dat()$B) >= 0) & all(c(dat()$A, dat()$B) <= 1), message = "For proportion scale, values must be between 0 and 1.")
       )
@@ -157,21 +159,51 @@ shinyServer(function(input, output, session) {
     }
   })
   
+  sheetname <- reactive({
+    if (input$dat_type == "xlsx") {
+      inFile <- input$xlsx
+      if (is.null(inFile)) return(NULL)
+      sheetnames <- excel_sheets(inFile$datapath)
+    }
+  })
+  
+  observe({
+    sheets <- sheetname()
+    updateSelectInput(session, "inSelect", label = "Select a sheet",
+                      choices = sheets,
+                      selected = sheets[1])
+  })
+  
   datFile <- reactive({
     
     if (input$dat_type == "example") {
       dat <- get(input$example)
       
       return(dat)
+      
+    } else if (input$dat_type == "dat") {
+      
+      inFile <- input$dat
+      
+      if (is.null(inFile)) return(NULL)
+      
+      read.table(inFile$datapath, header=input$header, 
+                 sep=input$sep, quote=input$quote,
+                 stringsAsFactors = FALSE, check.names = FALSE) %>% 
+        clean_names(case = "parsed")
+      
+    } else if (input$dat_type == "xlsx") {
+      
+      inFile <- input$xlsx
+      
+      if (is.null(inFile) || is.null(input$inSelect) || nchar(input$inSelect) == 0) return(NULL)
+      
+      readxl::read_xlsx(inFile$datapath, col_names = input$col_names, sheet = input$inSelect) %>%
+        clean_names(case = "parsed") %>% 
+        as.data.frame()
+      
     }
     
-    inFile <- input$dat
-    
-    if (is.null(inFile)) return(NULL)
-    
-    read.table(inFile$datapath, header=input$header, 
-               sep=input$sep, quote=input$quote,
-               stringsAsFactors = FALSE, check.names = FALSE)
   })
   
   output$datview <- renderTable(datFile())
@@ -179,7 +211,7 @@ shinyServer(function(input, output, session) {
   
   output$clusterPhase <- renderUI({
       var_names <- names(datFile())
-      if (input$dat_type == "dat") {
+      if (input$dat_type == "dat" || input$dat_type == "xlsx") {
         list(
         selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
                        selected = NULL, multiple = TRUE),
@@ -200,13 +232,9 @@ shinyServer(function(input, output, session) {
   })
   
   output$weightingScheme <- renderUI({
-    
-    if (is.null(input$b_aggregate)) return(NULL)
-    else {
-    radioButtons('weighting_scheme', 
+    radioButtons('weighting_scheme',
                  label = "Please select the weighting scheme to use for aggregating.",
-                 choices = c("1/V", "Equal"))
-    }
+                 choices = c("1/V", "equal"))
   })
   
   output$baseDefine <- renderUI({
@@ -406,11 +434,17 @@ shinyServer(function(input, output, session) {
        parse_code_chunk("load-example", args = list(example_name = input$example)),
        ''
       )
-    } else {
+    } else if (input$dat_type == "dat") {
       inFile <- input$dat
       read_res <- c(
         parse_code_chunk("load-data", args = list(user_path = inFile$name, user_header = input$header, 
                                                   user_sep = input$sep, user_quote = input$quote)),
+        ''
+      )
+    } else if (input$dat_type == "xlsx") {
+      inFile <- input$xlsx
+      read_res <- c(
+        parse_code_chunk("load-excel", args = list(user_path = inFile$name, user_sheet = input$inSelect)),
         ''
       )
     }
