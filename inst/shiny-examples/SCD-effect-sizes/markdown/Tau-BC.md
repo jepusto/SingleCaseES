@@ -1,6 +1,6 @@
 #### Parameter definition 
 
-Baseline-corrected Tau was proposed by @tarlow2017improved as an alternative to
+Baseline-corrected Tau was proposed by Tarlow (2017) as an alternative to
 Tau-U that uses a different, more defensible approach to adjusting for a
 baseline time trend. The index can be calculated with or without conducting a
 pre-test for significance of the baseline phase time trend.

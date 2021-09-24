@@ -8,7 +8,7 @@ where $\eta_B$ and $\eta_A$ are the population median for phase B and phase A, r
 
 #### Estimation
 
-A natural estimator of the $\lambda is given by
+A natural estimator of the $\lambda$ is given by
 $$
 LRM = \ln\left(m_B\right) - \ln\left(m_A\right),
 $$
@@ -16,10 +16,11 @@ where $m_B$ and $m_A$ are the sample medians for phase B and phase A, respective
 
 __Standard error.__ Standard errors and confidence intervals for LRM can be obtained under the assumption that the outcome data within each phase are mutually independent and follow a common distribution. Using the fact that the logarithm of the median is the same or close to the median of the log-transformed outcomes, the standard error for $LRM$ can be calculated using the order statistics within each phase (Bonett & Price, 2020a). Let
 $$
-\begin{aligned}
-l_A &= \text{max}\left\{1, \ \frac{m}{2} - \sqrt{m}\right\}, \quad &u_A &= m - l_A + 1, \\
-l_B &= \text{max}\left\{1, \ \frac{n}{2} - \sqrt{n}\right\}, \quad &u_B &= n - l_B + 1,
-\end{aligned}
+l_A = \text{max}\left\{1, \ \frac{m}{2} - \sqrt{m}\right\}, \quad u_A = m - l_A + 1,
+$$
+and 
+$$
+l_B = \text{max}\left\{1, \ \frac{n}{2} - \sqrt{n}\right\}, \quad u_B = n - l_B + 1,
 $$
 and find
 $$
