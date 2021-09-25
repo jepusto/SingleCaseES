@@ -32,8 +32,7 @@ data file, and specify whether or not the data includes quotations (it probably 
 The dataset will be loaded and automatically populated to the data screen.
 Select "Upload data from a .xlsx file" if your data are saved in a .xlsx file. 
 The app also assumes the first row of the data is the column names. Uncheck the box
-if this is not true. After you upload the file, select a sheet that contains the 
-data.
+if this is not true. After you upload the file, select the sheet with your data from the drop-down box.
 
 Once you have uploaded a dataset, select the "Variables" tab. In the left-hand
 panel, specify the column names from your dataset corresponding to each of the
@@ -134,11 +133,9 @@ options will appear.
 - __Significance level for the baseline trend test__: What significance level to use 
   for the baseline trend test. The default is 0.05. 
 
-- __Weighting scheme__: If you specify the aggregating variables in the "Variables" tab,
-  an option will appear allowing you to specify the weighting scheme to use for aggregating.
-  The default is "1/V", which uses the inverse sampling variances of the effect size estimates
-  as the weights for aggregating. If you specify "equal", then the effect size estimates are
-  weighted equally.
+- __Weighting scheme__: If you specify one or more aggregating variables in the "Variables" tab,
+  an option will appear allowing you to specify a weighting scheme.
+  The default is "1/V", which uses the inverse sampling variances of the effect size estimates as the weights for aggregating. If you specify "equal", then the effect size estimates are weighted equally.
     
 - __Confidence Level__: For effect size indices that have known sampling
   variances, the calculator will report approximate confidence intervals. Specify

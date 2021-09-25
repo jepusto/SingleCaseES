@@ -12,10 +12,10 @@
 
 SCD_effect_sizes <- function(browser = TRUE) {
   if (!requireNamespace("shiny", quietly = TRUE)) {
-    stop("The simulator requires the shiny package. Please install it.", call. = FALSE)
+    stop("The web app requires the shiny package. Please install it.", call. = FALSE)
   }
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    stop("The simulator requires the ggplot2 package. Please install it.", call. = FALSE)
+    stop("The web app requires the ggplot2 package. Please install it.", call. = FALSE)
   }
   
   appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")

@@ -233,7 +233,7 @@ shinyServer(function(input, output, session) {
   
   output$weightingScheme <- renderUI({
     radioButtons('weighting_scheme',
-                 label = "Please select the weighting scheme to use for aggregating.",
+                 label = "Weighting scheme to use for aggregating.",
                  choices = c("1/V", "equal"))
   })
   
