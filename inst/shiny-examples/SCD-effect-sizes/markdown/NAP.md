@@ -21,19 +21,23 @@ $$
 \text{NAP} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n q_{ij}.
 $$
 
-__Standard error.__ The standard error for NAP is calculated based on the exactly unbiased variance estimator described by Sen (1967; see also Mee, 1990), which assumes that the observations are mutually independent and are identically distributed within each phase. Let 
+__Standard error.__ The standard error for NAP is calculated based on a slight modification of the exactly unbiased variance estimator described by Sen (1967; see also Mee, 1990), which assumes that the observations are mutually independent and are identically distributed within each phase. Let 
+$$
+Q_1 = \frac{1}{m n^2} \sum_{i=1}^m \left[\sum_{j=1}^n \left(q_{ij} - \text{NAP}\right)\right]^2, \qquad Q_2 = \frac{1}{m^2 n} \sum_{j=1}^n \left[\sum_{i=1}^m \left(q_{ij} - \text{NAP}\right)\right]^2,
+$$
+and
+$$Q_3 = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n \left(q_{ij} - \text{NAP}\right)^2.$$
+Next, calculate a truncated version of NAP as 
 
-$$
-Q_1 = \frac{1}{m n^2} \sum_{i=1}^m \left(\sum_{j=1}^n q_{ij}\right)^2, \qquad
-Q_2 = \frac{1}{m^2 n} \sum_{j=1}^n \left(\sum_{i=1}^m q_{ij}\right)^2, \qquad \text{and} \qquad
-Q_3 = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n q_{ij}^2.
-$$
+$$\widetilde{\text{NAP}} = \text{max}\left\{\frac{1}{2 mn}, \ \text{min}\left\{\frac{2mn - 1}{2mn}, \ \text{NAP} \right\} \right\}.$$
 
 The SE is then calculated as 
 
 $$
-SE_{\text{NAP}} = \sqrt{\frac{\text{NAP} - (m + n - 1)\text{NAP}^2 + n Q_1 + m Q_2 - 2 Q_3}{(m - 1)(n - 1)}}.
+SE_{\text{NAP}} = \sqrt{\frac{\widetilde{\text{NAP}}\left(1 - \widetilde{\text{NAP}}\right) + n Q_1 + m Q_2 - 2 Q_3}{(m - 1)(n - 1)}}.
 $$
+
+The truncated version of NAP is used here in order to ensure that the standard error is strictly positive, even when there is complete non-overlap between the datapoints from phase A and those from phase B.
 
 __Confidence interval.__ The confidence interval for $\theta$ is calculated based on a method proposed by Newcombe (2006; Method 5), which assumes that the observations are mutually independent and are identically distributed within each phase. Using a confidence level of $100\% \times (1 - \alpha)$, the endpoints of the confidence interval are defined as the values of $\theta$ that satisfy the equality 
 

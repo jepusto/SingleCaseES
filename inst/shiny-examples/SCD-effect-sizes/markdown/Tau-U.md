@@ -1,8 +1,8 @@
 #### Definition 
 
-Tau-U is one of several effect sizes proposed by Parker, Vannest, Davis, and Sauber (2011). The Tau-U variant is similar to Tau, but includes an adjustment for baseline time trends. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, plus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
+Tau-U is one of several effect sizes proposed by Parker, Vannest, Davis, and Sauber (2011). The Tau-U variant is similar to Tau, but includes an adjustment term that is a function of the baseline time trend. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, minus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
 
-This effect size does not have a stable parameter definition (Tarlow, 2017). 
+This effect size does not have a stable parameter definition and its feasible range depends on the number of observations in each phase [@tarlow2017improved].
 
 #### Estimation
 
@@ -19,6 +19,8 @@ $$w^{AA}_{ij} = I(y^A_j > y^A_i) - I(y^A_j < y^A_i)$$
 $$
 \text{Tau-U} = \frac{1}{m n} \left(\sum_{i=1}^m \sum_{j=1}^n w^{AB}_{ij} - \sum_{i=1}^{m - 1} \sum_{j=i + 1}^m w^{AA}_{ij}\right). 
 $$
+
+The sampling distribution of Tau-U has not been described, and so standard errors and confidence intervals are not available.
 
 #### Primary reference
 

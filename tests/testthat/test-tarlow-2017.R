@@ -42,6 +42,25 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
   
   expect_message(Tau_BC(A, B, pretest_trend = .05))
   
+  
+  A_data <- c(1, 2, 3, 4, 5)
+  B_data <- c(5, 6, 3, 2, 4)
+  m <- length(A_data)
+  n <- length(B_data)
+  session_A <- 1:m
+  session_B <- (m + 1) : (m + n)
+  pval_slope_A <- Kendall::Kendall(A_data, session_A)$sl
+  
+  Tau_BC_05 <- Tau_BC(A_data, B_data, pretest_trend = .05)
+  expect_equal(Tau_BC_05$ES, "Tau-BC")
+  
+  expect_message(Tau_BC(A_data, B_data, pretest_trend = .01))
+  Tau_BC_01 <- suppressMessages(Tau_BC(A_data, B_data, pretest_trend = .01))
+  expect_equal(Tau_BC_01$ES, "Tau")
+  
+  Tau_BC_increase <- Tau_BC(A_data, B_data, improvement = "increase")
+  Tau_BC_decrease <- Tau_BC(A_data, B_data, improvement = "decrease")
+  expect_equal(Tau_BC_increase$Est, -Tau_BC_decrease$Est)
 })
 
 library(Kendall)

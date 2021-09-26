@@ -1,4 +1,5 @@
 library(shiny)
+library(rclipboard)
 source("mappings.R")
 
 ui <- navbarPage(title = "Single-case effect size calculator",
@@ -60,6 +61,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                     "PEM",
                                                                     "PND",
                                                                     "Tau",
+                                                                    "Tau-BC" = "Tau_BC",
                                                                     "Tau-U" = "Tau_U"), 
                                                         selected = "NAP")
                                           ),
@@ -67,7 +69,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                             br(),
                                             selectInput("parametric_ES", 
                                                         label = "Effect size index", 
-                                                        choices = c("LOR", "LRRd", "LRRi","SMD"), 
+                                                        choices = c("LOR", "LRRd", "LRRi", "LRM", "SMD"), 
                                                         selected = "LRRd"),
                                             conditionalPanel(condition = "input.parametric_ES=='LRRi'|input.parametric_ES=='LRRd'",
                                                              checkboxInput("pct_change","Convert LRR to % change"))
@@ -76,6 +78,19 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                               selectInput("improvement",
                                           label = "Direction of improvement",
                                           choices = c("increase", "decrease")),
+                              conditionalPanel(condition = "input.ES_family=='Non-overlap' & input.NOM_ES == 'Tau_BC'",
+                                               radioButtons("baseline_check",
+                                                            label = "Test for baseline trend",
+                                                            choices = c("No", "Yes"))
+                              ),
+                              conditionalPanel(condition = "input.ES_family=='Non-overlap' & 
+                                               input.NOM_ES == 'Tau_BC' & input.baseline_check == 'Yes'",
+                                               numericInput("significance_level", 
+                                                            label = "Significance level for the initial baseline trend test", 
+                                                            value = 0.05, 
+                                                            min = 0.0000001, 
+                                                            max = 0.9999999)
+                              ),
                               conditionalPanel("input.ES_family=='Parametric'",
                                  conditionalPanel(condition = "input.parametric_ES == 'SMD'",
                                                   radioButtons("SMD_denom", 
@@ -94,7 +109,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                  conditionalPanel(condition = "input.parametric_ES=='LOR'|input.parametric_ES=='LRRi'|input.parametric_ES=='LRRd'",
                                                   numericInput("lrrfloor", label = "User-specified floor constant",value = NULL))
                               ),
-                              conditionalPanel(condition = "input.ES_family=='Parametric'|input.NOM_ES=='NAP'|input.NOM_ES=='Tau'",
+                              conditionalPanel(condition = "input.ES_family=='Parametric'|input.NOM_ES=='NAP'|input.NOM_ES=='Tau'|input.NOM_ES=='Tau_BC'",
                                   numericInput("confidence", 
                                                label = "Confidence level", 
                                                value = 95, 
@@ -120,10 +135,12 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                         conditionalPanel("input.NOM_ES == 'PEM'", withMathJax(includeMarkdown("markdown/PEM.md"))),
                                                                         conditionalPanel("input.NOM_ES == 'PND'", withMathJax(includeMarkdown("markdown/PND.md"))),
                                                                         conditionalPanel("input.NOM_ES == 'Tau'", withMathJax(includeMarkdown("markdown/Tau.md"))),
+                                                                        conditionalPanel("input.NOM_ES == 'Tau_BC'", withMathJax(includeMarkdown("markdown/Tau-BC.md"))),
                                                                         conditionalPanel("input.NOM_ES == 'Tau_U'", withMathJax(includeMarkdown("markdown/Tau-U.md")))
                                                        ),
                                                        conditionalPanel("input.ES_family=='Parametric'",
                                                                         conditionalPanel("input.parametric_ES == 'LRRi'|input.parametric_ES == 'LRRd'", withMathJax(includeMarkdown("markdown/LRR.md"))),
+                                                                        conditionalPanel("input.parametric_ES == 'LRM'", withMathJax(includeMarkdown("markdown/LRM.md"))),
                                                                         conditionalPanel("input.parametric_ES == 'SMD'", withMathJax(includeMarkdown("markdown/SMD.md"))),
                                                                         conditionalPanel("input.parametric_ES == 'LOR'", withMathJax(includeMarkdown("markdown/LOR.md")))
                                                        )
@@ -136,7 +153,9 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                           tabsetPanel(
                             tabPanel("Data",
                                      sidebarLayout(sidebarPanel(radioButtons('dat_type', 'What data do you want to use?', 
-                                                                             c("Use an example" = "example", "Upload data from a file" = "dat")),
+                                                                             c("Use an example" = "example", 
+                                                                               "Upload data from a .csv or .txt file" = "dat",
+                                                                               "Upload data from a .xlsx file" = "xlsx")),
                                                                 conditionalPanel(
                                                                   condition = "input.dat_type == 'example'",
                                                                   selectInput("example", label = "Choose an example", 
@@ -148,6 +167,12 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                   checkboxInput('header', 'File has a header?', TRUE),
                                                                   radioButtons('sep', 'Data seperator', c(Commas=',', Semicolons=';', Tabs='\t', Spaces=' ')),
                                                                   radioButtons('quote', 'Include quotes?', c('No'='', 'Double Quotes'='"', 'Single Quotes'="'"))
+                                                                ),
+                                                                conditionalPanel(
+                                                                  condition = "input.dat_type == 'xlsx'",
+                                                                  fileInput('xlsx', 'Upload a .xlsx file', accept = c('.xlsx')),
+                                                                  checkboxInput('col_names', 'File has a header?', TRUE),
+                                                                  selectInput("inSelect", "Select a sheet", "")
                                                                 )),
                                                    mainPanel(tableOutput("datview")))
                                      ),
@@ -169,8 +194,17 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                      sidebarLayout(
                                        sidebarPanel(
                                          h4("Select Effect Sizes"),
-                                         checkboxGroupInput("bESno", "Non-Overlap Effect Sizes", choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-U" = "Tau_U"), inline = TRUE),
-                                         checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LOR", "LRRd", "LRRi" ,"SMD"),inline = TRUE),
+                                         checkboxGroupInput("bESno", "Non-Overlap Effect Sizes", choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-BC" = "Tau_BC","Tau-U" = "Tau_U"), inline = TRUE),
+                                         checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LOR", "LRRd", "LRRi", "LRM", "SMD"),inline = TRUE),
+                                         conditionalPanel(condition = "input.bESno.includes('Tau_BC')", 
+                                                          radioButtons("bbaseline_check", label = "Use baseline trend test for Tau-BC?", 
+                                                                       choices = c("No", "Yes"), inline = TRUE)),
+                                         conditionalPanel(condition = "input.bESno.includes('Tau_BC') & input.bbaseline_check == 'Yes'",
+                                                          numericInput("bsignificance_level", 
+                                                                       label = "Significance level for the baseline trend test", 
+                                                                       value = 0.05, 
+                                                                       min = 0.0000001, 
+                                                                       max = 0.9999999)),
                                          conditionalPanel(condition = "input.bESpar.includes('LRRi') | input.bESpar.includes('LRRd') | input.bESpar.includes('LOR')",
                                                           checkboxInput("b_pct_change", "Convert LRR to % change")),
                                          conditionalPanel(condition = "input.bESpar.includes('LOR')", 
@@ -180,6 +214,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                        choices = c("baseline SD" = "baseline", "pooled SD" = "pool"), inline = TRUE)),
                                          conditionalPanel(condition = "input.bESpar.includes('LRRi') | input.bESpar.includes('LRRd') | input.bESpar.includes('LOR')",
                                                           uiOutput("measurementProc")),
+                                         conditionalPanel(condition = "input.b_aggregate.length > 0", uiOutput("weightingScheme")),
                                          numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100),
                                          radioButtons("resultsformat", "Long or wide format?", c("Long" = "long", "Wide" = "wide"), inline = TRUE),
                                          conditionalPanel(condition = "input.bESpar.length > 0 || input.bESno.length > 0", 
@@ -196,7 +231,13 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                        )
                                     )
                                      
-                            )
+                            ),
+                            
+                            tabPanel("Syntax for R",
+                                     rclipboardSetup(),
+                                     uiOutput("clip"),
+                                     verbatimTextOutput("syntax")
                           )
                           
+                      )
                  ))

@@ -38,6 +38,7 @@ $$
 \text{IRD} = 1 - \frac{(m + n)^2}{2mn}\left(1 - \text{PAND}\right). 
 $$
 
+The sampling distribution of robust IRD has not been described, and so standard errors and confidence intervals are not available.
 
 #### Primary reference
 

@@ -1,0 +1,69 @@
+destination: docs
+
+template:
+  params:
+    bootswatch: cosmo
+    docsearch:
+      # api_key: add later
+      index_name: SingleCaseES
+
+url: https://jepusto.github.io/SingleCaseES/
+
+navbar:
+  right:
+   - icon: fa-github
+     href: https://github.com/jepusto/SingleCaseES/
+
+repo:
+  url:
+    home: https://github.com/jepusto/SingleCaseES/
+    source:
+
+authors:
+  James Pustejovsky:
+    href: https://www.jepusto.com/
+    
+reference:
+  - title: "Calculating one or more effect size estimates"
+    desc: "Functions for calculating one or more effect size estimates."
+    contents:
+      - batch_calc_ES
+      - calc_ES
+      - calc_phase_pairs
+  - title: "Calculating non-overlap effect size indices"
+    desc: "Functions for calculating non-overlap effect size indices for single-case designs."
+    contents: 
+      - IRD
+      - NAP
+      - PAND
+      - PEM
+      - PND
+      - Tau
+      - Tau_BC
+      - Tau_U
+  - title: "Calculating parametric effect size indices"
+    desc: "Functions for calculating parametric effect size indices for single-case designs."
+    contents: 
+      - LRRd
+      - LRRi
+      - LOR
+      - LRM
+      - SMD
+  - title: "Estimating the gradual effects model"
+    desc: "Function for estimating the gradual effects model for single-case designs"
+    contents:
+      - gem_scd
+  - title: "Shiny App"
+    desc: "Function to launch shiny app"
+    contents:
+        - SCD_effect_sizes
+        - shine_gem_scd
+  - title: "Example Datasets"
+    desc: "Example datasets from single-case designs"
+    contents:
+        - McKissick
+        - Schmidt2007
+        - Schmidt2012
+        - Shogren
+        - Thorne
+        - Wright2012

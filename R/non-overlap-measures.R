@@ -348,11 +348,6 @@ calc_Tau_BC <- function(A_data, B_data,
                         report_correction = FALSE, 
                         ...) {
   
-  if (improvement=="decrease") {
-    A_data <- -1 * A_data
-    B_data <- -1 * B_data
-  }
-  
   m <- length(A_data)
   n <- length(B_data)
   session_A <- 1:m
@@ -374,6 +369,7 @@ calc_Tau_BC <- function(A_data, B_data,
                       improvement = improvement, SE = SE, 
                       CI = CI, confidence = confidence)
       res$ES <- "Tau"
+      if (report_correction) res$pval_slope_A <- pval_slope_A
       return(res)
     }
     
@@ -381,29 +377,28 @@ calc_Tau_BC <- function(A_data, B_data,
     
     stop("The pretest_trend argument must be FALSE or a number between 0 and 1.")
     
-  } else {
+  } 
     
-    slopes <- apply(combn(m, 2), 2, function(x) diff(A_data[x]) / diff(session_A[x]))
-    slope <- median(slopes)
-    intercept <- median(A_data - session_A * slope)
+  slopes <- apply(combn(m, 2), 2, function(x) diff(A_data[x]) / diff(session_A[x]))
+  slope <- median(slopes)
+  intercept <- median(A_data - session_A * slope)
     
-    A_data_corrected <- A_data - intercept - slope * session_A
-    B_data_corrected <- B_data - intercept - slope * session_B
+  A_data_corrected <- A_data - intercept - slope * session_A
+  B_data_corrected <- B_data - intercept - slope * session_B
     
-    # Use calc_Tau()
-    res <- calc_Tau(A_data = A_data_corrected, B_data = B_data_corrected,
-                    improvement = improvement, SE = SE, 
-                    CI = CI, confidence = confidence)
-    res$ES <- "Tau-BC"
+  # Use calc_Tau()
+  res <- calc_Tau(A_data = A_data_corrected, B_data = B_data_corrected,
+                  improvement = improvement, SE = SE, 
+                  CI = CI, confidence = confidence)
+  res$ES <- "Tau-BC"
     
-    if (report_correction) {
-      res$slope <- slope
-      res$intercept <- intercept
-    }
-    
-    return(res)
-    
+  if (report_correction) {
+    res$slope <- slope
+    res$intercept <- intercept
+    if (pretest_trend != FALSE) res$pval_slope_A <- pval_slope_A
   }
+    
+  return(res)
   
 }
 
