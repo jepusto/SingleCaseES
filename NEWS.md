@@ -2,6 +2,12 @@
 
 * batch_calc_ES() gains an argument aggregate, for post-processing effect sizes by averaging across the levels of a variable.
 * Added log ratio of medians effect size measure and baseline-corrected Tau effect size measure.
+* Updated SCD_effect_sizes() shiny app.
+    * Added aggregate feature.
+    * Added log ratio of medians effect size measure and baseline-corrected Tau effect size measure.
+    * Allowed use of .xlsx files.
+    * Added a tab with R code for replicating the batch calculation.
+    * Fixed bug in the calculation of SMD effect size when the outcomes are greater than 100.
 
 # SingleCaseES 0.4.4
 

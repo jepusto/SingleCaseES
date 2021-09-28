@@ -1,6 +1,6 @@
 #### Parameter definition 
 
-Baseline-corrected Tau was proposed by @tarlow2017improved as an alternative to
+Baseline-corrected Tau was proposed by Tarlow (2017) as an alternative to
 Tau-U that uses a different, more defensible approach to adjusting for a
 baseline time trend. The index can be calculated with or without conducting a
 pre-test for significance of the baseline phase time trend.
@@ -11,10 +11,10 @@ If the trend pre-test is not used, then the outcomes are adjusted for baseline t
 
 The formal definition of Tau-BC require positing a model for the time trend in the data series. Let $y^A_1,...,y^A_m$ denote the observations from phase A. Let $y^B_1,...,y^B_n$ denote the observations from phase B. Assume that the outcomes can be expressed in terms of a linear time trend and an error term:
 $$
-\begin{aligned}
-y_i^A &= \alpha + \beta (i) + \epsilon_i^A, \quad \text{for} \quad i = 1,...,m \\
-y_j^B &= \alpha + \beta (m + j) + \epsilon_j^B \quad \text{for} \quad j = 1,...,n.
-\end{aligned}
+y_i^A = \alpha + \beta (i) + \epsilon_i^A, \quad \text{for} \quad i = 1,...,m
+$$
+$$
+y_j^B = \alpha + \beta (m + j) + \epsilon_j^B \quad \text{for} \quad j = 1,...,n.
 $$
 Within each phase, assume that the error terms are independent and share a common distribution. The Tau-BC parameter can then be defined as the Tau parameter for the distribution of the error terms, or
 $$

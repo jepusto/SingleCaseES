@@ -39,7 +39,11 @@ Suggests:
     prettydoc,
     Kendall,
     kableExtra,
-    covr
+    covr,
+    readxl,
+    glue,
+    janitor,
+    rclipboard
 LazyData: TRUE
 RoxygenNote: 7.1.1
 Encoding: UTF-8

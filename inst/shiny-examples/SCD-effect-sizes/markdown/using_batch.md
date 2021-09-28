@@ -11,23 +11,28 @@ The batch calculator includes several example datasets that illustrate how to
 structure input data files and carry out the batch calculations. To use an
 example dataset, first choose a dataset from the example selector. The dataset
 will be loaded and automatically populated to the data screen. Select the
-"Calculate" tab and the options fields will be automatically populated with the
-correct choices for the selected example. Choose any number of effect size
-indexes by clicking on the available check-boxes. After you have selected one or
-more effect sizes, the "Calculate" button will appear. Click "Calculate" to view
-example output. You can Click the "Download results" button to download the
-effect size estimates as a .csv file.
+"Variables" tab and the options fields will be automatically populated with the
+correct choices for the selected example. Select the "Estimate" tab and choose any 
+number of effect size indexes by clicking on the available check-boxes. 
+After you have selected one or more effect sizes, the "Estimate" button will appear. 
+Click "Estimate" to view example output. You can click the "Download results" button 
+to download the effect size estimates as a .csv file. Click the "Syntax for R" tab 
+to see the auto-generated R code for replication.
 
 ## Using your own data
 
 To use the batch-entry calculator with your own data, you will need to save your
-data in a .csv or text file that uses semicolons, spaces, or tabs as delimiters.
-On the "Batch Entry" screen, select "Upload data from a file." By default, the
-app assumes the first row of the data is the column names. If this is not true,
-uncheck the box. Specify the column delimiter (commas, semicolons, spaces, or
-tabs) used by the data file, and specify whether or not the data includes
-quotations (it probably will not). The dataset will be loaded and automatically
-populated to the data screen.
+data in a .csv or text file that uses semicolons, spaces, or tabs as delimiters,
+or in a .xlsx file.
+On the "Batch Entry" screen, select "Upload data from a .csv or .txt file" if 
+your data are saved in a .csv or .txt file. By default, the app assumes the 
+first row of the data is the column names. If this is not true, uncheck the box. 
+Specify the column delimiter (commas, semicolons, spaces, or tabs) used by the 
+data file, and specify whether or not the data includes quotations (it probably will not). 
+The dataset will be loaded and automatically populated to the data screen.
+Select "Upload data from a .xlsx file" if your data are saved in a .xlsx file. 
+The app also assumes the first row of the data is the column names. Uncheck the box
+if this is not true. After you upload the file, select the sheet with your data from the drop-down box.
 
 Once you have uploaded a dataset, select the "Variables" tab. In the left-hand
 panel, specify the column names from your dataset corresponding to each of the
@@ -42,6 +47,11 @@ following variables:
   pseudonym. If some series had multiple phase pairs (such as an ABAB design) and
   you wanted to estimate a separate effect size for each phase pair, the series
   identifiers should include a variable specifying phase pair membership.
+  
+- __Aggregating Identifiers__: One or more columns that identify variables to average
+  across after calculating effect size estimates. Effect sizes are calculated separately
+  for each unique value of these variables, after which the effect size estimates will be
+  averaged across values of these variables.
 
 - __Phase Indicator__: A column of phase indicators. For example, this might be
   a column where every entry for a baseline or return-to-baseline phase had an "A"
@@ -113,7 +123,19 @@ options will appear.
   ratio or the log-odds ratio, an option will appear allowing you to specify your
   own truncation constant instead of using the constant calculated based on the
   information in previous fields.
-    
+
+- __Use baseline trend test for Tau-BC?__: If you select the Tau-BC effect size index,
+  an option will appear allowing you to specify whether to test for the baseline trend.
+  If "No", the outcomes are adjusted for baseline trend using Theil-Sen regression, 
+  and the residuals from Theil-Sen regression are used to calculate the Tau index. 
+  If "Yes", then a significance level needs to be specified in the following input.
+
+- __Significance level for the baseline trend test__: What significance level to use 
+  for the baseline trend test. The default is 0.05. 
+
+- __Weighting scheme__: If you specify one or more aggregating variables in the "Variables" tab,
+  an option will appear allowing you to specify a weighting scheme.
+  The default is "1/V", which uses the inverse sampling variances of the effect size estimates as the weights for aggregating. If you specify "equal", then the effect size estimates are weighted equally.
     
 - __Confidence Level__: For effect size indices that have known sampling
   variances, the calculator will report approximate confidence intervals. Specify
@@ -125,7 +147,9 @@ options will appear.
   separate row. If you select wide, each effect size estimate will appear in a
   separate column, with a single line per data series.
   
-After you have selected one or more effect sizes, the "Calculate" button will
-appear. Click "Calculate" to view example output. 
+After you have selected one or more effect sizes, the "Estimate" button will
+appear. Click "Estimate" to view example output. 
 
 Click the "Download results" button to download the effect size estimates as a .csv file.
+
+Click the "Syntax for R" tab to see the auto-generated R code for replication.
