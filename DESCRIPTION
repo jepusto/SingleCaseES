@@ -15,7 +15,7 @@ Description:
   Standard errors and confidence intervals (based on the assumption that the outcome 
   measurements are mutually independent) are provided for the subset of effect sizes 
   indices with known sampling distributions.
-URL: https://github.com/jepusto/SingleCaseES
+URL: https://jepusto.github.io/SingleCaseES/
 BugReports: https://github.com/jepusto/SingleCaseES/issues
 License: GPL-3
 Imports:
