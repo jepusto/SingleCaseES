@@ -1,6 +1,6 @@
 ### Single-case effect size calculator
 
-Version 0.5.1.9000
+Version 0.5.2
 
 Designed and built by James E. Pustejovsky, Man Chen, & Daniel M. Swan
 
@@ -16,5 +16,5 @@ Github](https://github.com/jepusto/SingleCaseES)
 
 Please cite this software as follows:
 
-> Pustejovsky, J. E, Chen, M., & Swan, D. M. (2021). Single-case effect size calculator (Version 0.5.1.9000) [Web application]. Retrieved from
+> Pustejovsky, J. E, Chen, M., & Swan, D. M. (2021). Single-case effect size calculator (Version 0.5.2) [Web application]. Retrieved from
 > <https://jepusto.shinyapps.io/SCD-effect-sizes/>
