@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A function to estimate the gradual effects model for an SCD</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gem_scd {SingleCaseES}"><tr><td>gem_scd {SingleCaseES}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A function to estimate the gradual effects model for an SCD</h2>
+
+<h3>Description</h3>
+
+<p>A function to estimate the gradual effects model for an SCD
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gem_scd(Trt, outcome, m, fam)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>Trt</code></td>
+<td>
+<p>A vector of treatment assignments where 0 = untreated and 1 =
+treated.</p>
+</td></tr>
+<tr valign="top"><td><code>outcome</code></td>
+<td>
+<p>A vector of outcomes.</p>
+</td></tr>
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>The number of treatment occasions to estimate a treatment effect
+for.</p>
+</td></tr>
+<tr valign="top"><td><code>fam</code></td>
+<td>
+<p>A description of the error distribution and link function to be
+used in the model. This can be supplied in any way that 'glm' will accept.
+(See <code><a href="../../stats/html/family.html">family</a></code> for details of family functions.)</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>'gem_scd' returns an object of class <code>glm</code>. In addition to the
+normal contents of a <code>glm</code> object, it also contains an estimate of
+'omega' and a variance covariance matrix called 'varcov'.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>SingleCaseES</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

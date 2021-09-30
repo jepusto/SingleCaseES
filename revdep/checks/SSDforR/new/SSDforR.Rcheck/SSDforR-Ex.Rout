@@ -1,0 +1,2876 @@
+
+R version 4.0.2 (2020-06-22) -- "Taking Off Again"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SSDforR"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> options(pager = "console")
+> library('SSDforR')
+Loading required package: psych
+Warning: package 'psych' was built under R version 4.0.5
+Loading required package: TTR
+Warning: package 'TTR' was built under R version 4.0.5
+Loading required package: MASS
+Warning: package 'MASS' was built under R version 4.0.5
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("ABWilcox")
+> ### * ABWilcox
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABWilcox
+> ### Title: Wilcoxon rank-sum test between two phases
+> ### Aliases: ABWilcox
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABWilcox(cry,pcry,"A","B")
+ [1] 3 4 2 5 3 4 2 2 3 2 1 2
+ [1] 1 1 1 1 1 1 2 2 2 2 2 2
+
+	Wilcoxon rank sum test
+
+data:  y by x
+W = 32, p-value = 0.01894
+alternative hypothesis: true location shift is not equal to 0
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABanova")
+> ### * ABanova
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABanova
+> ### Title: Analysis of variance
+> ### Aliases: ABanova
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 
++ 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", 
++ "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABanova(cry,pcry)
+                  Df Sum Sq Mean Sq F value   Pr(>F)    
+as.factor(phaseX)  2  21.45  10.725   13.51 0.000308 ***
+Residuals         17  13.50   0.794                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+2 observations deleted due to missingness
+  A   B  B1 
+3.5 2.0 1.0 
+  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = behavior ~ as.factor(phaseX))
+
+$`as.factor(phaseX)`
+     diff       lwr        upr     p adj
+B-A  -1.5 -2.819865 -0.1801347 0.0248109
+B1-A -2.5 -3.734621 -1.2653791 0.0002053
+B1-B -1.0 -2.234621  0.2346209 0.1243688
+
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABarrow")
+> ### * ABarrow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABarrow
+> ### Title: Draw arrow on graph
+> ### Aliases: ABarrow
+> 
+> ### ** Examples
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 
++ 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", 
++ "B", "B", NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # now run ABplot(cry,pcry,"week","amount","Crying")
+> # now run ABarrow()
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABautoacf")
+> ### * ABautoacf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABautoacf
+> ### Title: Autocorrelation at any lag for a phase
+> ### Aliases: ABautoacf
+> 
+> ### ** Examples
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABautoacf(cry, pcry, "B", 2)
+
+Autocorrelations of series 'tsx', by lag
+
+   0    1    2 
+ 1.0  0.0 -0.5 
+
+	Box-Ljung test
+
+data:  tsx
+X-squared = 3, df = 2, p-value = 0.2231
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABautopacf")
+> ### * ABautopacf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABautopacf
+> ### Title: Partial autocorrelation
+> ### Aliases: ABautopacf
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABautopacf (cry, pcry,"A", 3)
+
+Partial autocorrelations of series 'tsx', by lag
+
+     1      2      3 
+-0.773 -0.128  0.147 
+
+Partial autocorrelations of series 'tsx', by lag
+
+     1      2      3 
+-0.773 -0.128  0.147 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABbinomial")
+> ### * ABbinomial
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABbinomial
+> ### Title: Binomial test
+> ### Aliases: ABbinomial
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> SD1(cry,pcry,"A","week","amount","Crying")
+[1] "SD"   "1.05" "+1SD" "4.55" "mean" "3.5"  "-1SD" "2.45"
+> ABbinomial(pcry,"A","B1", 1, 8)
+
+	Exact binomial test
+
+data:  successB and tmaxB
+number of successes = 8, number of trials = 8, p-value = 5.954e-07
+alternative hypothesis: true probability of success is not equal to 0.1666667
+95 percent confidence interval:
+ 0.6305834 1.0000000
+sample estimates:
+probability of success 
+                     1 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABdescrip")
+> ### * ABdescrip
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABdescrip
+> ### Title: Descriptive Statistics
+> ### Aliases: ABdescrip
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # ABdescrip(cry,pcry)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABiqr")
+> ### * ABiqr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABiqr
+> ### Title: Interquartile band graph through all phases
+> ### Aliases: ABiqr
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # ABiqr(cry,pcry,"week","amount","Crying")
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABlineD")
+> ### * ABlineD
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABlineD
+> ### Title: Add dashed line to a graph
+> ### Aliases: ABlineD
+> 
+> ### ** Examples
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # now run ABplot(cry,pcry,"week","amount","Crying")
+> # now run ABlineD(cry)
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABlines")
+> ### * ABlines
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABlines
+> ### Title: Draw line
+> ### Aliases: ABlines
+> 
+> ### ** Examples
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # now run ABplot(cry,pcry,"week","amount","Crying")
+> # now run ABlines(cry)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABma")
+> ### * ABma
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABma
+> ### Title: Moving average
+> ### Aliases: ABma
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABma(cry, pcry, "A")
+Save results? (y/n) 
+   ma phase
+1 3.5     A
+2 3.0     A
+3 3.5     A
+4 4.0     A
+5 3.5     A
+6  NA  <NA>
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABplot")
+> ### * ABplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABplot
+> ### Title: Simple line graph
+> ### Aliases: ABplot
+> 
+> ### ** Examples
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # ABplot(cry,pcry,"week","amount","Crying")
+> 
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABplotm")
+> ### * ABplotm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABplotm
+> ### Title: Multiple line plot
+> ### Aliases: ABplotm
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> yell<-c(3, 4, 2, 5, 5, 4, NA, 1, 2, 2, 2, 0, 0)
+> pyell<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B")
+> plotnum(2, 1)
+> ABplotm(cry,pcry,"week","amount","Crying")
+[1] "You can add lines between phases by using the ABlines() function. You"
+[2] "can add text by using the ABtext() function. You can also add a mean,"
+[3] "median, sd line by using the ABstat() function."                      
+> ABplotm(yell,pyell,"week","amount","Yelling")
+[1] "You can add lines between phases by using the ABlines() function. You"
+[2] "can add text by using the ABtext() function. You can also add a mean,"
+[3] "median, sd line by using the ABstat() function."                      
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABregres")
+> ### * ABregres
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABregres
+> ### Title: OLS regression to compare phases
+> ### Aliases: ABregres
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABregres(cry,pcry,"A","B")
+
+Call:
+lm(formula = A ~ x1)
+
+Residuals:
+      1       2       3       4       5       6 
+-0.1429  0.7143 -1.4286  1.4286 -0.7143  0.1429 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept)   3.0000     1.0556   2.842   0.0468 *
+x1            0.1429     0.2711   0.527   0.6260  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.134 on 4 degrees of freedom
+Multiple R-squared:  0.06494,	Adjusted R-squared:  -0.1688 
+F-statistic: 0.2778 on 1 and 4 DF,  p-value: 0.626
+
+
+Call:
+lm(formula = B ~ x2)
+
+Residuals:
+       1        2        3        4        5        6 
+-0.28571 -0.17143  0.94286  0.05714 -0.82857  0.28571 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept)   2.4000     0.6195   3.874   0.0179 *
+x2           -0.1143     0.1591  -0.718   0.5122  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.6655 on 4 degrees of freedom
+Multiple R-squared:  0.1143,	Adjusted R-squared:  -0.1071 
+F-statistic: 0.5161 on 1 and 4 DF,  p-value: 0.5122
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABrf2")
+> ### * ABrf2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABrf2
+> ### Title: Lag-1 autocorrelation (rf2 for small sample size)
+> ### Aliases: ABrf2
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABrf2(cry, pcry, "B1")
+[1] "tf2="  "2.683"
+[1] "rf2="  "1.143"
+[1] "sig of rf2=" "0.019"      
+----------regression------------
+
+Call:
+lm(formula = A ~ x1)
+
+Coefficients:
+(Intercept)           x1  
+     2.5000      -0.3333  
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABrobust")
+> ### * ABrobust
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABrobust
+> ### Title: Robust regression
+> ### Aliases: ABrobust
+> 
+> ### ** Examples
+> 
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABrobust(cry,pcry,"A","B")
+
+Call: rlm(formula = A ~ x1)
+Residuals:
+      1       2       3       4       5       6 
+-0.1436  0.7139 -1.4287  1.4287 -0.7139  0.1436 
+
+Coefficients:
+            Value  Std. Error t value
+(Intercept) 3.0010 1.8947     1.5839 
+x1          0.1426 0.4865     0.2930 
+
+Residual standard error: 1.058 on 4 degrees of freedom
+
+Call: rlm(formula = B ~ x2)
+Residuals:
+         1          2          3          4          5          6 
+-1.211e-04 -6.729e-05  1.000e+00  4.038e-05 -9.999e-01  1.480e-04 
+
+Coefficients:
+            Value     Std. Error t value  
+(Intercept)    2.0002    0.0005  3990.0609
+x2            -0.0001    0.0001    -0.4182
+
+Residual standard error: 0.0002952 on 4 degrees of freedom
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABstat")
+> ### * ABstat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABstat
+> ### Title: Add statistic line(s)
+> ### Aliases: ABstat
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # now run this ABplot(cry,pcry,"week","amount","Crying")
+> # run this statement ABstat(cry, pcry, "A", "median")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABtext")
+> ### * ABtext
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABtext
+> ### Title: Add text to graph
+> ### Aliases: ABtext
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # run this ABplot(cry,pcry,"week","amount","Crying")
+> # now run ABtext("A")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABtsplot")
+> ### * ABtsplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABtsplot
+> ### Title: Time series plot for SSD Data
+> ### Aliases: ABtsplot
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABtsplot(cry,pcry,"week","amount","Crying")
+-------------------------------------------------------------------------------------
+1-You can add lines between phases by using the ABlines() function.
+2-You can add text by using the ABtext() function.
+3-You can also add a mean, median, sd line by using the ABstat() function.
+-------------------------------------------------------------------------------------
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ABttest")
+> ### * ABttest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ABttest
+> ### Title: T-test comparing phases
+> ### Aliases: ABttest
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # now run ABttest(cry,pcry,"A","B")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Append")
+> ### * Append
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Append
+> ### Title: Append data sets with additional data
+> ### Aliases: Append
+> 
+> ### ** Examples
+> 
+> # type Append()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Aregres")
+> ### * Aregres
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Aregres
+> ### Title: Regression for single phase
+> ### Aliases: Aregres
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> Aregres(cry,pcry,"A")
+
+Call:
+lm(formula = A ~ x1)
+
+Residuals:
+      1       2       3       4       5       6 
+-0.1429  0.7143 -1.4286  1.4286 -0.7143  0.1429 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept)   3.0000     1.0556   2.842   0.0468 *
+x1            0.1429     0.2711   0.527   0.6260  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.134 on 4 degrees of freedom
+Multiple R-squared:  0.06494,	Adjusted R-squared:  -0.1688 
+F-statistic: 0.2778 on 1 and 4 DF,  p-value: 0.626
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Arimadiff")
+> ### * Arimadiff
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Arimadiff
+> ### Title: Difference for ARIMA
+> ### Aliases: Arimadiff
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> Arimadiff(cry,pcry,"B1",2)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Arimama")
+> ### * Arimama
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Arimama
+> ### Title: Moving average for ARIMA
+> ### Aliases: Arimama
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> Arimama(cry,pcry,"B1",2)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Arobust")
+> ### * Arobust
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Arobust
+> ### Title: Robust regression for a single phase
+> ### Aliases: Arobust
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> Arobust(cry,pcry,"A")
+
+Call: rlm(formula = A ~ x1)
+Residuals:
+      1       2       3       4       5       6 
+-0.1436  0.7139 -1.4287  1.4287 -0.7139  0.1436 
+
+Coefficients:
+            Value  Std. Error t value
+(Intercept) 3.0010 1.8947     1.5839 
+x1          0.1426 0.4865     0.2930 
+
+Residual standard error: 1.058 on 4 degrees of freedom
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Cchart")
+> ### * Cchart
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Cchart
+> ### Title: SPC C-chart
+> ### Aliases: Cchart
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> Cchart(cry,pcry,"A",2,"week","amount","Crying")
+[1] "Uband=" "7"     
+[1] "mean=" "3.5"  
+[1] "Lband=" "0"     
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Effectsize")
+> ### * Effectsize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Effectsize
+> ### Title: Effect size
+> ### Aliases: Effectsize
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> Effectsize(cry,pcry,"A","B")
+small effect size: <.87
+medium effect size: .87 to 2.67 
+large effect size: >2.67
+********************************************************
+********************ES**********************************
+                          B                           B 
+"ES=        "     "1.43019"   "% change="      "-42.37" 
+ 
+        lower  effect    upper
+B -0.03387948 1.43019 2.810403
+*****************d-index*******************************
+                          A                           A 
+"d-index=   "     "1.73205"   "% change="       "45.84" 
+ 
+      lower   effect    upper
+A 0.1511723 1.732051 3.228357
+*****************Hedges's g****************************
+                          A                           A 
+"Hedges's g="     "1.59824"   "% change="        "44.5" 
+ 
+       lower  effect    upper
+A 0.07046474 1.59824 3.041266
+*****************Pearson's r***************************
+[1] 0.688
+*****************R-squared*****************************
+[1] 0.474
+(s)ave, (a)ppend, or (n)either results? (s/a or n) 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("GABrf2")
+> ### * GABrf2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: GABrf2
+> ### Title: Autocorrelation for group data
+> ### Aliases: GABrf2
+> 
+> ### ** Examples
+> 
+> attend<-c(0,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0,1,1,0,0,1,NA,
++ 0,1,1,0,1,1,0,1,1,1,0,1,0,0,1,1,1,1,0,0,1,1,0,1,0,1,1,1,1,1,1,1,
++ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)
+> 
+> week<-c(1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,NA,6,6,6,6,6,7,7,7,7,7,
++ 8,8,8,8,8,9,9,9,9,9,10,10,10,10,10,11,11,11,11,11,12,12,12,12,12,13,
++ 13,13,13,13,14,14,14,14,14,15,15,15,15,15)
+> 
+> pattend<-c("A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A",
++ "A","A","A",NA,"B","B","B","B","B","B","B","B","B","B","B","B","B","B","B"
++ ,"B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B","B","B","B","B","B","B","B")
+> # now run: GABrf2(attend,pattend,week,"A")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("GABttest")
+> ### * GABttest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: GABttest
+> ### Title: T-test for group data
+> ### Aliases: GABttest
+> 
+> ### ** Examples
+> 
+> attend<-c(0,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0,1,1,0,0,1,NA,
++ 0,1,1,0,1,1,0,1,1,1,0,1,0,0,1,1,1,1,0,0,1,1,0,1,0,1,1,1,1,1,1,1,
++ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)
+> 
+> week<-c(1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,NA,6,6,
++ 6,6,6,7,7,7,7,7,
++ 8,8,8,8,8,9,9,9,9,9,10,10,10,10,10,11,11,11,11,11,12,
++ 12,12,12,12,13,
++ 13,13,13,13,14,14,14,14,14,15,15,15,15,15)
+> 
+> pattend<-c("A","A","A","A","A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A",
++ "A","A","A",NA,"B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B","B","B","B"
++ ,"B","B","B","B")
+> # now run GABttest(attend, pattend, week, "A", "B")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Getcsv")
+> ### * Getcsv
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Getcsv
+> ### Title: Import .csv file
+> ### Aliases: Getcsv
+> 
+> ### ** Examples
+> 
+> # type Getcsv()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Gindex")
+> ### * Gindex
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Gindex
+> ### Title: G-index
+> ### Aliases: Gindex
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> Gindex(cry,pcry,"A","B")
+
+small effect size: < & =.3
+medium effect size: .31 to .5 
+large effect size: > & =.51
+
+------------------------------------------------------g-index-------------------------------------------------------------
+ 
+-----------------------------------------------------Above Lines----------------------------------------------------------
+[1] "G mean= "            "-0.5"                "  G median= "       
+[4] "-0.5"                "G Regression line= " "-0.5"               
+ 
+-----------------------------------------------------Below Lines-----------------------------------------------------------
+[1] "G mean= "            "0.5"                 "  G median= "       
+[4] "0.5"                 "G Regression line= " "0.5"                
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Gline")
+> ### * Gline
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Gline
+> ### Title: Goal Line
+> ### Aliases: Gline
+> 
+> ### ** Examples
+> 
+> # type Getcsv()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Gmedian")
+> ### * Gmedian
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Gmedian
+> ### Title: Median line for group data
+> ### Aliases: Gmedian
+> 
+> ### ** Examples
+> 
+> cohesion<-c(85,90,80,84,82,79,75,76,80,84,75,80,79,83,88,78,80,85,83,
++ 82,89,84,89,91,87,84,77,86,80,
++ 89,81,86,88,83,86,90,86,85,85,87,80,89,NA,86,87,88,89,79,73,75,
++ 74,70,75,81,85,75,73,75,
++ 79,70,72,71,69,70,64,60,59,54,53,55,50,54,51,49,
++ 48,50,46,55,51,55,49,50,48,51,33)
+> 
+> week<-c(1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,
++ 5,5,5,5,5,5,6,6,6,6,6,6,6,NA,7,7,7,7,7,7,7,8,8,8,8,8,8,8,9,
++ 9,9,9,9,9,9,10,10,10,10,10,10,10,11,11,11,11,11,11,11,12,
++ 12,12,12,12,12,12)
+> 
+> pcohesion<-c("A","A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A",NA,"B","B","B",
++ "B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B")
+> ABdescrip(cohesion,week)
+-----------n-------------
+PhaseX
+ 1  2  3  4  5  6  7  8  9 10 11 12 
+ 7  7  7  7  7  7  7  7  7  7  7  7 
+-----------mean-------------
+     1      2      3      4      5      6      7      8      9     10     11 
+82.143 79.571 83.571 85.429 84.714 86.000 82.429 76.143 72.286 56.429 50.429 
+    12 
+48.143 
+-----------10% trim mean-------------
+     1      2      3      4      5      6      7      8      9     10     11 
+82.143 79.571 83.571 85.429 84.714 86.000 82.429 76.143 72.286 56.429 50.429 
+    12 
+48.143 
+----------median------------
+ 1  2  3  4  5  6  7  8  9 10 11 12 
+82 80 83 86 86 86 86 75 71 55 50 50 
+------------SD--------------
+    1     2     3     4     5     6     7     8     9    10    11    12 
+4.811 3.309 4.036 4.504 3.450 3.266 6.630 5.113 3.546 4.791 3.207 7.034 
+------------CV--------------
+    1     2     3     4     5     6     7     8     9    10    11    12 
+0.059 0.042 0.048 0.053 0.041 0.038 0.080 0.067 0.049 0.085 0.064 0.146 
+---------range----------
+   [,1] [,2]
+1    75   90
+2    75   84
+3    78   89
+4    77   91
+5    80   89
+6    80   90
+7    73   89
+8    70   85
+9    69   79
+10   50   64
+11   46   55
+12   33   55
+---------iqr----------
+   1    2    3    4    5    6    7    8    9   10   11   12 
+ 5.0  4.0  5.5  4.0  5.0  3.0 10.5  4.5  3.5  6.0  4.0  2.5 
+---------quantiles----------
+$`1`
+  0%  25%  50%  75% 100% 
+75.0 79.5 82.0 84.5 90.0 
+
+$`2`
+  0%  25%  50%  75% 100% 
+75.0 77.5 80.0 81.5 84.0 
+
+$`3`
+  0%  25%  50%  75% 100% 
+78.0 81.0 83.0 86.5 89.0 
+
+$`4`
+  0%  25%  50%  75% 100% 
+  77   84   86   88   91 
+
+$`5`
+  0%  25%  50%  75% 100% 
+  80   82   86   87   89 
+
+$`6`
+  0%  25%  50%  75% 100% 
+  80   85   86   88   90 
+
+$`7`
+  0%  25%  50%  75% 100% 
+73.0 77.0 86.0 87.5 89.0 
+
+$`8`
+  0%  25%  50%  75% 100% 
+70.0 73.5 75.0 78.0 85.0 
+
+$`9`
+  0%  25%  50%  75% 100% 
+69.0 70.0 71.0 73.5 79.0 
+
+$`10`
+  0%  25%  50%  75% 100% 
+50.0 53.5 55.0 59.5 64.0 
+
+$`11`
+  0%  25%  50%  75% 100% 
+46.0 48.5 50.0 52.5 55.0 
+
+$`12`
+  0%  25%  50%  75% 100% 
+33.0 48.5 50.0 51.0 55.0 
+
+> Gmedian(cohesion,pcohesion,"A")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("IQRbandgraph")
+> ### * IQRbandgraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: IQRbandgraph
+> ### Title: Interquartile band graph for one phase
+> ### Aliases: IQRbandgraph
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> IQRbandgraph(cry,pcry,"A","week","amount","Crying")
+75% 50% 25% 
+4.0 3.5 3.0 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("IQRlegend")
+> ### * IQRlegend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: IQRlegend
+> ### Title: IQR legend
+> ### Aliases: IQRlegend
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> IQRbandgraph(cry,pcry,"A","week","amount","Crying")
+75% 50% 25% 
+4.0 3.5 3.0 
+> IQRlegend()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("IQRline")
+> ### * IQRline
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: IQRline
+> ### Title: IQR line for ABplot
+> ### Aliases: IQRline
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABplot(cry,pcry,"week","amount","Crying")
+-------------------------------------------------------------------------------------
+1-You can add lines between phases by using the ABlines() function.
+2-You can add text by using the ABtext() function.
+3-You can add a mean, median, sd line by using the ABstat() function.
+4-You can also add a goal line using the Gline() function.
+-------------------------------------------------------------------------------------
+> # type IQRline(cry, pcry, "A")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("IRDabove")
+> ### * IRDabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: IRDabove
+> ### Title: Improvement Rate Difference (IRD) calculation
+> ### Aliases: IRDabove
+> 
+> ### ** Examples
+> 
+> esteem<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pesteem<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> IRDabove(esteem,pesteem,"A","B1")
+[1] Est = 12.5  %    
+-------------------------------------------
+10th percentile = 36.8
+25th percentile = 47.9
+50th percentile = 71.8
+75th percentile = 89.8
+90th percentile = 99.9
+> 
+> 
+> 
+> cleanEx()
+> nameEx("IRDbelow")
+> ### * IRDbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: IRDbelow
+> ### Title: Improvement Rate Difference (IRD) calculation
+> ### Aliases: IRDbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> #IQRbandgraph(cry,pcry,"A","week","amount","Crying")
+> IRDbelow(cry,pcry,"A","B")
+[1] Est = 66.67 %    
+-------------------------------------------
+10th percentile = 36.8
+25th percentile = 47.9
+50th percentile = 71.8
+75th percentile = 89.8
+90th percentile = 99.9
+> 
+> 
+> 
+> cleanEx()
+> nameEx("NAPabove")
+> ### * NAPabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: NAPabove
+> ### Title: Non-Overlap of All Pairs (NAP) calculation
+> ### Aliases: NAPabove
+> 
+> ### ** Examples
+> 
+> esteem<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pesteem<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> NAPabove(esteem,pesteem,"A","B1")
+   ES     Est        SE   CI_lower  CI_upper
+1 NAP 0.03125 0.0388885 0.00256978 0.3239547
+-------------------------------------------
+.93 or above = very effective
+.66 to .92 = moderate effectiveness
+ below .66 = not effective
+--------------------------------------------
+ 
+(s)ave, (a)ppend, or (n)either results? (s/a or n) 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("NAPbelow")
+> ### * NAPbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: NAPbelow
+> ### Title: Non-Overlap of All Pairs (NAP) calculation
+> ### Aliases: NAPbelow
+> 
+> ### ** Examples
+> 
+> esteem<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pesteem<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> NAPbelow(esteem,pesteem,"A","B1")
+   ES     Est        SE  CI_lower  CI_upper
+1 NAP 0.96875 0.0388885 0.6760453 0.9974302
+-------------------------------------------
+.93 or above = very effective
+.66 to .92 = moderate effectiveness
+ below .66 = not effective
+--------------------------------------------
+ 
+(s)ave, (a)ppend, or (n)either results? (s/a or n) 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("PANDlegend")
+> ### * PANDlegend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PANDlegend
+> ### Title: PAND legend
+> ### Aliases: PANDlegend
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> PANDbelow(cry,pcry,"A","B1")
+    ES       Est
+1 PAND 0.9285714
+-------------------------------------------
+.90 or above = very effective
+.70 to .89 = moderate effectiveness
+.50 to .69 = debatable effectiveness
+ below .50 = not effective
+--------------------------------------------
+> PNDlegend()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("PEMabove")
+> ### * PEMabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PEMabove
+> ### Title: PEM - desired values above the reference line
+> ### Aliases: PEMabove
+> 
+> ### ** Examples
+> 
+> esteem<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pesteem<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> PEMabove(esteem,pesteem,"A","B1")
+[1] "PEM Above = " "0"           
+-------------------------------------------
+.90 or above = very effective
+.70 to .89 = moderate effectiveness
+.50 to .69 = debatable effectiveness
+ below .50 = not effective
+> 
+> 
+> 
+> cleanEx()
+> nameEx("PEMbelow")
+> ### * PEMbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PEMbelow
+> ### Title: PEM - desired values below the reference line
+> ### Aliases: PEMbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> PEMbelow(cry,pcry,"A","B")
+[1] "PEM Below = " "1"           
+-------------------------------------------
+.90 or above = very effective
+.70 to .89 = moderate effectiveness
+.50 to .69 = debatable effectiveness
+ below .50 = not effective
+> 
+> 
+> 
+> cleanEx()
+> nameEx("PNDbelow")
+> ### * PNDbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PNDbelow
+> ### Title: PND - desired values below the reference line
+> ### Aliases: PNDbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> PNDbelow(cry,pcry,"A","B1")
+[1] "PND Below = " "0.62"        
+-------------------------------------------
+.90 or above = very effective
+.70 to .89 = moderate effectiveness
+.50 to .69 = debatable effectiveness
+ below .50 = not effective
+> 
+> 
+> 
+> cleanEx()
+> nameEx("PNDlegend")
+> ### * PNDlegend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PNDlegend
+> ### Title: PND legend
+> ### Aliases: PNDlegend
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> #run first
+> PNDbelow(cry,pcry,"A","B1") #run after complete steps above
+[1] "PND Below = " "0.62"        
+-------------------------------------------
+.90 or above = very effective
+.70 to .89 = moderate effectiveness
+.50 to .69 = debatable effectiveness
+ below .50 = not effective
+> PNDlegend()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Pchart")
+> ### * Pchart
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Pchart
+> ### Title: SPC P-chart
+> ### Aliases: Pchart
+> 
+> ### ** Examples
+> 
+> attend<-c(0,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0,1,1,0,0,1,NA,
++ 0,1,1,0,1,1,0,1,1,1,0,1,0,0,1,1,1,1,0,0,1,1,0,1,0,1,1,1,1,1,1,1,
++ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)
+> 
+> day<-c(1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,NA,6,6,
++ 6,6,6,7,7,7,7,7,
++ 8,8,8,8,8,9,9,9,9,9,10,10,10,10,10,11,11,11,11,
++ 11,12,12,12,12,12,13,
++ 13,13,13,13,14,14,14,14,14,15,15,15,15,15)
+> Pchart(attend, day, 2, "week", "amount", "Group attendance")
+[1] "Uband=" "0.776" 
+[1] "mean= " "0.32"  
+[1] "Lband=" "-0.136"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("RMGline")
+> ### * RMGline
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RMGline
+> ### Title: Goal Line for Rmarkdown
+> ### Aliases: RMGline
+> 
+> ### ** Examples
+> 
+> # type Getcsv()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("RMarrow")
+> ### * RMarrow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RMarrow
+> ### Title: Draw arrow on graph. For use with Rmarkdown.
+> ### Aliases: RMarrow
+> 
+> ### ** Examples
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 
++ 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", 
++ "B", "B", NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # now run ABplot(cry,pcry,"week","amount","Crying")
+> # now run RMarrow(9,10,11,10)
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("RMlines")
+> ### * RMlines
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RMlines
+> ### Title: Draws line. For use with Rmarkdown
+> ### Aliases: RMlines
+> 
+> ### ** Examples
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # now run ABplot(cry,pcry,"week","amount","Crying")
+> # now run RMlines(cry,13.5)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("RMstat")
+> ### * RMstat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RMstat
+> ### Title: Add statistic line(s) for RMarkdown
+> ### Aliases: RMstat
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # now run this ABplot(cry,pcry,"week","amount","Crying")
+> # run this statement RMstat(cry, pcry, "A", "median",1)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("RMtext")
+> ### * RMtext
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RMtext
+> ### Title: Add text to graph. For use with Rmarkdown
+> ### Aliases: RMtext
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> # run this ABplot(cry,pcry,"week","amount","Crying")
+> # now run RMtext("A",10)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Rchart")
+> ### * Rchart
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Rchart
+> ### Title: SPC R-chart using mean range
+> ### Aliases: Rchart
+> 
+> ### ** Examples
+> 
+> admit<-c(85,90,80,84,82,79,75,76,80,84,75,80,79,83,88,78,80,85,83,
++ 82,89,84,89,91,87,84,77,86,80,
++ 89,81,86,88,83,86,90,86,85,85,87,80,89,
++ NA,86,87,88,89,79,73,75,74,70,75,81,85,75,73,75,
++ 79,70,72,71,69,70,64,60,59,54,53,55,50,54,51,
++ 49,48,50,46,55,51,55,49,50,48,51,33)
+> 
+> day<-c(1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,
++ 5,5,5,5,5,5,6,6,6,6,6,6,6,NA,7,7,7,7,7,7,7,8,8,8,8,8,8,8,9,
++ 9,9,9,9,9,9,10,10,10,10,10,10,10,11,11,11,11,11,11,
++ 11,12,12,12,12,12,12,12)
+> 
+> padmit<-c("A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A",
++ NA,"B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B")
+> Rchart(admit, day, 2, "week", "amount", "Admits to Hospital")
+[1] "Uband=" "20.74" 
+[1] "mean= " "12.833"
+[1] "Lband=" "4.926" 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Rchartsd")
+> ### * Rchartsd
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Rchartsd
+> ### Title: SPC R-chart using standard deviation
+> ### Aliases: Rchartsd
+> 
+> ### ** Examples
+> 
+> admit<-c(85,90,80,84,82,79,75,76,80,84,75,80,79,83,88,78,80,85,83,82,89,84,89,91,87,84,77,86,80,
++ 89,81,86,88,83,86,90,86,85,85,87,80,89,NA,86,87,88,89,79,73,75,74,70,75,81,85,75,73,75,
++ 79,70,72,71,69,70,64,60,59,54,53,55,50,54,51,49,48,50,46,55,51,55,49,50,48,51,33)
+> 
+> day<-c(1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,
++ 5,5,5,5,5,5,6,6,6,6,6,6,6,NA,7,7,7,7,7,7,7,8,8,8,8,8,8,8,9,
++ 9,9,9,9,9,9,10,10,10,10,10,10,10,11,11,11,11,11,11,11,
++ 12,12,12,12,12,12,12)
+> 
+> padmit<-c("A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A",NA,"B",
++ "B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B")
+> Rchartsd(admit, day, 2, "week", "amount", "Admits to Hospital")
+[1] "Uband=" "7.232" 
+[1] "mean= " "4.475" 
+[1] "Lband=" "1.718" 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SD1")
+> ### * SD1
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SD1
+> ### Title: 1-standard deviation band graph
+> ### Aliases: SD1
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> SD1(cry,pcry,"A","week","amount","Crying")
+[1] "SD"   "1.05" "+1SD" "4.55" "mean" "3.5"  "-1SD" "2.45"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SD1legend")
+> ### * SD1legend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SD1legend
+> ### Title: SD1 legend
+> ### Aliases: SD1legend
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 
++ 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", 
++ NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> SD1(cry,pcry,"A","week","amount","Crying")
+[1] "SD"   "1.05" "+1SD" "4.55" "mean" "3.5"  "-1SD" "2.45"
+> SD1legend()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SD2")
+> ### * SD2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SD2
+> ### Title: 2-standard deviation band graph
+> ### Aliases: SD2
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 
++ 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA,
++ "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> SD2(cry,pcry,"A","week","amount","Crying")
+[1] "SD"   "1.05" "+2SD" "5.6"  "mean" "3.5"  "-2SD" "1.4" 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SD2legend")
+> ### * SD2legend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SD2legend
+> ### Title: SD2 legend
+> ### Aliases: SD2legend
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> SD2(cry,pcry,"A","week","amount","Crying")
+[1] "SD"   "1.05" "+2SD" "5.6"  "mean" "3.5"  "-2SD" "1.4" 
+> SD2legend()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SDAband")
+> ### * SDAband
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SDAband
+> ### Title: Adds standard deviation bands to an ABplot
+> ### Aliases: SDAband
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABplot(cry,pcry,"week","amount","Crying")
+-------------------------------------------------------------------------------------
+1-You can add lines between phases by using the ABlines() function.
+2-You can add text by using the ABtext() function.
+3-You can add a mean, median, sd line by using the ABstat() function.
+4-You can also add a goal line using the Gline() function.
+-------------------------------------------------------------------------------------
+> # now run SDAband(cry,pcry,"A",2)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SN")
+> ### * SN
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SN
+> ### Title: Scientific notation
+> ### Aliases: SN
+> 
+> ### ** Examples
+> 
+> SN(2.73e-16)  
+[1] "0.00000"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SPClegend")
+> ### * SPClegend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SPClegend
+> ### Title: SPC legend
+> ### Aliases: SPClegend
+> 
+> ### ** Examples
+> 
+> admit<-c(85,90,80,84,82,79,75,76,80,84,75,80,79,83,88,78,80,85,83,82,89,84,89,
++ 91,87,84,77,86,80,
++ 89,81,86,88,83,86,90,86,85,85,87,80,89,NA,
++ 86,87,88,89,79,73,75,74,70,75,81,85,75,73,75,
++ 79,70,72,71,69,70,64,60,59,54,53,55,50,54,51,49,
++ 48,50,46,55,51,55,49,50,48,51,33)
+> 
+> day<-c(1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,
++ 5,5,5,5,5,5,6,6,6,6,6,6,6,NA,7,7,7,7,7,7,7,8,8,8,8,8,8,8,9,
++ 9,9,9,9,9,9,10,10,10,10,10,10,10,11,11,11,11,11,11,11,
++ 12,12,12,12,12,12,12)
+> 
+> padmit<-c("A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A",NA,
++ "B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B")
+> Rchartsd(admit, day, 2, "week", "amount", "Admits to Hospital")
+[1] "Uband=" "7.232" 
+[1] "mean= " "4.475" 
+[1] "Lband=" "1.718" 
+> SPClegend()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SPCline")
+> ### * SPCline
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SPCline
+> ### Title: Draw line on Rchartsd Rchart
+> ### Aliases: SPCline
+> 
+> ### ** Examples
+> admit<-c(85,90,80,84,82,79,75,76,80,84,75,80,79,83,88,78,80,85,83,82,
++ 89,84,89,91,87,84,77,86,80,
++ 89,81,86,88,83,86,90,86,85,85,87,80,89,NA,86,87,88,89,
++ 79,73,75,74,70,75,81,85,75,73,75,
++ 79,70,72,71,69,70,64,60,59,54,53,55,50,54,51,49,48,50,46,55,51,55,49,50,48,51,33)
+> 
+> day<-c(1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,
++ 5,5,5,5,5,5,6,6,6,6,6,6,6,NA,7,7,7,7,7,7,7,8,8,8,8,8,8,8,9,
++ 9,9,9,9,9,9,10,10,10,10,10,10,10,11,11,11,11,11,11,11,12,
++ 12,12,12,12,12,12)
+> 
+> padmit<-c("A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A",NA,"B","B",
++ "B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B","B")
+> Rchart(admit, day, 2, "week", "amount", "Admits to Hospital")
+[1] "Uband=" "20.74" 
+[1] "mean= " "12.833"
+[1] "Lband=" "4.926" 
+> # now run SPCline()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SSDforR")
+> ### * SSDforR
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SSDforR
+> ### Title: List of all functions in SSD for R
+> ### Aliases: SSDforR
+> 
+> ### ** Examples
+> SSDforR()
+ [1] "ABWilcox"       "ABanova"        "ABarrow"        "ABautoacf"     
+ [5] "ABautopacf"     "ABbinomial"     "ABdescrip"      "ABiqr"         
+ [9] "ABlineD"        "ABlines"        "ABma"           "ABplot"        
+[13] "ABplotm"        "ABregres"       "ABrf2"          "ABrobust"      
+[17] "ABstat"         "ABtext"         "ABtsplot"       "ABttest"       
+[21] "Append"         "Aregres"        "Arimadiff"      "Arimama"       
+[25] "Arobust"        "CDCabove"       "CDCbelow"       "Cchart"        
+[29] "Effectsize"     "GABrf2"         "GABttest"       "Getcsv"        
+[33] "Gindex"         "Gline"          "Gmedian"        "IQRbandgraph"  
+[37] "IQRlegend"      "IQRline"        "IRDabove"       "IRDbelow"      
+[41] "NAPabove"       "NAPbelow"       "PANDabove"      "PANDbelow"     
+[45] "PANDlegend"     "PEMabove"       "PEMbelow"       "PEMlegend"     
+[49] "PNDabove"       "PNDbelow"       "PNDlegend"      "Pchart"        
+[53] "RMGline"        "RMarrow"        "RMlines"        "RMstat"        
+[57] "RMtext"         "Rchart"         "Rchartsd"       "RobustCDCabove"
+[61] "RobustCDCbelow" "SD1"            "SD1legend"      "SD2"           
+[65] "SD2legend"      "SDAband"        "SN"             "SPClegend"     
+[69] "SPCline"        "SSDforR"        "Savecsv"        "Trimline"      
+[73] "XRchart"        "Xmrchart"       "diffchart"      "listnames"     
+[77] "meanES"         "meanNAP"        "meanabove"      "meanbelow"     
+[81] "medabove"       "medbelow"       "metareg"        "metaregi"      
+[85] "plotnum"        "regabove"       "regbelow"       "robregabove"   
+[89] "robregbelow"    "sd1bandgraph"   "sd2bandgraph"   "trimabove"     
+[93] "trimbelow"     
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Savecsv")
+> ### * Savecsv
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Savecsv
+> ### Title: Save data file
+> ### Aliases: Savecsv
+> 
+> ### ** Examples
+> 
+> # type Savecsv()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Trimline")
+> ### * Trimline
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Trimline
+> ### Title: Trimmed mean line added to ABplot
+> ### Aliases: Trimline
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> ABplot(cry,pcry,"week","amount","Crying")
+-------------------------------------------------------------------------------------
+1-You can add lines between phases by using the ABlines() function.
+2-You can add text by using the ABtext() function.
+3-You can add a mean, median, sd line by using the ABstat() function.
+4-You can also add a goal line using the Gline() function.
+-------------------------------------------------------------------------------------
+> # now run Trimline(cry,pcry,"A")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("XRchart")
+> ### * XRchart
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: XRchart
+> ### Title: SPC XR-Chart
+> ### Aliases: XRchart
+> 
+> ### ** Examples
+> 
+> admit<-c(85,90,80,84,82,79,75,76,80,84,75,80,79,83,88,78,80,85,83,
++ 82,89,84,89,91,87,84,77,86,80,
++ 89,81,86,88,83,86,90,86,85,85,87,80,89,NA,86,87,88,89,79,73,75,
++ 74,70,75,81,85,75,73,75,
++ 79,70,72,71,69,70,64,60,59,54,53,55,50,54,51,49,48,50,46,55,51,
++ 55,49,50,48,51,33)
+> 
+> day<-c(1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,
++ 5,5,5,5,5,5,6,6,6,6,6,6,6,NA,7,7,7,7,7,7,7,8,8,8,8,8,8,8,9,
++ 9,9,9,9,9,9,10,10,10,10,10,10,10,11,11,11,11,11,11,11,12,
++ 12,12,12,12,12,12)
+> 
+> padmit<-c("A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A",
++ "A","A","A","A","A","A","A","A","A","A",NA,"B","B",
++ "B","B","B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B",
++ "B","B","B","B","B","B","B","B","B","B","B","B",
++ "B","B","B","B","B","B")
+> XRchart(admit, day, 2, "week", "amount", "Admits to Hospital")
+                1 
+"Uband=" "77.528" 
+[1] "mean= " "73.94" 
+                1 
+"Lband=" "70.353" 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Xmrchart")
+> ### * Xmrchart
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Xmrchart
+> ### Title: SPC XMR-chart
+> ### Aliases: Xmrchart
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> Xmrchart(cry, pcry, "A", 2, "week", "amount", "X-mR-Chart")
+[1] "Uband=" "7"     
+[1] "mean=" "3.5"  
+[1] "Lband=" "0"     
+> 
+> 
+> 
+> cleanEx()
+> nameEx("cdcabove")
+> ### * cdcabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: CDCabove
+> ### Title: Conservative Dual Criteria (CDC) desired zone above lines
+> ### Aliases: CDCabove
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> CDCabove(cry,pcry,"A","B")
+[1] "needed=" "6"      
+-----------------above lines------------------
+TRUE, TRUE = Number above the lines
+          nabovemean
+naboveline FALSE
+     FALSE     6
+> 
+> 
+> 
+> cleanEx()
+> nameEx("cdcbelow")
+> ### * cdcbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: CDCbelow
+> ### Title: Conservative Dual Criteria (CDC) desired zone below lines
+> ### Aliases: CDCbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> CDCbelow(cry,pcry,"A","B")
+[1] "needed=" "6"      
+-----------------below lines------------------
+TRUE, TRUE = Number below the lines
+          nbelowmean
+nbelowline TRUE
+      TRUE    6
+> 
+> 
+> 
+> cleanEx()
+> nameEx("diffchart")
+> ### * diffchart
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: diffchart
+> ### Title: Difference transformation
+> ### Aliases: diffchart
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> diffchart(cry,pcry,"A")
+Save results? (y/n) 
+  diff phase
+1    1     A
+2   -2     A
+3    3     A
+4   -2     A
+5    1     A
+6   NA  <NA>
+> 
+> 
+> 
+> cleanEx()
+> nameEx("insert")
+> ### * insert
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: insert
+> ### Title: insert
+> ### Aliases: insert
+> 
+> ### ** Examples
+> 
+> # This function is not in use by SSD for R end-users.
+> 
+> 
+> 
+> cleanEx()
+> nameEx("listnames")
+> ### * listnames
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: listnames
+> ### Title: List variable names
+> ### Aliases: listnames
+> 
+> ### ** Examples
+> 
+> # type:  listnames()
+> 
+> 
+> 
+> cleanEx()
+> nameEx("meanES")
+> ### * meanES
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: meanES
+> ### Title: Mean Effect Size
+> ### Aliases: meanES
+> 
+> ### ** Examples
+>  #need to open a file
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("meanNAP")
+> ### * meanNAP
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: meanNAP
+> ### Title: Mean Effect Size
+> ### Aliases: meanNAP
+> 
+> ### ** Examples
+>  #need to open a file
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("meanabove")
+> ### * meanabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: meanabove
+> ### Title: Chi-square - desired values above the mean
+> ### Aliases: meanabove
+> 
+> ### ** Examples
+> 
+> esteem<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 
++ 2, 2, 1, 2, 1, 0, 0, 0)
+> pesteem<-c("A", "A", "A", "A", "A", "A", NA, 
++ "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> meanabove(esteem, pesteem, "A","B1")
+      [,1] [,2]
+FALSE    3    8
+TRUE     3    0
+           [,1]     [,2]
+FALSE  27.27273 72.72727
+TRUE  100.00000  0.00000
+      [,1] [,2]
+FALSE   50  100
+TRUE    50    0
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 5.0909, df = 1, p-value = 0.02405
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.05495
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.000000 1.532489
+sample estimates:
+odds ratio 
+         0 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("meanbelow")
+> ### * meanbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: meanbelow
+> ### Title: Chi-square - desired values below the mean
+> ### Aliases: meanbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2,
++ NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A",
++ NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> meanbelow(cry,pcry,"A","B1")
+      [,1] [,2]
+FALSE    3    0
+TRUE     3    8
+           [,1]     [,2]
+FALSE 100.00000  0.00000
+TRUE   27.27273 72.72727
+      [,1] [,2]
+FALSE   50    0
+TRUE    50  100
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 5.0909, df = 1, p-value = 0.02405
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.05495
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.6525331       Inf
+sample estimates:
+odds ratio 
+       Inf 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("medabove")
+> ### * medabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: medabove
+> ### Title: Chi-square - desired values above the median
+> ### Aliases: medabove
+> 
+> ### ** Examples
+> 
+> 
+> esteem<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2,
++ 1, 0, 0, 0)
+> pesteem<-c("A", "A", "A", "A", "A", "A",
++ NA, "B", "B", "B", "B", "B", 
++ "B", NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> medabove(esteem, pesteem,"A","B1")
+      [,1] [,2]
+FALSE    3    8
+TRUE     3    0
+           [,1]     [,2]
+FALSE  27.27273 72.72727
+TRUE  100.00000  0.00000
+      [,1] [,2]
+FALSE   50  100
+TRUE    50    0
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 5.0909, df = 1, p-value = 0.02405
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.05495
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.000000 1.532489
+sample estimates:
+odds ratio 
+         0 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("medbelow")
+> ### * medbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: medbelow
+> ### Title: Chi-square - desired values below the median
+> ### Aliases: medbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> medbelow(cry,pcry,"A","B1")
+      [,1] [,2]
+FALSE    3    0
+TRUE     3    8
+           [,1]     [,2]
+FALSE 100.00000  0.00000
+TRUE   27.27273 72.72727
+      [,1] [,2]
+FALSE   50    0
+TRUE    50  100
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 5.0909, df = 1, p-value = 0.02405
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.05495
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.6525331       Inf
+sample estimates:
+odds ratio 
+       Inf 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("metareg")
+> ### * metareg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: metareg
+> ### Title: Meta Regression
+> ### Aliases: metareg
+> 
+> ### ** Examples
+> 
+> ES<-c(.3, .4, .2, .5, .3, .4)
+> V<-c(.01, .03, .04, .02, .03, .02) 
+> 
+> metareg(ES,V)
+Warning: package 'metafor' was built under R version 4.0.5
+Warning: package 'Matrix' was built under R version 4.0.5
+
+Loading the 'metafor' package (version 3.0-2). For an
+introduction to the package please type: help(metafor)
+
+Warning in model.matrix.default(terms, mf, contrasts) :
+  non-list contrasts argument ignored
+
+ Model Results:  
+ 
+        estimate    se     z  ci.l  ci.u p
+intrcpt    0.354 0.059 6.051 0.240 0.469 0
+
+ Heterogeneity & Fit:  
+ 
+         QE  QE.df    QEp     QM  QM.df QMp
+[1,]  2.224  5.000  0.817 36.610  1.000   0
+Warning: Extra argument ('digets') disregarded.
+
+       estimate  ci.lb   ci.ub 
+tau^2    0.0000 0.0000  0.0389 
+tau      0.0000 0.0000  0.1972 
+I^2(%)   0.0000 0.0000 64.1863 
+H^2      1.0000 1.0000  2.7922 
+
+> 
+> 
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:metafor', 'package:Matrix'
+
+> nameEx("metaregi")
+> ### * metaregi
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: metaregi
+> ### Title: Meta Regression with Moderator
+> ### Aliases: metaregi
+> 
+> ### ** Examples
+> 
+> ES<-c(.3, .4, .2, .5, .3, .4)
+> V<-c(.01, .03, .04, .02, .03, .02) 
+> I<-c(1,3,5,4,6,7)
+> metaregi(ES,I,V)
+Warning: package 'metafor' was built under R version 4.0.5
+Warning: package 'Matrix' was built under R version 4.0.5
+
+Loading the 'metafor' package (version 3.0-2). For an
+introduction to the package please type: help(metafor)
+
+Warning in model.matrix.default(terms, mf, contrasts) :
+  non-list contrasts argument ignored
+
+ Model Results:  
+ 
+        estimate     se      z   ci.l   ci.u     p
+intrcpt    0.320  0.111  2.871  0.102  0.538 0.004
+mods       0.009  0.026  0.364 -0.041  0.060 0.716
+
+ Heterogeneity & Fit:  
+ 
+        QE QE.df   QEp    QM QM.df   QMp
+[1,] 2.092 4.000 0.719 0.132 1.000 0.716
+Warning: Extra argument ('digets') disregarded.
+
+       estimate  ci.lb   ci.ub 
+tau^2    0.0000 0.0000  0.0855 
+tau      0.0000 0.0000  0.2923 
+I^2(%)   0.0000 0.0000 77.3104 
+H^2      1.0000 1.0000  4.4073 
+
+> 
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:metafor', 'package:Matrix'
+
+> nameEx("pandabove")
+> ### * pandabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PANDabove
+> ### Title: PAND - desired values above the reference line
+> ### Aliases: PANDabove
+> 
+> ### ** Examples
+> 
+> esteem<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pesteem<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> PANDabove(esteem,pesteem,"A","B1")
+    ES       Est
+1 PAND 0.5714286
+-------------------------------------------
+.90 or above = very effective
+.70 to .89 = moderate effectiveness
+.50 to .69 = debatable effectiveness
+ below .50 = not effective
+--------------------------------------------
+> 
+> 
+> 
+> cleanEx()
+> nameEx("pandbelow")
+> ### * pandbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PANDbelow
+> ### Title: PAND - desired values below the reference line
+> ### Aliases: PANDbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> PANDbelow(cry,pcry,"A","B1")    
+    ES       Est
+1 PAND 0.9285714
+-------------------------------------------
+.90 or above = very effective
+.70 to .89 = moderate effectiveness
+.50 to .69 = debatable effectiveness
+ below .50 = not effective
+--------------------------------------------
+> 
+> 
+> 
+> cleanEx()
+> nameEx("pemlegend")
+> ### * pemlegend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PEMlegend
+> ### Title: PEM legend
+> ### Aliases: PEMlegend
+> 
+> ### ** Examples
+> 
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> #run first
+> PEMbelow(cry,pcry,"A","B1") 
+[1] "PEM Below = " "1"           
+-------------------------------------------
+.90 or above = very effective
+.70 to .89 = moderate effectiveness
+.50 to .69 = debatable effectiveness
+ below .50 = not effective
+> #run after complete steps above
+> PEMlegend()
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plotnum")
+> ### * plotnum
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plotnum
+> ### Title: Set graphic environment
+> ### Aliases: plotnum
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> yell<-c(3, 4, 2, 5, 5, 4, NA, 1, 2, 2, 2, 0, 0)
+> pyell<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B")
+> plotnum(2, 1)
+> ABplotm(cry,pcry,"week","amount","Crying")
+[1] "You can add lines between phases by using the ABlines() function. You"
+[2] "can add text by using the ABtext() function. You can also add a mean,"
+[3] "median, sd line by using the ABstat() function."                      
+> ABplotm(yell,pyell,"week","amount","Yelling")
+[1] "You can add lines between phases by using the ABlines() function. You"
+[2] "can add text by using the ABtext() function. You can also add a mean,"
+[3] "median, sd line by using the ABstat() function."                      
+> 
+> 
+> 
+> cleanEx()
+> nameEx("pndabove")
+> ### * pndabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: PNDabove
+> ### Title: PND - desired values above the reference line
+> ### Aliases: PNDabove
+> 
+> ### ** Examples
+> 
+> esteem<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pesteem<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> PNDabove(esteem, pesteem,"A","B1")
+[1] "PND Above = " "0"           
+-------------------------------------------
+.90 or above = very effective
+.70 to .89 = moderate effectiveness
+.50 to .69 = debatable effectiveness
+ below .50 = not effective
+> 
+> 
+> 
+> cleanEx()
+> nameEx("regabove")
+> ### * regabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: regabove
+> ### Title: Chi-square - desired values above regression line
+> ### Aliases: regabove
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B",
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> regabove(cry,pcry,"A","B1")
+      [,1] [,2]
+FALSE    3    8
+TRUE     3    0
+           [,1]     [,2]
+FALSE  27.27273 72.72727
+TRUE  100.00000  0.00000
+      [,1] [,2]
+FALSE   50  100
+TRUE    50    0
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 5.0909, df = 1, p-value = 0.02405
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.05495
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.000000 1.532489
+sample estimates:
+odds ratio 
+         0 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("regbelow")
+> ### * regbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: regbelow
+> ### Title: Chi-square - desired values below regression line
+> ### Aliases: regbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> regbelow(cry,pcry,"A","B1")
+      [,1] [,2]
+FALSE    3    0
+TRUE     3    8
+           [,1]     [,2]
+FALSE 100.00000  0.00000
+TRUE   27.27273 72.72727
+      [,1] [,2]
+FALSE   50    0
+TRUE    50  100
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 5.0909, df = 1, p-value = 0.02405
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.05495
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.6525331       Inf
+sample estimates:
+odds ratio 
+       Inf 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("robregabove")
+> ### * robregabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: robregabove
+> ### Title: Chi-square - desired values above robust regression line
+> ### Aliases: robregabove
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> robregabove(cry,pcry,"A","B1")
+      [,1] [,2]
+FALSE    3    8
+TRUE     3    0
+           [,1]     [,2]
+FALSE  27.27273 72.72727
+TRUE  100.00000  0.00000
+      [,1] [,2]
+FALSE   50  100
+TRUE    50    0
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 5.0909, df = 1, p-value = 0.02405
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.05495
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.000000 1.532489
+sample estimates:
+odds ratio 
+         0 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("robregbelow")
+> ### * robregbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: robregbelow
+> ### Title: Chi-square - desired values below robust regression line
+> ### Aliases: robregbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> robregbelow(cry,pcry,"A","B1")
+      [,1] [,2]
+FALSE    3    0
+TRUE     3    8
+           [,1]     [,2]
+FALSE 100.00000  0.00000
+TRUE   27.27273 72.72727
+      [,1] [,2]
+FALSE   50    0
+TRUE    50  100
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 5.0909, df = 1, p-value = 0.02405
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.05495
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.6525331       Inf
+sample estimates:
+odds ratio 
+       Inf 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("robustCDCabove")
+> ### * robustCDCabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RobustCDCabove
+> ### Title: Robust Conservative Dual Criteria (CDC) using robust regression
+> ###   desired zone above lines
+> ### Aliases: RobustCDCabove
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA,
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> RobustCDCabove(cry,pcry,"A","B")
+[1] "needed=" "6"      
+-----------------above lines------------------
+TRUE, TRUE = Number above the lines
+          nabovemean
+naboveline FALSE
+     FALSE     6
+> 
+> 
+> 
+> cleanEx()
+> nameEx("robustCDCbelow")
+> ### * robustCDCbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RobustCDCbelow
+> ### Title: Robust Conservative Dual Criteria (CDC) using robust regression
+> ###   desired zone below lines
+> ### Aliases: RobustCDCbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> RobustCDCbelow(cry,pcry,"A","B")
+[1] "needed=" "6"      
+-----------------below lines------------------
+TRUE, TRUE = Number below the lines
+          nbelowmean
+nbelowline TRUE
+      TRUE    6
+> 
+> 
+> 
+> cleanEx()
+> nameEx("sd1bandgraph")
+> ### * sd1bandgraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sd1bandgraph
+> ### Title: 1-standard deviation band graph for one phase
+> ### Aliases: sd1bandgraph
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", NA, 
++ "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> sd1bandgraph(cry,pcry,"A","week","amount","Crying")
+[1] "SD="  "1.05"
+[1] "+1sd=" "4.55" 
+[1] "mean=" "3.5"  
+[1] "-1SD=" "2.45" 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("sd2bandgraph")
+> ### * sd2bandgraph
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sd2bandgraph
+> ### Title: 2-standard deviation band graph for one phase
+> ### Aliases: sd2bandgraph
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 
++ 2, 2, 3, 2, 1, 2, NA,
++ 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, 
++ "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> sd2bandgraph(cry,pcry,"A","week","amount","Crying")
+[1] "SD="  "1.05"
+[1] "+2sd=" "5.6"  
+[1] "mean=" "3.5"  
+[1] "-2SD=" "1.4"  
+> 
+> 
+> 
+> cleanEx()
+> nameEx("trimabove")
+> ### * trimabove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: trimabove
+> ### Title: Chi-square - desired values above the trimmed mean
+> ### Aliases: trimabove
+> 
+> ### ** Examples
+> 
+> esteem<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pesteem<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> trimabove(esteem, pesteem,"A","B1")
+      [,1] [,2]
+FALSE    3    8
+TRUE     3    0
+           [,1]     [,2]
+FALSE  27.27273 72.72727
+TRUE  100.00000  0.00000
+      [,1] [,2]
+FALSE   50  100
+TRUE    50    0
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 5.0909, df = 1, p-value = 0.02405
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.05495
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.000000 1.532489
+sample estimates:
+odds ratio 
+         0 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("trimbelow")
+> ### * trimbelow
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: trimbelow
+> ### Title: Chi-square - desired values below the trimmed mean
+> ### Aliases: trimbelow
+> 
+> ### ** Examples
+> 
+> cry<-c(3, 4, 2, 5, 3, 4, NA, 2, 2, 3, 2, 1, 2, NA, 2, 2, 1, 2, 1, 0, 0, 0)
+> pcry<-c("A", "A", "A", "A", "A", "A", NA, "B", "B", "B", "B", "B", "B", 
++ NA, "B1", "B1", "B1", "B1", "B1", "B1", "B1", "B1")
+> trimbelow(cry,pcry,"A","B")
+      [,1] [,2]
+FALSE    3    0
+TRUE     3    6
+           [,1]     [,2]
+FALSE 100.00000  0.00000
+TRUE   33.33333 66.66667
+      [,1] [,2]
+FALSE   50    0
+TRUE    50  100
+Warning in chisq.test(ctbl, correct = FALSE) :
+  Chi-squared approximation may be incorrect
+
+	Pearson's Chi-squared test
+
+data:  ctbl
+X-squared = 4, df = 1, p-value = 0.0455
+
+
+	Fisher's Exact Test for Count Data
+
+data:  ctbl
+p-value = 0.1818
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.4734379       Inf
+sample estimates:
+odds ratio 
+       Inf 
+
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.89 0.38 2.42 NA NA 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

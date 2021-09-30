@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calculate effect sizes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for calc_ES {SingleCaseES}"><tr><td>calc_ES {SingleCaseES}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Calculate effect sizes</h2>
+
+<h3>Description</h3>
+
+<p>Calculates one or more effect size estimates, along with
+associated standard errors and confidence intervals, if available, for a
+single-case data series.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+calc_ES(
+  A_data,
+  B_data,
+  condition,
+  outcome,
+  baseline_phase = NULL,
+  intervention_phase = NULL,
+  ES = c("LRRd", "LRRi", "SMD", "Tau"),
+  improvement = "increase",
+  ...,
+  confidence = 0.95,
+  format = "long"
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>A_data</code></td>
+<td>
+<p>vector of numeric data for A phase. Missing values are dropped.</p>
+</td></tr>
+<tr valign="top"><td><code>B_data</code></td>
+<td>
+<p>vector of numeric data for B phase. Missing values are dropped.</p>
+</td></tr>
+<tr valign="top"><td><code>condition</code></td>
+<td>
+<p>vector identifying the treatment condition for each
+observation in the series.</p>
+</td></tr>
+<tr valign="top"><td><code>outcome</code></td>
+<td>
+<p>vector of outcome data for the entire series.</p>
+</td></tr>
+<tr valign="top"><td><code>baseline_phase</code></td>
+<td>
+<p>character string specifying which value of
+<code>condition</code> corresponds to the baseline phase. Defaults to first
+observed value of <code>condition</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>intervention_phase</code></td>
+<td>
+<p>character string specifying which value of
+<code>condition</code> corresponds to the intervention phase. Defaults to second
+unique value of <code>condition</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>ES</code></td>
+<td>
+<p>character string or character vector specifying which effect size
+index or indices to calculate. Available effect sizes are <code>"LRRd"</code>,
+<code>"LRRi"</code>, <code>"LRM"</code>, <code>"LOR"</code>, <code>"SMD"</code>, <code>"NAP"</code>,
+<code>"IRD"</code>, <code>"PND"</code>, <code>"PEM"</code>, <code>"PAND"</code>, <code>"Tau"</code>,
+<code>"Tau-U"</code>, and <code>"Tau-BC"</code>. Set to <code>"all"</code> for all available
+effect sizes. Set to <code>"parametric"</code> for all parametric effect sizes.
+Set to <code>"NOM"</code> for all non-overlap measures. Defaults to calculating
+the LRRd, LRRi, SMD, and Tau indices.</p>
+</td></tr>
+<tr valign="top"><td><code>improvement</code></td>
+<td>
+<p>character string indicating direction of improvement.
+Default is &quot;increase&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments used for calculating some of the effect size
+indices.</p>
+</td></tr>
+<tr valign="top"><td><code>confidence</code></td>
+<td>
+<p>confidence level for the reported interval estimate. Set to
+<code>NULL</code> to omit confidence interval calculations.</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>character string specifying whether to organize the results in
+<code>"long"</code> format or <code>"wide"</code> format. Defaults to <code>"long"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Calculates one or more effect size indices
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data.frame containing the estimate, standard error, and/or
+confidence interval for each specified effect size.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Using the A_data and B_data arguments
+A &lt;- c(20, 20, 26, 25, 22, 23)
+B &lt;- c(28, 25, 24, 27, 30, 30, 29)
+calc_ES(A_data = A, B_data = B)
+
+# Using the condition and outcome arguments
+phase &lt;- c(rep("A", length(A)), rep("B", length(B)))
+outcome &lt;- c(A, B)
+calc_ES(condition = phase, outcome = outcome, baseline_phase = "A")
+
+# Example from Parker &amp; Vannest (2009)
+yA &lt;- c(4, 3, 4, 3, 4, 7, 5, 2, 3, 2)
+yB &lt;- c(5, 9, 7, 9, 7, 5, 9, 11, 11, 10, 9)
+calc_ES(yA, yB)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SingleCaseES</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

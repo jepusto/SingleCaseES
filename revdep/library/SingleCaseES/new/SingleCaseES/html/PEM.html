@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Percentage exceeding the median</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for PEM {SingleCaseES}"><tr><td>PEM {SingleCaseES}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Percentage exceeding the median</h2>
+
+<h3>Description</h3>
+
+<p>Calculates the percentage exceeding the median (PEM) index (Ma, 
+2006).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+PEM(
+  A_data,
+  B_data,
+  condition,
+  outcome,
+  baseline_phase = unique(condition)[1],
+  improvement = "increase"
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>A_data</code></td>
+<td>
+<p>vector of numeric data for A phase. Missing values are dropped.</p>
+</td></tr>
+<tr valign="top"><td><code>B_data</code></td>
+<td>
+<p>vector of numeric data for B phase. Missing values are dropped.</p>
+</td></tr>
+<tr valign="top"><td><code>condition</code></td>
+<td>
+<p>vector identifying the treatment condition for each
+observation in the series.</p>
+</td></tr>
+<tr valign="top"><td><code>outcome</code></td>
+<td>
+<p>vector of outcome data for the entire series.</p>
+</td></tr>
+<tr valign="top"><td><code>baseline_phase</code></td>
+<td>
+<p>character string specifying which value of
+<code>condition</code> corresponds to the baseline phase. Defaults to first
+observed value of <code>condition</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>improvement</code></td>
+<td>
+<p>character string indicating direction of improvement.
+Default is &quot;increase&quot;.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For an outcome where increase is desirable, PEM is calculated as the
+proportion of observations in the B phase that exceed the median 
+observation from the A phase. For an outcome where decrease is desirable, 
+PEM is calculated as the proportion of observations in the B phase that are
+less than the median observation from the A phase. Ties are counted with a
+weight of 0.5. The range of PEM is [0,1].
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric value
+</p>
+
+
+<h3>References</h3>
+
+<p>Ma, H.-H. (2006). An alternative method for quantitative 
+synthesis of single-subject researches: Percentage of data points exceeding
+the median. <em>Behavior Modification, 30</em>(5), 598&ndash;617. 
+doi:doi: <a href="https://doi.org/10.1177/0145445504272974">10.1177/0145445504272974</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+A &lt;- c(20, 20, 26, 25, 22, 23)
+B &lt;- c(28, 25, 24, 27, 30, 30, 29)
+PEM(A_data = A, B_data = B)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SingleCaseES</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -3,6 +3,7 @@
 ^\.Rproj\.user$
 simulations
 auxiliary
+revdep
 README.Rmd
 README.md
 .travis.yml

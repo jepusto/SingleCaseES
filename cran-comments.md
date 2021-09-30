@@ -49,4 +49,7 @@ Found the following (possibly) invalid URLs:
 
 ## Reverse dependencies
 
-There are no downstream dependencies for this package.
+We checked 1 reverse dependency, comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages

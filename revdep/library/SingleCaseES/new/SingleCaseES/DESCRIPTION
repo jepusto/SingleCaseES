@@ -1,0 +1,38 @@
+Package: SingleCaseES
+Type: Package
+Title: A Calculator for Single-Case Effect Sizes
+Version: 0.5.0
+Authors@R: c(
+  person(c("James","E."), "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre")),
+  person("Man", "Chen", email = "manchen9005@gmail.com", role = "aut"),
+  person(c("Daniel","M."), "Swan", email = "dms031000@gmail.com", role = "aut")
+  )
+Description: 
+  Provides R functions for calculating basic effect size indices for 
+  single-case designs, including several non-overlap measures and parametric 
+  effect size measures, and for estimating the gradual effects model developed 
+  by Swan and Pustejovsky (2018) <DOI:10.1080/00273171.2018.1466681>. 
+  Standard errors and confidence intervals (based on the assumption that the outcome 
+  measurements are mutually independent) are provided for the subset of effect sizes 
+  indices with known sampling distributions.
+URL: https://jepusto.github.io/SingleCaseES/
+BugReports: https://github.com/jepusto/SingleCaseES/issues
+License: GPL-3
+Imports: stats, purrr, magrittr, dplyr, tidyr, rlang, tidyselect, utils
+Suggests: spelling, shiny, ggplot2, purrrlyr, testthat, markdown,
+        knitr, rmarkdown, prettydoc, Kendall, kableExtra, covr, readxl,
+        glue, janitor, rclipboard
+LazyData: TRUE
+RoxygenNote: 7.1.1
+Encoding: UTF-8
+Language: en-US
+VignetteBuilder: knitr, rmarkdown, prettydoc
+RemoteType: local
+RemoteUrl: C:\Users\jepus\OneDrive\Documents\SingleCaseES
+NeedsCompilation: no
+Packaged: 2021-09-30 03:16:26 UTC; jepus
+Author: James E. Pustejovsky [aut, cre],
+  Man Chen [aut],
+  Daniel M. Swan [aut]
+Maintainer: James E. Pustejovsky <jepusto@gmail.com>
+Built: R 4.0.2; ; 2021-09-30 03:16:27 UTC; windows

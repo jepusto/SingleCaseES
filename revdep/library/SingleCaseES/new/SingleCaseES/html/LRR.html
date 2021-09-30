@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Log-response ratio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for LRR {SingleCaseES}"><tr><td>LRR {SingleCaseES}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Log-response ratio</h2>
+
+<h3>Description</h3>
+
+<p>Calculates the increasing or decreasing version of the
+log-response ratio effect size index, with or without bias correction
+(Pustejovsky, 2015)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+LRRd(
+  A_data,
+  B_data,
+  condition,
+  outcome,
+  baseline_phase = unique(condition)[1],
+  improvement = "decrease",
+  scale = "count",
+  observation_length = NULL,
+  intervals = NULL,
+  D_const = NULL,
+  bias_correct = TRUE,
+  pct_change = FALSE,
+  confidence = 0.95
+)
+
+LRRi(
+  A_data,
+  B_data,
+  condition,
+  outcome,
+  baseline_phase = unique(condition)[1],
+  improvement = "increase",
+  scale = "count",
+  observation_length = NULL,
+  intervals = NULL,
+  D_const = NULL,
+  bias_correct = TRUE,
+  pct_change = FALSE,
+  confidence = 0.95
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>A_data</code></td>
+<td>
+<p>vector of numeric data for A phase. Missing values are dropped.</p>
+</td></tr>
+<tr valign="top"><td><code>B_data</code></td>
+<td>
+<p>vector of numeric data for B phase. Missing values are dropped.</p>
+</td></tr>
+<tr valign="top"><td><code>condition</code></td>
+<td>
+<p>vector identifying the treatment condition for each
+observation in the series.</p>
+</td></tr>
+<tr valign="top"><td><code>outcome</code></td>
+<td>
+<p>vector of outcome data for the entire series.</p>
+</td></tr>
+<tr valign="top"><td><code>baseline_phase</code></td>
+<td>
+<p>character string specifying which value of
+<code>condition</code> corresponds to the baseline phase. Defaults to first
+observed value of <code>condition</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>improvement</code></td>
+<td>
+<p>character string indicating direction of improvement.
+Default is &quot;increase&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>character string indicating the scale of the outcome variable,
+with possible values <code>"percentage"</code> for a percentage with range 0-100,
+<code>"proportion"</code> for a proportion with range 0-1, <code>"count"</code> for a
+frequency count (0 or positive integers), <code>"rate"</code> for a standardized
+rate per minute. If a vector, the most frequent unique value will be used.</p>
+</td></tr>
+<tr valign="top"><td><code>observation_length</code></td>
+<td>
+<p>length of observation session (in minutes). If a
+vector, the mean observation session length will be used.</p>
+</td></tr>
+<tr valign="top"><td><code>intervals</code></td>
+<td>
+<p>for interval recording procedures, the total number of
+intervals per observation session. If a vector, the mean number of
+intervals will be used.</p>
+</td></tr>
+<tr valign="top"><td><code>D_const</code></td>
+<td>
+<p>constant used for calculating the truncated sample mean (see
+Pustejovsky, 2018). If a vector, the mean value will be used.</p>
+</td></tr>
+<tr valign="top"><td><code>bias_correct</code></td>
+<td>
+<p>logical value indicating whether to use bias-correction.
+Default is <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pct_change</code></td>
+<td>
+<p>logical value indicating whether to convert the LRR
+estimate and confidence interval into percentage change.</p>
+</td></tr>
+<tr valign="top"><td><code>confidence</code></td>
+<td>
+<p>confidence level for the reported interval estimate. Set to
+<code>NULL</code> to omit confidence interval calculations.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The response ratio parameter is the ratio of the mean level of the
+outcome during phase B to the mean level of the outcome during phase A. The
+log response ratio is the natural logarithm of the response ratio. This
+effect size is appropriate for outcomes measured on a ratio scale (so that
+zero corresponds to the true absence of the outcome. There are two versions
+of the LRR. The LRR-increasing (<code>LRRi</code>) is defined so that positive
+values correspond to therapeutic improvements. The LRR-decreasing
+(<code>LRRd</code>) is defined so that negative values correspond to therapeutic
+improvements. For outcomes measured as frequency counts or rates, the two
+versions will have the same magnitude but opposite sign; for outcomes
+measured as percentages or proportions, the LRRd and LRRi will differ in
+both sign and magnitude (Pustejovsky, 2018).
+</p>
+<p>Without bias correction, the log response ratio is estimated as the natural
+logarithm of the phase B sample mean, minus the natural logarithm of the
+phase A sample mean. A delta-method bias correction to the estimator is
+used by default.
+</p>
+<p>The standard error of LRR is calculated based on a delta-method
+approximation, allowing for the possibility of different degrees of
+dispersion in each phase. The confidence interval for LRR is based on a
+large-sample (z) approximation.
+</p>
+<p>To account for the possibility of sample means of zero, a truncated mean is
+calculated following the method described in Pustejovsky (2018). Truncated
+sample variances are also calculated to ensure that standard errors will be
+strictly larger than zero. The truncation constant depends on the scale of
+the outcome, the length of the observation sessions used to measure the
+dependent variable, and (for interval recording procedures) the total
+number of intervals per session (or the total number of items for other
+percentage/proportion scales). The argument <code>scale</code> must be specified
+in order to calculate an appropriate truncation constant. For standardized
+rates, the argument <code>observation_length</code> must also be specified; for
+percentages or proportions, the argument <code>intervals</code> must be
+specified. For outcomes measured using continuous recording procedures, set
+<code>intervals</code> equal to 60 times the length of the observation session in
+minutes.
+</p>
+<p>If <code>pct_change</code> is <code>TRUE</code>, then the LRR estimate and confidence
+interval are converted into percentage change using the formula 
+Percentage change = 100 * (exp(LRR) - 1).
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data.frame containing the estimate, standard error, and approximate
+confidence interval.
+</p>
+
+
+<h3>References</h3>
+
+<p>Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
+for single-case studies of free-operant behavior. <em>Psychological
+Methods, 20</em>(3), 342&ndash;359.
+doi:doi: <a href="https://doi.org/10.1037/met0000019">10.1037/met0000019</a>
+</p>
+<p>Pustejovsky, J. E. (2018). Using response ratios for meta-analyzing
+single-case designs with behavioral outcomes. <em>Journal of School
+Psychology, 16</em>, 99-112.
+doi:doi: <a href="https://doi.org/10.1016/j.jsp.2018.02.003">10.1016/j.jsp.2018.02.003</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+A &lt;- c(20, 20, 26, 25, 22, 23)
+B &lt;- c(28, 25, 24, 27, 30, 30, 29)
+LRRd(A_data = A, B_data = B, bias_correct = FALSE)
+LRRd(A_data = A, B_data = B)
+LRRd(A_data = A, B_data = B, pct_change = TRUE)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SingleCaseES</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

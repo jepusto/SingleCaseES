@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calculate effect sizes from a dataset for multiple series</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for batch_calc_ES {SingleCaseES}"><tr><td>batch_calc_ES {SingleCaseES}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Calculate effect sizes from a dataset for multiple series</h2>
+
+<h3>Description</h3>
+
+<p>Calculates one or more effect size estimates, along with
+associated standard errors and confidence intervals, if available, for a
+single-case data series.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+batch_calc_ES(
+  dat,
+  grouping,
+  condition,
+  outcome,
+  aggregate = NULL,
+  weighting = "1/V",
+  session_number = NULL,
+  baseline_phase = NULL,
+  intervention_phase = NULL,
+  ES = c("LRRd", "LRRi", "SMD", "Tau"),
+  improvement = "increase",
+  scale = "other",
+  intervals = NA,
+  observation_length = NA,
+  confidence = 0.95,
+  format = "long",
+  warn = TRUE,
+  ...
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dat</code></td>
+<td>
+<p>data frame containing SCD series for which effect sizes will be
+calculated.</p>
+</td></tr>
+<tr valign="top"><td><code>grouping</code></td>
+<td>
+<p>A variable name or list of (unquoted) variable names that
+uniquely identify each data series.</p>
+</td></tr>
+<tr valign="top"><td><code>condition</code></td>
+<td>
+<p>A variable name that identifies the treatment condition for
+each observation in the series.</p>
+</td></tr>
+<tr valign="top"><td><code>outcome</code></td>
+<td>
+<p>A variable name for the outcome data. Default is</p>
+</td></tr>
+<tr valign="top"><td><code>aggregate</code></td>
+<td>
+<p>A variable name of list of (unquoted) variable names that
+identify additional grouping variables. Effect sizes will be calculated
+separately for each unique value of these variables, after which the effect
+size estimates will be averaged across values of these variables (but not
+across the values of the <code>grouping</code> variables).</p>
+</td></tr>
+<tr valign="top"><td><code>weighting</code></td>
+<td>
+<p>character string specifying the weighting scheme for use
+when variables are specified in <code>aggregate</code>. Either <code>"1/V"</code> (the
+default) or <code>"equal"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>session_number</code></td>
+<td>
+<p>A variable name used to order the data within each
+series.</p>
+</td></tr>
+<tr valign="top"><td><code>baseline_phase</code></td>
+<td>
+<p>character string specifying which value of
+<code>condition</code> corresponds to the baseline phase. If <code>NULL</code> (the
+default), the first observed value of <code>condition</code> within the series
+will be used.</p>
+</td></tr>
+<tr valign="top"><td><code>intervention_phase</code></td>
+<td>
+<p>character string specifying which value of
+<code>condition</code> corresponds to the intervention phase. If <code>NULL</code> (the
+default), the second unique value of <code>condition</code> within the series
+will be used.</p>
+</td></tr>
+<tr valign="top"><td><code>ES</code></td>
+<td>
+<p>character string or character vector specifying which effect size
+index or indices to calculate. Available effect sizes are <code>"LRRd"</code>,
+<code>"LRRi"</code>, <code>"LRM"</code>, <code>"LOR"</code>, <code>"SMD"</code>, <code>"NAP"</code>,
+<code>"IRD"</code>, <code>"PND"</code>, <code>"PEM"</code>, <code>"PAND"</code>, <code>"Tau"</code>,
+<code>"Tau-U"</code>, and <code>"Tau-BC"</code>. Set to <code>"all"</code> for all available
+effect sizes. Set to <code>"parametric"</code> for all parametric effect sizes.
+Set to <code>"NOM"</code> for all non-overlap measures. Defaults to calculating
+the LRRd, LRRi, SMD, and Tau indices.</p>
+</td></tr>
+<tr valign="top"><td><code>improvement</code></td>
+<td>
+<p>character string either indicating the direction of
+uniform improvement (&quot;increase&quot; or &quot;decrease&quot;) or the variable name of a
+variable identifying the direction of improvement for each series. Default
+is &quot;increase&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>character string indicating the common scale of the outcome
+variable across all of the series in the data set or the name of a variable
+within the dataset that identifies the outcome scale within each series.
+Possible values for the scale are <code>"percentage"</code> for a percentage with
+range 0-100, <code>"proportion"</code> for a proportion with range 0-1,
+<code>"count"</code> for a frequency count (0 or positive integers),
+<code>"rate"</code> for a standardized rate per minute. If a vector, the most
+frequent unique value will be used and missing values will be ignored.
+Defaults to <code>NA</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>intervals</code></td>
+<td>
+<p>for interval recording procedures. Either the total number
+of intervals per observation session common to all series in the dataset,
+or the name of a variable within the dataset that identifies the number of
+intervals for each observation. If a variable name, the mean number of
+intervals within each series will be used. Missing values will be ignored.
+Defaults to <code>NA</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>observation_length</code></td>
+<td>
+<p>Used for the log-response ratio. Either the common
+observation session length (in minutes) across all series in the dataset or
+a variable name containing the observation session length for each
+observation. If a variable name, the mean observation session length within
+each series will be used. Missing values will be ignored. Defaults to
+<code>NA</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>confidence</code></td>
+<td>
+<p>confidence level for the reported interval estimate. Set to
+<code>NULL</code> to omit confidence interval calculations.</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>character string specifying whether to organize the results in
+<code>"long"</code> format or <code>"wide"</code> format. Defaults to <code>"long"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>warn</code></td>
+<td>
+<p>logical indicating whether warnings should be displayed. Default
+is <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments used for calculating some of the effect size
+indices.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Calculates one or more effect size indices for each series in a
+dataset
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble containing the estimate, standard error, and/or confidence
+interval for each specified effect size.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+data(McKissick)
+batch_calc_ES(McKissick,
+              grouping = Case_pseudonym,
+              condition = Condition,
+              outcome = Outcome,
+              ES = c("LRRd","LRRi"),
+              improvement = "decrease",
+              scale = "count",
+              observation_length = 20,
+              format = "long")
+
+data(Schmidt2007)
+batch_calc_ES(dat = Schmidt2007,
+              grouping = c(Behavior_type, Case_pseudonym, Phase_num),
+              condition = Condition,
+              outcome = Outcome,
+              ES = c("LRRi","LRRd"),
+              improvement = direction,
+              scale = Metric,
+              bias_correct = TRUE,
+              confidence = NULL,
+              format = "wide")
+
+# Aggregate across phase-pairs
+batch_calc_ES(dat = Schmidt2007,
+              grouping = c(Behavior_type, Case_pseudonym),
+              aggregate = Phase_num,
+              weighting = "1/V",
+              condition = Condition,
+              outcome = Outcome,
+              ES = c("LRRi", "LRRd", "SMD", "Tau"),
+              improvement = direction,
+              scale = "count",
+              bias_correct = TRUE,
+              confidence = NULL,
+              format = "long")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SingleCaseES</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,12 @@
+name: gem-scd
+title: gem-scd
+username:
+account: jepusto
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 242165
+bundleId: 1120194
+url: https://jepusto.shinyapps.io/gem-scd/
+when: 1512616979.83116
+asMultiple: FALSE
+asStatic: FALSE
