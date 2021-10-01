@@ -1,0 +1,13 @@
+app <- ShinyDriver$new("../../")
+app$snapshotInit("mytest")
+
+app$setInputs(SCD_es_calculator = "Batch Entry")
+app$setInputs(example = "Schmidt2007")
+app$setInputs(BatchEntryTabs = "Variables")
+app$setInputs(b_clusters = c("Behavior_type", "Case_pseudonym"))
+app$setInputs(b_aggregate = "Phase_num")
+app$setInputs(BatchEntryTabs = "Estimate")
+app$setInputs(bESno = c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U"))
+app$setInputs(bESpar = c("LOR", "LRRd", "LRRi", "LRM", "SMD"))
+app$setInputs(batchest = "click")
+app$snapshot(list(output = "batchTable"))
