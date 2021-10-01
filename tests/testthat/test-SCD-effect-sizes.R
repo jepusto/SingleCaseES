@@ -10,9 +10,9 @@ suppressWarnings(library(purrr))
 
 test_that("Title and tabs are correct", {
   
-  skip("Need to fix the dir for r cmd check.")
+  appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")
+  app <- ShinyDriver$new(appDir)
   
-  app <- ShinyDriver$new("../../inst/shiny-examples/SCD-effect-sizes/")
   # title
   appTitle <- app$getTitle()[[1]]
   expect_equal(appTitle, "Single-case effect size calculator")
@@ -26,8 +26,9 @@ test_that("Title and tabs are correct", {
 
 
 check_single_NOMs <- function(ES, A_data, B_data) {
-  
-  app <- ShinyDriver$new("../../inst/shiny-examples/SCD-effect-sizes/")
+
+  appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")
+  app <- ShinyDriver$new(appDir)
   app$setInputs(
     SCD_es_calculator = "Calculator",
     A_dat = toString(A_data),
@@ -37,20 +38,21 @@ check_single_NOMs <- function(ES, A_data, B_data) {
     improvement = "increase",
     digits = 3
   )
-  
+
   output_ES_name <- app$getValue(name = "ES_name")
   output_ES_value <- app$getValue(name = "result")
-  
+
   return(data.frame(ES_name = output_ES_name, ES_value = output_ES_value))
-  
+
 }
 
 
 check_single_param <- function(ES, A_data, B_data) {
-  
-  app <- ShinyDriver$new("../../inst/shiny-examples/SCD-effect-sizes/")
+
+  appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")
+  app <- ShinyDriver$new(appDir)
   improvement <- ifelse(ES == "LRRd", "decrease", "increase")
-  
+
   app$setInputs(
     SCD_es_calculator = "Calculator",
     A_dat = toString(A_data),
@@ -60,19 +62,17 @@ check_single_param <- function(ES, A_data, B_data) {
     improvement = improvement,
     digits = 3
   )
-  
+
   output_ES_name <- app$getValue(name = "ES_name")
   output_ES_value <- app$getValue(name = "result")
-  
+
   return(data.frame(ES_name = output_ES_name, ES_value = output_ES_value))
-  
+
 }
 
 
 test_that("Single-entry calculator works properly", {
-  
-  skip("Need to fix the dir for r cmd check.")
-  
+
   full_names <- list(IRD = "Robust Improvement Rate Difference",
                      NAP = "Non-overlap of All Pairs",
                      PAND = "Percentage of All Non-overlapping Data",
@@ -86,7 +86,7 @@ test_that("Single-entry calculator works properly", {
                      LRRi = "Log Response Ratio (increasing)",
                      LRM = "Log Ratio of Medians",
                      SMD = "Standardized Mean Difference (within-case)")
-  
+
   # Non-overlap
   A_dat <- c(20, 20, 26, 25, 22, 23)
   B_dat <- c(28, 25, 24, 27, 30, 30, 29)
@@ -105,7 +105,7 @@ test_that("Single-entry calculator works properly", {
         arrange(ES_name) %>%
         rename(ES = ES_name)
     )
-  
+
   NOMs_pkg <- calc_ES(A_data = A_dat, B_data = B_dat, improvement = "increase", ES = NOMs_name)
   NOMs_pkg_clean <-
     NOMs_pkg %>%
@@ -118,10 +118,10 @@ test_that("Single-entry calculator works properly", {
     ) %>%
     select(-c(CI_lower, CI_upper)) %>%
     arrange(ES)
-  
+
   expect_equal(NOMs_pkg_clean, NOMs_app_clean, check.attributes = FALSE)
-  
-  
+
+
   # Parametric
   Parametric_name <- c("LOR", "LRRi", "LRRd", "LRM", "SMD")
   Parametric_app <- map_dfr(Parametric_name, ~ check_single_param(.x, A_data = A_dat, B_data = B_dat))
@@ -135,7 +135,7 @@ test_that("Single-entry calculator works properly", {
       CI = stringr::str_remove(CI, "95% CI: ")
     ) %>%
     arrange(ES_name)
-  
+
   Parametric_pkg <- calc_ES(A_data = A_dat, B_data = B_dat, improvement = "increase", ES = Parametric_name[-3])
   Parametric_pkg_LRRd <- calc_ES(A_data = A_dat, B_data = B_dat, improvement = "decrease", ES = "LRRd")
   Parametric_pkg_clean <-
@@ -148,7 +148,7 @@ test_that("Single-entry calculator works properly", {
     ) %>%
     arrange(ES) %>%
     select(-c(CI_lower, CI_upper))
-  
+
   expect_equal(Parametric_app_clean$ES_name, Parametric_pkg_clean$ES)
   expect_equal(Parametric_app_clean$Est, Parametric_pkg_clean$Est)
   expect_equal(Parametric_app_clean$SE, Parametric_pkg_clean$SE)
@@ -158,12 +158,11 @@ test_that("Single-entry calculator works properly", {
 
 
 test_that("Batch calculator is correct", {
-  
-  skip("Need to fix the dir for r cmd check.")
-  
+
   # Shiny app
-  app <- ShinyDriver$new("../../inst/shiny-examples/SCD-effect-sizes/")
-  
+  appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")
+  app <- ShinyDriver$new(appDir)
+
   app$setInputs(SCD_es_calculator = "Batch Entry")
   app$setInputs(example = "Schmidt2007")
   app$setInputs(BatchEntryTabs = "Variables")
@@ -173,14 +172,14 @@ test_that("Batch calculator is correct", {
   app$setInputs(bESno = c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U"))
   app$setInputs(bESpar = c("LOR", "LRRd", "LRRi", "LRM", "SMD"))
   app$setInputs(batchest = "click")
-  
+
   output_app <- app$getValue(name = "batchTable")
   output_app_table <-
     as.data.frame(read_html(output_app) %>% html_table(fill=TRUE)) %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
-  
-  
+
+
   # Package
   data(Schmidt2007)
   dat <- Schmidt2007
@@ -206,8 +205,8 @@ test_that("Batch calculator is correct", {
                     format = "long")
     ) %>%
     mutate(across(Est:CI_upper, ~ round(., 2)))
-  
+
   expect_equal(output_pkg, output_app_table, check.attributes = FALSE)
-  
+
 })
 
