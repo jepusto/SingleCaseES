@@ -93,20 +93,19 @@ test_that("Single-entry calculator works properly", {
   NOMs_name <- c("PND", "PAND", "PEM", "IRD", "Tau_U", "NAP", "Tau", "Tau_BC")
   NOMs_app <- map_dfr(NOMs_name, ~ check_single_NOMs(.x, A_data = A_dat, B_data = B_dat))
   NOMs_app_clean <-
-    suppressWarnings(
-      NOMs_app %>%
-        mutate(ES_value = gsub("(.*)<br><br><br><br>.*", "\\1", ES_value)) %>%
-        tidyr::separate(ES_value, c("Est", "SE", "CI"), "<br>") %>%
-        mutate(
-          Est = as.numeric(stringr::str_remove(Est, "Effect size estimate: ")),
-          SE = as.numeric(stringr::str_remove(SE, "Standard error: ")),
-          CI = stringr::str_remove(CI, "95% CI: ")
-        ) %>%
-        arrange(ES_name) %>%
-        rename(ES = ES_name)
-    )
+    NOMs_app %>%
+      mutate(ES_value = gsub("(.*)<br><br><br><br>.*", "\\1", ES_value)) %>%
+      tidyr::separate(ES_value, c("Est", "SE", "CI"), "<br>", fill = "right") %>%
+      mutate(
+        Est = as.numeric(stringr::str_remove(Est, "Effect size estimate: ")),
+        SE = as.numeric(stringr::str_remove(SE, "Standard error: ")),
+        CI = stringr::str_remove(CI, "95% CI: ")
+      ) %>%
+      arrange(ES_name) %>%
+      rename(ES = ES_name)
 
   NOMs_pkg <- calc_ES(A_data = A_dat, B_data = B_dat, improvement = "increase", ES = NOMs_name)
+  
   NOMs_pkg_clean <-
     NOMs_pkg %>%
     mutate(
@@ -123,20 +122,22 @@ test_that("Single-entry calculator works properly", {
 
 
   # Parametric
+  
   Parametric_name <- c("LOR", "LRRi", "LRRd", "LRM", "SMD")
   Parametric_app <- map_dfr(Parametric_name, ~ check_single_param(.x, A_data = A_dat, B_data = B_dat))
   Parametric_app_clean <-
     Parametric_app %>%
     mutate(ES_value = gsub("(.*)<br><br><br><br>.*", "\\1", ES_value)) %>%
-    separate(ES_value, c("Est", "SE", "CI"), "<br>") %>%
+    tidyr::separate(ES_value, c("Est", "SE", "CI"), "<br>") %>%
     mutate(
       Est = as.numeric(stringr::str_remove(Est, "Effect size estimate: ")),
       SE = as.numeric(stringr::str_remove(SE, "Standard error: ")),
       CI = stringr::str_remove(CI, "95% CI: ")
     ) %>%
-    arrange(ES_name)
+    arrange(ES_name) %>%
+    rename(ES = ES_name)
 
-  Parametric_pkg <- calc_ES(A_data = A_dat, B_data = B_dat, improvement = "increase", ES = Parametric_name[-3])
+  Parametric_pkg <- calc_ES(A_data = A_dat, B_data = B_dat, improvement = "increase", ES = setdiff(Parametric_name, "LRRd"))
   Parametric_pkg_LRRd <- calc_ES(A_data = A_dat, B_data = B_dat, improvement = "decrease", ES = "LRRd")
   Parametric_pkg_clean <-
     Parametric_pkg %>%
@@ -149,10 +150,8 @@ test_that("Single-entry calculator works properly", {
     arrange(ES) %>%
     select(-c(CI_lower, CI_upper))
 
-  expect_equal(Parametric_app_clean$ES_name, Parametric_pkg_clean$ES)
-  expect_equal(Parametric_app_clean$Est, Parametric_pkg_clean$Est)
-  expect_equal(Parametric_app_clean$SE, Parametric_pkg_clean$SE)
-  expect_equal(Parametric_app_clean$CI, Parametric_pkg_clean$CI)
+  expect_equal(Parametric_app_clean, Parametric_pkg_clean)
+  
 })
 
 
