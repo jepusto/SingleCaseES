@@ -42,6 +42,21 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
           extra-packages: rcmdcheck
+          
+      - name: Find PhantomJS path
+        id: phantomjs
+        run: |
+          echo "::set-output name=path::$(Rscript -e 'cat(shinytest:::phantom_paths()[[1]])')"
+      - name: Cache PhantomJS
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.phantomjs.outputs.path }}
+          key: ${{ runner.os }}-phantomjs
+          restore-keys: ${{ runner.os }}-phantomjs
+      - name: Install PhantomJS
+        run: >
+          Rscript
+          -e "if (!shinytest::dependenciesInstalled()) shinytest::installDependencies()"
 
       - uses: r-lib/actions/check-r-package@v1
 
@@ -56,3 +71,4 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
+          
