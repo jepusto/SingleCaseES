@@ -1,3 +1,5 @@
+# SingleCaseES 0.5.0.9999
+
 # SingleCaseES 0.5.0
 
 * batch_calc_ES() gains an argument aggregate, for post-processing effect size estimates by averaging across the levels of a variable.
