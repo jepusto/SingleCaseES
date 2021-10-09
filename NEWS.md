@@ -1,5 +1,8 @@
 # SingleCaseES 0.5.0.9999
 
+* Added unit tests for SCD_effect_sizes shiny app.
+* Added intervention_phase argument to NAP(), SMD(), and other user-facing effect size calculation functions. 
+
 # SingleCaseES 0.5.0
 
 * batch_calc_ES() gains an argument aggregate, for post-processing effect size estimates by averaging across the levels of a variable.
