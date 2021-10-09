@@ -3,6 +3,7 @@ library(rclipboard)
 source("mappings.R")
 
 ui <- navbarPage(title = "Single-case effect size calculator",
+                 id = "SCD_es_calculator",
                  tabPanel("About",
                           navlistPanel(widths = c(3,9),
                                        tabPanel("About", 
@@ -151,6 +152,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                  ),
                  tabPanel("Batch Entry",
                           tabsetPanel(
+                            id = "BatchEntryTabs",
                             tabPanel("Data",
                                      sidebarLayout(sidebarPanel(radioButtons('dat_type', 'What data do you want to use?', 
                                                                              c("Use an example" = "example", 

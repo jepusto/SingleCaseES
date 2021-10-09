@@ -30,6 +30,9 @@ Imports:
 Suggests:
     spelling,
     shiny,
+    shinytest,
+    stringr,
+    rvest,
     ggplot2,
     purrrlyr,
     testthat,

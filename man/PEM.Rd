@@ -9,7 +9,8 @@ PEM(
   B_data,
   condition,
   outcome,
-  baseline_phase = unique(condition)[1],
+  baseline_phase = NULL,
+  intervention_phase = NULL,
   improvement = "increase"
 )
 }
@@ -26,6 +27,10 @@ observation in the series.}
 \item{baseline_phase}{character string specifying which value of
 \code{condition} corresponds to the baseline phase. Defaults to first
 observed value of \code{condition}.}
+
+\item{intervention_phase}{character string specifying which value of
+\code{condition} corresponds to the intervention phase. Defaults to second
+unique value of \code{condition}.}
 
 \item{improvement}{character string indicating direction of improvement.
 Default is "increase".}

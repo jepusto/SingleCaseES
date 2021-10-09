@@ -115,15 +115,18 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
 
 # Check against calculations in Pustejovsky (2015)
 
-LOR <- function(A_data, B_data, condition, outcome, baseline_phase,
-                 improvement = "increase", 
-                 scale = "percentage", 
-                 intervals = NULL, D_const = NULL,
-                 bias_correct = TRUE, confidence = .95) {
+LOR <- function(A_data, B_data, condition, outcome, 
+                baseline_phase = NULL,
+                intervention_phase = NULL,
+                improvement = "increase", 
+                scale = "percentage", 
+                intervals = NULL, D_const = NULL,
+                bias_correct = TRUE, confidence = .95) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
+          intervention_phase = intervention_phase,
           ES = "LOR", improvement = improvement, 
           scale = scale, intervals = intervals, D_const = D_const,
           bias_correct = bias_correct, confidence = confidence)  
@@ -295,8 +298,9 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
 
 #' @rdname LRR
 
-LRRd <- function(A_data, B_data, condition, outcome, 
-                 baseline_phase = unique(condition)[1],
+LRRd <- function(A_data, B_data, condition, outcome,
+                 baseline_phase = NULL,
+                 intervention_phase = NULL,
                  improvement = "decrease", 
                  scale = "count", observation_length = NULL, 
                  intervals = NULL, D_const = NULL,
@@ -306,6 +310,7 @@ LRRd <- function(A_data, B_data, condition, outcome,
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
+          intervention_phase = intervention_phase,
           ES = "LRRd", improvement = improvement, 
           scale = scale, observation_length = observation_length, 
           intervals = intervals, D_const = D_const,
@@ -316,8 +321,9 @@ LRRd <- function(A_data, B_data, condition, outcome,
 #' @rdname LRR
 #' @export
 
-LRRi <- function(A_data, B_data, condition, outcome, 
-                 baseline_phase = unique(condition)[1],
+LRRi <- function(A_data, B_data, condition, outcome,
+                 baseline_phase = NULL,
+                 intervention_phase = NULL,
                  improvement = "increase", 
                  scale = "count", observation_length = NULL, 
                  intervals = NULL, D_const = NULL,
@@ -327,6 +333,7 @@ LRRi <- function(A_data, B_data, condition, outcome,
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
+          intervention_phase = intervention_phase,
           ES = "LRRi", improvement = improvement, 
           scale = scale, observation_length = observation_length, 
           intervals = intervals, D_const = D_const,
@@ -508,7 +515,9 @@ calc_LRRi <- function(A_data, B_data, improvement = "increase",
 
 # Check against calculations in Pustejovsky (2015)!
 
-SMD <- function(A_data, B_data, condition, outcome, baseline_phase,
+SMD <- function(A_data, B_data, condition, outcome, 
+                baseline_phase = NULL,
+                intervention_phase = NULL,
                 improvement = "increase",
                 std_dev = "baseline", 
                 bias_correct = TRUE, 
@@ -517,6 +526,7 @@ SMD <- function(A_data, B_data, condition, outcome, baseline_phase,
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
+          intervention_phase = intervention_phase,
           ES = "SMD", improvement = improvement,
           std_dev = std_dev,
           bias_correct = bias_correct, confidence = confidence)
@@ -629,7 +639,9 @@ stats_LRM <- function(data, delta_method = FALSE, warn = TRUE) {
 #' @export
 
 
-LRM <- function(A_data, B_data, condition, outcome, baseline_phase,
+LRM <- function(A_data, B_data, condition, outcome, 
+                baseline_phase = NULL,
+                intervention_phase = NULL,
                 improvement = "increase",
                 delta_method = FALSE,
                 confidence = .95) {
@@ -637,6 +649,7 @@ LRM <- function(A_data, B_data, condition, outcome, baseline_phase,
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
+          intervention_phase = intervention_phase,
           ES = "LRM", improvement = improvement,
           delta_method = delta_method, confidence = confidence)
 }
