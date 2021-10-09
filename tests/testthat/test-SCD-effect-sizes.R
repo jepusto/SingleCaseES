@@ -2,7 +2,6 @@ context("Test SCD_effect_sizes Shiny app")
 
 suppressWarnings(library(shiny))
 suppressWarnings(library(shinytest))
-suppressWarnings(library(testthat))
 suppressWarnings(library(dplyr))
 suppressWarnings(library(stringr))
 suppressWarnings(library(rvest))
