@@ -1,10 +1,10 @@
 pandoc: 2.7.3
 pkgdown: 1.9000.9000.9000
-pkgdown_sha: 31939caeb87846bc75e0cb5eccc0d610405c4580
+pkgdown_sha: 429aac8401b58b0275b76b045b569c28ad1287ba
 articles:
   Effect-size-definitions: Effect-size-definitions.html
   Using-SingleCaseES: Using-SingleCaseES.html
-last_built: 2021-10-09T02:07Z
+last_built: 2021-10-12T17:49Z
 urls:
   reference: https://jepusto.github.io/SingleCaseES/reference
   article: https://jepusto.github.io/SingleCaseES/articles
