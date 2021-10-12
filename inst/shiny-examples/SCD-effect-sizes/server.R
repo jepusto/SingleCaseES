@@ -1,4 +1,5 @@
 library(markdown, warn.conflicts = FALSE, quietly = TRUE)
+library(rmarkdown, warn.conflicts = FALSE, quietly = TRUE)
 library(ggplot2, warn.conflicts = FALSE, quietly = TRUE)
 library(tidyr, warn.conflicts = FALSE, quietly = TRUE)
 library(dplyr, warn.conflicts = FALSE, quietly = TRUE)
@@ -460,7 +461,7 @@ shinyServer(function(input, output, session) {
         scale_val <- "other"
       }
       
-      if(input$bimprovement == "series") {
+      if (input$bimprovement == "series") {
         improvement <- input$bseldir
       } else {
         improvement <- input$bimprovement
