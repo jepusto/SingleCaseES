@@ -42,7 +42,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/jepusto/SingleCaseES/">
+  <a href="https://github.com/jepusto/SingleCaseES/" class="external-link">
     <span class="fa fa-github"></span>
      
   </a>
@@ -65,15 +65,13 @@
       
     </div>
 
-    <div id="singlecasees-0509999" class="section level1">
-<h1 class="page-header" data-toc-text="0.5.0.9999">
-<a href="#singlecasees-0509999" class="anchor" aria-hidden="true"></a>SingleCaseES 0.5.0.9999<small> Unreleased </small></h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0.9999" id="singlecasees-0509999">SingleCaseES 0.5.0.9999<a class="anchor" aria-label="anchor" href="#singlecasees-0509999"></a></h2>
 <ul><li>Added unit tests for SCD_effect_sizes shiny app.</li>
 <li>Added intervention_phase argument to NAP(), SMD(), and other user-facing effect size calculation functions.</li>
 </ul></div>
-    <div id="singlecasees-050" class="section level1">
-<h1 class="page-header" data-toc-text="0.5.0">
-<a href="#singlecasees-050" class="anchor" aria-hidden="true"></a>SingleCaseES 0.5.0<small> 2021-09-30 </small></h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0" id="singlecasees-050">SingleCaseES 0.5.0<small>2021-09-30</small><a class="anchor" aria-label="anchor" href="#singlecasees-050"></a></h2>
 <ul><li>batch_calc_ES() gains an argument aggregate, for post-processing effect size estimates by averaging across the levels of a variable.</li>
 <li>Added functions for calculating two new effect sizes:
 <ul><li>log ratio of medians</li>
@@ -86,16 +84,14 @@
 <li>R code for replicating the batch calculation.</li>
 </ul></li>
 </ul></div>
-    <div id="singlecasees-044" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.4">
-<a href="#singlecasees-044" class="anchor" aria-hidden="true"></a>SingleCaseES 0.4.4<small> 2021-04-30 </small></h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.4" id="singlecasees-044">SingleCaseES 0.4.4<small>2021-04-30</small><a class="anchor" aria-label="anchor" href="#singlecasees-044"></a></h2>
 <ul><li>Modified LOR, LRRd, and LRRi functions to use truncated sample variances. This ensures that the standard error of the effect size estimate is strictly greater than zero.</li>
 <li>Modified the standard error calculations for NAP and Tau to ensure that they return values strictly greater than zero.</li>
 <li>Modified the Wright2012 example data so that the session numbers align across outcomes.</li>
 </ul></div>
-    <div id="singlecasees-043" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.3">
-<a href="#singlecasees-043" class="anchor" aria-hidden="true"></a>SingleCaseES 0.4.3<small> 2019-08-29 </small></h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.3" id="singlecasees-043">SingleCaseES 0.4.3<small>2019-08-29</small><a class="anchor" aria-label="anchor" href="#singlecasees-043"></a></h2>
 <ul><li>Updated internal functions for compatibility with tidyr 1.0.0.</li>
 <li>Tweaks for SCD_effect_sizes() shiny app.
 <ul><li>Corrected bug in the single-series calculator that ignored direction of improvement for parametric effect sizes.</li>
@@ -105,9 +101,8 @@
 <li>Added option to convert LRRi and LRRd to percentage change.</li>
 </ul></li>
 </ul></div>
-    <div id="singlecasees-042" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.2">
-<a href="#singlecasees-042" class="anchor" aria-hidden="true"></a>SingleCaseES 0.4.2<small> 2019-06-14 </small></h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.2" id="singlecasees-042">SingleCaseES 0.4.2<small>2019-06-14</small><a class="anchor" aria-label="anchor" href="#singlecasees-042"></a></h2>
 <ul><li>Added check for purrrlyr package when loading gem_scd calculator.</li>
 <li>Corrected bug in degrees of freedom for within-case standardized mean difference with baseline SD.</li>
 <li>Tweaks for SCD_effect_sizes() shiny app.
@@ -116,16 +111,14 @@
 <li>Allowed for choice between baseline SD and pooled SD for the within-case standardized mean difference. Previously, the option was available but not actually used for calculation.</li>
 </ul></li>
 </ul></div>
-    <div id="singlecasees-041" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.1">
-<a href="#singlecasees-041" class="anchor" aria-hidden="true"></a>SingleCaseES 0.4.1<small> 2019-01-06 </small></h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.1" id="singlecasees-041">SingleCaseES 0.4.1<small>2019-01-06</small><a class="anchor" aria-label="anchor" href="#singlecasees-041"></a></h2>
 <ul><li>Fixed bug in SCD_effect_sizes() shiny app that caused an error in batch calculator when LRRi, LRRd, or LOR were not selected.</li>
 <li>calc_ES() now returns a zero-length data frame if condition and outcome arguments are both length-zero vectors.</li>
 <li>calc_ES() errors if condition and outcome arguments are not the same length.</li>
 </ul></div>
-    <div id="singlecasees-040" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.0">
-<a href="#singlecasees-040" class="anchor" aria-hidden="true"></a>SingleCaseES 0.4.0<small> 2018-07-31 </small></h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.0" id="singlecasees-040">SingleCaseES 0.4.0<small>2018-07-31</small><a class="anchor" aria-label="anchor" href="#singlecasees-040"></a></h2>
 <ul><li>Added calc_ES() function for calculating multiple effect size estimates on a single data series.</li>
 <li>Added batch_calc_ES() function for calculating effect size estimates for multiple data series.</li>
 <li>Added gem_scd() function for estimating the gradual effects model (Swan &amp; Pustejovsky, 2018).</li>
@@ -135,14 +128,12 @@
 <li>Added unit tests.</li>
 <li>Added vignettes.</li>
 </ul></div>
-    <div id="singlecasees-03" class="section level1">
-<h1 class="page-header" data-toc-text="0.3">
-<a href="#singlecasees-03" class="anchor" aria-hidden="true"></a>SingleCaseES 0.3<small> Unreleased </small></h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3" id="singlecasees-03">SingleCaseES 0.3<a class="anchor" aria-label="anchor" href="#singlecasees-03"></a></h2>
 <ul><li>Fixed definitions of PAND and IRD to handle cases of complete overlap (i.e., where all of the data from a phase must be removed to achieve non-overlap).</li>
 </ul></div>
-    <div id="singlecasees-02" class="section level1">
-<h1 class="page-header" data-toc-text="0.2">
-<a href="#singlecasees-02" class="anchor" aria-hidden="true"></a>SingleCaseES 0.2<small> Unreleased </small></h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2" id="singlecasees-02">SingleCaseES 0.2<a class="anchor" aria-label="anchor" href="#singlecasees-02"></a></h2>
 <ul><li>Initial release.</li>
 </ul></div>
   </div>

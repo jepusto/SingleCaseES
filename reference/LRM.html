@@ -42,7 +42,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/jepusto/SingleCaseES/">
+  <a href="https://github.com/jepusto/SingleCaseES/" class="external-link">
     <span class="fa fa-github"></span>
      
   </a>
@@ -70,7 +70,8 @@
     <p>Calculates the log ratio of medians effect size index</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">LRM</span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/LRM.html">LRM</a></span><span class="op">(</span>
   <span class="va">A_data</span>,
   <span class="va">B_data</span>,
   <span class="va">condition</span>,
@@ -82,8 +83,9 @@
   confidence <span class="op">=</span> <span class="fl">0.95</span>
 <span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
       <td><p>vector of numeric data for A phase. Missing values are dropped.</p></td>
     </tr><tr><th>B_data</th>
       <td><p>vector of numeric data for B phase. Missing values are dropped.</p></td>
@@ -113,35 +115,43 @@ delta method.</p></td>
     </tr><tr><th>confidence</th>
       <td><p>confidence level for the reported interval estimate. Set to
 <code>NULL</code> to omit confidence interval calculations.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value</h2>
     <p>A data frame containing the estimate, standard error, and confidence
   interval.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
+    </div>
+    <div id="details">
+    <h2>Details</h2>
     <p>The ratio of medians effect size parameter is defined as the ratio
   of the medians of the outcomes in different phases. The log ratio of the
   medians is the natural logarithm of the ratio of medians. This effect size
   is appropriate for outcomes that are skewed, symmetric but highly
   leptokurtic, or right-censored (Bonett &amp; Price Jr, 2020).</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
+    </div>
+    <div id="references">
+    <h2>References</h2>
     <p>Bonett, D. G. &amp; Price Jr, R. M. (2020). Confidence Intervals for
   Ratios of Means and Medians. <em>Journal of Educational and Behavioral
-  Statistics, 45</em>(6), 750--770. doi:doi: <a href="https://doi.org/10.3102/1076998620934125">10.3102/1076998620934125</a></p>
+  Statistics, 45</em>(6), 750--770. doi:doi: <a href="https://doi.org/10.3102/1076998620934125" class="external-link">10.3102/1076998620934125</a></p>
 <p>Bonett, D. G., &amp; Price, R. M. (2020). Interval estimation for linear
  functions of medians in within-subjects and mixed designs. <em>British
  Journal of Mathematical and Statistical Psychology, 73</em>(2), 333-346.
- doi:doi: <a href="https://doi.org/10.1111/bmsp.12171">10.1111/bmsp.12171</a></p>
+ doi:doi: <a href="https://doi.org/10.1111/bmsp.12171" class="external-link">10.1111/bmsp.12171</a></p>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">LRM</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ES       Est         SE   CI_lower  CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LRM 0.2186892 0.07641543 0.06891771 0.3684607</span>
-<span class="r-in"></span>
+    <div id="examples">
+    <h2>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span>
+<span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span>
+<span class="fu"><a href="../reference/LRM.html">LRM</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span>
+<span class="co">#&gt;    ES       Est         SE   CI_lower  CI_upper</span>
+<span class="co">#&gt; 1 LRM 0.2186892 0.07641543 0.06891771 0.3684607</span>
+
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

@@ -43,7 +43,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/jepusto/SingleCaseES/">
+  <a href="https://github.com/jepusto/SingleCaseES/" class="external-link">
     <span class="fa fa-github"></span>
      
   </a>
@@ -72,7 +72,8 @@
   size index</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">SMD</span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>
   <span class="va">A_data</span>,
   <span class="va">B_data</span>,
   <span class="va">condition</span>,
@@ -85,8 +86,9 @@
   confidence <span class="op">=</span> <span class="fl">0.95</span>
 <span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
       <td><p>vector of numeric data for A phase. Missing values are dropped.</p></td>
     </tr><tr><th>B_data</th>
       <td><p>vector of numeric data for B phase. Missing values are dropped.</p></td>
@@ -117,12 +119,15 @@ to use the pooled standard deviation.</p></td>
     </tr><tr><th>confidence</th>
       <td><p>confidence level for the reported interval estimate. Set to
 <code>NULL</code> to omit confidence interval calculations.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value</h2>
     <p>A list containing the estimate, standard error, and confidence
   interval.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
+    </div>
+    <div id="details">
+    <h2>Details</h2>
     <p>The standardized mean difference parameter is defined as the
   difference between the mean level of the outcome in phase B and the mean
   level of the outcome in phase A, scaled by the within-case standard
@@ -133,21 +138,25 @@ to use the pooled standard deviation.</p></td>
   deviation in phase A (the baseline phase) only. Set <code>std_dev = "pool"</code>
   to use the sample standard deviation pooled across both phases. Hedges'
   (1981) small-sample bias correction is applied by default.</p>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, bias_correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.959294 0.8237984 0.3446789 3.573909</span>
-<span class="r-in"><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.649932 0.6340935 0.4071314 2.892732</span>
-<span class="r-in"><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, std_dev <span class="op">=</span> <span class="st">"pool"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.876247 0.6374216 0.6269241 3.125571</span>
-<span class="r-in"></span>
+    <div id="examples">
+    <h2>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span>
+<span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span>
+<span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, bias_correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper</span>
+<span class="co">#&gt; 1 SMD 1.959294 0.8237984 0.3446789 3.573909</span>
+<span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span>
+<span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper</span>
+<span class="co">#&gt; 1 SMD 1.649932 0.6340935 0.4071314 2.892732</span>
+<span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, std_dev <span class="op">=</span> <span class="st">"pool"</span><span class="op">)</span>
+<span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper</span>
+<span class="co">#&gt; 1 SMD 1.876247 0.6374216 0.6269241 3.125571</span>
+
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

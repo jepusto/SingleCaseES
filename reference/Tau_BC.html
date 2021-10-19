@@ -42,7 +42,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/jepusto/SingleCaseES/">
+  <a href="https://github.com/jepusto/SingleCaseES/" class="external-link">
     <span class="fa fa-github"></span>
      
   </a>
@@ -70,7 +70,8 @@
     <p>Calculates the baseline-corrected Tau index (Tarlow 2017).</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">Tau_BC</span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/Tau_BC.html">Tau_BC</a></span><span class="op">(</span>
   <span class="va">A_data</span>,
   <span class="va">B_data</span>,
   <span class="va">condition</span>,
@@ -84,8 +85,9 @@
   report_correction <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
       <td><p>vector of numeric data for A phase. Missing values are dropped.</p></td>
     </tr><tr><th>B_data</th>
       <td><p>vector of numeric data for B phase. Missing values are dropped.</p></td>
@@ -127,12 +129,15 @@ the baseline trend is statistically significant. Otherwise,
     </tr><tr><th>report_correction</th>
       <td><p>logical value indicating whether to report the
 baseline corrected slope and intercept values. Default is <code>FALSE</code>.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value</h2>
     <p>A list containing the estimate, standard error, and/or confidence
   interval.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
+    </div>
+    <div id="details">
+    <h2>Details</h2>
     <p>Tau-BC is an elaboration of the <code><a href="Tau.html">Tau</a></code> that includes a
   correction for baseline trend. The calculation of Tau-BC involves two or
   three steps, depending on the <code>pretest_trend</code> argument.</p>
@@ -154,20 +159,25 @@ baseline corrected slope and intercept values. Default is <code>FALSE</code>.</p
   <code><a href="Tau.html">Tau</a></code> (non-overlap) and they do not account for the additional
   uncertainty due to use of the baseline trend correction (nor to the
   pre-test for statistical significance of baseline trend, if used).</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
+    </div>
+    <div id="references">
+    <h2>References</h2>
     <p>Tarlow, K. R. (2017). An improved rank correlation effect size
   statistic for single-case designs: Baseline corrected Tau. <em>Behavior
-  modification, 41</em>(4), 427-467. doi:doi: <a href="https://doi.org/10.1177/0145445516676750">10.1177/0145445516676750</a></p>
+  modification, 41</em>(4), 427-467. doi:doi: <a href="https://doi.org/10.1177/0145445516676750" class="external-link">10.1177/0145445516676750</a></p>
+    </div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">Tau_BC</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       ES       Est        SE   CI_lower  CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Tau-BC 0.2857143 0.3595159 -0.3260702 0.7180613</span>
-<span class="r-in"></span>
+    <div id="examples">
+    <h2>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span>
+<span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span>
+<span class="fu"><a href="../reference/Tau_BC.html">Tau_BC</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span>
+<span class="co">#&gt;       ES       Est        SE   CI_lower  CI_upper</span>
+<span class="co">#&gt; 1 Tau-BC 0.2857143 0.3595159 -0.3260702 0.7180613</span>
+
 </code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

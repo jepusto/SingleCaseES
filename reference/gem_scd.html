@@ -42,7 +42,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/jepusto/SingleCaseES/">
+  <a href="https://github.com/jepusto/SingleCaseES/" class="external-link">
     <span class="fa fa-github"></span>
      
   </a>
@@ -70,10 +70,12 @@
     <p>A function to estimate the gradual effects model for an SCD</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">gem_scd</span><span class="op">(</span><span class="va">Trt</span>, <span class="va">outcome</span>, <span class="va">m</span>, <span class="va">fam</span><span class="op">)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/gem_scd.html">gem_scd</a></span><span class="op">(</span><span class="va">Trt</span>, <span class="va">outcome</span>, <span class="va">m</span>, <span class="va">fam</span><span class="op">)</span></code></pre></div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>Trt</th>
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>Trt</th>
       <td><p>A vector of treatment assignments where 0 = untreated and 1 =
 treated.</p></td>
     </tr><tr><th>outcome</th>
@@ -84,12 +86,15 @@ for.</p></td>
     </tr><tr><th>fam</th>
       <td><p>A description of the error distribution and link function to be
 used in the model. This can be supplied in any way that `glm` will accept.
-(See <code><a href="https://rdrr.io/r/stats/family.html">family</a></code> for details of family functions.)</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+(See <code><a href="https://rdrr.io/r/stats/family.html" class="external-link">family</a></code> for details of family functions.)</p></td>
+    </tr></table></div>
 
+    <div id="value">
+    <h2>Value</h2>
     <p>`gem_scd` returns an object of class <code>glm</code>. In addition to the
   normal contents of a <code>glm</code> object, it also contains an estimate of
   `omega` and a variance covariance matrix called `varcov`.</p>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

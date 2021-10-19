@@ -72,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jepusto/SingleCaseES/">
+  <a href="https://github.com/jepusto/SingleCaseES/" class="external-link">
     <span class="fa fa-github"></span>
      
   </a>
@@ -97,9 +97,9 @@
   <div class="contents col-md-9">
 
 
-<div id="singlecasees-a-calculator-for-single-case-effect-size-indices" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#singlecasees-a-calculator-for-single-case-effect-size-indices" class="anchor" aria-hidden="true"></a>SingleCaseES: A calculator for single-case effect size indices</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="singlecasees-a-calculator-for-single-case-effect-size-indices">SingleCaseES: A calculator for single-case effect size indices<a class="anchor" aria-label="anchor" href="#singlecasees-a-calculator-for-single-case-effect-size-indices"></a>
+</h1></div>
 <p>This package provides R functions for calculating basic effect size indices for single-case designs, including several non-overlap measures and parametric effect size measures, and for estimating the gradual effects model developed by <a href="https://doi.org/10.1080/00273171.2018.1466681" class="external-link">Swan and Pustejovsky (2018)</a>. Standard errors and confidence intervals (based on the assumption that the outcome measurements are mutually independent) are provided for the subset of effect sizes indices with known sampling distributions.</p>
 <p>The available <strong>non-overlap indices</strong> are:</p>
 <ul>
@@ -131,9 +131,9 @@
 </ul>
 <p><strong><em>Please note that the web apps should only be used for demonstration purposes</em></strong>. For research purposes, please install the R package and run the GUI through RStudio.</p>
 </div>
-<div id="installation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h1>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
 <p>The package is available on the Comprehensive R Archive Network. To install it, you will first need to <a href="http://cran.r-project.org/" class="external-link">install R</a> and <a href="http://www.rstudio.com/products/rstudio/download/" class="external-link">RStudio</a>. Both of these programs are freely available. Once you have these programs installed, run the following commands at the RStudio console prompt:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"SingleCaseES"</span><span class="op">)</span></code></pre></div>
@@ -147,9 +147,9 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"purrrlyr"</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jepusto/SingleCaseES"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="getting-started" class="section level1">
-<h1 class="hasAnchor">
-<a href="#getting-started" class="anchor" aria-hidden="true"></a>Getting started</h1>
+<div class="section level1">
+<h1 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h1>
 <p>The package includes two vignettes that demonstrate the syntax of the main functions and provide precise definitions and details about how each of the effect sizes are calculated. To view the vignettes, type the following:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">"SingleCaseES"</span><span class="op">)</span></code></pre></div>
@@ -157,9 +157,9 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"Using-SingleCaseES"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="graphical-user-interface" class="section level1">
-<h1 class="hasAnchor">
-<a href="#graphical-user-interface" class="anchor" aria-hidden="true"></a>Graphical user interface</h1>
+<div class="section level1">
+<h1 id="graphical-user-interface">Graphical user interface<a class="anchor" aria-label="anchor" href="#graphical-user-interface"></a>
+</h1>
 <p>To use the graphical user interface for basic effect sizes, you must first ensure that the <code>SingleCaseES</code> package is installed (following the directions above). To start the calculator, type the following commands at the RStudio console prompt:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jepusto.github.io/SingleCaseES/">SingleCaseES</a></span><span class="op">)</span>
@@ -171,9 +171,9 @@
 <span class="fu"><a href="reference/shine_gem_scd.html">shine_gem_scd</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>The calculator should then open in your default web browser.</p>
 </div>
-<div id="citations" class="section level1">
-<h1 class="hasAnchor">
-<a href="#citations" class="anchor" aria-hidden="true"></a>Citations</h1>
+<div class="section level1">
+<h1 id="citations">Citations<a class="anchor" aria-label="anchor" href="#citations"></a>
+</h1>
 <p>Please cite this R package as follows:</p>
 <blockquote>
 <p>Pustejovsky, J. E., Chen, M., &amp; Swan, D. M. (2021). SingleCaseES: A calculator for single-case effect size indices. R package version 0.4.4.9000. Retrieved from <a href="https://github.com/jepusto/SingleCaseES" class="external-link uri">https://github.com/jepusto/SingleCaseES</a></p>
@@ -193,11 +193,11 @@
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=SingleCaseES">https://​cloud.r-project.org/​package=SingleCaseES</a>
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=SingleCaseES" class="external-link">https://​cloud.r-project.org/​package=SingleCaseES</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/jepusto/SingleCaseES/">https://​github.com/​jepusto/​SingleCaseES/​</a>
+<li>Browse source code at <br><a href="https://github.com/jepusto/SingleCaseES/" class="external-link">https://​github.com/​jepusto/​SingleCaseES/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/jepusto/SingleCaseES/issues">https://​github.com/​jepusto/​SingleCaseES/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/jepusto/SingleCaseES/issues" class="external-link">https://​github.com/​jepusto/​SingleCaseES/​issues</a>
 </li>
 </ul>
 </div>
@@ -205,7 +205,7 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>
 </ul>
 </div>
 
