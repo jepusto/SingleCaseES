@@ -74,8 +74,7 @@
   (Pustejovsky, 2015)</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/LRR.html">LRRd</a></span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">LRRd</span><span class="op">(</span>
   <span class="va">A_data</span>,
   <span class="va">B_data</span>,
   <span class="va">condition</span>,
@@ -92,7 +91,7 @@
   confidence <span class="op">=</span> <span class="fl">0.95</span>
 <span class="op">)</span>
 
-<span class="fu"><a href="../reference/LRR.html">LRRi</a></span><span class="op">(</span>
+<span class="fu">LRRi</span><span class="op">(</span>
   <span class="va">A_data</span>,
   <span class="va">B_data</span>,
   <span class="va">condition</span>,
@@ -111,7 +110,7 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
+    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
       <td><p>vector of numeric data for A phase. Missing values are dropped.</p></td>
     </tr><tr><th>B_data</th>
       <td><p>vector of numeric data for B phase. Missing values are dropped.</p></td>
@@ -158,6 +157,7 @@ estimate and confidence interval into percentage change.</p></td>
 <code>NULL</code> to omit confidence interval calculations.</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>A data.frame containing the estimate, standard error, and approximate
@@ -214,23 +214,23 @@ estimate and confidence interval into percentage change.</p></td>
   Psychology, 16</em>, 99-112.
   doi:doi: <a href="https://doi.org/10.1016/j.jsp.2018.02.003" class="external-link">10.1016/j.jsp.2018.02.003</a></p>
     </div>
+    </div>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span>
-<span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span>
-<span class="fu"><a href="../reference/LRR.html">LRRd</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, bias_correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt;     ES       Est         SE   CI_lower CI_upper</span>
-<span class="co">#&gt; 1 LRRd 0.1958846 0.05557723 0.08695525 0.304814</span>
-<span class="fu"><a href="../reference/LRR.html">LRRd</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span>
-<span class="co">#&gt;     ES       Est         SE   CI_lower  CI_upper</span>
-<span class="co">#&gt; 1 LRRd 0.1953962 0.05557723 0.08646679 0.3043255</span>
-<span class="fu"><a href="../reference/LRR.html">LRRd</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, pct_change <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt;             ES        Est         SE   CI_lower   CI_upper</span>
-<span class="co">#&gt; 1         LRRd  0.1953962 0.05557723 0.08646679  0.3043255</span>
-<span class="co">#&gt; 2 Pct_Change_d 21.5792546         NA 9.03151604 35.5710321</span>
-
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">LRRd</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, bias_correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ES       Est         SE   CI_lower CI_upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LRRd 0.1958846 0.05557723 0.08695525 0.304814</span>
+<span class="r-in"><span class="fu">LRRd</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ES       Est         SE   CI_lower  CI_upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LRRd 0.1953962 0.05557723 0.08646679 0.3043255</span>
+<span class="r-in"><span class="fu">LRRd</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, pct_change <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ES        Est         SE   CI_lower   CI_upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         LRRd  0.1953962 0.05557723 0.08646679  0.3043255</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Pct_Change_d 21.5792546         NA 9.03151604 35.5710321</span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </div>

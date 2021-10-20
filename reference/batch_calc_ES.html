@@ -74,8 +74,7 @@
   single-case data series.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">batch_calc_ES</span><span class="op">(</span>
   <span class="va">dat</span>,
   <span class="va">grouping</span>,
   <span class="va">condition</span>,
@@ -98,7 +97,7 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dat</th>
+    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>dat</th>
       <td><p>data frame containing SCD series for which effect sizes will be
 calculated.</p></td>
     </tr><tr><th>grouping</th>
@@ -184,6 +183,7 @@ is <code>TRUE</code>.</p></td>
 indices.</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>A tibble containing the estimate, standard error, and/or confidence
@@ -194,86 +194,86 @@ indices.</p></td>
     <p>Calculates one or more effect size indices for each series in a
   dataset</p>
     </div>
+    </div>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">McKissick</span><span class="op">)</span>
-<span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span><span class="va">McKissick</span>,
-              grouping <span class="op">=</span> <span class="va">Case_pseudonym</span>,
-              condition <span class="op">=</span> <span class="va">Condition</span>,
-              outcome <span class="op">=</span> <span class="va">Outcome</span>,
-              ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LRRd"</span>,<span class="st">"LRRi"</span><span class="op">)</span>,
-              improvement <span class="op">=</span> <span class="st">"decrease"</span>,
-              scale <span class="op">=</span> <span class="st">"count"</span>,
-              observation_length <span class="op">=</span> <span class="fl">20</span>,
-              format <span class="op">=</span> <span class="st">"long"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 6 × 6</span>
-<span class="co">#&gt;   Case_pseudonym ES       Est    SE CI_lower CI_upper</span>
-<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Period 1       LRRd  -0.807 0.198  -1.19    -0.419 </span>
-<span class="co">#&gt; 2 Period 1       LRRi   0.807 0.198   0.419    1.19  </span>
-<span class="co">#&gt; 3 Period 2       LRRd  -0.610 0.349  -1.29     0.0736</span>
-<span class="co">#&gt; 4 Period 2       LRRi   0.610 0.349  -0.0736   1.29  </span>
-<span class="co">#&gt; 5 Period 3       LRRd  -0.748 0.353  -1.44    -0.0550</span>
-<span class="co">#&gt; 6 Period 3       LRRi   0.748 0.353   0.0550   1.44  </span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Schmidt2007</span><span class="op">)</span>
-<span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">Schmidt2007</span>,
-              grouping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Behavior_type</span>, <span class="va">Case_pseudonym</span>, <span class="va">Phase_num</span><span class="op">)</span>,
-              condition <span class="op">=</span> <span class="va">Condition</span>,
-              outcome <span class="op">=</span> <span class="va">Outcome</span>,
-              ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LRRi"</span>,<span class="st">"LRRd"</span><span class="op">)</span>,
-              improvement <span class="op">=</span> <span class="va">direction</span>,
-              scale <span class="op">=</span> <span class="va">Metric</span>,
-              bias_correct <span class="op">=</span> <span class="cn">TRUE</span>,
-              confidence <span class="op">=</span> <span class="cn">NULL</span>,
-              format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 12 × 7</span>
-<span class="co">#&gt;    Behavior_type      Case_pseudonym Phase_num LRRi_Est LRRi_SE LRRd_Est LRRd_SE</span>
-<span class="co">#&gt;    &lt;chr&gt;              &lt;chr&gt;              &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Disruptive Behavi… Albert                 1   1.61     0.324 -1.61      0.324</span>
-<span class="co">#&gt;  2 Disruptive Behavi… Albert                 2   1.65     0.376 -1.65      0.376</span>
-<span class="co">#&gt;  3 Disruptive Behavi… Faith                  1   1.17     0.227 -1.17      0.227</span>
-<span class="co">#&gt;  4 Disruptive Behavi… Faith                  2   1.43     0.310 -1.43      0.310</span>
-<span class="co">#&gt;  5 Disruptive Behavi… Lilly                  1   1.75     0.210 -1.75      0.210</span>
-<span class="co">#&gt;  6 Disruptive Behavi… Lilly                  2   0.947    0.538 -0.947     0.538</span>
-<span class="co">#&gt;  7 On Task Behavior   Albert                 1   0.323    0.129 -1.72      0.393</span>
-<span class="co">#&gt;  8 On Task Behavior   Albert                 2   0.241    0.201 -1.17      0.917</span>
-<span class="co">#&gt;  9 On Task Behavior   Faith                  1   0.0147   0.114 -0.00904   0.364</span>
-<span class="co">#&gt; 10 On Task Behavior   Faith                  2   0.604    0.672 -2.70      0.534</span>
-<span class="co">#&gt; 11 On Task Behavior   Lilly                  1   0.421    0.162 -1.56      0.511</span>
-<span class="co">#&gt; 12 On Task Behavior   Lilly                  2   0.0525   0.117 -0.871     0.940</span>
-
-<span class="co"># Aggregate across phase-pairs</span>
-<span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">Schmidt2007</span>,
-              grouping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Behavior_type</span>, <span class="va">Case_pseudonym</span><span class="op">)</span>,
-              aggregate <span class="op">=</span> <span class="va">Phase_num</span>,
-              weighting <span class="op">=</span> <span class="st">"1/V"</span>,
-              condition <span class="op">=</span> <span class="va">Condition</span>,
-              outcome <span class="op">=</span> <span class="va">Outcome</span>,
-              ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LRRi"</span>, <span class="st">"LRRd"</span>, <span class="st">"SMD"</span>, <span class="st">"Tau"</span><span class="op">)</span>,
-              improvement <span class="op">=</span> <span class="va">direction</span>,
-              scale <span class="op">=</span> <span class="st">"count"</span>,
-              bias_correct <span class="op">=</span> <span class="cn">TRUE</span>,
-              confidence <span class="op">=</span> <span class="cn">NULL</span>,
-              format <span class="op">=</span> <span class="st">"long"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 24 × 5</span>
-<span class="co">#&gt;    Behavior_type       Case_pseudonym ES       Est     SE</span>
-<span class="co">#&gt;    &lt;chr&gt;               &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Disruptive Behavior Albert         LRRd  -1.63  0.245 </span>
-<span class="co">#&gt;  2 Disruptive Behavior Albert         LRRi   1.63  0.245 </span>
-<span class="co">#&gt;  3 Disruptive Behavior Albert         SMD    1.35  0.341 </span>
-<span class="co">#&gt;  4 Disruptive Behavior Albert         Tau    0.942 0.0697</span>
-<span class="co">#&gt;  5 Disruptive Behavior Faith          LRRd  -1.26  0.183 </span>
-<span class="co">#&gt;  6 Disruptive Behavior Faith          LRRi   1.26  0.183 </span>
-<span class="co">#&gt;  7 Disruptive Behavior Faith          SMD    1.07  0.303 </span>
-<span class="co">#&gt;  8 Disruptive Behavior Faith          Tau    0.930 0.117 </span>
-<span class="co">#&gt;  9 Disruptive Behavior Lilly          LRRd  -1.64  0.195 </span>
-<span class="co">#&gt; 10 Disruptive Behavior Lilly          LRRi   1.64  0.195 </span>
-<span class="co">#&gt; # … with 14 more rows</span>
-
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">McKissick</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">batch_calc_ES</span><span class="op">(</span><span class="va">McKissick</span>,</span>
+<span class="r-in">              grouping <span class="op">=</span> <span class="va">Case_pseudonym</span>,</span>
+<span class="r-in">              condition <span class="op">=</span> <span class="va">Condition</span>,</span>
+<span class="r-in">              outcome <span class="op">=</span> <span class="va">Outcome</span>,</span>
+<span class="r-in">              ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LRRd"</span>,<span class="st">"LRRi"</span><span class="op">)</span>,</span>
+<span class="r-in">              improvement <span class="op">=</span> <span class="st">"decrease"</span>,</span>
+<span class="r-in">              scale <span class="op">=</span> <span class="st">"count"</span>,</span>
+<span class="r-in">              observation_length <span class="op">=</span> <span class="fl">20</span>,</span>
+<span class="r-in">              format <span class="op">=</span> <span class="st">"long"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Case_pseudonym ES       Est    SE CI_lower CI_upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Period 1       LRRd  -<span style="color: #BB0000;">0.807</span> 0.198  -<span style="color: #BB0000;">1.19</span>    -<span style="color: #BB0000;">0.419</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Period 1       LRRi   0.807 0.198   0.419    1.19  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Period 2       LRRd  -<span style="color: #BB0000;">0.610</span> 0.349  -<span style="color: #BB0000;">1.29</span>     0.073<span style="text-decoration: underline;">6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Period 2       LRRi   0.610 0.349  -<span style="color: #BB0000;">0.073</span><span style="color: #BB0000; text-decoration: underline;">6</span>   1.29  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Period 3       LRRd  -<span style="color: #BB0000;">0.748</span> 0.353  -<span style="color: #BB0000;">1.44</span>    -<span style="color: #BB0000;">0.055</span><span style="color: #BB0000; text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Period 3       LRRi   0.748 0.353   0.055<span style="text-decoration: underline;">0</span>   1.44  </span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Schmidt2007</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">batch_calc_ES</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">Schmidt2007</span>,</span>
+<span class="r-in">              grouping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Behavior_type</span>, <span class="va">Case_pseudonym</span>, <span class="va">Phase_num</span><span class="op">)</span>,</span>
+<span class="r-in">              condition <span class="op">=</span> <span class="va">Condition</span>,</span>
+<span class="r-in">              outcome <span class="op">=</span> <span class="va">Outcome</span>,</span>
+<span class="r-in">              ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LRRi"</span>,<span class="st">"LRRd"</span><span class="op">)</span>,</span>
+<span class="r-in">              improvement <span class="op">=</span> <span class="va">direction</span>,</span>
+<span class="r-in">              scale <span class="op">=</span> <span class="va">Metric</span>,</span>
+<span class="r-in">              bias_correct <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span class="r-in">              confidence <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span class="r-in">              format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Behavior_type      Case_pseudonym Phase_num LRRi_Est LRRi_SE LRRd_Est LRRd_SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Disruptive Behavi… Albert                 1   1.61     0.324 -<span style="color: #BB0000;">1.61</span>      0.324</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Disruptive Behavi… Albert                 2   1.65     0.376 -<span style="color: #BB0000;">1.65</span>      0.376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Disruptive Behavi… Faith                  1   1.17     0.227 -<span style="color: #BB0000;">1.17</span>      0.227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Disruptive Behavi… Faith                  2   1.43     0.310 -<span style="color: #BB0000;">1.43</span>      0.310</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Disruptive Behavi… Lilly                  1   1.75     0.210 -<span style="color: #BB0000;">1.75</span>      0.210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Disruptive Behavi… Lilly                  2   0.947    0.538 -<span style="color: #BB0000;">0.947</span>     0.538</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> On Task Behavior   Albert                 1   0.323    0.129 -<span style="color: #BB0000;">1.72</span>      0.393</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> On Task Behavior   Albert                 2   0.241    0.201 -<span style="color: #BB0000;">1.17</span>      0.917</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> On Task Behavior   Faith                  1   0.014<span style="text-decoration: underline;">7</span>   0.114 -<span style="color: #BB0000;">0.009</span><span style="color: #BB0000; text-decoration: underline;">04</span>   0.364</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> On Task Behavior   Faith                  2   0.604    0.672 -<span style="color: #BB0000;">2.70</span>      0.534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> On Task Behavior   Lilly                  1   0.421    0.162 -<span style="color: #BB0000;">1.56</span>      0.511</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> On Task Behavior   Lilly                  2   0.052<span style="text-decoration: underline;">5</span>   0.117 -<span style="color: #BB0000;">0.871</span>     0.940</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Aggregate across phase-pairs</span></span>
+<span class="r-in"><span class="fu">batch_calc_ES</span><span class="op">(</span>dat <span class="op">=</span> <span class="va">Schmidt2007</span>,</span>
+<span class="r-in">              grouping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Behavior_type</span>, <span class="va">Case_pseudonym</span><span class="op">)</span>,</span>
+<span class="r-in">              aggregate <span class="op">=</span> <span class="va">Phase_num</span>,</span>
+<span class="r-in">              weighting <span class="op">=</span> <span class="st">"1/V"</span>,</span>
+<span class="r-in">              condition <span class="op">=</span> <span class="va">Condition</span>,</span>
+<span class="r-in">              outcome <span class="op">=</span> <span class="va">Outcome</span>,</span>
+<span class="r-in">              ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LRRi"</span>, <span class="st">"LRRd"</span>, <span class="st">"SMD"</span>, <span class="st">"Tau"</span><span class="op">)</span>,</span>
+<span class="r-in">              improvement <span class="op">=</span> <span class="va">direction</span>,</span>
+<span class="r-in">              scale <span class="op">=</span> <span class="st">"count"</span>,</span>
+<span class="r-in">              bias_correct <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span class="r-in">              confidence <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span class="r-in">              format <span class="op">=</span> <span class="st">"long"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Behavior_type       Case_pseudonym ES       Est     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Disruptive Behavior Albert         LRRd  -<span style="color: #BB0000;">1.63</span>  0.245 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Disruptive Behavior Albert         LRRi   1.63  0.245 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Disruptive Behavior Albert         SMD    1.35  0.341 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Disruptive Behavior Albert         Tau    0.942 0.069<span style="text-decoration: underline;">7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Disruptive Behavior Faith          LRRd  -<span style="color: #BB0000;">1.26</span>  0.183 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Disruptive Behavior Faith          LRRi   1.26  0.183 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Disruptive Behavior Faith          SMD    1.07  0.303 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Disruptive Behavior Faith          Tau    0.930 0.117 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Disruptive Behavior Lilly          LRRd  -<span style="color: #BB0000;">1.64</span>  0.195 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Disruptive Behavior Lilly          LRRi   1.64  0.195 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 14 more rows</span></span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </div>

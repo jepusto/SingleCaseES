@@ -72,8 +72,7 @@
   (Scruggs, Mastropieri, &amp; Castro, 1987).</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/PND.html">PND</a></span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">PND</span><span class="op">(</span>
   <span class="va">A_data</span>,
   <span class="va">B_data</span>,
   <span class="va">condition</span>,
@@ -85,7 +84,7 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
+    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>A_data</th>
       <td><p>vector of numeric data for A phase. Missing values are dropped.</p></td>
     </tr><tr><th>B_data</th>
       <td><p>vector of numeric data for B phase. Missing values are dropped.</p></td>
@@ -107,6 +106,7 @@ unique value of <code>condition</code>.</p></td>
 Default is "increase".</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>Numeric value</p>
@@ -126,16 +126,16 @@ Default is "increase".</p></td>
   validation. <em>Remedial and Special Education, 8</em>(2), 24--43. 
   doi:doi: <a href="https://doi.org/10.1177/074193258700800206" class="external-link">10.1177/074193258700800206</a></p>
     </div>
+    </div>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span>
-<span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span>
-<span class="fu"><a href="../reference/PND.html">PND</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span>
-<span class="co">#&gt;    ES       Est</span>
-<span class="co">#&gt; 1 PND 0.7142857</span>
-
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">PND</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ES       Est</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 PND 0.7142857</span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </div>
