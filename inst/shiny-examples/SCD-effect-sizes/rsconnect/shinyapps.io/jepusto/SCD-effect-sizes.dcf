@@ -5,8 +5,8 @@ account: jepusto
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 110848
-bundleId: 5131537
+bundleId: 5155767
 url: https://jepusto.shinyapps.io/SCD-effect-sizes/
-when: 1634058164.7354
+when: 1634675921.51363
 asMultiple: FALSE
 asStatic: FALSE
