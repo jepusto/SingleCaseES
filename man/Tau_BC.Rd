@@ -15,6 +15,7 @@ Tau_BC(
   SE = "unbiased",
   confidence = 0.95,
   pretest_trend = FALSE,
+  warn = TRUE,
   report_correction = FALSE
 )
 }
@@ -57,6 +58,9 @@ The raw data are corrected and \code{\link{Tau_BC}} is calculated only if
 the baseline trend is statistically significant. Otherwise,
 \code{\link{Tau_BC}} is equal to \code{\link{Tau}}. Default is
 \code{FALSE}, which always adjusts for the baseline trend.}
+
+\item{warn}{logical value indicating whether to print a message regarding the
+outcome of the baseline trend test. Default is \code{TRUE}.}
 
 \item{report_correction}{logical value indicating whether to report the
 baseline corrected slope and intercept values. Default is \code{FALSE}.}
