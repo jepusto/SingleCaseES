@@ -217,8 +217,11 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                        choices = c("baseline SD" = "baseline", "pooled SD" = "pool"), inline = TRUE)),
                                          conditionalPanel(condition = "input.bESpar.includes('LRRi') | input.bESpar.includes('LRRd') | input.bESpar.includes('LOR')",
                                                           uiOutput("measurementProc")),
-                                         # This seems to create a hang-up on shinyapps.io
-                                         # conditionalPanel(condition = "input.b_aggregate.length > 0", uiOutput("weightingScheme")),
+                                         conditionalPanel(condition = "input.b_aggregate != ''", 
+                                                          radioButtons('weighting_scheme',
+                                                                       label = "Weighting scheme to use for aggregating.",
+                                                                       choices = c("1/V", "equal"))
+                                                          ),
                                          numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100),
                                          radioButtons("resultsformat", "Long or wide format?", c("Long" = "long", "Wide" = "wide"), inline = TRUE),
                                          conditionalPanel(condition = "input.bESpar.length > 0 || input.bESno.length > 0", 

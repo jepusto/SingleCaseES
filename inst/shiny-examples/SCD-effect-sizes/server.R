@@ -212,35 +212,36 @@ shinyServer(function(input, output, session) {
   output$datview <- renderTable(datFile())
   output$datview2 <- renderTable(datFile())
   
+  
   output$clusterPhase <- renderUI({
-      var_names <- names(datFile())
-      if (input$dat_type == "dat" || input$dat_type == "xlsx") {
-        list(
+    
+    var_names <- names(datFile())
+    if (input$dat_type == "dat" || input$dat_type == "xlsx") {
+      
+      list(
         selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
                        selected = NULL, multiple = TRUE),
         selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", choices = var_names,
                        selected = NULL, multiple = TRUE),
-        selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = var_names[3]))
-      } else {
-        curMap <- exampleMapping[[input$example]]
-        list(
-          selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
-                         selected = curMap$cluster_vars, multiple = TRUE),
-          selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", choices = var_names,
-                         selected = curMap$aggregate_vars, multiple = TRUE),
-          selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = curMap$condition)
-        )
-        
-      }
+        selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = var_names[3])
+      )
+      
+    } else {
+      
+      curMap <- exampleMapping[[input$example]]
+      
+      list(
+        selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
+                       selected = curMap$cluster_vars, multiple = TRUE),
+        selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", choices = var_names,
+                       selected = curMap$aggregate_vars, multiple = TRUE),
+        selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = curMap$condition)
+      )
+      
+    }
   })
-  
-  # This seems to create a hang-up on shinyapps.io
-  # output$weightingScheme <- renderUI({
-  #   radioButtons('weighting_scheme',
-  #                label = "Weighting scheme to use for aggregating.",
-  #                choices = c("1/V", "equal"))
-  # })
-  
+
+
   output$baseDefine <- renderUI({
     
     phase_choices <- if (!is.null(input$b_phase)) unique(datFile()[[input$b_phase]]) else c("A","B")
@@ -314,34 +315,40 @@ shinyServer(function(input, output, session) {
     var_names <- names(datFile())
     
     if (input$dat_type == "dat") {  
-      list(selectInput("boutScale", label = "Outcome Scale",
+      
+      list(
+        selectInput("boutScale", label = "Outcome Scale",
                          choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series")),
-           conditionalPanel(condition = "input.boutScale == 'series'",
-                            selectInput("bscalevar", "Select variable identifying outcome scale",
-                                        choices = var_names)),
-           selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
-                       choices = c(NA, var_names), selected = NA),
-           selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
-                       choices = c(NA, var_names), selected = NA),
-           numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
-                        value = NA, min = 0)
-          )
+        conditionalPanel(condition = "input.boutScale == 'series'",
+                        selectInput("bscalevar", "Select variable identifying outcome scale",
+                                    choices = var_names)),
+        selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
+                   choices = c(NA, var_names), selected = NA),
+        selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
+                   choices = c(NA, var_names), selected = NA),
+        numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
+                    value = NA, min = 0)
+      )
+      
     } else {
+      
       curMap <- exampleMapping[[input$example]]
-      list(selectInput("boutScale", label = "Outcome Scale",
+      list(
+        selectInput("boutScale", label = "Outcome Scale",
                     choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series"),
                     selected = curMap$scale),
-           conditionalPanel(condition = "input.boutScale == 'series'",
+        conditionalPanel(condition = "input.boutScale == 'series'",
                          selectInput("bscalevar", "Select variable identifying outcome scale",
                                      choices = var_names,
                                      selected = (if(!is.null(curMap$scale_var)){curMap$scale_var}else{NA}))),
-           selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
-                    choices = c(NA, var_names), selected = curMap$intervals),
-           selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
-                    choices = c(NA, var_names), selected = curMap$observation_length),
-           numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
-                     value = NA, min = 0)
-        ) 
+        selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
+                choices = c(NA, var_names), selected = curMap$intervals),
+        selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
+                choices = c(NA, var_names), selected = curMap$observation_length),
+        numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
+                 value = NA, min = 0)
+      )
+      
     }
   }) 
 
@@ -395,7 +402,7 @@ shinyServer(function(input, output, session) {
                     condition = input$b_phase,
                     outcome = input$b_out,
                     aggregate = input$b_aggregate,
-                    # weighting = input$weighting_scheme,
+                    weighting = input$weighting_scheme,
                     session_number = input$session_number,
                     baseline_phase = input$b_base,
                     intervention_phase = input$b_treat,
@@ -485,7 +492,7 @@ shinyServer(function(input, output, session) {
     condition <- input$b_phase
     outcome <- input$b_out
     aggregate <- paste0('c(', paste(input$b_aggregate, collapse=', '), ')')
-    # weighting <- input$weighting_scheme
+    weighting <- input$weighting_scheme
     session_number <- input$session_number
     baseline_phase <- input$b_base
     intervention_phase <- input$b_treat
@@ -525,8 +532,7 @@ shinyServer(function(input, output, session) {
                                        user_condition = condition,
                                        user_outcome = outcome,
                                        user_aggregate = aggregate,
-                                       user_weighting = "1/V",
-                                       # user_weighting = weighting,
+                                       user_weighting = weighting,
                                        user_session_number = session_number,
                                        user_baseline_phase = baseline_phase,
                                        user_intervention_phase = intervention_phase,
