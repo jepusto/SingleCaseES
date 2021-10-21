@@ -29,12 +29,13 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
   A <- c(20, 20, 26, 25, 22, 23)
   B <- c(28, 25, 24, 27, 30, 30, 29)
   
-  NOMs <- suppressWarnings(
-    calc_ES(A, B, improvement = "increase", 
-            ES = c("Tau", "Tau_BC"),
-            SE = "none", confidence = NULL, 
-            pretest_trend = .05)
-  )
+  NOMs <- calc_ES(A, B, improvement = "increase", 
+                  ES = c("Tau", "Tau_BC"),
+                  SE = "none", confidence = NULL, 
+                  pretest_trend = .05, warn = FALSE) %>%
+      select(-ES)
+  
+  
   expect_equal(NOMs[1, ], NOMs[2, ], check.attributes = FALSE)
   
   TauBC <- Tau_BC(A, B, improvement = "increase", SE = "none", confidence = NULL)
@@ -51,12 +52,13 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
   session_B <- (m + 1) : (m + n)
   pval_slope_A <- Kendall::Kendall(A_data, session_A)$sl
   
-  Tau_BC_05 <- Tau_BC(A_data, B_data, pretest_trend = .05)
+  Tau_BC_05 <- Tau_BC(A_data, B_data, pretest_trend = .05, report_correction = TRUE)
   expect_equal(Tau_BC_05$ES, "Tau-BC")
+  expect_lt(Tau_BC_05$pval_slope_A, .05)
   
   expect_message(Tau_BC(A_data, B_data, pretest_trend = .01))
-  Tau_BC_01 <- suppressMessages(Tau_BC(A_data, B_data, pretest_trend = .01))
-  expect_equal(Tau_BC_01$ES, "Tau")
+  Tau_BC_01 <- suppressMessages(Tau_BC(A_data, B_data, pretest_trend = .01, report_correction = TRUE)) 
+  expect_gt(Tau_BC_01$pval_slope_A, .01)
   
   Tau_BC_increase <- Tau_BC(A_data, B_data, improvement = "increase")
   Tau_BC_decrease <- Tau_BC(A_data, B_data, improvement = "decrease")
