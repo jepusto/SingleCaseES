@@ -13,7 +13,7 @@
 SCD_effect_sizes <- function(browser = TRUE) {
   
   req_pkgs <- c("shiny", "ggplot2", "markdown", "rmarkdown","tidyr", "dplyr", "readxl", 
-                "janitor", "rlang", "glue", "rclipboard")
+                "janitor", "rlang", "glue", "rclipboard", "Kendall")
   missing_pkgs <- unlist(lapply(req_pkgs, check_for_package))
   
   if (length(missing_pkgs) > 1) {
