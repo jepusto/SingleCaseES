@@ -288,6 +288,8 @@ calc_Tau_U <- function(A_data, B_data, improvement = "increase", ...) {
 #'   \code{FALSE}, which always adjusts for the baseline trend.
 #' @param report_correction logical value indicating whether to report the
 #'   baseline corrected slope and intercept values. Default is \code{FALSE}.
+#' @param warn logical value indicating whether to print a message regarding the
+#'   outcome of the baseline trend test. Default is \code{TRUE}.
 #' @inheritParams NAP
 #'
 #' @details Tau-BC is an elaboration of the \code{\link{Tau}} that includes a
@@ -337,7 +339,7 @@ Tau_BC <- function(A_data, B_data, condition, outcome,
                   intervention_phase = NULL,
                   improvement = "increase", 
                   SE = "unbiased", confidence = .95,
-                  pretest_trend = FALSE,
+                  pretest_trend = FALSE, warn = TRUE,
                   report_correction = FALSE) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
@@ -346,7 +348,8 @@ Tau_BC <- function(A_data, B_data, condition, outcome,
           intervention_phase = intervention_phase,
           ES = "Tau_BC", improvement = improvement,
           SE = SE, confidence = confidence,
-          pretest_trend = pretest_trend,
+          pretest_trend = pretest_trend, 
+          warn = warn,
           report_correction = report_correction)
 }
 

@@ -1,5 +1,4 @@
 library(shiny)
-# library(rclipboard)
 source("mappings.R")
 
 ui <- navbarPage(title = "Single-case effect size calculator",
