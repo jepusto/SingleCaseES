@@ -354,7 +354,7 @@ calc_Tau_BC <- function(A_data, B_data,
                         improvement = "increase", 
                         SE = "unbiased", CI = TRUE,
                         confidence = .95, pretest_trend = FALSE,
-                        report_correction = FALSE, 
+                        report_correction = FALSE, warn = TRUE,
                         ...) {
   
   m <- length(A_data)
@@ -372,12 +372,12 @@ calc_Tau_BC <- function(A_data, B_data,
     
     if (pval_slope_A > pretest_trend) {
       
-      message("The baseline trend is not statistically significant. Tau is calculated without trend correction.")
+      if (warn) message("The baseline trend is not statistically significant. Tau is calculated without trend correction.")
       
       res <- calc_Tau(A_data = A_data, B_data = B_data, 
                       improvement = improvement, SE = SE, 
                       CI = CI, confidence = confidence)
-      res$ES <- "Tau"
+      res$ES <- "Tau-BC"
       if (report_correction) res$pval_slope_A <- pval_slope_A
       return(res)
     }
