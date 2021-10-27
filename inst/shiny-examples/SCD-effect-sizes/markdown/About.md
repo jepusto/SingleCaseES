@@ -12,6 +12,10 @@ Github](https://github.com/jepusto/SingleCaseES)
 
 *Your comments, suggestions, and feedback are welcome.*
 
+### Acknowledgement
+
+The development of this application was supported in part by the Institute of Education Sciences, U.S. Department of Education, through [Grant R324U190002](https://ies.ed.gov/funding/grantsearch/details.asp?ID=3358) to the University of Oregon. The contents of the application do not necessarily represent the views of the Institute or the U.S. Department of Education.
+
 ### Citation
 
 Please cite this software as follows:
