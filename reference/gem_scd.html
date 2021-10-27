@@ -72,23 +72,22 @@
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">gem_scd</span><span class="op">(</span><span class="va">Trt</span>, <span class="va">outcome</span>, <span class="va">m</span>, <span class="va">fam</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>Trt</th>
-      <td><p>A vector of treatment assignments where 0 = untreated and 1 =
-treated.</p></td>
-    </tr><tr><th>outcome</th>
-      <td><p>A vector of outcomes.</p></td>
-    </tr><tr><th>m</th>
-      <td><p>The number of treatment occasions to estimate a treatment effect
-for.</p></td>
-    </tr><tr><th>fam</th>
-      <td><p>A description of the error distribution and link function to be
+    <dl><dt>Trt</dt>
+<dd><p>A vector of treatment assignments where 0 = untreated and 1 =
+treated.</p></dd>
+<dt>outcome</dt>
+<dd><p>A vector of outcomes.</p></dd>
+<dt>m</dt>
+<dd><p>The number of treatment occasions to estimate a treatment effect
+for.</p></dd>
+<dt>fam</dt>
+<dd><p>A description of the error distribution and link function to be
 used in the model. This can be supplied in any way that `glm` will accept.
-(See <code><a href="https://rdrr.io/r/stats/family.html" class="external-link">family</a></code> for details of family functions.)</p></td>
-    </tr></table></div>
-
-    <div id="ref-sections">
+(See <code><a href="https://rdrr.io/r/stats/family.html" class="external-link">family</a></code> for details of family functions.)</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>`gem_scd` returns an object of class <code>glm</code>. In addition to the
