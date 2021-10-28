@@ -10,7 +10,7 @@ batch_calc_ES(
   condition,
   outcome,
   aggregate = NULL,
-  weighting = "1/V",
+  weighting = "equal",
   session_number = NULL,
   baseline_phase = NULL,
   intervention_phase = NULL,
@@ -44,8 +44,9 @@ size estimates will be averaged across values of these variables (but not
 across the values of the \code{grouping} variables).}
 
 \item{weighting}{character string specifying the weighting scheme for use
-when variables are specified in \code{aggregate}. Either \code{"1/V"} (the
-default) or \code{"equal"}.}
+when variables are specified in \code{aggregate}. Either \code{"1/V"}
+or \code{"equal"} (the default). Note that \code{"1/V"} can only be used
+when the standard errors for the effect size estimates are calculable.}
 
 \item{session_number}{A variable name used to order the data within each
 series.}

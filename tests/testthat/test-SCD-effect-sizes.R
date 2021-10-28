@@ -192,7 +192,7 @@ test_that("Batch calculator is correct", {
                     condition = Condition,
                     outcome = Outcome,
                     aggregate = c(Phase_num),
-                    weighting = "1/V",
+                    weighting = "equal",
                     session_number = Session_number,
                     baseline_phase = "A",
                     intervention_phase = "B",

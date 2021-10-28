@@ -219,7 +219,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          conditionalPanel(condition = "input.b_aggregate != ''", 
                                                           radioButtons('weighting_scheme',
                                                                        label = "Weighting scheme to use for aggregating.",
-                                                                       choices = c("1/V", "equal"))
+                                                                       choices = c("equal", "1/V"))
                                                           ),
                                          numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100),
                                          radioButtons("resultsformat", "Long or wide format?", c("Long" = "long", "Wide" = "wide"), inline = TRUE),
