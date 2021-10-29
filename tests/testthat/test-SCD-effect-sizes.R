@@ -144,7 +144,9 @@ check_batch <- function(example_dat) {
   
   output_app <- app$getValue(name = "batchTable")
   output_app_table <-
-    as.data.frame(rvest::read_html(output_app) %>% rvest::html_table(fill = TRUE)) %>%
+    xml2::read_html(output_app) %>% 
+    rvest::html_table(fill = TRUE) %>%
+    as.data.frame() %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
 
@@ -192,7 +194,7 @@ test_that("Batch calculator is correct", {
                     condition = Condition,
                     outcome = Outcome,
                     aggregate = c(Phase_num),
-                    weighting = "1/V",
+                    weighting = "equal",
                     session_number = Session_number,
                     baseline_phase = "A",
                     intervention_phase = "B",
@@ -274,7 +276,9 @@ check_load <- function(file) {
   
   output_app <- app$getValue(name = "batchTable")
   output_app_table <-
-    as.data.frame(rvest::read_html(output_app) %>% rvest::html_table(fill = TRUE)) %>%
+    xml2::read_html(output_app) %>% 
+    rvest::html_table(fill = TRUE) %>%
+    as.data.frame() %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
   

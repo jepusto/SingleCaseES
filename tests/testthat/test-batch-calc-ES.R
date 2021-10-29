@@ -95,6 +95,68 @@ test_that("The aggregate argument in batch_calc_ES() works in long format.", {
 })
 
 
+test_that("The aggregate argument in batch_calc_ES() works for effect size measures with no SEs.", {
+  
+  data("Schmidt2007")
+  res_wo_SE <- batch_calc_ES(dat = Schmidt2007,
+                       grouping = c(Behavior_type, Case_pseudonym),
+                       condition = Condition,
+                       outcome = Outcome,
+                       aggregate = c(Phase_num),
+                       weighting = "equal",
+                       session_number = Session_number,
+                       baseline_phase = "A",
+                       intervention_phase = "B",
+                       ES = c("IRD", "PAND", "PEM", "PND", "Tau_U"),
+                       improvement = "direction",
+                       pct_change = FALSE,
+                       scale = "other",
+                       std_dev = "baseline",
+                       confidence = 0.95,
+                       pretest_trend = FALSE,
+                       format = "long")
+  
+  res_w_SE <- batch_calc_ES(dat = Schmidt2007,
+                             grouping = c(Behavior_type, Case_pseudonym),
+                             condition = Condition,
+                             outcome = Outcome,
+                             aggregate = c(Phase_num),
+                             weighting = "equal",
+                             session_number = Session_number,
+                             baseline_phase = "A",
+                             intervention_phase = "B",
+                             ES = c("IRD", "PAND", "PEM", "PND", "Tau_U", "LRRi","LRRd","SMD","Tau"),
+                             improvement = "direction",
+                             pct_change = FALSE,
+                             scale = "other",
+                             std_dev = "baseline",
+                             confidence = 0.95,
+                             pretest_trend = FALSE,
+                             format = "long")
+  res_w_SE <- res_w_SE %>% dplyr::filter(is.na(SE)) %>% dplyr::select(-c(SE, CI_upper, CI_lower))
+  
+  expect_equal(res_wo_SE, res_w_SE)
+  
+  expect_error(batch_calc_ES(dat = Schmidt2007,
+                             grouping = c(Behavior_type, Case_pseudonym),
+                             condition = Condition,
+                             outcome = Outcome,
+                             aggregate = c(Phase_num),
+                             weighting = "1/V",
+                             session_number = Session_number,
+                             baseline_phase = "A",
+                             intervention_phase = "B",
+                             ES = c("IRD", "PAND", "PEM", "PND", "Tau_U"),
+                             pct_change = FALSE,
+                             scale = "other",
+                             std_dev = "baseline",
+                             confidence = 0.95,
+                             pretest_trend = FALSE,
+                             format = "long"))
+  
+})
+
+
 test_that("The aggregate argument in batch_calc_ES() works in wide format and with CIs.", {
   
   data("Schmidt2007")

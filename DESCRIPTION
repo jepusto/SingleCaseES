@@ -33,6 +33,7 @@ Suggests:
     shinytest,
     stringr,
     rvest,
+    xml2,
     ggplot2,
     purrrlyr,
     testthat,

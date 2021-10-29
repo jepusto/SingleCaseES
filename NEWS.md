@@ -1,5 +1,6 @@
 # SingleCaseES 0.5.0.9999
 
+* For aggregating effect sizes, batch_calc_ES() now defaults to equal-weighting (rather than inverse-variance weighting) and provides more informative error messages for effect sizes that do not have standard errors (and therefore cannot be aggregated with inverse-variance weights).
 * Added unit tests for SCD_effect_sizes shiny app.
 * Added intervention_phase argument to NAP(), SMD(), and other user-facing effect size calculation functions. 
 * Added warn argument to Tau_BC() function, to control printing of messages regarding baseline trend test.
