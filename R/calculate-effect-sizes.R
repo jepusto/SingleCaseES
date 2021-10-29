@@ -201,7 +201,7 @@ calc_ES <- function(A_data, B_data,
 #' @param weighting character string specifying the weighting scheme for use
 #'   when variables are specified in \code{aggregate}. Either \code{"1/V"}
 #'   or \code{"equal"} (the default). Note that \code{"1/V"} can only be used
-#'   when the standard errors for the effect size estimates are calculable.
+#'   for effect sizes with known standard errors.
 #' @param condition A variable name that identifies the treatment condition for
 #'   each observation in the series.
 #' @param outcome A variable name for the outcome data. Default is
@@ -462,7 +462,7 @@ batch_calc_ES <- function(dat,
       
     } else {
       
-      stop("You should specify 'weighting' as 'equal'(the default) because all the chosen effect size estimates have no standard errors.")
+      stop("You should specify 'weighting' as 'equal' (the default) because none of the chosen effect size estimates have known standard errors.")
       
     }
     
