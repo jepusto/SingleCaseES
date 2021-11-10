@@ -378,7 +378,7 @@ batch_calc_ES <- function(dat,
                                    error = function(e) stop("Observation length variable is not in the dataset."))
   }
   
-  if (warn & "LOR" %in% ES & !all(dat$scale %in% c("proportion","percentage"))) {
+  if (warn & "LOR" %in% ES & !all(dat[[scale]] %in% c("proportion","percentage"))) {
     warning("LOR can only be calculated for proportions or percentages. Will return NAs for other outcome scales.", call. = FALSE)
   }
   
