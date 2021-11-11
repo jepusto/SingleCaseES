@@ -73,7 +73,8 @@ test_that("Tau-BC works on an example.", {
   A_data <- c(33, 25, 17, 25, 19, 21, 19, 14, 19, 17)
   B_data <- c(14, 15, 15, 9, 12, 7, 10, 6, 5, 2, 2, 3, 5, 4)
   
-  pkg_res <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE)
+  # check the package result when using Kendall rank correlation
+  pkg_res <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE, tarlow = TRUE)
   
   m <- length(A_data)
   n <- length(B_data)
@@ -87,18 +88,32 @@ test_that("Tau-BC works on an example.", {
   B_data_corrected <- B_data - intercept - slope * session_B
   Kendall_tau <- Kendall(session_dummy, c(A_data_corrected, B_data_corrected))$tau
   
+  expect_equal(pkg_res$Est, as.numeric(Kendall_tau))
+  
   Tarlow_res <- bctau(A_data, B_data)
   
   expect_equal(Tarlow_res$slope, slope)
   expect_equal(Tarlow_res$int, intercept)
   expect_equal(Tarlow_res$correcteda, A_data_corrected)
   expect_equal(Tarlow_res$correctedb, B_data_corrected)
-  expect_equal(Tarlow_res$tau, as.numeric(Kendall_tau))
+  expect_equal(Tarlow_res$tau, pkg_res$Est)
+  expect_equal(Tarlow_res$se, pkg_res$SE)
   
+  # check package result when using Tau (non-overlap)
+  pkg_res_Tau <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE, tarlow = FALSE)
   Tau_Tarlow <- Tau(A_data = A_data_corrected, B_data = B_data_corrected)
   
   expect_equal(subset(Tau_Tarlow, select = -ES), 
-               subset(pkg_res, select = c(Est, SE, CI_lower, CI_upper)))
+               subset(pkg_res_Tau, select = c(Est, SE, CI_lower, CI_upper)))
+  
+  # check the case when baseline trend is not significant
+  A <- c(3, 3, 4, 5, 5, 2)
+  B <- c(5, 6, 3, 2, 4, 4)
+  pkg_res_notsig <- Tau_BC(A, B, pretest_trend = .05, tarlow = TRUE)
+  Tarlow_res_notsig <- bctau(A, B)
+  
+  expect_equal(Tarlow_res_notsig$tau, pkg_res_notsig$Est)
+  expect_equal(Tarlow_res_notsig$se, pkg_res_notsig$SE)
 })
 
 test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {

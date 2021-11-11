@@ -181,6 +181,7 @@ test_that("Batch calculator is correct", {
                   scale = "count",
                   std_dev = "baseline",
                   confidence = 0.95,
+                  tarlow = FALSE,
                   pretest_trend = FALSE,
                   format = "long",
                   warn = FALSE
@@ -204,6 +205,7 @@ test_that("Batch calculator is correct", {
                     scale = "Metric",
                     std_dev = "baseline",
                     confidence = 0.95,
+                    tarlow = FALSE,
                     pretest_trend = FALSE,
                     format = "long",
                     warn = FALSE
@@ -225,6 +227,7 @@ test_that("Batch calculator is correct", {
                     scale = "count",
                     std_dev = "baseline",
                     confidence = 0.95,
+                    tarlow = FALSE,
                     pretest_trend = FALSE,
                     format = "long",
                     warn = FALSE
@@ -314,6 +317,7 @@ test_that("Data are uploaded correctly.", {
                   scale = "count",
                   std_dev = "baseline",
                   confidence = 0.95,
+                  tarlow = FALSE,
                   pretest_trend = FALSE,
                   format = "long",
                   warn = FALSE
