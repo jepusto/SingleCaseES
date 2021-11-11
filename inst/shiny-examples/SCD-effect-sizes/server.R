@@ -61,6 +61,12 @@ shinyServer(function(input, output, session) {
   ES <- reactive({
     index <- c("Non-overlap" = input$NOM_ES, "Parametric" = input$parametric_ES)[[input$ES_family]]
     
+    if (input$tau_calculation == "Kendall") {
+      tarlow <- TRUE
+    } else {
+      tarlow <- FALSE
+    }
+    
     if (input$baseline_check == "No") {
       pretest_trend <- FALSE
     } else {
@@ -79,8 +85,10 @@ shinyServer(function(input, output, session) {
                      intervals = input$intervals,
                      D_const = input$lrrfloor,
                      # options for Tau_BC
+                     tarlow = tarlow,
                      pretest_trend = pretest_trend,
-                     warn = FALSE, report_correction = TRUE
+                     warn = FALSE, 
+                     report_correction = TRUE
                      )
     
     est <- tryCatch(do.call(calc_ES, arg_vals), warning = function(w) w, error = function(e) e)
@@ -145,10 +153,16 @@ shinyServer(function(input, output, session) {
         
         note_txt_TauBC <- NULL
         if (ES()$index == "Tau_BC" & input$baseline_check == "Yes") {
+          
           if (ES()$est$pval_slope_A > input$significance_level) {
-            note_txt_TauBC <- strong(style="color:red", "The baseline trend is not statistically significant. Tau is calculated without trend correction.")
+            if (input$tau_calculation == "Kendall") {
+              note_txt_TauBC <- strong(style="color:red", "The baseline trend is not statistically significant. Kendall rank correlation is calculated without trend correction.")
+            } else if (input$tau_calculation == "Nlap") {
+            note_txt_TauBC <- strong(style="color:red", "The baseline trend is not statistically significant. Tau (non-overlap) is calculated without trend correction.")
+            }
           }
-        } 
+          
+        }
         
         note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
         HTML(paste(Est_txt, SE_txt, CI_txt, pct_txt, note_txt_TauBC, note_txt, sep = "<br/>"))
@@ -368,6 +382,12 @@ shinyServer(function(input, output, session) {
       improvement <- input$bimprovement
     }
     
+    if (input$btau_calculation == "Kendall") {
+      tarlow <- TRUE
+    } else {
+      tarlow <- FALSE
+    }
+    
     if (input$bbaseline_check == "No") {
       pretest_trend <- FALSE
     } else {
@@ -389,7 +409,9 @@ shinyServer(function(input, output, session) {
                     scale = scale_val,
                     std_dev = input$bSMD_denom,
                     confidence = input$bconfidence / 100,
-                    pretest_trend = pretest_trend, warn = FALSE,
+                    tarlow = tarlow, 
+                    pretest_trend = pretest_trend, 
+                    warn = FALSE, 
                     format = input$resultsformat)
       
     } else{
@@ -409,7 +431,9 @@ shinyServer(function(input, output, session) {
                     scale = scale_val,
                     std_dev = input$bSMD_denom,
                     confidence = input$bconfidence / 100,
-                    pretest_trend = pretest_trend, warn = FALSE,
+                    tarlow = tarlow, 
+                    pretest_trend = pretest_trend, 
+                    warn = FALSE,
                     format = input$resultsformat)
       
     }
@@ -478,6 +502,12 @@ shinyServer(function(input, output, session) {
     } else {
       improvement <- input$bimprovement
     }
+    
+    if (input$btau_calculation == "Kendall") {
+      tarlow <- TRUE
+    } else {
+      tarlow <- FALSE
+    }
 
     if (input$bbaseline_check == "No") {
       pretest_trend <- FALSE
@@ -499,6 +529,7 @@ shinyServer(function(input, output, session) {
     scale <- scale_val
     std_dev <- input$bSMD_denom
     confidence <- input$bconfidence / 100
+    tarlow <- tarlow
     pretest_trend <- pretest_trend
     format <- input$resultsformat
 
@@ -518,6 +549,7 @@ shinyServer(function(input, output, session) {
                                        user_scale = scale,
                                        user_std_dev = std_dev,
                                        user_confidence = confidence,
+                                       user_tarlow = tarlow,
                                        user_pretest_trend = pretest_trend,
                                        user_format = format)),
           '')
@@ -539,6 +571,7 @@ shinyServer(function(input, output, session) {
                                        user_scale = scale,
                                        user_std_dev = std_dev,
                                        user_confidence = confidence,
+                                       user_tarlow = tarlow,
                                        user_pretest_trend = pretest_trend,
                                        user_format = format)),
           '')
