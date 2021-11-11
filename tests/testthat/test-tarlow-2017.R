@@ -5,27 +5,38 @@ B <- c(6, 7, 8, 9, 10)
 
 NOMs <- calc_ES(A, B, improvement = "increase", 
                 ES = c("Tau", "Tau_U", "Tau_BC"),
-                SE = "none", confidence = NULL)
+                confidence = NULL)
 
 test_that("Tau is correct.", {
-  tau <- Tau(A, B, improvement = "increase", SE = "none", confidence = NULL)
+  tau <- Tau(A, B, improvement = "increase", confidence = NULL)
   expect_equal(1, tau$Est)
   expect_equal(tau, subset(NOMs, ES == "Tau"), check.attributes = FALSE)
 })
 
 test_that("Tau-U is correct.", {
   tauU <- Tau_U(A, B, improvement = "increase")
+  tauU$SE <- NA_real_
   expect_equal(0.6, tauU$Est)
   expect_equal(tauU, subset(NOMs, ES == "Tau-U"), check.attributes = FALSE)
 })
 
 test_that("Tau-BC is correct.", {
-  tauBC <- Tau_BC(A, B, improvement = "increase", SE = "none", confidence = NULL)
+  tauBC <- Tau_BC(A, B, improvement = "increase", confidence = NULL)
   expect_equal(0, tauBC$Est)
   expect_equal(tauBC, subset(NOMs, ES == "Tau-BC"), check.attributes = FALSE)
+  expect_null(tauBC$CI_lower)
+  expect_null(tauBC$CI_upper)
+  
+  tauBC <- Tau_BC(A, B, improvement = "increase", Kendall = TRUE, confidence = NULL)
+  expect_equal(0, tauBC$Est)
+  expect_equal(tauBC, subset(NOMs, ES == "Tau-BC"), check.attributes = FALSE)
+  expect_null(tauBC$CI_lower)
+  expect_null(tauBC$CI_upper)
+  
 })
 
 test_that("Tau-BC is correct regarding pretest_trend argument.", {
+  
   A <- c(20, 20, 26, 25, 22, 23)
   B <- c(28, 25, 24, 27, 30, 30, 29)
   
@@ -33,7 +44,7 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
                   ES = c("Tau", "Tau_BC"),
                   SE = "none", confidence = NULL, 
                   pretest_trend = .05, warn = FALSE) %>%
-      select(-ES)
+      dplyr::select(-ES)
   
   
   expect_equal(NOMs[1, ], NOMs[2, ], check.attributes = FALSE)
@@ -74,7 +85,7 @@ test_that("Tau-BC works on an example.", {
   B_data <- c(14, 15, 15, 9, 12, 7, 10, 6, 5, 2, 2, 3, 5, 4)
   
   # check the package result when using Kendall rank correlation
-  pkg_res <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE, tarlow = TRUE)
+  pkg_res <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE, Kendall = TRUE)
   
   m <- length(A_data)
   n <- length(B_data)
@@ -100,7 +111,7 @@ test_that("Tau-BC works on an example.", {
   expect_equal(Tarlow_res$se, pkg_res$SE)
   
   # check package result when using Tau (non-overlap)
-  pkg_res_Tau <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE, tarlow = FALSE)
+  pkg_res_Tau <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE, Kendall = FALSE)
   Tau_Tarlow <- Tau(A_data = A_data_corrected, B_data = B_data_corrected)
   
   expect_equal(subset(Tau_Tarlow, select = -ES), 
@@ -109,7 +120,7 @@ test_that("Tau-BC works on an example.", {
   # check the case when baseline trend is not significant
   A <- c(3, 3, 4, 5, 5, 2)
   B <- c(5, 6, 3, 2, 4, 4)
-  pkg_res_notsig <- Tau_BC(A, B, pretest_trend = .05, tarlow = TRUE)
+  pkg_res_notsig <- Tau_BC(A, B, pretest_trend = .05, Kendall = TRUE)
   Tarlow_res_notsig <- bctau(A, B)
   
   expect_equal(Tarlow_res_notsig$tau, pkg_res_notsig$Est)
