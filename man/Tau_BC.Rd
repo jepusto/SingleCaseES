@@ -14,9 +14,10 @@ Tau_BC(
   improvement = "increase",
   SE = "unbiased",
   confidence = 0.95,
+  tarlow = FALSE,
   pretest_trend = FALSE,
-  warn = TRUE,
-  report_correction = FALSE
+  report_correction = FALSE,
+  warn = TRUE
 )
 }
 \arguments{
@@ -53,17 +54,24 @@ due to use of the baseline trend correction.}
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
 
+\item{tarlow}{logical value indicating whether to use Kendall's rank
+correlation to calculate the Tau effect size measure. If \code{TRUE}, the
+Kendall's rank correlation is calculated between the data and a dummy coded
+phase variable, which is consistent with the method used in Tarlow (2017).
+Default is \code{FALSE}, which calculates \code{\link{Tau}} (non-overlap)
+index.}
+
 \item{pretest_trend}{significance level for the initial baseline trend test.
 The raw data are corrected and \code{\link{Tau_BC}} is calculated only if
 the baseline trend is statistically significant. Otherwise,
 \code{\link{Tau_BC}} is equal to \code{\link{Tau}}. Default is
 \code{FALSE}, which always adjusts for the baseline trend.}
 
-\item{warn}{logical value indicating whether to print a message regarding the
-outcome of the baseline trend test. Default is \code{TRUE}.}
-
 \item{report_correction}{logical value indicating whether to report the
 baseline corrected slope and intercept values. Default is \code{FALSE}.}
+
+\item{warn}{logical value indicating whether to print a message regarding the
+outcome of the baseline trend test. Default is \code{TRUE}.}
 }
 \value{
 A list containing the estimate, standard error, and/or confidence
@@ -80,18 +88,21 @@ Tau-BC is an elaboration of the \code{\link{Tau}} that includes a
   If \code{pretest_trend = FALSE} (the default), the first step involves
   adjusting the outcomes for baseline trend estimated using Theil-Sen
   regression. In the second step, the residuals from Theil-Sen regression are
-  used to calculate the \code{\link{Tau}} (non-overlap) index.
+  used to calculate the \code{Tau}.
 
   Alternately, \code{pretest_trend} can be set equal to a significance level
   between 0 and 1 (e.g. \code{pretest_trend = .05}, as suggested by Tarlow,
   2017). In this case, the first step involves a significance test for the
   slope of the baseline trend based on Kendall's rank correlation. If the
   slope is not significantly different from zero, then no baseline trend
-  adjustment is made and Tau-BC is set equal to \code{\link{Tau}}. If the
+  adjustment is made and Tau-BC is set equal to \code{Tau} index. If the
   slope is significantly different from zero, then in the second step, the
-  outcomes are adjusted for baseline trend using Theil-Sen regression and, in
-  the third step, the residuals from Theil-Sen regression are used to
-  calculate the \code{\link{Tau}} (non-overlap) index.
+  outcomes are adjusted for baseline trend using Theil-Sen regression. Then,
+  in the third step, the residuals from Theil-Sen regression are used to
+  calculate the \code{Tau} index. If \code{tarlow == FALSE} (the default),
+  then \code{\link{Tau}} (non-overlap) index is calculated. If \code{tarlow
+  == TRUE}, then Kendall's rank correlation is calculated, as in Tarlow
+  (2017).
 
   Note that the standard error formulas are based on the standard errors for
   \code{\link{Tau}} (non-overlap) and they do not account for the additional
