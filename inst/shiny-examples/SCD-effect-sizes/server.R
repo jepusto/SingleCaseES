@@ -62,9 +62,9 @@ shinyServer(function(input, output, session) {
     index <- c("Non-overlap" = input$NOM_ES, "Parametric" = input$parametric_ES)[[input$ES_family]]
     
     if (input$tau_calculation == "Kendall") {
-      tarlow <- TRUE
+      Kendall <- TRUE
     } else {
-      tarlow <- FALSE
+      Kendall <- FALSE
     }
     
     if (input$baseline_check == "No") {
@@ -85,7 +85,7 @@ shinyServer(function(input, output, session) {
                      intervals = input$intervals,
                      D_const = input$lrrfloor,
                      # options for Tau_BC
-                     tarlow = tarlow,
+                     Kendall = Kendall,
                      pretest_trend = pretest_trend,
                      warn = FALSE, 
                      report_correction = TRUE
@@ -93,13 +93,13 @@ shinyServer(function(input, output, session) {
     
     est <- tryCatch(do.call(calc_ES, arg_vals), warning = function(w) w, error = function(e) e)
     
-    if (index %in% c("LRRi", "LRRd", "LOR")){
+    if (index %in% c("LRRi", "LRRd", "LOR")) {
       validate(
         need(all(c(dat()$A, dat()$B) >= 0), message = "For the log response or log odds ratio, all data must be greater than or equal to zero. ")
       )
     }
     
-    if (index == "LRM"){
+    if (index == "LRM") {
       validate(
         need(all(c(median(dat()$A), median(dat()$B)) > 0), message = "For the log ratio of medians, medians of phase A or B must be greater than zero. ")
       )

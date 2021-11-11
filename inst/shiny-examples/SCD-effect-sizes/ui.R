@@ -87,7 +87,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                               conditionalPanel(condition = "input.ES_family=='Non-overlap' & input.NOM_ES == 'Tau_BC'",
                                                radioButtons("baseline_check",
                                                             label = "Test for baseline trend",
-                                                            choices = c("Always adjusting for baselien trend" = "No", 
+                                                            choices = c("Always adjust for baseline trend" = "No", 
                                                                         "Pretest for baseline trend, adjust if significant" = "Yes"))
                               ),
                               conditionalPanel(condition = "input.ES_family=='Non-overlap' & 
