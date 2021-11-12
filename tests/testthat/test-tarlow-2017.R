@@ -29,9 +29,9 @@ test_that("Tau-BC is correct.", {
   
   tauBC <- Tau_BC(A, B, improvement = "increase", Kendall = TRUE, confidence = NULL)
   expect_equal(0, tauBC$Est)
-  expect_equal(tauBC, subset(NOMs, ES == "Tau-BC"), check.attributes = FALSE)
-  expect_null(tauBC$CI_lower)
-  expect_null(tauBC$CI_upper)
+  expect_error(expect_equal(tauBC$SE, subset(NOMs, ES == "Tau-BC")$SE))
+  expect_equal(is.na(tauBC$CI_lower), TRUE)
+  expect_equal(is.na(tauBC$CI_upper), TRUE)
   
 })
 
