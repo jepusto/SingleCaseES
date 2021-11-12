@@ -383,9 +383,9 @@ shinyServer(function(input, output, session) {
     }
     
     if (input$btau_calculation == "Kendall") {
-      tarlow <- TRUE
+      Kendall <- TRUE
     } else {
-      tarlow <- FALSE
+      Kendall <- FALSE
     }
     
     if (input$bbaseline_check == "No") {
@@ -409,7 +409,7 @@ shinyServer(function(input, output, session) {
                     scale = scale_val,
                     std_dev = input$bSMD_denom,
                     confidence = input$bconfidence / 100,
-                    tarlow = tarlow, 
+                    Kendall = Kendall, 
                     pretest_trend = pretest_trend, 
                     warn = FALSE, 
                     format = input$resultsformat)
@@ -431,7 +431,7 @@ shinyServer(function(input, output, session) {
                     scale = scale_val,
                     std_dev = input$bSMD_denom,
                     confidence = input$bconfidence / 100,
-                    tarlow = tarlow, 
+                    Kendall = Kendall, 
                     pretest_trend = pretest_trend, 
                     warn = FALSE,
                     format = input$resultsformat)
@@ -504,9 +504,9 @@ shinyServer(function(input, output, session) {
     }
     
     if (input$btau_calculation == "Kendall") {
-      tarlow <- TRUE
+      Kendall <- TRUE
     } else {
-      tarlow <- FALSE
+      Kendall <- FALSE
     }
 
     if (input$bbaseline_check == "No") {
@@ -529,7 +529,7 @@ shinyServer(function(input, output, session) {
     scale <- scale_val
     std_dev <- input$bSMD_denom
     confidence <- input$bconfidence / 100
-    tarlow <- tarlow
+    Kendall <- Kendall
     pretest_trend <- pretest_trend
     format <- input$resultsformat
 
@@ -549,7 +549,7 @@ shinyServer(function(input, output, session) {
                                        user_scale = scale,
                                        user_std_dev = std_dev,
                                        user_confidence = confidence,
-                                       user_tarlow = tarlow,
+                                       user_Kendall = Kendall,
                                        user_pretest_trend = pretest_trend,
                                        user_format = format)),
           '')
@@ -571,7 +571,7 @@ shinyServer(function(input, output, session) {
                                        user_scale = scale,
                                        user_std_dev = std_dev,
                                        user_confidence = confidence,
-                                       user_tarlow = tarlow,
+                                       user_Kendall = Kendall,
                                        user_pretest_trend = pretest_trend,
                                        user_format = format)),
           '')
