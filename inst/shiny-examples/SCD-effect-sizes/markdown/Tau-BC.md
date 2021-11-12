@@ -3,11 +3,14 @@
 Baseline-corrected Tau was proposed by Tarlow (2017) as an alternative to
 Tau-U that uses a different, more defensible approach to adjusting for a
 baseline time trend. The index can be calculated with or without conducting a
-pre-test for significance of the baseline phase time trend.
+pre-test for significance of the baseline phase time trend. Tarlow (2017) used
+Kendall's rank correlation (with adjustment for ties) to calculate baseline-corrected 
+Tau. In addition to that, we also provide an option to calculate Tau (non-overlap) 
+index (without adjustment for ties).
 
-If the trend pre-test is used, then slope of the baseline trend is first tested using Kendall's rank correlation. If the baseline slope is significantly different from zero, the outcomes are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Tau (non-overlap) index. If the baseline slope is not significantly different from zero, then no baseline trend adjustment is made, and the Tau-BC effect size is the same as Tau.
+If the trend pre-test is used, then slope of the baseline trend is first tested using Kendall's rank correlation. If the baseline slope is significantly different from zero, the outcomes are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Kendall's rank correlation or Tau (non-overlap) index. If the baseline slope is not significantly different from zero, then no baseline trend adjustment is made, and the Tau-BC effect size is calculated using Kendall's rank correlation or Tau (non-overlap) index.
 
-If the trend pre-test is not used, then the outcomes are adjusted for baseline trend using Theil-Sen regression, regardless of whether the slope is significantly different from zero. The residuals from Theil-Sen regression are then used to calculate the Tau (non-overlap) index.
+If the trend pre-test is not used, then the outcomes are adjusted for baseline trend using Theil-Sen regression, regardless of whether the slope is significantly different from zero. The residuals from Theil-Sen regression are then used to calculate the Kendall's rank correlation or Tau (non-overlap) index.
 
 The formal definition of Tau-BC require positing a model for the time trend in the data series. Let $y^A_1,...,y^A_m$ denote the observations from phase A. Let $y^B_1,...,y^B_n$ denote the observations from phase B. Assume that the outcomes can be expressed in terms of a linear time trend and an error term:
 $$
