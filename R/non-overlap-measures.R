@@ -434,9 +434,14 @@ calc_Tau_BC <- function(A_data, B_data,
       tau <- as.numeric(res_Kendall$tau)
     }
     
-    se <- sqrt((2/(m+n)) * (1-(tau^2)))
-    CI <- tau + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * se
-    res <- data.frame(ES = "Tau-BC", Est = tau, SE = se, CI_lower = CI[1], CI_upper = CI[2])
+    res <- data.frame(ES = "Tau-BC", Est = tau, stringsAsFactors = FALSE)
+    res$SE <- sqrt((2/(m+n)) * (1-(tau^2)))
+    
+    if (!is.null(confidence)) {
+      CI <- tau + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * res$SE
+      res$CI_lower <- CI[1]
+      res$CI_upper <- CI[2]
+    } 
     
   } else {
     
