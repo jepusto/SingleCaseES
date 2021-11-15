@@ -327,18 +327,29 @@ After estimating the phase A time trend, $\tau_{BC}$ is estimated by de-trending
 $$w^\epsilon_{ij} = I\left(\hat\epsilon^B_j > \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j < \hat\epsilon^A_i\right)$$
 or, for an outcome where decrease is desirable, calculate
 $$w^\epsilon_{ij} = I\left(\hat\epsilon^B_j < \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j > \hat\epsilon^A_i\right).$$
-Tau-BC is then estimated by
+
+Tau-BC (non-overlap) is then estimated by
 $$
 \text{Tau}_{BC} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij}.
 $$
 
+If calculated with Kendall's rank correlation, Tau-BC is estimated as the rank correlation between $\hat{\boldsymbol{\epsilon}} = \left\{ \hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}$ and a dummy coded variable $\boldsymbol{q} = \left\{0_1,\dots,0_m, 1_1,\dots,1_n \right\}$. When there are no ties in $\hat{\boldsymbol{\epsilon}}$ and $\boldsymbol{q}$,
+$$
+\text{Tau}_{BC} = \frac{S}{D} = \frac{\sum_{s<t} sign(\hat\epsilon_s-\hat\epsilon_t)sign(q_s-q_t)}{\frac{(m+n)(m+n-1)}{2}},
+$$
+where $s = 1,\dots, (m+n)$ and $t = 1,\dots, (m+n)$. When there are ties, $D$ is calculated with adjustment for ties [@kendall1970rank, p. 35]. Let $U = \frac{1}{2}\sum_u u(u-1)$ and $V = \frac{1}{2}\sum_v v(v-1)$, where $u$ and $v$ represent the number of tied consecutive values in sorted $\hat{\boldsymbol{\epsilon}}$ and $\boldsymbol{q}$, respectively.
+$$
+D_{\text{adjusted}} = \sqrt{\frac{(m+n)(m+n-1)}{2}-U} \sqrt{\frac{(m+n)(m+n-1)}{2}-V}.
+$$
+
 ### Standard errors and confidence intervals
 
-The exact sampling distribution of $\text{Tau}_{BC}$ has not been described. @tarlow2017improved proposed to approximate its sampling variance using the conservative estimator
+The exact sampling distribution of $\text{Tau}_{BC}$ (Kendall's rank correlation) has not been described. @tarlow2017improved proposed to approximate its sampling variance using the conservative estimator
 $$
-V_{Kendall} = \sqrt{\frac{2 (1 - \text{Tau}_{BC}^2)}{m + n}}.
+SE_{Kendall} = \sqrt{\frac{2 (1 - \text{Tau}_{BC}^2)}{m + n}}.
 $$
-The SingleCaseES package takes a different approach, reporting approximate standard errors and confidence intervals for $\text{Tau}_{BC}$ based on the methods described above for $\text{Tau}$ (without baseline trend correction). An important limitation of this approach is that it does not account for the uncertainty introduced by estimating the phase A time trend (i.e., the uncertainty in $\hat\beta$). 
+
+The SingleCaseES package takes a different approach for estimating the standard error for $\text{Tau}_{BC}$ (non-overlap), reporting approximate standard errors and confidence intervals for $\text{Tau}_{BC}$ based on the methods described above for $\text{Tau}$ (non-overlap, without baseline trend correction). An important limitation of this approach is that it does not account for the uncertainty introduced by estimating the phase A time trend (i.e., the uncertainty in $\hat\beta$). 
 
 ## Tau-U
 
