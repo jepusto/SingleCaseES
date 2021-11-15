@@ -35,6 +35,27 @@ test_that("Tau-BC is correct.", {
   
 })
 
+test_that("The formula for Kendall's rank correlation is correct.", {
+  # Example 3.1 in Kendall (1970), p.35
+  A <- c(1, 2.5, 2.5, 4.5, 4.5, 6.5, 6.5, 8, 9.5, 9.5)
+  B <- c(1, 2, rep(4.5, 4), rep(8, 3), 10)
+  
+  Kendall_pkg <- Kendall::Kendall(A, B)
+  S_pkg <- as.numeric(Kendall_pkg$S)
+  D_pkg <- as.numeric(Kendall_pkg$D)
+  Tau_pkg <- round(as.numeric(Kendall_pkg$tau), 3)
+  
+  S_book <- 33
+  D_book <- sqrt(41*36)
+  Tau_b_book <- .859
+  
+  expect_equal(S_pkg, S_book)
+  expect_equal(D_pkg, D_book, tolerance = .0000001)
+  expect_equal(Tau_pkg, Tau_b_book)
+  
+})
+
+
 test_that("Tau-BC is correct regarding pretest_trend argument.", {
   
   A <- c(20, 20, 26, 25, 22, 23)

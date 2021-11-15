@@ -342,6 +342,11 @@ $$
 D_{\text{adjusted}} = \sqrt{\frac{(m+n)(m+n-1)}{2}-U} \sqrt{\frac{(m+n)(m+n-1)}{2}-V}.
 $$
 
+Then Tau-BC (Kendall, adjusted for ties) is estimated by
+$$
+\text{Tau}_{BC}^* = \frac{S}{D_{\text{adjusted}}} = \frac{\sum_{s<t} sign(\hat\epsilon_s-\hat\epsilon_t)sign(q_s-q_t)}{\sqrt{\frac{(m+n)(m+n-1)}{2}-U} \sqrt{\frac{(m+n)(m+n-1)}{2}-V}}.
+$$
+
 ### Standard errors and confidence intervals
 
 The exact sampling distribution of $\text{Tau}_{BC}$ (Kendall's rank correlation) has not been described. @tarlow2017improved proposed to approximate its sampling variance using the conservative estimator
