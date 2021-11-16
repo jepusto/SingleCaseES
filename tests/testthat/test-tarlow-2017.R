@@ -46,13 +46,30 @@ test_that("The formula for Kendall's rank correlation is correct.", {
   Tau_pkg <- round(as.numeric(Kendall_pkg$tau), 3)
   
   S_book <- 33
-  D_book <- sqrt(41*36)
+  D_book <- sqrt(41 * 36)
   Tau_b_book <- .859
   
   expect_equal(S_pkg, S_book)
-  expect_equal(D_pkg, D_book, tolerance = .0000001)
+  expect_equal(D_pkg, D_book, tolerance = 1e-7)
   expect_equal(Tau_pkg, Tau_b_book)
   
+  # Check against formula for Tau_BC^* in the vignette
+  y <- c(A, B)
+  m <- length(A)
+  n <- length(B)
+  trt <- c(rep(0L, m), rep(1L, n))
+  Kendall_pkg <- Kendall::Kendall(y, trt)
+  
+  Q_mat <- matrix(sapply(B, function(j) (j > A) - (j < A)), nrow = m, ncol = n)
+  S_comp <- sum(Q_mat)
+  U <- sum(table(y) * (table(y) - 1) / 2)
+  D_comp <- sqrt(m * n * ((m + n) * (m + n - 1) / 2 - U))
+  Tau_comp <- S_comp / D_comp
+
+  expect_equal(as.numeric(Kendall_pkg$S), S_comp)
+  expect_equal(as.numeric(Kendall_pkg$D), D_comp, tolerance = 1e-7)
+  expect_equal(as.numeric(Kendall_pkg$tau), Tau_comp)
+    
 })
 
 
