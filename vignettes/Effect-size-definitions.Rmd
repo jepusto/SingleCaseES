@@ -282,80 +282,6 @@ $$
 
 where $L_{\theta}$ and $U_{\theta}$ are the lower and upper bounds of the CI for $\theta$, calculated using a method proposed by @newcombe2006confidence.
 
-## Tau-BC
-
-@tarlow2017improved proposed to modify the Tau effect size index by first adjusting the observations for a linear trend in the A phase. The index can be calculated with or without conducting a pre-test for significance of the A phase time trend. We provide two approaches to calculate Tau no matter whether the baseline trend is significant or not. The first approach is using Kendall's rank correlation (with adjustment for ties), as used in Tarlow (2007). The second one is using Tau (non-overlap) index (without adjustment for ties).
-
-If the A phase trend pre-test is used, then slope of the baseline trend is first tested using Kendall's rank correlation. If the baseline slope is significantly different from zero, the outcomes are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Kendall's rank correlation or Tau (non-overlap) index. If the baseline slope is not significantly different from zero, then no baseline trend adjustment is made, and the Tau-BC effect size is calculated using Kendall's rank correlation or Tau (non-overlap) index.
-
-If the A phase trend pre-test is not used, then the outcomes are adjusted for baseline trend using Theil-Sen regression (regardless of whether the slope is significantly different from zero). The residuals from Theil-Sen regression are then used to calculate the Kendall's rank correlation or Tau (non-overlap) index.
-
-The formal definition of Tau-BC require positing a model for the time trend in the data series. Thus, suppose that the outcomes can be expressed in terms of a linear time trend and an error term:
-$$
-\begin{aligned}
-y_i^A &= \alpha + \beta (i) + \epsilon_i^A, \quad \text{for} \quad i = 1,...,m \\
-y_j^B &= \alpha + \beta (m + j) + \epsilon_j^B \quad \text{for} \quad j = 1,...,n.
-\end{aligned}
-$$
-Within each phase, assume that the error terms are independent and share a common distribution. The Tau-BC parameter can then be defined as the Tau parameter for the distribution of the error terms, or
-$$
-\tau_{BC} = \text{Pr}(\epsilon^B > \epsilon^A) - \text{Pr}(\epsilon^B < \epsilon^A).
-$$
-An equivalent definition in terms of the outcome distributions is
-$$
-\tau_{BC} = \text{Pr}\left[Y_j^B - \beta (m + j - i) > Y_i^A \right] - \text{Pr}\left[Y_j^B - \beta (m + j - i) < Y_i^A\right]
-$$
-for $i=1,...,m$ and $j = 1,...,n$.
-
-### Estimation
-
-Estimation of $\tau_{BC}$ entails correcting the data series for the baseline slope $\beta$. If using the baseline trend pre-test, the null hypothesis of $H_0: \beta = 0$ is first tested using Kendall's rank correlation. If the test is not significant, then set $\hat\beta = 0$ and $\hat\alpha = 0$. If the test is significant or if the baseline trend pre-test is eschewed, then the slope is estimated by Theil-Sen regression. Specifically, we calculate the slope between every pair of observations in the A phase:
-$$
-s_{hi} = \frac{y_i^A - y_h^A}{i - h}
-$$
-for $i = 1,...,m - 1$ and $h = i+1,...,m$. The overall slope estimate is taken to be the median over all $m(m - 1) / 2$ slope pairs:
-$$
-\hat\beta = \text{median}\left\{s_{12},...,s_{(m-1)m}\right\}.
-$$
-The intercept term is estimated by taking the median observation in the A phase after correcting for the estimated linear time trend:
-$$
-\hat\alpha = \text{median}\left\{y_1^A - \hat\beta \times 1, \ y_2^A - \hat\beta \times 2, ..., \ y_m^A - \hat\beta \times m\right\}.
-$$
-However, the intercept estimate is irrelevant for purposes of estimating Tau-BC because the Tau estimator is a function of ranks and is invariant to a linear shift of the data series. 
-
-After estimating the phase A time trend, $\tau_{BC}$ is estimated by de-trending the full data series and calculating Tau on the de-trended observations. Specifically, set $\hat\epsilon_i^A = y_i^A - \hat\beta (i) - \hat\alpha$ for $i = 1,...,m$ and $\hat\epsilon_j^B = y_j^B - \hat\beta (m + j) - \hat\alpha$. For an outcome where increase is desirable, calculate 
-$$w^\epsilon_{ij} = I\left(\hat\epsilon^B_j > \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j < \hat\epsilon^A_i\right)$$
-or, for an outcome where decrease is desirable, calculate
-$$w^\epsilon_{ij} = I\left(\hat\epsilon^B_j < \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j > \hat\epsilon^A_i\right).$$
-
-Tau-BC (non-overlap) is then estimated by
-$$
-\text{Tau}_{BC} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij}.
-$$
-
-If calculated with Kendall's rank correlation, Tau-BC is estimated as the rank correlation between $\hat{\boldsymbol{\epsilon}} = \left\{ \hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}$ and a dummy coded variable $\boldsymbol{q} = \left\{0_1,\dots,0_m, 1_1,\dots,1_n \right\}$. When there are no ties in $\hat{\boldsymbol{\epsilon}}$ and $\boldsymbol{q}$,
-$$
-\text{Tau}_{BC} = \frac{S}{D} = \frac{\sum_{s<t} sign(\hat\epsilon_s-\hat\epsilon_t)sign(q_s-q_t)}{\frac{(m+n)(m+n-1)}{2}},
-$$
-where $s = 1,\dots, (m+n)$ and $t = 1,\dots, (m+n)$. When there are ties, $D$ is calculated with adjustment for ties [@kendall1970rank, p. 35]. Let $U = \frac{1}{2}\sum_u u(u-1)$ and $V = \frac{1}{2}\sum_v v(v-1)$, where $u$ and $v$ represent the number of tied consecutive values in sorted $\hat{\boldsymbol{\epsilon}}$ and $\boldsymbol{q}$, respectively.
-$$
-D_{\text{adjusted}} = \sqrt{\frac{(m+n)(m+n-1)}{2}-U} \sqrt{\frac{(m+n)(m+n-1)}{2}-V}.
-$$
-
-Then Tau-BC (Kendall, adjusted for ties) is estimated by
-$$
-\text{Tau}_{BC}^* = \frac{S}{D_{\text{adjusted}}} = \frac{\sum_{s<t} sign(\hat\epsilon_s-\hat\epsilon_t)sign(q_s-q_t)}{\sqrt{\frac{(m+n)(m+n-1)}{2}-U} \sqrt{\frac{(m+n)(m+n-1)}{2}-V}}.
-$$
-
-### Standard errors and confidence intervals
-
-The exact sampling distribution of $\text{Tau}_{BC}$ (Kendall's rank correlation) has not been described. @tarlow2017improved proposed to approximate its sampling variance using the conservative estimator
-$$
-SE_{Kendall} = \sqrt{\frac{2 (1 - \text{Tau}_{BC}^2)}{m + n}}.
-$$
-
-The SingleCaseES package takes a different approach for estimating the standard error for $\text{Tau}_{BC}$ (non-overlap), reporting approximate standard errors and confidence intervals for $\text{Tau}_{BC}$ based on the methods described above for $\text{Tau}$ (non-overlap, without baseline trend correction). An important limitation of this approach is that it does not account for the uncertainty introduced by estimating the phase A time trend (i.e., the uncertainty in $\hat\beta$). 
-
 ## Tau-U
 
 Tau-U is one of several effect sizes proposed by @parker2011combining. The Tau-U variant is similar to Tau, but includes an adjustment term that is a function of the baseline time trend. For an outcome where increase is desirable, the index is calculated as Kendall's $S$ statistic for the comparison between the phase B data and the phase A data, plus Kendall's $S$ statistic for the A phase observations, scaled by the product of the number of observations in each phase. 
@@ -387,6 +313,82 @@ $$
 $$
 
 The sampling distribution of Tau-U has not been described, and so standard errors and confidence intervals are not available.
+
+
+## Tau-BC
+
+@tarlow2017improved proposed to modify the Tau effect size index by first adjusting the observations for a linear trend in the A phase. The index can be calculated with or without conducting a pre-test for significance of the A phase time trend. We provide two approaches to calculate Tau no matter whether the baseline trend is significant or not. The first approach is using Kendall's rank correlation (with adjustment for ties), as used in Tarlow (2017). The second one is using Tau (non-overlap) index (without adjustment for ties).
+
+If the pre-test for A phase time trend is used, then slope of the baseline trend is first tested using Kendall's rank correlation. If the baseline slope is significantly different from zero, the outcomes are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Kendall's rank correlation or Tau (non-overlap) index. If the baseline slope is not significantly different from zero, then no baseline trend adjustment is made, and the Tau-BC effect size is calculated using Kendall's rank correlation or Tau (non-overlap) index.
+
+If the pre-test for A phase time trend is not used, then the outcomes are adjusted for baseline trend using Theil-Sen regression, regardless of whether the slope is significantly different from zero. The residuals from Theil-Sen regression are then used to calculate the Kendall's rank correlation or Tau (non-overlap) index.
+
+The formal definition of Tau-BC require positing a model for the time trend in the data series. Thus, suppose that the outcomes can be expressed in terms of a linear time trend and an error term:
+$$
+\begin{aligned}
+y_i^A &= \alpha + \beta (i) + \epsilon_i^A, \quad \text{for} \quad i = 1,...,m \\
+y_j^B &= \alpha + \beta (m + j) + \epsilon_j^B \quad \text{for} \quad j = 1,...,n.
+\end{aligned}
+$$
+Within each phase, assume that the error terms are independent and share a common distribution. The Tau-BC parameter can then be defined as the Tau parameter for the distribution of the error terms, or
+$$
+\tau_{BC} = \text{Pr}(\epsilon^B > \epsilon^A) - \text{Pr}(\epsilon^B < \epsilon^A).
+$$
+An equivalent definition in terms of the outcome distributions is
+$$
+\tau_{BC} = \text{Pr}\left[Y_j^B - \beta (m + j - i) > Y_i^A \right] - \text{Pr}\left[Y_j^B - \beta (m + j - i) < Y_i^A\right]
+$$
+for $i=1,...,m$ and $j = 1,...,n$.
+
+### Estimation
+
+Estimation of $\tau_{BC}$ entails correcting the data series for the baseline slope $\beta$. If using the baseline trend pre-test, the null hypothesis of $H_0: \beta = 0$ is first tested using Kendall's rank correlation. If the test is not significant, then set $\hat\beta = 0$ and $\hat\alpha = 0$. If the test is significant or if the pre-test for baseline time trend is not used, then the slope is estimated by Theil-Sen regression. Specifically, we calculate the slope between every pair of observations in the A phase:
+$$
+s_{hi} = \frac{y_i^A - y_h^A}{i - h}
+$$
+for $i = 1,...,m - 1$ and $h = i+1,...,m$. The overall slope estimate is taken to be the median over all $m(m - 1) / 2$ slope pairs:
+$$
+\hat\beta = \text{median}\left\{s_{12},...,s_{(m-1)m}\right\}.
+$$
+The intercept term is estimated by taking the median observation in the A phase after correcting for the estimated linear time trend:
+$$
+\hat\alpha = \text{median}\left\{y_1^A - \hat\beta \times 1, \ y_2^A - \hat\beta \times 2, ..., \ y_m^A - \hat\beta \times m\right\}.
+$$
+However, the intercept estimate is irrelevant for purposes of estimating Tau-BC because the Tau estimator is a function of ranks and is invariant to a linear shift of the data series. 
+
+After estimating the phase A time trend, $\tau_{BC}$ is estimated by de-trending the full data series and calculating Kendall's rank correlation or Tau (non-overlap) on the de-trended observations. Specifically, set $\hat\epsilon_i^A = y_i^A - \hat\beta (i) - \hat\alpha$ for $i = 1,...,m$ and $\hat\epsilon_j^B = y_j^B - \hat\beta (m + j) - \hat\alpha$. For an outcome where increase is desirable, calculate 
+$$w^\epsilon_{ij} = I\left(\hat\epsilon^B_j > \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j < \hat\epsilon^A_i\right)$$
+or, for an outcome where decrease is desirable, calculate
+$$w^\epsilon_{ij} = I\left(\hat\epsilon^B_j < \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j > \hat\epsilon^A_i\right).$$
+
+Tau-BC (non-overlap) is then estimated by
+$$
+\text{Tau}_{BC} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij}.
+$$
+
+If calculated with Kendall's rank correlation, Tau-BC is estimated as the rank correlation between $\hat{\boldsymbol{\epsilon}} = \left\{ \hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}$ and a dummy coded variable $\boldsymbol{q} = \left\{0_1,\dots,0_m, 1_1,\dots,1_n \right\}$. When there are no ties in $\hat{\boldsymbol{\epsilon}}$ and $\boldsymbol{q}$,
+$$
+\text{Tau}_{BC} = \frac{S}{D} = \frac{\sum_{s<t} sign(\hat\epsilon_s-\hat\epsilon_t)sign(q_s-q_t)}{\frac{(m+n)(m+n-1)}{2}},
+$$
+where $s = 1,\dots, (m+n)$ and $t = 1,\dots, (m+n)$. When there are ties, $D$ is calculated with adjustment for ties [@kendall1970rank, p. 35]. Let $U = \frac{1}{2}\sum_u u(u-1)$ and $V = \frac{1}{2}\sum_v v(v-1)$, where $u$ and $v$ represent the number of tied consecutive values in sorted $\hat{\boldsymbol{\epsilon}}$ and $\boldsymbol{q}$, respectively.
+$$
+D_{\text{adjusted}} = \sqrt{\frac{(m+n)(m+n-1)}{2}-U} \sqrt{\frac{(m+n)(m+n-1)}{2}-V}.
+$$
+
+Then Tau-BC (Kendall, adjusted for ties) is estimated by
+$$
+\text{Tau}_{BC}^* = \frac{S}{D_{\text{adjusted}}} = \frac{\sum_{s<t} sign(\hat\epsilon_s-\hat\epsilon_t)sign(q_s-q_t)}{\sqrt{\frac{(m+n)(m+n-1)}{2}-U} \sqrt{\frac{(m+n)(m+n-1)}{2}-V}}.
+$$
+
+### Standard errors and confidence intervals
+
+The exact sampling distribution of $\text{Tau}_{BC}^*$ (Kendall, adjusted for ties) has not been described. @tarlow2017improved proposed to approximate its sampling variance using
+$$
+SE_{Kendall} = \sqrt{\frac{2 (1 - \text{Tau}_{BC}^2)}{m + n}},
+$$
+arguing that this would generally be conservative (in the sense of over-estimating the true sampling error). When Tau-BC is calculated using Kendall's rank correlation, the SingleCaseES package reports a standard error based on this approximation.
+
+When calculated without adjustment for ties, the SingleCaseES package takes a different approach for estimating the standard error for $\text{Tau}_{BC}$ (non-overlap), reporting approximate standard errors and confidence intervals for $\text{Tau}_{BC}$ based on the methods described above for $\text{Tau}$ (non-overlap, without baseline trend correction). An important limitation of this approach is that it does not account for the uncertainty introduced by estimating the phase A time trend (i.e., the uncertainty in $\hat\beta$).
 
 # Parametric effect sizes
 
