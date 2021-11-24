@@ -12,5 +12,6 @@ res <- batch_calc_ES(dat = dat,
                      scale = "{user_scale}",
                      std_dev = "{user_std_dev}",
                      confidence = {user_confidence},
+                     Kendall = {user_Kendall},
                      pretest_trend = {user_pretest_trend},
                      format = "{user_format}")

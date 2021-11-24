@@ -281,6 +281,12 @@ calc_Tau_U <- function(A_data, B_data, improvement = "increase", ...) {
 #'   \code{\link{Tau}}, but not necessarily unbiased for \code{\link{Tau_BC}}.
 #'   None of the standard error formulas account for the additional uncertainty
 #'   due to use of the baseline trend correction.
+#' @param Kendall logical value indicating whether to use Kendall's rank
+#'   correlation to calculate the Tau effect size measure. If \code{TRUE}, the
+#'   Kendall's rank correlation (with adjustment for ties) is calculated between
+#'   the data and a dummy coded phase variable, which is consistent with the
+#'   method used in Tarlow (2017). Default is \code{FALSE}, which calculates
+#'   \code{\link{Tau}} (non-overlap) index (without adjustment for ties).
 #' @param pretest_trend significance level for the initial baseline trend test.
 #'   The raw data are corrected and \code{\link{Tau_BC}} is calculated only if
 #'   the baseline trend is statistically significant. Otherwise,
@@ -299,24 +305,31 @@ calc_Tau_U <- function(A_data, B_data, improvement = "increase", ...) {
 #'   If \code{pretest_trend = FALSE} (the default), the first step involves
 #'   adjusting the outcomes for baseline trend estimated using Theil-Sen
 #'   regression. In the second step, the residuals from Theil-Sen regression are
-#'   used to calculate the \code{\link{Tau}} (non-overlap) index.
+#'   used to calculate the \code{Tau} (using either Kendall's rank correlation,
+#'   with adjustment for ties, or computing Tau directly, without adjustment for
+#'   ties).
 #'
 #'   Alternately, \code{pretest_trend} can be set equal to a significance level
-#'   between 0 and 1 (e.g. \code{pretest_trend = .05}, as suggested by Tarlow,
-#'   2017). In this case, the first step involves a significance test for the
+#'   between 0 and 1 (e.g. \code{pretest_trend = .05}, as suggested by Tarlow
+#'   (2017). In this case, the first step involves a significance test for the
 #'   slope of the baseline trend based on Kendall's rank correlation. If the
 #'   slope is not significantly different from zero, then no baseline trend
-#'   adjustment is made and Tau-BC is set equal to \code{\link{Tau}}. If the
+#'   adjustment is made and Tau-BC is set equal to \code{Tau} index. If the
 #'   slope is significantly different from zero, then in the second step, the
-#'   outcomes are adjusted for baseline trend using Theil-Sen regression and, in
-#'   the third step, the residuals from Theil-Sen regression are used to
-#'   calculate the \code{\link{Tau}} (non-overlap) index.
+#'   outcomes are adjusted for baseline trend using Theil-Sen regression. Then,
+#'   in the third step, the residuals from Theil-Sen regression are used to
+#'   calculate the \code{Tau} index. If \code{Kendall = FALSE} (the default),
+#'   then \code{\link{Tau}} (non-overlap) index is calculated. If \code{Kendall
+#'   = TRUE}, then Kendall's rank correlation is calculated, including
+#'   adjustment for ties, as in Tarlow (2017).
 #'
 #'   Note that the standard error formulas are based on the standard errors for
 #'   \code{\link{Tau}} (non-overlap) and they do not account for the additional
 #'   uncertainty due to use of the baseline trend correction (nor to the
 #'   pre-test for statistical significance of baseline trend, if used).
 #'
+#' @seealso \code{\link{Tau}}, \code{\link{Tau_U}}
+#' 
 #' @references Tarlow, K. R. (2017). An improved rank correlation effect size
 #'   statistic for single-case designs: Baseline corrected Tau. \emph{Behavior
 #'   modification, 41}(4), 427-467. doi:\doi{10.1177/0145445516676750}
@@ -339,8 +352,11 @@ Tau_BC <- function(A_data, B_data, condition, outcome,
                   intervention_phase = NULL,
                   improvement = "increase", 
                   SE = "unbiased", confidence = .95,
-                  pretest_trend = FALSE, warn = TRUE,
-                  report_correction = FALSE) {
+                  Kendall = FALSE,
+                  pretest_trend = FALSE,
+                  report_correction = FALSE,
+                  warn = TRUE
+                  ) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
@@ -348,16 +364,21 @@ Tau_BC <- function(A_data, B_data, condition, outcome,
           intervention_phase = intervention_phase,
           ES = "Tau_BC", improvement = improvement,
           SE = SE, confidence = confidence,
-          pretest_trend = pretest_trend, 
-          warn = warn,
-          report_correction = report_correction)
+          Kendall = Kendall,
+          pretest_trend = pretest_trend,
+          report_correction = report_correction,
+          warn = warn
+          )
 }
 
 calc_Tau_BC <- function(A_data, B_data, 
                         improvement = "increase", 
                         SE = "unbiased", CI = TRUE,
-                        confidence = .95, pretest_trend = FALSE,
-                        report_correction = FALSE, warn = TRUE,
+                        confidence = .95,
+                        Kendall = FALSE,
+                        pretest_trend = FALSE,
+                        report_correction = FALSE, 
+                        warn = TRUE,
                         ...) {
   
   m <- length(A_data)
@@ -376,34 +397,70 @@ calc_Tau_BC <- function(A_data, B_data,
     if (pval_slope_A > pretest_trend) {
       
       if (warn) message("The baseline trend is not statistically significant. Tau is calculated without trend correction.")
+      adjust <- FALSE
       
-      res <- calc_Tau(A_data = A_data, B_data = B_data, 
-                      improvement = improvement, SE = SE, 
-                      CI = CI, confidence = confidence)
-      res$ES <- "Tau-BC"
-      if (report_correction) res$pval_slope_A <- pval_slope_A
-      return(res)
+    } else {
+      adjust <- TRUE
     }
     
   } else if (pretest_trend != FALSE) {
     
     stop("The pretest_trend argument must be FALSE or a number between 0 and 1.")
     
-  } 
-    
+  } else {
+    adjust <- TRUE
+  }
+
+  # Calculate baseline trend coefficients  
   slopes <- apply(combn(m, 2), 2, function(x) diff(A_data[x]) / diff(session_A[x]))
   slope <- median(slopes)
   intercept <- median(A_data - session_A * slope)
+  
+  # Adjust if necessary
+  if (adjust) {
+    A_data <- A_data - intercept - slope * session_A
+    B_data <- B_data - intercept - slope * session_B
     
-  A_data_corrected <- A_data - intercept - slope * session_A
-  B_data_corrected <- B_data - intercept - slope * session_B
+  }
+  
+  if (Kendall) {
     
-  # Use calc_Tau()
-  res <- calc_Tau(A_data = A_data_corrected, B_data = B_data_corrected,
-                  improvement = improvement, SE = SE, 
-                  CI = CI, confidence = confidence)
-  res$ES <- "Tau-BC"
+    if (improvement == "decrease") {
+      A_data <- -1 * A_data
+      B_data <- -1 * B_data
+    }
     
+    # Tarlow (2017) approach to calculating Tau
+    
+    if (sd(c(A_data, B_data)) == 0) {
+      tau <- 0
+    } else {
+      res_Kendall <- Kendall::Kendall(c(A_data, B_data), 
+                                      c(rep(0L, m), rep(1L, n)))
+      
+      tau <- as.numeric(res_Kendall$tau)
+    }
+    
+    res <- data.frame(ES = "Tau-BC", Est = tau, stringsAsFactors = FALSE)
+    res$SE <- sqrt((2/(m+n)) * (1-(tau^2)))
+    
+    if (!is.null(confidence)) {
+      CI <- tau + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * res$SE
+      res$CI_lower <- CI[1]
+      res$CI_upper <- CI[2]
+    } 
+    
+  } else {
+    
+    # Calculate basic Tau (no adjustment for ties)
+    
+    res <- calc_Tau(A_data = A_data, B_data = B_data,
+                    improvement = improvement, SE = SE, 
+                    CI = CI, confidence = confidence)
+    res$ES <- "Tau-BC"
+    
+  } 
+  
   if (report_correction) {
     res$slope <- slope
     res$intercept <- intercept
