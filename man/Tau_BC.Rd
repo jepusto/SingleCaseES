@@ -101,9 +101,9 @@ Tau-BC is an elaboration of the \code{\link{Tau}} that includes a
   slope is significantly different from zero, then in the second step, the
   outcomes are adjusted for baseline trend using Theil-Sen regression. Then,
   in the third step, the residuals from Theil-Sen regression are used to
-  calculate the \code{Tau} index. If \code{Kendall == FALSE} (the default),
+  calculate the \code{Tau} index. If \code{Kendall = FALSE} (the default),
   then \code{\link{Tau}} (non-overlap) index is calculated. If \code{Kendall
-  == TRUE}, then Kendall's rank correlation is calculated, including
+  = TRUE}, then Kendall's rank correlation is calculated, including
   adjustment for ties, as in Tarlow (2017).
 
   Note that the standard error formulas are based on the standard errors for
@@ -121,4 +121,7 @@ Tau_BC(A_data = A, B_data = B)
 Tarlow, K. R. (2017). An improved rank correlation effect size
   statistic for single-case designs: Baseline corrected Tau. \emph{Behavior
   modification, 41}(4), 427-467. doi:\doi{10.1177/0145445516676750}
+}
+\seealso{
+\code{\link{Tau}}, \code{\link{Tau_U}}
 }

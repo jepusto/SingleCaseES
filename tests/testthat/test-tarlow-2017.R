@@ -93,8 +93,8 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
   expect_message(Tau_BC(A, B, pretest_trend = .05))
   
   
-  A_data <- c(1, 2, 3, 4, 5)
-  B_data <- c(5, 6, 3, 2, 4)
+  A_data <- c(1, 1, 3, 3, 5, 5)
+  B_data <- c(5, 6, 4, 8, 9)
   m <- length(A_data)
   n <- length(B_data)
   session_A <- 1:m
@@ -106,12 +106,22 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
   expect_lt(Tau_BC_05$pval_slope_A, .05)
   
   expect_message(Tau_BC(A_data, B_data, pretest_trend = .01))
-  Tau_BC_01 <- suppressMessages(Tau_BC(A_data, B_data, pretest_trend = .01, report_correction = TRUE)) 
+  Tau_BC_01 <- Tau_BC(A_data, B_data, pretest_trend = .01, report_correction = TRUE, warn = FALSE)
   expect_gt(Tau_BC_01$pval_slope_A, .01)
   
-  Tau_BC_increase <- Tau_BC(A_data, B_data, improvement = "increase")
-  Tau_BC_decrease <- Tau_BC(A_data, B_data, improvement = "decrease")
+  Tau_BC_increase <- Tau_BC(A_data, B_data, pretest_trend = .01, improvement = "increase")
+  Tau_BC_decrease <- Tau_BC(A_data, B_data, pretest_trend = .01, improvement = "decrease")
   expect_equal(Tau_BC_increase$Est, -Tau_BC_decrease$Est)
+  expect_equal(Tau_BC_increase$SE, Tau_BC_decrease$SE)
+  expect_equal(Tau_BC_increase$CI_lower, -Tau_BC_decrease$CI_upper)
+  expect_equal(Tau_BC_increase$CI_upper, -Tau_BC_decrease$CI_lower)
+  
+  Tau_Kendall_increase <- Tau_BC(A_data, B_data, pretest_trend = .01, Kendall = TRUE, improvement = "increase", warn = FALSE)
+  Tau_Kendall_decrease <- Tau_BC(A_data, B_data, pretest_trend = .01, Kendall = TRUE, improvement = "decrease", warn = FALSE)
+  expect_equal(Tau_Kendall_increase$Est, -Tau_Kendall_decrease$Est)
+  expect_equal(Tau_Kendall_increase$SE, Tau_Kendall_decrease$SE)
+  expect_equal(Tau_Kendall_increase$CI_lower, -Tau_Kendall_decrease$CI_upper)
+  expect_equal(Tau_Kendall_increase$CI_upper, -Tau_Kendall_decrease$CI_lower)
 })
 
 library(Kendall)

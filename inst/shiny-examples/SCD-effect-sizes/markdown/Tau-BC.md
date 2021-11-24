@@ -69,7 +69,7 @@ $$
 \text{Tau}_{BC} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij}.
 $$
 
-If calculated with Kendall's rank correlation, Tau-BC is estimated as the rank correlation between $\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}$ and a dummy coded variable $\left\{0_1,\dots,0_m, 1_1,\dots,1_n \right\}$, with an adjustment for ties [@kendall1970rank, p. 35]. Specifically, 
+If calculated with Kendall's rank correlation, Tau-BC is estimated as the rank correlation between $\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}$ and a dummy coded variable $\left\{0_1,\dots,0_m, 1_1,\dots,1_n \right\}$, with an adjustment for ties (Kendall, 1970, p. 35). Specifically, 
 $$
 \text{Tau}_{BC}^* = \frac{1}{D} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij},
 $$
@@ -109,3 +109,7 @@ account for the uncertainty introduced by estimating the phase A time trend
 #### Primary reference
 
 Tarlow, K. R. (2017). An improved rank correlation effect size statistic for single-case designs: Baseline corrected Tau. _Behavior Modification, 41_(4), 427–467. https://doi.org/10.1177/0145445516676750
+
+#### Additional reference
+
+Kendall, M. G. (1970). _Rank correlation methods_ (4th edition). Griffin.
