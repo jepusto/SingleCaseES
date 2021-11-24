@@ -423,6 +423,11 @@ calc_Tau_BC <- function(A_data, B_data,
   
   if (Kendall) {
     
+    if (improvement == "decrease") {
+      A_data <- -1 * A_data
+      B_data <- -1 * B_data
+    }
+    
     # Tarlow (2017) approach to calculating Tau
     
     if (sd(c(A_data, B_data)) == 0) {
