@@ -80,9 +80,10 @@
   improvement <span class="op">=</span> <span class="st">"increase"</span>,
   SE <span class="op">=</span> <span class="st">"unbiased"</span>,
   confidence <span class="op">=</span> <span class="fl">0.95</span>,
+  Kendall <span class="op">=</span> <span class="cn">FALSE</span>,
   pretest_trend <span class="op">=</span> <span class="cn">FALSE</span>,
-  warn <span class="op">=</span> <span class="cn">TRUE</span>,
-  report_correction <span class="op">=</span> <span class="cn">FALSE</span>
+  report_correction <span class="op">=</span> <span class="cn">FALSE</span>,
+  warn <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
 
     <div id="ref-sections">
@@ -121,18 +122,25 @@ due to use of the baseline trend correction.</p></dd>
 <dt>confidence</dt>
 <dd><p>confidence level for the reported interval estimate. Set to
 <code>NULL</code> to omit confidence interval calculations.</p></dd>
+<dt>Kendall</dt>
+<dd><p>logical value indicating whether to use Kendall's rank
+correlation to calculate the Tau effect size measure. If <code>TRUE</code>, the
+Kendall's rank correlation (with adjustment for ties) is calculated between
+the data and a dummy coded phase variable, which is consistent with the
+method used in Tarlow (2017). Default is <code>FALSE</code>, which calculates
+<code><a href="Tau.html">Tau</a></code> (non-overlap) index (without adjustment for ties).</p></dd>
 <dt>pretest_trend</dt>
 <dd><p>significance level for the initial baseline trend test.
 The raw data are corrected and <code>Tau_BC</code> is calculated only if
 the baseline trend is statistically significant. Otherwise,
 <code>Tau_BC</code> is equal to <code><a href="Tau.html">Tau</a></code>. Default is
 <code>FALSE</code>, which always adjusts for the baseline trend.</p></dd>
-<dt>warn</dt>
-<dd><p>logical value indicating whether to print a message regarding the
-outcome of the baseline trend test. Default is <code>TRUE</code>.</p></dd>
 <dt>report_correction</dt>
 <dd><p>logical value indicating whether to report the
 baseline corrected slope and intercept values. Default is <code>FALSE</code>.</p></dd>
+<dt>warn</dt>
+<dd><p>logical value indicating whether to print a message regarding the
+outcome of the baseline trend test. Default is <code>TRUE</code>.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -147,17 +155,22 @@ baseline corrected slope and intercept values. Default is <code>FALSE</code>.</p
 <p>If <code>pretest_trend = FALSE</code> (the default), the first step involves
   adjusting the outcomes for baseline trend estimated using Theil-Sen
   regression. In the second step, the residuals from Theil-Sen regression are
-  used to calculate the <code><a href="Tau.html">Tau</a></code> (non-overlap) index.</p>
+  used to calculate the <code>Tau</code> (using either Kendall's rank correlation,
+  with adjustment for ties, or computing Tau directly, without adjustment for
+  ties).</p>
 <p>Alternately, <code>pretest_trend</code> can be set equal to a significance level
-  between 0 and 1 (e.g. <code>pretest_trend = .05</code>, as suggested by Tarlow,
-  2017). In this case, the first step involves a significance test for the
+  between 0 and 1 (e.g. <code>pretest_trend = .05</code>, as suggested by Tarlow
+  (2017). In this case, the first step involves a significance test for the
   slope of the baseline trend based on Kendall's rank correlation. If the
   slope is not significantly different from zero, then no baseline trend
-  adjustment is made and Tau-BC is set equal to <code><a href="Tau.html">Tau</a></code>. If the
+  adjustment is made and Tau-BC is set equal to <code>Tau</code> index. If the
   slope is significantly different from zero, then in the second step, the
-  outcomes are adjusted for baseline trend using Theil-Sen regression and, in
-  the third step, the residuals from Theil-Sen regression are used to
-  calculate the <code><a href="Tau.html">Tau</a></code> (non-overlap) index.</p>
+  outcomes are adjusted for baseline trend using Theil-Sen regression. Then,
+  in the third step, the residuals from Theil-Sen regression are used to
+  calculate the <code>Tau</code> index. If <code>Kendall = FALSE</code> (the default),
+  then <code><a href="Tau.html">Tau</a></code> (non-overlap) index is calculated. If <code>Kendall
+  = TRUE</code>, then Kendall's rank correlation is calculated, including
+  adjustment for ties, as in Tarlow (2017).</p>
 <p>Note that the standard error formulas are based on the standard errors for
   <code><a href="Tau.html">Tau</a></code> (non-overlap) and they do not account for the additional
   uncertainty due to use of the baseline trend correction (nor to the
@@ -168,6 +181,10 @@ baseline corrected slope and intercept values. Default is <code>FALSE</code>.</p
     <p>Tarlow, K. R. (2017). An improved rank correlation effect size
   statistic for single-case designs: Baseline corrected Tau. <em>Behavior
   modification, 41</em>(4), 427-467. doi:doi: <a href="https://doi.org/10.1177/0145445516676750" class="external-link">10.1177/0145445516676750</a></p>
+    </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><code><a href="Tau.html">Tau</a></code>, <code><a href="Tau_U.html">Tau_U</a></code></p></div>
     </div>
     </div>
 
