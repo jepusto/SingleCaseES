@@ -140,15 +140,38 @@ shinyServer(function(input, output, session) {
       est <- ES()$est
       
       if (ES()$index %in% statistical_indices) {
+
         Est_txt <- paste("Effect size estimate:", fmt(est$Est[1]))
         SE_txt <- paste("Standard error:", fmt(est$SE[1]))
         CI_txt <- paste0(input$confidence,"% CI: [", fmt(est$CI_lower[1]), ", ", fmt(est$CI_upper[1]), "]")
-        if (nrow(est) > 1) {
-          pct_est <- paste("<br/>Percentage change:", pct(est$Est[2]))
-          pct_CI <- paste0(input$confidence,"% CI: [", pct(est$CI_lower[2]), ", ", pct(est$CI_upper[2]), "]")
-          pct_txt <- paste(pct_est, pct_CI, sep = "<br/>")
+        
+        note_SMD_no_variation <- NULL
+        pct_txt <- NULL
+        
+        if (ES()$index == "SMD" & input$SMD_denom == "baseline SD") {
+          if (sd(dat()$A) == 0) {
+            Est_txt <- SE_txt <- CI_txt <- SD_txt <- NULL
+            note_SMD_no_variation <- strong(style="color:red", "The baseline SD is zero. Please try the pooled SD or use other effect size metrics.")
+          } else {
+            SD_txt <- paste("Baseline SD:", fmt(est$`baseline_SD`[1]))
+          }
+          
+        } else if (ES()$index == "SMD" & input$SMD_denom == "pooled SD") {
+          if (all(c(sd(dat()$A), sd(dat()$B)) == 0)) {
+            Est_txt <- SE_txt <- CI_txt <- SD_txt <- NULL
+            note_SMD_no_variation <- strong(style ="color:red", "The pooled SD is zero. The SMD is not an appropriate effect size metric for these data.")
+          } else {
+            SD_txt <- paste("Pooled SD:", fmt(est$`pooled_SD`[1]))
+          }
+         
         } else {
-          pct_txt <- NULL
+          SD_txt <- NULL
+          
+          if (nrow(est) > 1) {
+            pct_est <- paste("<br/>Percentage change:", pct(est$Est[2]))
+            pct_CI <- paste0(input$confidence,"% CI: [", pct(est$CI_lower[2]), ", ", pct(est$CI_upper[2]), "]")
+            pct_txt <- paste(pct_est, pct_CI, sep = "<br/>")
+          } 
         }
         
         note_txt_TauBC <- NULL
@@ -165,7 +188,8 @@ shinyServer(function(input, output, session) {
         }
         
         note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
-        HTML(paste(Est_txt, SE_txt, CI_txt, pct_txt, note_txt_TauBC, note_txt, sep = "<br/>"))
+        
+        HTML(paste(Est_txt, SE_txt, CI_txt, SD_txt, pct_txt, note_txt_TauBC, note_SMD_no_variation, note_txt, sep = "<br/>"))
         
       } else {
         Est_txt <- paste("Effect size estimate:", fmt(est$Est))
@@ -221,12 +245,59 @@ shinyServer(function(input, output, session) {
   })
   
   output$datview <- renderTable(datFile())
-  output$datview2 <- renderTable(datFile())
   
+  
+  output$filtervarMapping <- renderUI({
+    
+    var_names <- names(datFile())
+    list(
+      selectizeInput("filters", label = "Filtering variables", choices = var_names, selected = NULL, multiple = TRUE)
+    )
+    
+  })
+  
+  output$filterMapping <- renderUI({
+    
+    filter_vars <- input$filters  
+    filter_vals <- lapply(filter_vars, function(x) levels(as.factor(datFile()[,x])))
+    names(filter_vals) <- filter_vars
+    header <- strong("Values for the filtering variables.")
+    
+    filter_selects <- lapply(filter_vars, function(x) 
+      selectizeInput(paste0("filter_",x), label = x, choices = filter_vals[[x]], 
+                     selected = filter_vals[[x]][1], multiple = TRUE))
+    
+    if (length(filter_vars) > 0) {
+      filter_selects <- list(header, column(12, br()), filter_selects)
+    }
+    
+    filter_selects
+    
+  })
+  
+  datClean <- reactive({
+    
+    if (input$dat_type == "example") {
+      data(list = input$example)
+      dat <- get(input$example)
+    } else {
+      dat <- datFile()
+    }
+    
+    if (!is.null(input$filters)) {
+      subset_vals <- sapply(input$filters, function(x) datFile()[[x]] %in% input[[paste0("filter_",x)]])
+      dat <- dat[apply(subset_vals, 1, all),]
+    }
+      
+    return(dat)
+    
+  })
+  
+  output$datview2 <- renderTable(datClean())
   
   output$clusterPhase <- renderUI({
     
-    var_names <- names(datFile())
+    var_names <- names(datClean())
     if (input$dat_type == "dat" || input$dat_type == "xlsx") {
       
       list(
@@ -255,7 +326,7 @@ shinyServer(function(input, output, session) {
 
   output$baseDefine <- renderUI({
     
-    phase_choices <- if (!is.null(input$b_phase)) unique(datFile()[[input$b_phase]]) else c("A","B")
+    phase_choices <- if (!is.null(input$b_phase)) unique(datClean()[[input$b_phase]]) else c("A","B")
     
     if (input$dat_type == "dat") {
       selectInput("b_base", label = "Baseline phase value", choices = phase_choices)
@@ -267,7 +338,7 @@ shinyServer(function(input, output, session) {
   
   output$treatDefine <- renderUI({
     
-    phase_choices <- if (!is.null(input$b_phase)) unique(datFile()[[input$b_phase]]) else c("A","B")
+    phase_choices <- if (!is.null(input$b_phase)) unique(datClean()[[input$b_phase]]) else c("A","B")
     trt_choices <- setdiff(phase_choices, input$b_base)
     
     if (input$dat_type == "dat") {
@@ -281,7 +352,7 @@ shinyServer(function(input, output, session) {
     
   output$outOrderImp <- renderUI({
 
-    var_names <- names(datFile())
+    var_names <- names(datClean())
 
     if (input$dat_type == "dat") {
       list(
@@ -302,7 +373,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$improvementVar <- renderUI({
-    var_names <- names(datFile())
+    var_names <- names(datClean())
     
     if (input$dat_type == "dat") {
       list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names))
@@ -323,7 +394,7 @@ shinyServer(function(input, output, session) {
  
   output$measurementProc <- renderUI({
     
-    var_names <- names(datFile())
+    var_names <- names(datClean())
     
     if (input$dat_type == "dat") {  
       
@@ -396,7 +467,7 @@ shinyServer(function(input, output, session) {
     
     if(is.null(input$b_aggregate)) {
       
-      batch_calc_ES(dat = datFile(),
+      batch_calc_ES(dat = datClean(),
                     grouping = input$b_clusters,
                     condition = input$b_phase,
                     outcome = input$b_out,
@@ -416,7 +487,7 @@ shinyServer(function(input, output, session) {
       
     } else{
       
-      batch_calc_ES(dat = datFile(),
+      batch_calc_ES(dat = datClean(),
                     grouping = input$b_clusters,
                     condition = input$b_phase,
                     outcome = input$b_out,
@@ -447,7 +518,7 @@ shinyServer(function(input, output, session) {
     filename = "SCD effect size estimates.csv",
     content = function(file) {
       dat <- batchModel()
-      write.csv(dat, file, row.names=FALSE)
+      write.csv(dat, file, row.names=FALSE, na = "")
     },
     contentType = "text/csv"
   )
@@ -485,7 +556,25 @@ shinyServer(function(input, output, session) {
         ''
       )
     }
-
+    
+    # filter the data
+    
+    filter_vars <- input$filters
+    filter_vals <- if(length(filter_vars) > 0) lapply(paste0("filter_", filter_vars), 
+                                                        function(x) paste0('"', input[[x]], '"', collapse = ",")) else NULL
+    filter_vals <- paste0("%in% c(", filter_vals, ")")
+    filter_string <- paste(input$filters, filter_vals, collapse = " & ")
+      
+    if (!is.null(input$filters)) {
+      clean_dat <- c(
+        '',
+        parse_code_chunk("dat-filter", args = list(user_filterString = filter_string))
+      )
+    } else {
+      clean_dat <- c()
+    } 
+    
+    
     # batch calculation
     if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
       if (input$boutScale == "series") {
@@ -577,7 +666,7 @@ shinyServer(function(input, output, session) {
           '')
     }
 
-    res <- c(header_res, '', read_res, '', output_res)
+    res <- c(header_res, '', read_res, '', clean_dat, '', output_res)
     paste(res, collapse = "\n")
   })
 
@@ -586,7 +675,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$clip <- renderUI({
-    rclipboard::rclipButton("clipbtn", "Copy", batch_syntax(), icon("clipboard"))
+    rclipboard::rclipButton("clipbtn", "Copy", batch_syntax(), modal = FALSE, icon("clipboard"))
   })
 
   session$onSessionEnded(function() {

@@ -189,12 +189,16 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                      sidebarLayout(
                                        sidebarPanel(
                                          style = "max-height: 800px; overflow-y: auto",
+                                         uiOutput("filtervarMapping"),
+                                         uiOutput("filterMapping"),
                                          uiOutput("clusterPhase"),
                                          uiOutput("baseDefine"),
                                          uiOutput("treatDefine"),
                                          uiOutput("outOrderImp"),
                                          conditionalPanel(condition = "input.bimprovement == 'series'",
-                                                          uiOutput("improvementVar"))
+                                                          uiOutput("improvementVar")),
+                                         br(),
+                                         br()
                                        ),
                                        mainPanel(tableOutput("datview2"))
                                      )
@@ -233,7 +237,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          conditionalPanel(condition = "input.b_aggregate != ''", 
                                                           radioButtons('weighting_scheme',
                                                                        label = "Weighting scheme to use for aggregating.",
-                                                                       choices = c("equal", "1/V"))
+                                                                       choices = c("equal", "1/V", "nA", "nB", "nAnB", "1/nA + 1/nB"))
                                                           ),
                                          numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100),
                                          radioButtons("resultsformat", "Long or wide format?", c("Long" = "long", "Wide" = "wide"), inline = TRUE),
