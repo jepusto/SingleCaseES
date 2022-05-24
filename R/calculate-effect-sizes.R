@@ -1,5 +1,5 @@
 
-if (getRversion() >= "2.15.1") utils::globalVariables(c("n", "ES", "Est", "SE", "CI_upper", "CI_lower"))
+if (getRversion() >= "2.15.1") utils::globalVariables(c("n", "ES", "Est", "SE", "CI_upper", "CI_lower", "AB", "sum_inv", "weights"))
 
 # get ES names
 get_ES_names <- function(ES) {
@@ -28,7 +28,7 @@ convert_to_wide <- function(res, ES_names) {
     ES_names <- unlist(ES_names)
   }
   
-  output_names <- c("Est", "SE", "CI_lower", "CI_upper")
+  output_names <- c("Est", "SE", "CI_lower", "CI_upper", "baseline_SD", "pooled_SD")
   val_names <- intersect(names(res), output_names)
   sym_val_names <- rlang::syms(val_names)
   val <- rlang::sym("val")
@@ -199,9 +199,10 @@ calc_ES <- function(A_data, B_data,
 #'   size estimates will be averaged across values of these variables (but not
 #'   across the values of the \code{grouping} variables).
 #' @param weighting character string specifying the weighting scheme for use
-#'   when variables are specified in \code{aggregate}. Either \code{"1/V"}
-#'   or \code{"equal"} (the default). Note that \code{"1/V"} can only be used
-#'   for effect sizes with known standard errors.
+#'   when variables are specified in \code{aggregate}. Available is
+#'   \code{"1/V"}, \code{"equal"} (the default), \code{"nA"}, \code{"nB"},
+#'   \code{"nAnB"}, or \code{1/nA + 1/nB}. Note that \code{"1/V"} can only be
+#'   used for effect sizes with known standard errors.
 #' @param condition A variable name that identifies the treatment condition for
 #'   each observation in the series.
 #' @param outcome A variable name for the outcome data. Default is
@@ -284,7 +285,7 @@ calc_ES <- function(A_data, B_data,
 #'               bias_correct = TRUE,
 #'               confidence = NULL,
 #'               format = "wide")
-#' 
+#'
 #' # Aggregate across phase-pairs
 #' batch_calc_ES(dat = Schmidt2007,
 #'               grouping = c(Behavior_type, Case_pseudonym),
@@ -329,8 +330,8 @@ batch_calc_ES <- function(dat,
                           error = function(e) stop("Aggregating variables are not in the dataset."))
   }
   
-  weighting <- tryCatch(tidyselect::vars_pull(c("1/V", "equal"), !! rlang::enquo(weighting)), 
-                        error = function(e) stop("Weighting must be a string specifying '1/V' or 'equal'."))
+  weighting <- tryCatch(tidyselect::vars_pull(c("1/V", "equal", "nA", "nB", "nAnB", "1/nA + 1/nB"), !! rlang::enquo(weighting)), 
+                        error = function(e) stop("Weighting must be a string specifying '1/V', 'equal', 'nA', 'nB', 'nAnB', or '1/nA + 1/nB'."))
   
   condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), 
                         error = function(e) stop("Condition variable is not in the dataset."))
@@ -410,6 +411,35 @@ batch_calc_ES <- function(dat,
   
   ES_long_names <- names(ES_ests_long)
   
+  # weights
+  conditions <- dat %>% dplyr::select({{condition}}) %>% unique() %>% dplyr::pull()
+  
+  if (is.null(baseline_phase)) baseline_phase <- conditions[1]
+  
+  if (is.null(intervention_phase)) {
+    intervention_phase <- setdiff(conditions, baseline_phase)[1]
+    if (length(conditions) > 2) {
+      msg <- paste0("The 'condition' variable has more than two unique values. Treating '", intervention_phase, "' as the intervention phase.")
+      warning(msg)
+    }
+  }
+  
+  dat <- 
+    dat %>% 
+    dplyr::filter(!!rlang::sym(condition) %in% c(baseline_phase, intervention_phase)) %>% 
+    dplyr::mutate(!!rlang::sym(condition) := ifelse(!!rlang::sym(condition) == baseline_phase, "A", "B"))
+  
+  n_weights <- 
+    dat %>% 
+    dplyr::group_by(!!!rlang::syms(c(grouping, aggregate, condition))) %>% 
+    dplyr::summarise(n = dplyr::n()) %>% 
+    tidyr::pivot_wider(names_from = !!rlang::sym(condition), values_from = n) %>% 
+    dplyr::mutate(
+      AB = A * B,
+      sum_inv = 1/A + 1/B
+    ) %>% 
+    dplyr::rename(nA = A, nB = B, nAnB = AB, sum_inv_nAnB = sum_inv)
+  
   if (is.null(aggregate)) {
     
     res <- ES_ests_long
@@ -424,6 +454,42 @@ batch_calc_ES <- function(dat,
       ES_weights <- 
         ES_ests_long %>%
         dplyr::mutate(weights = 1L)
+    } else if (weighting %in% c("nA", "n_A")) {
+      nA_weights <- 
+        n_weights %>% 
+        dplyr::select(-c(nB, nAnB, sum_inv_nAnB))
+      
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::left_join(nA_weights) %>% 
+        dplyr::rename(weights = nA)
+    } else if (weighting %in% c("nB", "n_B")) {
+      nB_weights <- 
+        n_weights %>% 
+        dplyr::select(-c(nA, nAnB, sum_inv_nAnB))
+      
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::left_join(nB_weights) %>% 
+        dplyr::rename(weights = nB)
+    } else if (weighting %in% c("nAnB", "nA*nB", "n_A*n_B")) {
+      nAnB_weights <- 
+        n_weights %>% 
+        dplyr::select(-c(nA, nB, sum_inv_nAnB))
+      
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::left_join(nAnB_weights) %>% 
+        dplyr::rename(weights = nAnB)
+    } else if (weighting %in% c("1/nA+1/nB", "1/nA + 1/nB")) {
+      sum_inv_n_weights <- 
+        n_weights %>% 
+        dplyr::select(-c(nA, nB, nAnB))
+      
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::left_join(sum_inv_n_weights) %>% 
+        dplyr::rename(weights = sum_inv_nAnB)
     }
     
     res_agg <- 
@@ -460,9 +526,61 @@ batch_calc_ES <- function(dat,
           .groups = "drop"
         )
       
+    } else if (weighting %in% c("nA", "n_A")) {
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::left_join(n_weights)
+      
+      res <- 
+        ES_weights %>% 
+        dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
+        dplyr::summarise(
+          Est = sum(Est * nA) / sum(nA),
+          .groups = "drop"
+        )
+      
+    } else if (weighting %in% c("nB", "n_B")) {
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::left_join(n_weights)
+      
+      res <- 
+        ES_weights %>% 
+        dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
+        dplyr::summarise(
+          Est = sum(Est * nB) / sum(nB),
+          .groups = "drop"
+        )
+      
+    } else if (weighting %in% c("nAnB", "nA*nB", "n_A*n_B")) {
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::left_join(n_weights)
+      
+      res <- 
+        ES_weights %>% 
+        dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
+        dplyr::summarise(
+          Est = sum(Est * nAnB) / sum(nAnB),
+          .groups = "drop"
+        )
+      
+    } else if (weighting %in% c("1/nA + 1/nB", "1/nA+1/nB")) {
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::left_join(n_weights)
+      
+      res <- 
+        ES_weights %>% 
+        dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
+        dplyr::summarise(
+          Est = sum(Est * sum_inv_nAnB) / sum(sum_inv_nAnB),
+          .groups = "drop"
+        )
+      
     } else {
       
-      stop("You should specify 'weighting' as 'equal' (the default) because none of the chosen effect size estimates have known standard errors.")
+      stop("You should specify 'weighting' as 'equal' (the default) or 'nA' or 'nB' or 'nAnB' or '1/nA + 1/nB' because none of the chosen effect size estimates have known standard errors.")
       
     }
     
