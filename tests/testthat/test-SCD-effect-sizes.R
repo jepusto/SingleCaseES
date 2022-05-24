@@ -116,7 +116,8 @@ test_that("Single-entry calculator works properly", {
   Parametric_pkg_LRRd <- calc_ES(A_data = A_dat, B_data = B_dat, improvement = "decrease", ES = "LRRd")
   
   output_pkg <- 
-    bind_rows(NOMs_pkg, Parametric_pkg, Parametric_pkg_LRRd) %>% 
+    bind_rows(NOMs_pkg, Parametric_pkg, Parametric_pkg_LRRd) %>%
+    dplyr::select(-`baseline_SD`) %>% 
     mutate(
       ES = ifelse(ES %in% c("Tau-U", "Tau-BC"), ES, full_names[ES]),
       ES = as.character(ES),
@@ -210,9 +211,13 @@ test_that("Batch calculator is correct", {
   
   # Kendall == FALSE
   # Shiny app
-  McKissick_app <- check_batch(example_dat = "McKissick", ES = all_names, Kendall = FALSE) 
+  McKissick_app <- 
+    check_batch(example_dat = "McKissick", ES = all_names, Kendall = FALSE) %>% 
+    dplyr::select(-baseline_SD)
   Schmidt_app <- check_batch(example_dat = "Schmidt2007", ES = all_names, Kendall = FALSE) 
-  Wright_app <- check_batch(example_dat = "Wright2012", ES = all_names, Kendall = FALSE) 
+  Wright_app <- 
+    check_batch(example_dat = "Wright2012", ES = all_names, Kendall = FALSE) %>% 
+    dplyr::select(-baseline_SD)
 
   # Package
   data(McKissick)
@@ -235,7 +240,8 @@ test_that("Batch calculator is correct", {
                   format = "long",
                   warn = FALSE
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 2)))
+    mutate(across(Est:CI_upper, ~ round(., 2))) %>% 
+    dplyr::select(-baseline_SD)
   
   data(Schmidt2007)
   Schmidt_pkg <-
@@ -282,7 +288,8 @@ test_that("Batch calculator is correct", {
                     warn = FALSE
     ) %>%
     mutate(across(Est:CI_upper, ~ round(., 2))) %>% 
-    mutate(Participant = as.character(Participant))
+    mutate(Participant = as.character(Participant)) %>% 
+    dplyr::select(-baseline_SD)
 
   expect_equal(McKissick_pkg, McKissick_app, check.attributes = FALSE)
   expect_equal(Schmidt_pkg, Schmidt_app, check.attributes = FALSE)
@@ -429,10 +436,14 @@ test_that("Data are uploaded correctly.", {
   skip_on_cran()
   
   # csv file
-  output_csv <- check_load("McKissick.csv")
+  output_csv <- 
+    check_load("McKissick.csv") %>% 
+    mutate(baseline_SD = as.numeric(baseline_SD))
   
   # excel file
-  output_xlsx <- check_load("McKissick.xlsx")
+  output_xlsx <- 
+    check_load("McKissick.xlsx") %>% 
+    mutate(baseline_SD = as.numeric(baseline_SD))
   
   all_names <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U",
                  "LOR", "LRRd", "LRRi", "LRM", "SMD")
@@ -456,7 +467,7 @@ test_that("Data are uploaded correctly.", {
                   format = "long",
                   warn = FALSE
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 2)))
+    mutate(across(Est:baseline_SD, ~ round(., 2))) 
 
   expect_equal(output_csv, McKissick_pkg, check.attributes = FALSE)
   expect_equal(output_xlsx, McKissick_pkg, check.attributes = FALSE)
