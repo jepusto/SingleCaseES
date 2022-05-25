@@ -455,6 +455,7 @@ batch_calc_ES <- function(dat,
         ES_ests_long %>%
         dplyr::mutate(weights = 1L)
     } else if (weighting %in% c("nA", "n_A")) {
+      
       nA_weights <- 
         n_weights %>% 
         dplyr::select(-c(nB, nAnB, sum_inv_nAnB))

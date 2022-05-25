@@ -167,6 +167,7 @@ test_that("The aggregate argument in batch_calc_ES() works for effect size measu
                              confidence = 0.95,
                              pretest_trend = FALSE,
                              format = "long")
+  
   res_w_SE <- res_w_SE %>% dplyr::filter(is.na(SE)) %>% dplyr::select(-c(SE, CI_upper, CI_lower))
   
   expect_equal(res_wo_SE, res_w_SE)
@@ -223,6 +224,7 @@ test_that("The aggregate argument in batch_calc_ES() works for effect size measu
                             confidence = 0.95,
                             pretest_trend = FALSE,
                             format = "long")
+  
   res_nA_w_SE <- res_nA_w_SE %>% dplyr::filter(is.na(SE)) %>% dplyr::select(-c(SE, CI_upper, CI_lower))
   
   expect_equal(res_nA_wo_SE, res_nA_w_SE)
@@ -380,4 +382,45 @@ test_that("The aggregate argument in batch_calc_ES() has proper error handling."
                   confidence = NULL,
                   format = "long")
   )
+})
+
+
+test_that("Synonyms for weighting argument in batch_calc_ES() are equivalent.", {
+  
+  agg_weights <- c("1/V",
+                   "equal","Equal",
+                   "nA","n_A",
+                   "nB","n_B",
+                   "nAnB","nA*nB","n_A*n_B","nA * nB","n_A * n_B",
+                   "1/nA+1/nB","1/nA + 1/nB","1/n_A+1/n_B","1/n_A + 1/n_B")
+  
+  agg_res <- lapply(agg_weights, 
+                 \(w) batch_calc_ES(
+                      dat = Schmidt2007,
+                      grouping = Case_pseudonym,
+                      aggregate = c(Behavior_type, Phase_num),
+                      weighting = w,
+                      condition = Condition,
+                      outcome = Outcome,
+                      ES = c("LRRi", "LRRd", "SMD", "Tau"),
+                      improvement = direction,
+                      scale = "count",
+                      bias_correct = TRUE,
+                      confidence = NULL,
+                      format = "long"
+                      )
+  )
+  
+  expect_identical(agg_res[[2]], agg_res[[3]])  
+  expect_identical(agg_res[[4]], agg_res[[5]])
+  expect_identical(agg_res[[6]], agg_res[[7]])
+  expect_identical(agg_res[[8]], agg_res[[9]])
+  expect_identical(agg_res[[8]], agg_res[[10]])
+  expect_identical(agg_res[[8]], agg_res[[11]])
+  expect_identical(agg_res[[8]], agg_res[[12]])
+  expect_identical(agg_res[[13]], agg_res[[14]])
+  expect_identical(agg_res[[13]], agg_res[[15]])
+  expect_identical(agg_res[[13]], agg_res[[16]])
+  
+  
 })
