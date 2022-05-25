@@ -261,7 +261,7 @@ shinyServer(function(input, output, session) {
     filter_vars <- input$filters  
     filter_vals <- lapply(filter_vars, function(x) levels(as.factor(datFile()[,x])))
     names(filter_vals) <- filter_vars
-    header <- strong("Values for the filtering variables.")
+    header <- strong("Please select values for each filtering variable.")
     
     filter_selects <- lapply(filter_vars, function(x) 
       selectizeInput(paste0("filter_",x), label = x, choices = filter_vals[[x]], 
@@ -567,8 +567,8 @@ shinyServer(function(input, output, session) {
       
     if (!is.null(input$filters)) {
       clean_dat <- c(
-        '',
-        parse_code_chunk("dat-filter", args = list(user_filterString = filter_string))
+        parse_code_chunk("dat-filter", args = list(user_filterString = filter_string)),
+        ''
       )
     } else {
       clean_dat <- c()
