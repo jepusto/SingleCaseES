@@ -201,7 +201,7 @@ calc_ES <- function(A_data, B_data,
 #' @param weighting character string specifying the weighting scheme for use
 #'   when variables are specified in \code{aggregate}. Available is
 #'   \code{"1/V"}, \code{"equal"} (the default), \code{"nA"}, \code{"nB"},
-#'   \code{"nAnB"}, or \code{1/nA + 1/nB}. Note that \code{"1/V"} can only be
+#'   \code{"nA*nB"}, or \code{"1/nA + 1/nB"}. Note that \code{"1/V"} can only be
 #'   used for effect sizes with known standard errors.
 #' @param condition A variable name that identifies the treatment condition for
 #'   each observation in the series.
@@ -330,8 +330,8 @@ batch_calc_ES <- function(dat,
                           error = function(e) stop("Aggregating variables are not in the dataset."))
   }
   
-  weighting <- tryCatch(tidyselect::vars_pull(c("1/V", "equal", "nA", "nB", "nAnB", "1/nA + 1/nB"), !! rlang::enquo(weighting)), 
-                        error = function(e) stop("Weighting must be a string specifying '1/V', 'equal', 'nA', 'nB', 'nAnB', or '1/nA + 1/nB'."))
+  weighting <- tryCatch(tidyselect::vars_pull(c("1/V", "equal", "nA", "nB", "nA*nB", "1/nA + 1/nB"), !! rlang::enquo(weighting)), 
+                        error = function(e) stop("Weighting must be a string specifying '1/V', 'equal', 'nA', 'nB', 'nA*nB', or '1/nA + 1/nB'."))
   
   condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), 
                         error = function(e) stop("Condition variable is not in the dataset."))
@@ -580,7 +580,7 @@ batch_calc_ES <- function(dat,
       
     } else {
       
-      stop("You should specify 'weighting' as 'equal' (the default) or 'nA' or 'nB' or 'nAnB' or '1/nA + 1/nB' because none of the chosen effect size estimates have known standard errors.")
+      stop("You should specify 'weighting' as 'equal' (the default) or 'nA' or 'nB' or 'nA*nB' or '1/nA + 1/nB' because none of the chosen effect size estimates have known standard errors.")
       
     }
     
