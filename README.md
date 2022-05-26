@@ -127,6 +127,8 @@ The calculator should then open in your default web browser.
 
 # Acknowledgement ![](https://raw.githubusercontent.com/jepusto/SingleCaseES/master/images/IES_InstituteOfEducationSciences_RGB.png)
 
+<img align="left" width="100" height="100" src="http://www.fillmurray.com/100/100">
+
 The development of this R package was supported in part by the Institute
 of Education Sciences, U.S. Department of Education, through [Grant
 R324U190002](https://ies.ed.gov/funding/grantsearch/details.asp?ID=3358)
