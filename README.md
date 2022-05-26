@@ -128,8 +128,6 @@ The calculator should then open in your default web browser.
 # Acknowledgement
 
 <img src="https://raw.githubusercontent.com/jepusto/SingleCaseES/master/images/IES_InstituteOfEducationSciences_RGB.svg" width="30%" />
-
-![](https://raw.githubusercontent.com/jepusto/SingleCaseES/master/images/IES_InstituteOfEducationSciences_RGB.svg)
 The development of this R package was supported in part by the Institute
 of Education Sciences, U.S. Department of Education, through [Grant
 R324U190002](https://ies.ed.gov/funding/grantsearch/details.asp?ID=3358)
