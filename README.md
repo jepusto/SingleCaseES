@@ -127,7 +127,7 @@ The calculator should then open in your default web browser.
 
 # Acknowledgement ![]()
 
-<img alt = "Institute of Education Sciences Logo" width="30%" style="float:left;margin:0px 0px 50px 0px" src="https://raw.githubusercontent.com/jepusto/SingleCaseES/master/images/IES_InstituteOfEducationSciences_RGB.svg">
+<img src="images/IES_InstituteOfEducationSciences_RGB.svg" width="50%" />
 
 The development of this R package was supported in part by the Institute
 of Education Sciences, U.S. Department of Education, through [Grant
