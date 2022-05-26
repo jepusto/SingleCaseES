@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -77,12 +77,10 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0" id="singlecasees-050">SingleCaseES 0.5.0<small>2021-09-30</small><a class="anchor" aria-label="anchor" href="#singlecasees-050"></a></h2>
 <ul><li>batch_calc_ES() gains an argument aggregate, for post-processing effect size estimates by averaging across the levels of a variable.</li>
-<li>Added functions for calculating two new effect sizes:
-<ul><li>log ratio of medians</li>
+<li>Added functions for calculating two new effect sizes:<ul><li>log ratio of medians</li>
 <li>baseline-corrected Tau</li>
 </ul></li>
-<li>Updates to SCD_effect_sizes() shiny app.
-<ul><li>Added aggregate feature.</li>
+<li>Updates to SCD_effect_sizes() shiny app.<ul><li>Added aggregate feature.</li>
 <li>Added log ratio of medians and baseline-corrected Tau effect size measures.</li>
 <li>Allowed use of .xlsx files.</li>
 <li>R code for replicating the batch calculation.</li>
@@ -97,8 +95,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.3" id="singlecasees-043">SingleCaseES 0.4.3<small>2019-08-29</small><a class="anchor" aria-label="anchor" href="#singlecasees-043"></a></h2>
 <ul><li>Updated internal functions for compatibility with tidyr 1.0.0.</li>
-<li>Tweaks for SCD_effect_sizes() shiny app.
-<ul><li>Corrected bug in the single-series calculator that ignored direction of improvement for parametric effect sizes.</li>
+<li>Tweaks for SCD_effect_sizes() shiny app.<ul><li>Corrected bug in the single-series calculator that ignored direction of improvement for parametric effect sizes.</li>
 <li>Fixed bug in the batch calculator phase-selection drop-down menus.</li>
 <li>Corrected bug in the batch calculator so that confidence intervals other than 95% could be calculated.</li>
 <li>Added a black-box warning any time PND is calculated.</li>
@@ -109,8 +106,7 @@
 <h2 class="page-header" data-toc-text="0.4.2" id="singlecasees-042">SingleCaseES 0.4.2<small>2019-06-14</small><a class="anchor" aria-label="anchor" href="#singlecasees-042"></a></h2>
 <ul><li>Added check for purrrlyr package when loading gem_scd calculator.</li>
 <li>Corrected bug in degrees of freedom for within-case standardized mean difference with baseline SD.</li>
-<li>Tweaks for SCD_effect_sizes() shiny app.
-<ul><li>Improved UI for batch calculation mode.</li>
+<li>Tweaks for SCD_effect_sizes() shiny app.<ul><li>Improved UI for batch calculation mode.</li>
 <li>Added the option to select a treatment phase for batch calculation mode.</li>
 <li>Allowed for choice between baseline SD and pooled SD for the within-case standardized mean difference. Previously, the option was available but not actually used for calculation.</li>
 </ul></li>
@@ -134,12 +130,10 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3" id="singlecasees-03">SingleCaseES 0.3<a class="anchor" aria-label="anchor" href="#singlecasees-03"></a></h2>
-<ul><li>Fixed definitions of PAND and IRD to handle cases of complete overlap (i.e., where all of the data from a phase must be removed to achieve non-overlap).</li>
-</ul></div>
+<ul><li>Fixed definitions of PAND and IRD to handle cases of complete overlap (i.e., where all of the data from a phase must be removed to achieve non-overlap).</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2" id="singlecasees-02">SingleCaseES 0.2<a class="anchor" aria-label="anchor" href="#singlecasees-02"></a></h2>
-<ul><li>Initial release.</li>
-</ul></div>
+<ul><li>Initial release.</li></ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -154,7 +148,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
 </div>
 
       </footer></div>

@@ -28,7 +28,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -74,7 +74,8 @@
   (Pustejovsky, 2015)</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">LRRd</span><span class="op">(</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">LRRd</span><span class="op">(</span>
   <span class="va">A_data</span>,
   <span class="va">B_data</span>,
   <span class="va">condition</span>,
@@ -107,8 +108,8 @@
   pct_change <span class="op">=</span> <span class="cn">FALSE</span>,
   confidence <span class="op">=</span> <span class="fl">0.95</span>
 <span class="op">)</span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>A_data</dt>
@@ -207,17 +208,16 @@ estimate and confidence interval into percentage change.</p></dd>
     <p>Pustejovsky, J. E. (2015). Measurement-comparable effect sizes
   for single-case studies of free-operant behavior. <em>Psychological
   Methods, 20</em>(3), 342--359.
-  doi:doi: <a href="https://doi.org/10.1037/met0000019" class="external-link">10.1037/met0000019</a></p>
+  doi:<a href="https://doi.org/10.1037/met0000019" class="external-link">doi:10.1037/met0000019</a></p>
 <p>Pustejovsky, J. E. (2018). Using response ratios for meta-analyzing
   single-case designs with behavioral outcomes. <em>Journal of School
   Psychology, 16</em>, 99-112.
-  doi:doi: <a href="https://doi.org/10.1016/j.jsp.2018.02.003" class="external-link">10.1016/j.jsp.2018.02.003</a></p>
-    </div>
+  doi:<a href="https://doi.org/10.1016/j.jsp.2018.02.003" class="external-link">doi:10.1016/j.jsp.2018.02.003</a></p>
     </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">LRRd</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, bias_correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ES       Est         SE   CI_lower CI_upper</span>
@@ -244,7 +244,7 @@ estimate and confidence interval into percentage change.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
 </div>
 
       </footer></div>
