@@ -4,7 +4,7 @@ library(stringr)
 # Schmidt
 #--------------------
 
-Schmidt2012 <- read.csv("auxilliary/Schmidt.csv", stringsAsFactors = FALSE)
+Schmidt2012 <- read.csv("auxiliary/Schmidt.csv", stringsAsFactors = FALSE)
 
 Schmidt2012 <- 
   Schmidt2012 %>%
@@ -20,7 +20,7 @@ save(Schmidt2012, file = "data/Schmidt2012.RData", compress = TRUE, version = 2)
 # Thorne
 #--------------------
 
-Thorne <- read.csv("auxilliary/Thorne.csv", stringsAsFactors = FALSE)
+Thorne <- read.csv("auxiliary/Thorne.csv", stringsAsFactors = FALSE)
 
 Thorne <- 
   Thorne %>%
@@ -36,7 +36,7 @@ save(Thorne, file = "data/Thorne.RData", compress = TRUE, version = 2)
 # McKissick
 #-------------------
 
-McKissick <- read.csv("auxilliary/McKissick.csv", stringsAsFactors = FALSE)
+McKissick <- read.csv("auxiliary/McKissick.csv", stringsAsFactors = FALSE)
 
 McKissick <- 
   McKissick %>%
@@ -52,7 +52,7 @@ save(McKissick, file = "data/McKissick.RData", compress = TRUE, version = 2)
 #Schmidt 2007
 #-------------------
 
-Schmidt2007 <- read.csv("auxilliary/Schmidt2007.csv", stringsAsFactors = FALSE)
+Schmidt2007 <- read.csv("auxiliary/Schmidt2007.csv", stringsAsFactors = FALSE)
 
 Schmidt2007$direction <- ifelse(Schmidt2007$Outcome_descriptor == "Disruptive Behavior", "decrease", "increase")
 Schmidt2007$Interval_length <- as.integer(ifelse(Schmidt2007$Interval_length == "N/A", NA, Schmidt2007$Interval_length))
@@ -66,7 +66,7 @@ save(Schmidt2007, file = "data/Schmidt2007.RData", compress = TRUE, version = 2)
 # Wright & McCathren (2012)
 #--------------------
 
-Wright2012 <- read.csv("auxilliary/Wright & McCathren data (wide).csv", stringsAsFactors = FALSE)
+Wright2012 <- read.csv("auxiliary/Wright & McCathren data (wide).csv", stringsAsFactors = FALSE)
 Wright2012$Participant <- factor(Wright2012$Participant, levels = c("Nick","Logan","Trevor","Peter"))
 str(Wright2012)
 save(Wright2012, file = "data/Wright2012.RData", compress = TRUE, version = 2)
@@ -75,13 +75,13 @@ save(Wright2012, file = "data/Wright2012.RData", compress = TRUE, version = 2)
 # Shogren 2004
 #------------------
 
-Session_data <- droplevels(subset(read.csv("auxilliary/Shogren Session data.csv"), Phase %in% c("Choice","No Choice") & 
+Session_data <- droplevels(subset(read.csv("auxiliary/Shogren Session data.csv"), Phase %in% c("Choice","No Choice") & 
                                     Measure %in% c("Disruptive behavior","Problem behavior","Engagement","Undesirable behavior") &
                                     (Case != "Danny" | Measure == "Problem behavior") &
                                     Study %in% c("Dunlap","Dyer","Jolivette","Kern","Moes","Powell","Romaniuk","Seybert") | 
                                     (Study == "Frea" & Setting == "Home living"), select = c(1,2,4:9)))
 
-Case_data <- read.csv("auxilliary/Shogren Case data.csv")
+Case_data <- read.csv("auxiliary/Shogren Case data.csv")
 
 Shogren <- 
   left_join(Session_data, Case_data) %>%
