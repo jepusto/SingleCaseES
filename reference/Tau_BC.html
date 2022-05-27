@@ -81,6 +81,7 @@
   improvement <span class="op">=</span> <span class="st">"increase"</span>,
   SE <span class="op">=</span> <span class="st">"unbiased"</span>,
   confidence <span class="op">=</span> <span class="fl">0.95</span>,
+  trunc_const <span class="op">=</span> <span class="cn">FALSE</span>,
   Kendall <span class="op">=</span> <span class="cn">FALSE</span>,
   pretest_trend <span class="op">=</span> <span class="cn">FALSE</span>,
   report_correction <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -123,6 +124,9 @@ due to use of the baseline trend correction.</p></dd>
 <dt>confidence</dt>
 <dd><p>confidence level for the reported interval estimate. Set to
 <code>NULL</code> to omit confidence interval calculations.</p></dd>
+<dt>trunc_const</dt>
+<dd><p>logical value indicating whether to return the truncation
+constant used to calculate the standard error.</p></dd>
 <dt>Kendall</dt>
 <dd><p>logical value indicating whether to use Kendall's rank
 correlation to calculate the Tau effect size measure. If <code>TRUE</code>, the

@@ -82,7 +82,8 @@
   intervention_phase <span class="op">=</span> <span class="cn">NULL</span>,
   improvement <span class="op">=</span> <span class="st">"increase"</span>,
   SE <span class="op">=</span> <span class="st">"unbiased"</span>,
-  confidence <span class="op">=</span> <span class="fl">0.95</span>
+  confidence <span class="op">=</span> <span class="fl">0.95</span>,
+  trunc_const <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -118,6 +119,9 @@ to "unbiased".</p></dd>
 <dt>confidence</dt>
 <dd><p>confidence level for the reported interval estimate. Set to
 <code>NULL</code> to omit confidence interval calculations.</p></dd>
+<dt>trunc_const</dt>
+<dd><p>logical value indicating whether to return the truncation
+constant used to calculate the standard error.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

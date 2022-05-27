@@ -82,7 +82,8 @@
   intervention_phase <span class="op">=</span> <span class="cn">NULL</span>,
   improvement <span class="op">=</span> <span class="st">"increase"</span>,
   SE <span class="op">=</span> <span class="st">"unbiased"</span>,
-  confidence <span class="op">=</span> <span class="fl">0.95</span>
+  confidence <span class="op">=</span> <span class="fl">0.95</span>,
+  trunc_const <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -118,6 +119,9 @@ to "unbiased".</p></dd>
 <dt>confidence</dt>
 <dd><p>confidence level for the reported interval estimate. Set to
 <code>NULL</code> to omit confidence interval calculations.</p></dd>
+<dt>trunc_const</dt>
+<dd><p>logical value indicating whether to return the truncation
+constant used to calculate the standard error.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -135,8 +139,8 @@ to "unbiased".</p></dd>
   The Hanley estimator was proposed by Hanley and McNeil (1982). The null
   variance is a known function of sample size, equal to the exact sampling
   variance when the null hypothesis of no effect holds. When the null
-  hypothesis does not hold, the null variance will tend to over-estimate 
-  the true sampling variance of NAP.</p>
+  hypothesis does not hold, the null variance will tend to over-estimate the
+  true sampling variance of NAP.</p>
 <p>The confidence interval for NAP is calculated based on the symmetrized
   score-inversion method (Method 5) proposed by Newcombe (2006).</p>
     </div>
@@ -144,20 +148,17 @@ to "unbiased".</p></dd>
     <h2>References</h2>
     <p>Hanley, J. A., &amp; McNeil, B. J. (1982). The meaning and use of the area under
 a receiver operating characteristic (ROC) curve. <em>Radiology, 143</em>,
-29--36.
-doi:<a href="https://doi.org/10.1148/radiology.143.1.7063747" class="external-link">doi:10.1148/radiology.143.1.7063747</a></p>
+29--36. doi:<a href="https://doi.org/10.1148/radiology.143.1.7063747" class="external-link">doi:10.1148/radiology.143.1.7063747</a></p>
 <p>Mee, W. (1990). Confidence intervals for probabilities and tolerance regions
 based on a generalization of the Mann-Whitney statistic. <em>Journal of the
 American Statistical Association, 85</em>(411), 793–800.
 doi:<a href="https://doi.org/10.1080/01621459.1990.10474942" class="external-link">doi:10.1080/01621459.1990.10474942</a></p>
 <p>Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
 on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation.
-<em>Statistics in Medicine, 25</em>(4), 559--573.
-doi:<a href="https://doi.org/10.1002/sim.2324" class="external-link">doi:10.1002/sim.2324</a></p>
+<em>Statistics in Medicine, 25</em>(4), 559--573. doi:<a href="https://doi.org/10.1002/sim.2324" class="external-link">doi:10.1002/sim.2324</a></p>
 <p>Parker, R. I., &amp; Vannest, K. J. (2009). An improved effect size for
 single-case research: Nonoverlap of all pairs. <em>Behavior Therapy,
-40</em>(4), 357--67.
-doi:<a href="https://doi.org/10.1016/j.beth.2008.10.006" class="external-link">doi:10.1016/j.beth.2008.10.006</a></p>
+40</em>(4), 357--67. doi:<a href="https://doi.org/10.1016/j.beth.2008.10.006" class="external-link">doi:10.1016/j.beth.2008.10.006</a></p>
 <p>Sen, P. K. (1967). A note on asymptotically distribution-free confidence
 bounds for PX&lt;Y, based on two independent samples. <em>The Annals of
 Mathematical Statistics, 29</em>(1), 95-102.
