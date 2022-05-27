@@ -1,173 +1,173 @@
 Outcome_descriptor,Procedure,Metric,Session_length,Interval_length,Case_pseudonym,Session_number,Phase,Condition,Outcome,Phase_num
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,1,A1,A,22.94446345,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,2,A1,A,22.43129205,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,3,A1,A,27.78538032,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,4,A1,A,16.92895427,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,5,A1,A,21.83829399,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,6,A1,A,3.780362641,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,7,A1,A,18.13775801,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,8,A1,A,11.77443266,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,9,A1,A,22.08347588,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,10,B1,B,4.98694517,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,11,B1,B,10.00652742,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,12,B1,B,4.647519582,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,13,B1,B,0.646214099,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,14,B1,B,1.148825065,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,15,B1,B,1.671018277,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,16,B1,B,3.524804178,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,17,B1,B,2.219321149,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,18,A2,A,15.43362832,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,19,A2,A,31.22123894,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,20,A2,A,14.2300885,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,21,B2,B,1.368397342,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,22,B2,B,1.869579908,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,23,B2,B,4.623268386,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,24,B2,B,6.920824417,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,25,B2,B,4.724631152,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,1,A1,A,36.52565609,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,2,A1,A,32.07337773,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,3,A1,A,20.42042042,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,4,A1,A,24.98367933,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,5,A1,A,4.31518475,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,6,A1,A,35.44849197,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,7,A1,A,29.65791879,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,8,A1,A,3.584018801,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,9,B1,B,5.855855856,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,10,B1,B,4.504504505,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,11,B1,B,5.855855856,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,12,B1,B,7.207207207,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,13,B1,B,8.108108108,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,14,B1,B,14.41441441,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,15,B1,B,6.756756757,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,16,B1,B,10.81081081,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,17,B1,B,2.702702703,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,18,B1,B,9.009009009,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,19,B1,B,6.756756757,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,20,B1,B,3.603603604,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,21,B1,B,7.657657658,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,22,B1,B,9.90990991,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,23,A2,A,11.36363636,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,24,A2,A,25,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,25,A2,A,28.18181818,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,26,B2,B,6.788931789,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,27,B2,B,6.853281853,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,28,B2,B,2.421171171,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,29,B2,B,6.998069498,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,30,B2,B,3.008365508,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,1,A1,A,23.45807346,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,2,A1,A,44.67544468,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,3,A1,A,49.67659968,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,4,A1,A,17.74659275,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,5,A1,A,25.45622546,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,6,A1,A,16.94964195,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,7,A1,A,32.31115731,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,8,A1,A,31.01755602,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,9,A1,A,22.4994225,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,10,B1,B,10.61946903,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,11,B1,B,7.522123894,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,12,B1,B,1.327433628,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,13,B1,B,3.097345133,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,14,B1,B,4.867256637,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,15,B1,B,9.292035398,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,16,B1,B,5.752212389,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,17,B1,B,3.982300885,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,18,B1,B,5.752212389,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,19,B1,B,0.884955752,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,20,B1,B,6.637168142,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,21,B1,B,4.867256637,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,22,B1,B,1.327433628,1
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,23,A2,A,5.855855856,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,24,A2,A,23.42342342,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,25,A2,A,20.72072072,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,26,B2,B,2.702702703,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,27,B2,B,1.351351351,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,28,B2,B,7.657657658,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,29,B2,B,1.351351351,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,30,B2,B,18.46846847,2
-Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,31,B2,B,5.855855856,2
-On Task Behavior,MTS,Percentage,10,30,Albert,1,A1,A,46.21848739,1
-On Task Behavior,MTS,Percentage,10,30,Albert,2,A1,A,30.25210084,1
-On Task Behavior,MTS,Percentage,10,30,Albert,3,A1,A,93.27731092,1
-On Task Behavior,MTS,Percentage,10,30,Albert,4,A1,A,96.63865546,1
-On Task Behavior,MTS,Percentage,10,30,Albert,5,A1,A,50.42016807,1
-On Task Behavior,MTS,Percentage,10,30,Albert,6,A1,A,99.15966387,1
-On Task Behavior,MTS,Percentage,10,30,Albert,7,A1,A,86.55462185,1
-On Task Behavior,MTS,Percentage,10,30,Albert,8,A1,A,54.62184874,1
-On Task Behavior,MTS,Percentage,10,30,Albert,9,A1,A,52.10084034,1
-On Task Behavior,MTS,Percentage,10,30,Albert,10,B1,B,96.63865546,1
-On Task Behavior,MTS,Percentage,10,30,Albert,11,B1,B,83.19327731,1
-On Task Behavior,MTS,Percentage,10,30,Albert,12,B1,B,96.63865546,1
-On Task Behavior,MTS,Percentage,10,30,Albert,13,B1,B,96.63865546,1
-On Task Behavior,MTS,Percentage,10,30,Albert,14,B1,B,96.63865546,1
-On Task Behavior,MTS,Percentage,10,30,Albert,15,B1,B,92.43697479,1
-On Task Behavior,MTS,Percentage,10,30,Albert,16,B1,B,94.95798319,1
-On Task Behavior,MTS,Percentage,10,30,Albert,17,B1,B,96.63865546,1
-On Task Behavior,MTS,Percentage,10,30,Albert,18,A2,A,96.69421488,2
-On Task Behavior,MTS,Percentage,10,30,Albert,19,A2,A,49.58677686,2
-On Task Behavior,MTS,Percentage,10,30,Albert,20,A2,A,68.59504132,2
-On Task Behavior,MTS,Percentage,10,30,Albert,21,B2,B,69.80108499,2
-On Task Behavior,MTS,Percentage,10,30,Albert,22,B2,B,98.46824806,2
-On Task Behavior,MTS,Percentage,10,30,Albert,23,B2,B,97.71300925,2
-On Task Behavior,MTS,Percentage,10,30,Albert,24,B2,B,98.62780555,2
-On Task Behavior,MTS,Percentage,10,30,Albert,25,B2,B,98.72354005,2
-On Task Behavior,MTS,Percentage,10,30,Faith,1,A1,A,71.78184735,1
-On Task Behavior,MTS,Percentage,10,30,Faith,2,A1,A,67.06322684,1
-On Task Behavior,MTS,Percentage,10,30,Faith,3,A1,A,61.51584013,1
-On Task Behavior,MTS,Percentage,10,30,Faith,4,A1,A,83.22416789,1
-On Task Behavior,MTS,Percentage,10,30,Faith,5,A1,A,98.54297554,1
-On Task Behavior,MTS,Percentage,10,30,Faith,6,A1,A,72.07592568,1
-On Task Behavior,MTS,Percentage,10,30,Faith,7,A1,A,61.07472263,1
-On Task Behavior,MTS,Percentage,10,30,Faith,8,A1,A,88.23686673,1
-On Task Behavior,MTS,Percentage,10,30,Faith,9,B1,B,96.46017699,1
-On Task Behavior,MTS,Percentage,10,30,Faith,10,B1,B,95.57522124,1
-On Task Behavior,MTS,Percentage,10,30,Faith,11,B1,B,82.30088496,1
-On Task Behavior,MTS,Percentage,10,30,Faith,12,B1,B,16.81415929,1
-On Task Behavior,MTS,Percentage,10,30,Faith,13,B1,B,94.69026549,1
-On Task Behavior,MTS,Percentage,10,30,Faith,14,B1,B,84.95575221,1
-On Task Behavior,MTS,Percentage,10,30,Faith,15,B1,B,59.2920354,1
-On Task Behavior,MTS,Percentage,10,30,Faith,16,B1,B,61.0619469,1
-On Task Behavior,MTS,Percentage,10,30,Faith,17,B1,B,20.3539823,1
-On Task Behavior,MTS,Percentage,10,30,Faith,18,B1,B,85.84070796,1
-On Task Behavior,MTS,Percentage,10,30,Faith,19,B1,B,97.34513274,1
-On Task Behavior,MTS,Percentage,10,30,Faith,20,B1,B,90.26548673,1
-On Task Behavior,MTS,Percentage,10,30,Faith,21,B1,B,97.34513274,1
-On Task Behavior,MTS,Percentage,10,30,Faith,22,B1,B,86.72566372,1
-On Task Behavior,MTS,Percentage,10,30,Faith,23,A2,A,25.22522523,2
-On Task Behavior,MTS,Percentage,10,30,Faith,24,A2,A,96.3963964,2
-On Task Behavior,MTS,Percentage,10,30,Faith,25,A2,A,3.603603604,2
-On Task Behavior,MTS,Percentage,10,30,Faith,26,B2,B,95.53571429,2
-On Task Behavior,MTS,Percentage,10,30,Faith,27,B2,B,97.32142857,2
-On Task Behavior,MTS,Percentage,10,30,Faith,28,B2,B,96.42857143,2
-On Task Behavior,MTS,Percentage,10,30,Faith,29,B2,B,91.96428571,2
-On Task Behavior,MTS,Percentage,10,30,Faith,30,B2,B,97.32142857,2
-On Task Behavior,MTS,Percentage,10,30,Lilly,1,A1,A,21.81818182,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,2,A1,A,54.54545455,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,3,A1,A,55.45454545,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,4,A1,A,98.18181818,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,5,A1,A,19.09090909,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,6,A1,A,100,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,7,A1,A,71.81818182,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,8,A1,A,59.09090909,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,9,A1,A,58.18181818,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,10,B1,B,97.2972973,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,11,B1,B,94.59459459,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,12,B1,B,93.69369369,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,13,B1,B,96.3963964,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,14,B1,B,50.45045045,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,15,B1,B,97.2972973,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,16,B1,B,87.38738739,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,17,B1,B,97.2972973,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,18,B1,B,97.2972973,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,19,B1,B,96.3963964,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,20,B1,B,96.3963964,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,21,B1,B,96.3963964,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,22,B1,B,97.2972973,1
-On Task Behavior,MTS,Percentage,10,30,Lilly,23,A2,A,98.18181818,2
-On Task Behavior,MTS,Percentage,10,30,Lilly,24,A2,A,98.18181818,2
-On Task Behavior,MTS,Percentage,10,30,Lilly,25,A2,A,68.18181818,2
-On Task Behavior,MTS,Percentage,10,30,Lilly,26,B2,B,98.26371826,2
-On Task Behavior,MTS,Percentage,10,30,Lilly,27,B2,B,97.49385749,2
-On Task Behavior,MTS,Percentage,10,30,Lilly,28,B2,B,93.12039312,2
-On Task Behavior,MTS,Percentage,10,30,Lilly,29,B2,B,94.15233415,2
-On Task Behavior,MTS,Percentage,10,30,Lilly,30,B2,B,80.8026208,2
-On Task Behavior,MTS,Percentage,10,30,Lilly,31,B2,B,97.13349713,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,1,A1,A,22.94446345,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,2,A1,A,22.43129205,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,3,A1,A,27.78538032,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,4,A1,A,16.92895427,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,5,A1,A,21.83829399,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,6,A1,A,3.780362641,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,7,A1,A,18.13775801,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,8,A1,A,11.77443266,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,9,A1,A,22.08347588,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,10,B1,B,4.98694517,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,11,B1,B,10.00652742,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,12,B1,B,4.647519582,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,13,B1,B,0.646214099,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,14,B1,B,1.148825065,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,15,B1,B,1.671018277,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,16,B1,B,3.524804178,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,17,B1,B,2.219321149,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,18,A2,A,15.43362832,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,19,A2,A,31.22123894,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,20,A2,A,14.2300885,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,21,B2,B,1.368397342,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,22,B2,B,1.869579908,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,23,B2,B,4.623268386,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,24,B2,B,6.920824417,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Faith,25,B2,B,4.724631152,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,1,A1,A,36.52565609,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,2,A1,A,32.07337773,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,3,A1,A,20.42042042,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,4,A1,A,24.98367933,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,5,A1,A,4.31518475,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,6,A1,A,35.44849197,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,7,A1,A,29.65791879,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,8,A1,A,3.584018801,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,9,B1,B,5.855855856,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,10,B1,B,4.504504505,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,11,B1,B,5.855855856,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,12,B1,B,7.207207207,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,13,B1,B,8.108108108,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,14,B1,B,14.41441441,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,15,B1,B,6.756756757,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,16,B1,B,10.81081081,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,17,B1,B,2.702702703,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,18,B1,B,9.009009009,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,19,B1,B,6.756756757,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,20,B1,B,3.603603604,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,21,B1,B,7.657657658,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,22,B1,B,9.90990991,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,23,A2,A,11.36363636,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,24,A2,A,25,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,25,A2,A,28.18181818,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,26,B2,B,6.788931789,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,27,B2,B,6.853281853,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,28,B2,B,2.421171171,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,29,B2,B,6.998069498,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Lilly,30,B2,B,3.008365508,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,1,A1,A,23.45807346,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,2,A1,A,44.67544468,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,3,A1,A,49.67659968,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,4,A1,A,17.74659275,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,5,A1,A,25.45622546,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,6,A1,A,16.94964195,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,7,A1,A,32.31115731,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,8,A1,A,31.01755602,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,9,A1,A,22.4994225,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,10,B1,B,10.61946903,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,11,B1,B,7.522123894,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,12,B1,B,1.327433628,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,13,B1,B,3.097345133,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,14,B1,B,4.867256637,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,15,B1,B,9.292035398,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,16,B1,B,5.752212389,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,17,B1,B,3.982300885,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,18,B1,B,5.752212389,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,19,B1,B,0.884955752,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,20,B1,B,6.637168142,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,21,B1,B,4.867256637,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,22,B1,B,1.327433628,1
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,23,A2,A,5.855855856,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,24,A2,A,23.42342342,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,25,A2,A,20.72072072,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,26,B2,B,2.702702703,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,27,B2,B,1.351351351,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,28,B2,B,7.657657658,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,29,B2,B,1.351351351,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,30,B2,B,18.46846847,2
+Disruptive Behavior,Event counting,Natural Count,10,N/A,Albert,31,B2,B,5.855855856,2
+On Task Behavior,MTS,Percentage,10,30,Faith,1,A1,A,46.21848739,1
+On Task Behavior,MTS,Percentage,10,30,Faith,2,A1,A,30.25210084,1
+On Task Behavior,MTS,Percentage,10,30,Faith,3,A1,A,93.27731092,1
+On Task Behavior,MTS,Percentage,10,30,Faith,4,A1,A,96.63865546,1
+On Task Behavior,MTS,Percentage,10,30,Faith,5,A1,A,50.42016807,1
+On Task Behavior,MTS,Percentage,10,30,Faith,6,A1,A,99.15966387,1
+On Task Behavior,MTS,Percentage,10,30,Faith,7,A1,A,86.55462185,1
+On Task Behavior,MTS,Percentage,10,30,Faith,8,A1,A,54.62184874,1
+On Task Behavior,MTS,Percentage,10,30,Faith,9,A1,A,52.10084034,1
+On Task Behavior,MTS,Percentage,10,30,Faith,10,B1,B,96.63865546,1
+On Task Behavior,MTS,Percentage,10,30,Faith,11,B1,B,83.19327731,1
+On Task Behavior,MTS,Percentage,10,30,Faith,12,B1,B,96.63865546,1
+On Task Behavior,MTS,Percentage,10,30,Faith,13,B1,B,96.63865546,1
+On Task Behavior,MTS,Percentage,10,30,Faith,14,B1,B,96.63865546,1
+On Task Behavior,MTS,Percentage,10,30,Faith,15,B1,B,92.43697479,1
+On Task Behavior,MTS,Percentage,10,30,Faith,16,B1,B,94.95798319,1
+On Task Behavior,MTS,Percentage,10,30,Faith,17,B1,B,96.63865546,1
+On Task Behavior,MTS,Percentage,10,30,Faith,18,A2,A,96.69421488,2
+On Task Behavior,MTS,Percentage,10,30,Faith,19,A2,A,49.58677686,2
+On Task Behavior,MTS,Percentage,10,30,Faith,20,A2,A,68.59504132,2
+On Task Behavior,MTS,Percentage,10,30,Faith,21,B2,B,69.80108499,2
+On Task Behavior,MTS,Percentage,10,30,Faith,22,B2,B,98.46824806,2
+On Task Behavior,MTS,Percentage,10,30,Faith,23,B2,B,97.71300925,2
+On Task Behavior,MTS,Percentage,10,30,Faith,24,B2,B,98.62780555,2
+On Task Behavior,MTS,Percentage,10,30,Faith,25,B2,B,98.72354005,2
+On Task Behavior,MTS,Percentage,10,30,Lilly,1,A1,A,71.78184735,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,2,A1,A,67.06322684,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,3,A1,A,61.51584013,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,4,A1,A,83.22416789,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,5,A1,A,98.54297554,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,6,A1,A,72.07592568,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,7,A1,A,61.07472263,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,8,A1,A,88.23686673,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,9,B1,B,96.46017699,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,10,B1,B,95.57522124,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,11,B1,B,82.30088496,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,12,B1,B,16.81415929,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,13,B1,B,94.69026549,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,14,B1,B,84.95575221,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,15,B1,B,59.2920354,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,16,B1,B,61.0619469,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,17,B1,B,20.3539823,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,18,B1,B,85.84070796,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,19,B1,B,97.34513274,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,20,B1,B,90.26548673,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,21,B1,B,97.34513274,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,22,B1,B,86.72566372,1
+On Task Behavior,MTS,Percentage,10,30,Lilly,23,A2,A,25.22522523,2
+On Task Behavior,MTS,Percentage,10,30,Lilly,24,A2,A,96.3963964,2
+On Task Behavior,MTS,Percentage,10,30,Lilly,25,A2,A,3.603603604,2
+On Task Behavior,MTS,Percentage,10,30,Lilly,26,B2,B,95.53571429,2
+On Task Behavior,MTS,Percentage,10,30,Lilly,27,B2,B,97.32142857,2
+On Task Behavior,MTS,Percentage,10,30,Lilly,28,B2,B,96.42857143,2
+On Task Behavior,MTS,Percentage,10,30,Lilly,29,B2,B,91.96428571,2
+On Task Behavior,MTS,Percentage,10,30,Lilly,30,B2,B,97.32142857,2
+On Task Behavior,MTS,Percentage,10,30,Albert,1,A1,A,21.81818182,1
+On Task Behavior,MTS,Percentage,10,30,Albert,2,A1,A,54.54545455,1
+On Task Behavior,MTS,Percentage,10,30,Albert,3,A1,A,55.45454545,1
+On Task Behavior,MTS,Percentage,10,30,Albert,4,A1,A,98.18181818,1
+On Task Behavior,MTS,Percentage,10,30,Albert,5,A1,A,19.09090909,1
+On Task Behavior,MTS,Percentage,10,30,Albert,6,A1,A,100,1
+On Task Behavior,MTS,Percentage,10,30,Albert,7,A1,A,71.81818182,1
+On Task Behavior,MTS,Percentage,10,30,Albert,8,A1,A,59.09090909,1
+On Task Behavior,MTS,Percentage,10,30,Albert,9,A1,A,58.18181818,1
+On Task Behavior,MTS,Percentage,10,30,Albert,10,B1,B,97.2972973,1
+On Task Behavior,MTS,Percentage,10,30,Albert,11,B1,B,94.59459459,1
+On Task Behavior,MTS,Percentage,10,30,Albert,12,B1,B,93.69369369,1
+On Task Behavior,MTS,Percentage,10,30,Albert,13,B1,B,96.3963964,1
+On Task Behavior,MTS,Percentage,10,30,Albert,14,B1,B,50.45045045,1
+On Task Behavior,MTS,Percentage,10,30,Albert,15,B1,B,97.2972973,1
+On Task Behavior,MTS,Percentage,10,30,Albert,16,B1,B,87.38738739,1
+On Task Behavior,MTS,Percentage,10,30,Albert,17,B1,B,97.2972973,1
+On Task Behavior,MTS,Percentage,10,30,Albert,18,B1,B,97.2972973,1
+On Task Behavior,MTS,Percentage,10,30,Albert,19,B1,B,96.3963964,1
+On Task Behavior,MTS,Percentage,10,30,Albert,20,B1,B,96.3963964,1
+On Task Behavior,MTS,Percentage,10,30,Albert,21,B1,B,96.3963964,1
+On Task Behavior,MTS,Percentage,10,30,Albert,22,B1,B,97.2972973,1
+On Task Behavior,MTS,Percentage,10,30,Albert,23,A2,A,98.18181818,2
+On Task Behavior,MTS,Percentage,10,30,Albert,24,A2,A,98.18181818,2
+On Task Behavior,MTS,Percentage,10,30,Albert,25,A2,A,68.18181818,2
+On Task Behavior,MTS,Percentage,10,30,Albert,26,B2,B,98.26371826,2
+On Task Behavior,MTS,Percentage,10,30,Albert,27,B2,B,97.49385749,2
+On Task Behavior,MTS,Percentage,10,30,Albert,28,B2,B,93.12039312,2
+On Task Behavior,MTS,Percentage,10,30,Albert,29,B2,B,94.15233415,2
+On Task Behavior,MTS,Percentage,10,30,Albert,30,B2,B,80.8026208,2
+On Task Behavior,MTS,Percentage,10,30,Albert,31,B2,B,97.13349713,2
