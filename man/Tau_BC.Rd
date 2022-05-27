@@ -14,6 +14,7 @@ Tau_BC(
   improvement = "increase",
   SE = "unbiased",
   confidence = 0.95,
+  trunc_const = FALSE,
   Kendall = FALSE,
   pretest_trend = FALSE,
   report_correction = FALSE,
@@ -53,6 +54,9 @@ due to use of the baseline trend correction.}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
+
+\item{trunc_const}{logical value indicating whether to return the truncation
+constant used to calculate the standard error.}
 
 \item{Kendall}{logical value indicating whether to use Kendall's rank
 correlation to calculate the Tau effect size measure. If \code{TRUE}, the

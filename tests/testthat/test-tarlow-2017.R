@@ -133,6 +133,9 @@ test_that("Tau-BC works on an example.", {
   B_data <- c(14, 15, 15, 9, 12, 7, 10, 6, 5, 2, 2, 3, 5, 4)
   
   # check the package result when using Kendall rank correlation
+  pkg_res <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE, Kendall = TRUE, trunc_const = TRUE)
+  expect_null(pkg_res$trunc)
+  
   pkg_res <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE, Kendall = TRUE)
   
   m <- length(A_data)
@@ -159,11 +162,14 @@ test_that("Tau-BC works on an example.", {
   expect_equal(Tarlow_res$se, pkg_res$SE)
   
   # check package result when using Tau (non-overlap)
-  pkg_res_Tau <- Tau_BC(A_data = A_data, B_data = B_data, report_correction = TRUE, Kendall = FALSE)
+  pkg_res_Tau <- Tau_BC(A_data = A_data, B_data = B_data, 
+                        report_correction = TRUE, Kendall = FALSE, 
+                        trunc_const = TRUE)
   Tau_Tarlow <- Tau(A_data = A_data_corrected, B_data = B_data_corrected)
   
   expect_equal(subset(Tau_Tarlow, select = -ES), 
                subset(pkg_res_Tau, select = c(Est, SE, CI_lower, CI_upper)))
+  expect_equal(pkg_res_Tau$trunc, 1 / (m * n))
   
   # check the case when baseline trend is not significant
   A <- c(3, 3, 4, 5, 5, 2)
@@ -186,7 +192,7 @@ test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {
       calc_ES(condition = Condition, outcome = Outcome, 
               ES = c("Tau","Tau_BC"),
               improvement = "decrease",
-              format = "wide")
+              format = "wide", trunc_const = TRUE)
     )
   
   res_B <- 
@@ -198,7 +204,8 @@ test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {
       session_number = Session_number,
       ES = c("Tau","Tau_BC"),
       improvement = "decrease",
-      format = "wide"
+      format = "wide",
+      trunc_const = TRUE
     )
   
   res_C <- 
@@ -230,7 +237,7 @@ test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {
     rename_with(.fn = ~ paste("Tau-BC", ., sep = "_"), .cols = -Case_pseudonym)
   
   expect_equal(res_A, res_B)
-  expect_equal(res_C, select(res_B, Case_pseudonym, starts_with("Tau-BC")))
+  expect_equal(res_C, select(res_B, all_of(names(res_C))))
   expect_equal(res_C, res_D)
   
 })

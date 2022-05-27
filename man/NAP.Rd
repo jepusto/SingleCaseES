@@ -13,7 +13,8 @@ NAP(
   intervention_phase = NULL,
   improvement = "increase",
   SE = "unbiased",
-  confidence = 0.95
+  confidence = 0.95,
+  trunc_const = FALSE
 )
 }
 \arguments{
@@ -46,6 +47,9 @@ to "unbiased".}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
+
+\item{trunc_const}{logical value indicating whether to return the truncation
+constant used to calculate the standard error.}
 }
 \value{
 A data.frame containing the estimate, standard error, and/or
@@ -66,8 +70,8 @@ NAP is calculated as the proportion of all pairs of one observation
   The Hanley estimator was proposed by Hanley and McNeil (1982). The null
   variance is a known function of sample size, equal to the exact sampling
   variance when the null hypothesis of no effect holds. When the null
-  hypothesis does not hold, the null variance will tend to over-estimate 
-  the true sampling variance of NAP.
+  hypothesis does not hold, the null variance will tend to over-estimate the
+  true sampling variance of NAP.
 
   The confidence interval for NAP is calculated based on the symmetrized
   score-inversion method (Method 5) proposed by Newcombe (2006).
@@ -86,8 +90,7 @@ NAP(yA, yB)
 \references{
 Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under
 a receiver operating characteristic (ROC) curve. \emph{Radiology, 143},
-29--36.
-doi:\doi{10.1148/radiology.143.1.7063747}
+29--36. doi:\doi{10.1148/radiology.143.1.7063747}
 
 Mee, W. (1990). Confidence intervals for probabilities and tolerance regions
 based on a generalization of the Mann-Whitney statistic. \emph{Journal of the
@@ -96,13 +99,11 @@ doi:\doi{10.1080/01621459.1990.10474942}
 
 Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
 on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation.
-\emph{Statistics in Medicine, 25}(4), 559--573.
-doi:\doi{10.1002/sim.2324}
+\emph{Statistics in Medicine, 25}(4), 559--573. doi:\doi{10.1002/sim.2324}
 
 Parker, R. I., & Vannest, K. J. (2009). An improved effect size for
 single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy,
-40}(4), 357--67.
-doi:\doi{10.1016/j.beth.2008.10.006}
+40}(4), 357--67. doi:\doi{10.1016/j.beth.2008.10.006}
 
 Sen, P. K. (1967). A note on asymptotically distribution-free confidence
 bounds for P{X<Y}, based on two independent samples. \emph{The Annals of

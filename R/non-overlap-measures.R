@@ -9,8 +9,11 @@
 #'   estimator, \code{"null"} for the (known) variance under the null hypothesis
 #'   of no effect, or \code{"none"} to not calculate a standard error. Defaults
 #'   to "unbiased".
+#' @param trunc_const logical value indicating whether to return the truncation
+#'   constant used to calculate the standard error.
+#'   
 #' @inheritParams calc_ES
-#' 
+#'
 #'
 #' @details NAP is calculated as the proportion of all pairs of one observation
 #'   from each phase in which the measurement from the B phase improves upon the
@@ -22,8 +25,8 @@
 #'   The Hanley estimator was proposed by Hanley and McNeil (1982). The null
 #'   variance is a known function of sample size, equal to the exact sampling
 #'   variance when the null hypothesis of no effect holds. When the null
-#'   hypothesis does not hold, the null variance will tend to over-estimate 
-#'   the true sampling variance of NAP.
+#'   hypothesis does not hold, the null variance will tend to over-estimate the
+#'   true sampling variance of NAP.
 #'
 #'   The confidence interval for NAP is calculated based on the symmetrized
 #'   score-inversion method (Method 5) proposed by Newcombe (2006).
@@ -32,8 +35,7 @@
 #'
 #' Hanley, J. A., & McNeil, B. J. (1982). The meaning and use of the area under
 #' a receiver operating characteristic (ROC) curve. \emph{Radiology, 143},
-#' 29--36.
-#' doi:\doi{10.1148/radiology.143.1.7063747}
+#' 29--36. doi:\doi{10.1148/radiology.143.1.7063747}
 #'
 #' Mee, W. (1990). Confidence intervals for probabilities and tolerance regions
 #' based on a generalization of the Mann-Whitney statistic. \emph{Journal of the
@@ -42,13 +44,11 @@
 #'
 #' Newcombe, R. G. (2006). Confidence intervals for an effect size measure based
 #' on the Mann-Whitney statistic. Part 2: Asymptotic methods and evaluation.
-#' \emph{Statistics in Medicine, 25}(4), 559--573.
-#' doi:\doi{10.1002/sim.2324}
+#' \emph{Statistics in Medicine, 25}(4), 559--573. doi:\doi{10.1002/sim.2324}
 #'
 #' Parker, R. I., & Vannest, K. J. (2009). An improved effect size for
 #' single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy,
-#' 40}(4), 357--67.
-#' doi:\doi{10.1016/j.beth.2008.10.006}
+#' 40}(4), 357--67. doi:\doi{10.1016/j.beth.2008.10.006}
 #'
 #' Sen, P. K. (1967). A note on asymptotically distribution-free confidence
 #' bounds for P{X<Y}, based on two independent samples. \emph{The Annals of
@@ -72,23 +72,22 @@
 #' 
 
 NAP <- function(A_data, B_data, condition, outcome, 
-                # baseline_phase = unique(condition)[1],
                 baseline_phase = NULL,
                 intervention_phase = NULL,
                 improvement = "increase", 
-                SE = "unbiased", confidence = .95) {
+                SE = "unbiased", confidence = .95, trunc_const = FALSE) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
           intervention_phase = intervention_phase,
           ES = "NAP", improvement = improvement, SE = SE, 
-          confidence = confidence)
+          confidence = confidence, trunc_const = trunc_const)
 }
   
 calc_NAP <- function(A_data, B_data, 
                      improvement = "increase", 
-                     SE = "unbiased", confidence = .95, ...) {
+                     SE = "unbiased", confidence = .95, trunc_const = FALSE, ...) {
   
   if (improvement=="decrease") {
     A_data <- -1 * A_data
@@ -122,6 +121,7 @@ calc_NAP <- function(A_data, B_data,
     }
     
     res$SE <- sqrt(V)  
+    if (trunc_const) res$trunc <- trunc
   } 
   
   if (!is.null(confidence)) {
@@ -171,29 +171,32 @@ Tau <- function(A_data, B_data, condition, outcome,
                 baseline_phase = NULL,
                 intervention_phase = NULL,
                 improvement = "increase", 
-                SE = "unbiased", confidence = .95) {
+                SE = "unbiased", confidence = .95, trunc_const = FALSE) {
   
   calc_ES(A_data = A_data, B_data = B_data, 
           condition = condition, outcome = outcome, 
           baseline_phase = baseline_phase,
           intervention_phase = intervention_phase,
           ES = "Tau", improvement = improvement, SE = SE, 
-          confidence = confidence)
+          confidence = confidence, trunc_const = trunc_const)
   
 }
 
 calc_Tau <- function(A_data, B_data, 
                      improvement = "increase", 
                      SE = "unbiased", CI = TRUE, 
-                     confidence = .95, ...) {
+                     confidence = .95, trunc_const = FALSE, ...) {
   
   nap <- calc_NAP(A_data = A_data, B_data = B_data, 
                   improvement = improvement, 
-                  SE = SE, CI = CI, confidence = confidence)
+                  SE = SE, CI = CI, confidence = confidence, trunc_const = trunc_const)
   
   res <- data.frame(ES = "Tau", Est = 2 * nap$Est - 1, stringsAsFactors = FALSE)
   
-  if (SE != "none") res$SE <- 2 * nap$SE
+  if (SE != "none") {
+    res$SE <- 2 * nap$SE
+    if (trunc_const) res$trunc <- 2 * nap$trunc
+  }
   
   if (!is.null(confidence)) {
     res$CI_lower <- 2 * nap$CI_lower - 1
@@ -352,6 +355,7 @@ Tau_BC <- function(A_data, B_data, condition, outcome,
                   intervention_phase = NULL,
                   improvement = "increase", 
                   SE = "unbiased", confidence = .95,
+                  trunc_const = FALSE,
                   Kendall = FALSE,
                   pretest_trend = FALSE,
                   report_correction = FALSE,
@@ -363,7 +367,7 @@ Tau_BC <- function(A_data, B_data, condition, outcome,
           baseline_phase = baseline_phase,
           intervention_phase = intervention_phase,
           ES = "Tau_BC", improvement = improvement,
-          SE = SE, confidence = confidence,
+          SE = SE, confidence = confidence, trunc_const = trunc_const,
           Kendall = Kendall,
           pretest_trend = pretest_trend,
           report_correction = report_correction,
@@ -374,7 +378,7 @@ Tau_BC <- function(A_data, B_data, condition, outcome,
 calc_Tau_BC <- function(A_data, B_data, 
                         improvement = "increase", 
                         SE = "unbiased", CI = TRUE,
-                        confidence = .95,
+                        confidence = .95, trunc_const = FALSE,
                         Kendall = FALSE,
                         pretest_trend = FALSE,
                         report_correction = FALSE, 
@@ -456,7 +460,7 @@ calc_Tau_BC <- function(A_data, B_data,
     
     res <- calc_Tau(A_data = A_data, B_data = B_data,
                     improvement = improvement, SE = SE, 
-                    CI = CI, confidence = confidence)
+                    CI = CI, confidence = confidence, trunc_const = trunc_const)
     res$ES <- "Tau-BC"
     
   } 

@@ -307,3 +307,22 @@ test_that("The aggregate argument in batch_calc_ES() has proper error handling."
                   format = "long")
   )
 })
+
+test_that("The trunc_const argument for NAP and Tau works inside batch_calc_ES().", {
+  
+  Shogren_res <- 
+    batch_calc_ES(dat = Shogren,
+                  grouping = c(Study, Case, Measure),
+                  condition = Phase,
+                  outcome = outcome,
+                  ES = c("NAP","Tau", "Tau-BC"),
+                  improvement = direction,
+                  Kendall = FALSE,
+                  trunc_const = TRUE,
+                  format = "wide"
+                  ) %>%
+    select(ends_with("_trunc"))
+  
+  expect_identical(Shogren_res$Tau_trunc, Shogren_res$`Tau-BC_trunc`)
+  expect_equal(Shogren_res$Tau_trunc, 2 * Shogren_res$NAP_trunc)
+})
