@@ -424,3 +424,71 @@ test_that("Synonyms for weighting argument in batch_calc_ES() are equivalent.", 
   
   
 })
+
+
+test_that("batch_calc_ES() works properly if any variable has the same name as the allowable input argument.", {
+  
+  data("McKissick")
+  data("Schmidt2007")
+  
+  McKissick_improvement1 <- 
+    McKissick %>%
+    mutate(decrease = "decrease", increase = "increase", count = "count") %>%
+    batch_calc_ES(
+      grouping = Case_pseudonym,
+      weighting = "1/V",
+      condition = Condition,
+      outcome = Outcome,
+      ES = c("LRRi", "LRRd", "SMD", "Tau"),
+      improvement = "decrease",
+      scale = "count",
+      bias_correct = TRUE,
+      confidence = NULL,
+      format = "long"
+    )
+  
+  McKissick_improvement2 <- 
+    McKissick %>%
+    mutate(decrease = "decrease", increase = "increase", ) %>%
+    batch_calc_ES(
+      grouping = Case_pseudonym,
+      weighting = "1/V",
+      condition = Condition,
+      outcome = Outcome,
+      ES = c("LRRi", "LRRd", "SMD", "Tau"),
+      improvement = decrease,
+      scale = "count",
+      bias_correct = TRUE,
+      confidence = NULL,
+      format = "long"
+    )
+  
+  expect_equal(McKissick_improvement1, McKissick_improvement2)
+  
+  Schmidt_scale <- 
+    Schmidt2007 %>%
+    mutate(
+      proportion = "rate", 
+      count = "count", 
+      proportion = "proportion", 
+      percentage = "percentage", 
+      other = "other"
+    ) %>% 
+    batch_calc_ES(
+      grouping = c(Behavior_type, Case_pseudonym),
+      aggregate = Phase_num,
+      weighting = "1/V",
+      condition = Condition,
+      outcome = Outcome,
+      ES = c("LRRi", "LRRd", "SMD", "Tau"),
+      improvement = direction,
+      scale = "count",
+      bias_correct = TRUE,
+      confidence = NULL,
+      format = "long"
+    )
+  
+  expect_output(str(Schmidt_scale), "tibble")
+  
+})
+
