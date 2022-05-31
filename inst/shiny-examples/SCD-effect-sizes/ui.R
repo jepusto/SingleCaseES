@@ -173,15 +173,17 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                   condition = "input.dat_type == 'dat'",
                                                                   fileInput('dat', 'Upload a .csv or .txt file', accept=c('text/csv', 'text/comma-separated-values,text/plain', '.csv', '.txt')),
                                                                   checkboxInput('header', 'File has a header?', TRUE),
-                                                                  radioButtons('sep', 'Data seperator', c(Commas=',', Semicolons=';', Tabs='\t', Spaces=' ')),
-                                                                  radioButtons('quote', 'Include quotes?', c('No'='', 'Double Quotes'='"', 'Single Quotes'="'"))
+                                                                  radioButtons('sep', 'Data seperator', c(Commas=',', Semicolons=';', Tabs='\t', Spaces=' '), inline = TRUE),
+                                                                  radioButtons('quote', 'Include quotes?', c('No'='', 'Double Quotes'='"', 'Single Quotes'="'"), inline = TRUE)
                                                                 ),
                                                                 conditionalPanel(
                                                                   condition = "input.dat_type == 'xlsx'",
                                                                   fileInput('xlsx', 'Upload a .xlsx file', accept = c('.xlsx')),
                                                                   checkboxInput('col_names', 'File has a header?', TRUE),
                                                                   selectInput("inSelect", "Select a sheet", "")
-                                                                )
+                                                                ),
+                                                                uiOutput("filtervarMapping"),
+                                                                uiOutput("filterMapping")
                                                                 ),
                                                    mainPanel(tableOutput("datview")))
                                      ),
@@ -189,8 +191,6 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                      sidebarLayout(
                                        sidebarPanel(
                                          style = "max-height: 800px; overflow-y: auto",
-                                         uiOutput("filtervarMapping"),
-                                         uiOutput("filterMapping"),
                                          uiOutput("clusterPhase"),
                                          uiOutput("baseDefine"),
                                          uiOutput("treatDefine"),
@@ -198,11 +198,29 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          conditionalPanel(condition = "input.bimprovement == 'series'",
                                                           uiOutput("improvementVar")),
                                          br(),
+                                         br(),
                                          br()
                                        ),
                                        mainPanel(tableOutput("datview2"))
                                      )
                                      ),
+                            tabPanel("Plot",
+                                     sidebarLayout(
+                                       sidebarPanel(
+                                         style = "max-height: 800px; overflow-y: auto",
+                                         uiOutput("facetSelector"),
+                                         uiOutput("filterbGrouping"),
+                                         uiOutput("filterbAggregating"),
+                                         br(),
+                                         br(),
+                                         br(),
+                                         br()
+                                       ),
+                                       mainPanel(plotOutput('batchPlot', height = "auto"))
+                                       # mainPanel(tableOutput("datview3"))
+                                     )
+                                     
+                            ),
                             tabPanel("Estimate", 
                                      sidebarLayout(
                                        sidebarPanel(

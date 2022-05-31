@@ -244,8 +244,6 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  output$datview <- renderTable(datFile())
-  
   
   output$filtervarMapping <- renderUI({
     
@@ -293,8 +291,10 @@ shinyServer(function(input, output, session) {
     
   })
   
-  output$datview2 <- renderTable(datClean())
+  output$datview <- renderTable(datClean())
   
+  
+  # variables tab
   output$clusterPhase <- renderUI({
     
     var_names <- names(datClean())
@@ -322,8 +322,8 @@ shinyServer(function(input, output, session) {
       
     }
   })
-
-
+  
+  
   output$baseDefine <- renderUI({
     
     phase_choices <- if (!is.null(input$b_phase)) unique(datClean()[[input$b_phase]]) else c("A","B")
@@ -348,12 +348,12 @@ shinyServer(function(input, output, session) {
       selectInput("b_treat", label = "Treatment phase value", choices = trt_choices, selected = curMap$phase_vals[2])  
     }
   })
-
-    
+  
+  
   output$outOrderImp <- renderUI({
-
+    
     var_names <- names(datClean())
-
+    
     if (input$dat_type == "dat") {
       list(
         selectInput("session_number", label = "Session number", choices = var_names, selected = var_names[5]),
@@ -382,7 +382,7 @@ shinyServer(function(input, output, session) {
       list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names, selected = curMap$direction_var))
     }
   })
-   
+  
   # Measurement details taken out of the following function - might be useful later
   # selectInput("bmeasurementProcedure", label = "Measurement Procedure",
   #                  choices = c("all continuous recording", "all interval recording", "all event counting", "all other", "by series" = "series")),
@@ -391,7 +391,7 @@ shinyServer(function(input, output, session) {
   #                                   choices = var_names)),
   #      conditionalPanel(condition = "input.bmeasurementProcedure == 'series' | input.bmeasurementProcedure == 'all continuous recording'",
   #                       textInput("bfloor", label = "Optional floor for log-prevalence odds-ratio", value = NA)),
- 
+  
   output$measurementProc <- renderUI({
     
     var_names <- names(datClean())
@@ -400,16 +400,16 @@ shinyServer(function(input, output, session) {
       
       list(
         selectInput("boutScale", label = "Outcome Scale",
-                         choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series")),
+                    choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series")),
         conditionalPanel(condition = "input.boutScale == 'series'",
-                        selectInput("bscalevar", "Select variable identifying outcome scale",
-                                    choices = var_names)),
+                         selectInput("bscalevar", "Select variable identifying outcome scale",
+                                     choices = var_names)),
         selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
-                   choices = c(NA, var_names), selected = NA),
+                    choices = c(NA, var_names), selected = NA),
         selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
-                   choices = c(NA, var_names), selected = NA),
+                    choices = c(NA, var_names), selected = NA),
         numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
-                    value = NA, min = 0)
+                     value = NA, min = 0)
       )
       
     } else {
@@ -424,15 +424,190 @@ shinyServer(function(input, output, session) {
                                      choices = var_names,
                                      selected = (if(!is.null(curMap$scale_var)){curMap$scale_var}else{NA}))),
         selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
-                choices = c(NA, var_names), selected = curMap$intervals),
+                    choices = c(NA, var_names), selected = curMap$intervals),
         selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
-                choices = c(NA, var_names), selected = curMap$observation_length),
+                    choices = c(NA, var_names), selected = curMap$observation_length),
         numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
-                 value = NA, min = 0)
+                     value = NA, min = 0)
       )
       
     }
   }) 
+  
+  output$datview2 <- renderTable(datClean())
+  
+  
+  # Plot
+  output$facetSelector <- renderUI({
+    grouping_vars <- input$b_clusters
+    aggregating_vars <- input$b_aggregate
+    facet_vars <- c("No facet", grouping_vars, aggregating_vars)
+    selectizeInput("bfacetSelector", label = "Select one variable as facet in the plot (e.g. pseudonym, behavior).", 
+                   choices = facet_vars, selected = NULL, multiple = FALSE)
+  })
+  
+  output$filterbGrouping <- renderUI({
+    
+    grouping_vars <- input$b_clusters
+    
+    if (input$bfacetSelector %in% input$b_clusters & length(grouping_vars) > 1) {
+      grouping_vars <- grouping_vars[!grouping_vars %in% input$bfacetSelector]
+    }
+    
+    if (input$bfacetSelector == "No facet" || 
+        input$bfacetSelector %in% input$b_aggregate ||
+        (input$bfacetSelector %in% input$b_clusters & length(input$b_clusters) > 1)) {
+      
+      grouping_vals <- lapply(grouping_vars, function(x) levels(as.factor(datClean()[,x])))
+      names(grouping_vals) <- grouping_vars
+      header <- strong("Please select values for the grouping variables.")
+      
+      grouping_selects <- lapply(grouping_vars, function(x) 
+        selectizeInput(paste0("grouping_",x), label = x, choices = grouping_vals[[x]], 
+                       selected = grouping_vals[[x]][1], multiple = FALSE))
+      
+      if (length(grouping_vars) > 0) grouping_selects <- list(header, column(12, br()), grouping_selects)
+      
+      grouping_selects
+      
+    }
+    
+  })
+  
+  output$filterbAggregating <- renderUI({
+    
+    aggregating_vars <- input$b_aggregate
+    
+    if (input$bfacetSelector %in% input$b_aggregate & length(aggregating_vars) > 1) {
+      aggregating_vars <- aggregating_vars[!aggregating_vars %in% input$bfacetSelector]
+    }
+    
+    if (input$bfacetSelector == "No facet" || 
+        input$bfacetSelector %in% input$b_clusters ||
+        (input$bfacetSelector %in% input$b_aggregate & length(input$b_aggregate) > 1)) {
+      
+      aggregating_vals <- lapply(aggregating_vars, function(x) levels(as.factor(datClean()[,x])))
+      names(aggregating_vals) <- aggregating_vars
+      header <- strong("Please select values for the aggregating variables.")
+      
+      aggregating_selects <- lapply(aggregating_vars, function(x) 
+        selectizeInput(paste0("aggregating_",x), label = x, choices = aggregating_vals[[x]], 
+                       selected = aggregating_vals[[x]][1], multiple = FALSE))
+      
+      if (length(aggregating_vars) > 0) {
+        aggregating_selects <- list(header, column(12, br()), aggregating_selects)
+      }
+      
+      aggregating_selects
+      
+    }
+    
+  })
+  
+  
+  datGraph <- reactive({
+    
+    dat <- datClean()
+    
+    if (!is.null(input$b_clusters)) {
+      
+      if (input$bfacetSelector == "No facet" || input$bfacetSelector %in% input$b_aggregate) {
+        subset_vals <- sapply(input$b_clusters, function(x) datClean()[[x]] %in% input[[paste0("grouping_",x)]])
+        dat <- dat[apply(subset_vals, 1, all),]
+      } else {
+        subset_vars <- input$b_clusters[!input$b_clusters %in% input$bfacetSelector]
+        if (length(subset_vars) > 0) {
+          subset_vals <- sapply(subset_vars, function(x) datClean()[[x]] %in% input[[paste0("grouping_",x)]])
+          dat <- dat[apply(subset_vals, 1, all),]
+        }
+      }
+      
+    }
+    
+    return(dat)
+    
+  })
+  
+  datGraph2 <- reactive({
+    
+    dat <- datGraph()
+    
+    if (!is.null(input$b_aggregate)) {
+      
+      if (input$bfacetSelector == "No facet" || input$bfacetSelector %in% input$b_clusters) {
+        subset_vals <- sapply(input$b_aggregate, function(x) datGraph()[[x]] %in% input[[paste0("aggregating_",x)]])
+        dat <- dat[apply(subset_vals, 1, all),]
+      } else {
+        subset_vars <- input$b_aggregate[!input$b_aggregate %in% input$bfacetSelector]
+        if (length(subset_vars) > 0) {
+          subset_vals <- sapply(subset_vars, function(x) datGraph()[[x]] %in% input[[paste0("aggregating_",x)]])
+          dat <- dat[apply(subset_vals, 1, all),]
+        }
+      }
+      
+    } 
+    
+    return(dat)
+    
+  })
+  
+  # output$datview3 <- renderTable(datGraph2())
+  
+  heightPlot <- reactive({
+    if (input$bfacetSelector == "No facet") {
+      height <- 300
+    } else {
+      height <- 180 * (length(unique(datGraph2()[[input$bfacetSelector]])))
+    }
+  })
+  
+  output$batchPlot <- renderPlot({
+    
+    dat <- datGraph2()
+    session_dat <- dat[[input$session_number]]
+    outcome_dat <- dat[[input$b_out]]
+    phase_dat <- dat[[input$b_phase]]
+    phase_code <- if (!is.null(input$b_phase)) unique(phase_dat) else c("A","B")
+    
+    if (input$bfacetSelector == "No facet") {
+      
+      dat_graph <-
+        data.frame(session = session_dat, outcome = outcome_dat, phase = phase_dat) %>%
+        dplyr::filter(phase %in% c(input$b_base, input$b_treat))
+      
+      phase_change <-
+        dat_graph %>%
+        dplyr::filter(phase == phase_code[2]) %>%
+        dplyr::mutate(treat_change = suppressWarnings(min(session)) - 0.5) %>%
+        dplyr::select(treat_change) %>%
+        unique()
+      
+    } else {
+      
+      facet_dat <- dat[[input$bfacetSelector]]
+      
+      dat_graph <-
+        data.frame(facet = facet_dat, session = session_dat, outcome = outcome_dat, phase = phase_dat) %>%
+        dplyr::filter(phase %in% c(input$b_base, input$b_treat))
+      
+      phase_change <-
+        dat_graph %>%
+        group_by(facet) %>%
+        dplyr::filter(phase == phase_code[2]) %>%
+        dplyr::mutate(treat_change = suppressWarnings(min(session)) - 0.5) %>%
+        dplyr::select(facet, treat_change) %>%
+        unique()
+      
+    }
+    
+    ggplot(dat_graph, aes(session, outcome, color = phase)) +
+      geom_point(size = 2) + geom_line() +
+      {if ("facet" %in% names(dat_graph)) facet_grid(facet ~ .)} +
+      geom_vline(data = phase_change, aes(xintercept = treat_change), linetype = "dashed") +
+      scale_color_brewer(type = "qual", palette = 2) +
+      theme_bw() + theme(legend.position = "bottom")
+    
+  }, height = function() heightPlot(), width = function() 700)
 
 
   batchModel <- eventReactive(input$batchest, {
