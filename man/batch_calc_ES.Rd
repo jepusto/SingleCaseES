@@ -44,9 +44,13 @@ size estimates will be averaged across values of these variables (but not
 across the values of the \code{grouping} variables).}
 
 \item{weighting}{character string specifying the weighting scheme for use
-when variables are specified in \code{aggregate}. Either \code{"1/V"}
-or \code{"equal"} (the default). Note that \code{"1/V"} can only be used
-for effect sizes with known standard errors.}
+when variables are specified in \code{aggregate}. Available is
+\code{"1/V"}, \code{"equal"} (the default), \code{"Equal"}, \code{"nA"},
+\code{"n_A"}, \code{"nB"}, \code{"n_B"}, \code{"nAnB"}, \code{"nA*nB"},
+\code{"nA*nB"}, \code{"n_A*n_B"}, \code{"n_A * n_B"}, \code{"1/nA+1/nB"},
+\code{"1/nA + 1/nB"}, \code{"1/n_A+1/n_B"}, or \code{"1/n_A + 1/n_B"}. Note
+that \code{"1/V"} can only be used for effect sizes with known standard
+errors.}
 
 \item{session_number}{A variable name used to order the data within each
 series.}
