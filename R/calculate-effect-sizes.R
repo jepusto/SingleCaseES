@@ -351,39 +351,63 @@ batch_calc_ES <- function(dat,
                                error = function(e) stop("The `session_number` variable is not in the dataset."))
   }
   
-  improvement <- tryCatch(tidyselect::vars_pull(unique(c("increase", "decrease", names(dat))), !! rlang::enquo(improvement)), 
-                          error = function(e) stop("Improvement must be a variable name or a string specifying 'increase' or 'decrease'."))
+  improvement_msg <- "The `improvement` argument must be a variable name or a string specifying 'increase' or 'decrease'."
+
+  improvement_quo <- rlang::enquo(improvement)
   
-  if (improvement %in% c("increase", "decrease")) {
+  if (tryCatch(is.character(improvement), error = function(e) FALSE)) {
+    improvement <- tryCatch(
+      match.arg(improvement, c("increase","decrease")),
+      error = function(e) stop(improvement_msg)
+    )
     dat$improvement <- improvement
     improvement <- "improvement"
+  } else {
+    improvement <- tryCatch(
+      tidyselect::vars_pull(names(dat), !!improvement_quo), 
+      error = function(e) stop(improvement_msg)
+    )
   }
   
-  scale <- tryCatch(tidyselect::vars_pull(unique(c("count", "rate", "proportion", "percentage", "other", names(dat))), !! rlang::enquo(scale)), 
-                    error = function(e) stop("Scale must be a variable name or one of the accepted scale types. See ?batch_calc_ES for more details."))
+  scale_msg <- "The `scale` argument must be a variable name or one of the accepted scale types. See ?batch_calc_ES for more details."
   
-  if (scale %in% c("count", "rate", "proportion", "percentage", "other")) {
+  scale_quo <- rlang::enquo(scale)
+  
+  if (tryCatch(is.character(scale), error = function(e) FALSE)) {
+    scale <- tryCatch(
+      match.arg(scale, c("count", "rate", "proportion", "percentage", "other")),
+      error = function(e) stop(scale_msg)
+    )
     dat$scale <- scale
     scale <- "scale"
+  } else {
+    scale <- tryCatch(
+      tidyselect::vars_pull(names(dat), !!scale_quo), 
+      error = function(e) stop(scale_msg)
+    )
   }
   
+  intervals_quo <- rlang::enquo(intervals)
   if (tryCatch(typeof(intervals) %in% c("double", "integer") || is.na(intervals), 
+               warning = function(w) FALSE,
                error = function(e) FALSE)) {
     dat$intervals <- intervals
     intervals <- "intervals"
   } else {
-    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(intervals)), 
-                          error = function(e) stop("Intervals variable is not in the dataset."))
-    
+    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !!intervals_quo), 
+                          error = function(e) stop("The `intervals` variable is not in the dataset."))
   }
   
+  observation_length_quo <- rlang::enquo(observation_length)
+  
   if (tryCatch(typeof(observation_length) %in% c("double", "integer") || is.na(observation_length), 
+               warning = function(w) FALSE,
                error = function (e) FALSE)) {
     dat$observation_length <- observation_length
     observation_length <- "observation_length"
   } else {
-    observation_length <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(observation_length)), 
-                                   error = function(e) stop("Observation length variable is not in the dataset."))
+    observation_length <- tryCatch(tidyselect::vars_pull(names(dat), !!observation_length_quo), 
+                                   error = function(e) stop("The `observation_length` variable is not in the dataset."))
   }
   
   if (warn & "LOR" %in% ES & !all(dat[[scale]] %in% c("proportion","percentage"))) {

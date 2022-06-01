@@ -142,7 +142,7 @@ test_that("The aggregate argument in batch_calc_ES() works for effect size measu
                        baseline_phase = "A",
                        intervention_phase = "B",
                        ES = c("IRD", "PAND", "PEM", "PND", "Tau_U"),
-                       improvement = "direction",
+                       improvement = direction,
                        pct_change = FALSE,
                        scale = "other",
                        std_dev = "baseline",
@@ -160,7 +160,7 @@ test_that("The aggregate argument in batch_calc_ES() works for effect size measu
                              baseline_phase = "A",
                              intervention_phase = "B",
                              ES = c("IRD", "PAND", "PEM", "PND", "Tau_U", "LRRi","LRRd","SMD","Tau"),
-                             improvement = "direction",
+                             improvement = direction,
                              pct_change = FALSE,
                              scale = "other",
                              std_dev = "baseline",
@@ -199,7 +199,7 @@ test_that("The aggregate argument in batch_calc_ES() works for effect size measu
                              baseline_phase = "A",
                              intervention_phase = "B",
                              ES = c("IRD", "PAND", "PEM", "PND", "Tau_U"),
-                             improvement = "direction",
+                             improvement = direction,
                              pct_change = FALSE,
                              scale = "other",
                              std_dev = "baseline",
@@ -217,7 +217,7 @@ test_that("The aggregate argument in batch_calc_ES() works for effect size measu
                             baseline_phase = "A",
                             intervention_phase = "B",
                             ES = c("IRD", "PAND", "PEM", "PND", "Tau_U", "LRRi","LRRd","SMD","Tau"),
-                            improvement = "direction",
+                            improvement = direction,
                             pct_change = FALSE,
                             scale = "other",
                             std_dev = "baseline",
@@ -464,6 +464,22 @@ test_that("batch_calc_ES() works properly if any variable has the same name as t
   
   expect_equal(McKissick_improvement1, McKissick_improvement2)
   
+  McKissick_improvement3 <- 
+    McKissick %>%
+    mutate(decrease = "something", increase = "or other", count = "your blessing") %>%
+    batch_calc_ES(
+      grouping = Case_pseudonym,
+      weighting = "1/V",
+      condition = Condition,
+      outcome = Outcome,
+      ES = c("LRRi", "LRRd", "SMD", "Tau"),
+      improvement = "decrease",
+      scale = "count",
+      bias_correct = TRUE,
+      confidence = NULL,
+      format = "long"
+    )
+  
   Schmidt_scale <- 
     Schmidt2007 %>%
     mutate(
@@ -509,3 +525,77 @@ test_that("The trunc_const argument for NAP and Tau works inside batch_calc_ES()
   expect_identical(Shogren_res$Tau_trunc, Shogren_res$`Tau-BC_trunc`)
   expect_equal(Shogren_res$Tau_trunc, 2 * Shogren_res$NAP_trunc)
 })
+
+
+test_that("Passing a variable to the scale argument works when the variable is also a function name.", {
+
+  data("Shogren")
+  
+  Shogren <- Shogren %>%
+    mutate_at(vars(Study, Measure, Case), as.character) %>%
+    group_by(Study, Case, Measure) %>%
+    mutate(
+      session_number = row_number(),
+      DV_scale = ifelse(Recording_procedure == "EC", "count", "proportion"),
+      scale = DV_scale,
+      intervals = Session_length * 60 / interval_length,
+      mean = intervals,
+      smd_improvement = ifelse(direction == "increase", "decrease", "increase")
+    ) %>%
+    ungroup()
+  
+  Shogren_DV_scale <- batch_calc_ES(
+      dat = Shogren,
+      grouping = c(Study, Measure, Case),
+      condition = Phase,
+      baseline_phase = "No Choice",
+      outcome = outcome,
+      session_number = session_number,
+      improvement = smd_improvement,
+      ES = c("SMD","LRRi","LRRd","NAP"),
+      scale = DV_scale,
+      intervals = intervals,
+      observation_length = Session_length,
+      format = "wide",
+      std_dev = "both",
+      bias_correct = FALSE
+    )
+  
+  Shogren_scale <- batch_calc_ES(
+    dat = Shogren,
+    grouping = c(Study, Measure, Case),
+    condition = Phase,
+    baseline_phase = "No Choice",
+    outcome = outcome,
+    session_number = session_number,
+    improvement = smd_improvement,
+    ES = c("SMD","LRRi","LRRd","NAP"),
+    scale = scale,
+    intervals = intervals,
+    observation_length = Session_length,
+    format = "wide",
+    std_dev = "both",
+    bias_correct = FALSE
+  )
+
+  Shogren_mean <- batch_calc_ES(
+    dat = Shogren,
+    grouping = c(Study, Measure, Case),
+    condition = Phase,
+    baseline_phase = "No Choice",
+    outcome = outcome,
+    session_number = session_number,
+    improvement = smd_improvement,
+    ES = c("SMD","LRRi","LRRd","NAP"),
+    scale = DV_scale,
+    intervals = mean,
+    observation_length = Session_length,
+    format = "wide",
+    std_dev = "both",
+    bias_correct = FALSE
+  )
+  
+  expect_identical(Shogren_DV_scale, Shogren_scale)
+  expect_identical(Shogren_DV_scale, Shogren_mean)
+})
+
