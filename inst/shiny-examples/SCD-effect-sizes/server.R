@@ -437,7 +437,6 @@ shinyServer(function(input, output, session) {
   
   output$datview2 <- renderTable(datClean())
   
-  
   # Plot
   output$facetSelector <- renderUI({
     grouping_vars <- input$b_clusters
@@ -552,7 +551,7 @@ shinyServer(function(input, output, session) {
     
     if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
       if (input$boutScale == "series") {
-        scale_val <- input$bscalevar
+        scale_val <- as.symbol(input$bscalevar)
       } else{
         scale_val <- input$boutScale
       }
@@ -561,7 +560,7 @@ shinyServer(function(input, output, session) {
     }
     
     if(input$bimprovement == "series") {
-      improvement <- input$bseldir
+      improvement <- as.symbol(input$bseldir)
     } else {
       improvement <- input$bimprovement
     }
@@ -578,7 +577,7 @@ shinyServer(function(input, output, session) {
       pretest_trend <- input$bsignificance_level
     }
     
-    if(is.null(input$b_aggregate)) {
+    if (is.null(input$b_aggregate)) {
       
       batch_calc_ES(dat = datClean(),
                     grouping = input$b_clusters,
