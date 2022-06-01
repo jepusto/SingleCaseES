@@ -3,8 +3,10 @@
 * batch_calc_ES() now provides several additional options for weights to use when aggregating effect sizes, including weighting by nA (the number of baseline phase observations), nB (the number of treatment phase observations), nA * nB, or 1 / nA + 1 / nB.
 * The SMD() function now reports the SD (baseline SD or pooled SD) used in the denominator of the standardized mean difference.
 * The SMD() function now returns a warning instead of an error when the standard deviation is zero.
-* The SCD_effect_sizes shiny app now includes an interface for taking a subset of observations.
-* Miscellaneous aesthetic and layout fixes for the SCD_effect_sizes shiny app.
+* SCD_effect_sizes shiny app changes
+    * The batch entry calculator now includes an interface for visualizing data series.
+    * The batch entry calculator now includes an interface for taking a subset of observations.
+    * Miscellaneous aesthetic and layout fixes.
 
 # SingleCaseES 0.5.0.9999
 
