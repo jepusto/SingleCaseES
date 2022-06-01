@@ -285,6 +285,7 @@ shinyServer(function(input, output, session) {
     if (!is.null(input$filters)) {
       subset_vals <- sapply(input$filters, function(x) datFile()[[x]] %in% input[[paste0("filter_",x)]])
       dat <- dat[apply(subset_vals, 1, all),]
+      dat <- droplevels(dat)
     }
       
     return(dat)
