@@ -393,6 +393,7 @@ check_load <- function(file, Kendall = FALSE) {
 
   # data_path <- paste0("../testdata/", file)
   data_path <- system.file("tests","testdata", file, package = "SingleCaseES")
+  cat("\n", data_path, "\n")
   app$setInputs(SCD_es_calculator = "Batch Entry", wait_ = FALSE, values_ = FALSE)
 
   if (str_detect(file, "csv")) {
