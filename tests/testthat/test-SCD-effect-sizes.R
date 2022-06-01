@@ -54,6 +54,7 @@ check_single <- function(ES, ES_family, A_data, B_data, Kendall = FALSE) {
   
   app$setInputs(improvement = improvement, digits = 5, wait_=FALSE, values_=FALSE)
   
+  Sys.sleep(0.5)
   output_ES_name <- app$getValue(name = "ES_name")
   output_ES_value <- app$getValue(name = "result")
   
