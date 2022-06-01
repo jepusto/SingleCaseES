@@ -391,8 +391,8 @@ check_load <- function(file, Kendall = FALSE) {
   # myfile <- tempfile()
   # write.csv(file, file = myfile)
 
-  # data_path <- paste0("../testdata/", file)
-  data_path <- system.file("tests","testdata", file, package = "SingleCaseES")
+  data_path <- paste0("../testdata/", file)
+  # data_path <- system.file("tests","testdata", file, package = "SingleCaseES")
   
   app$setInputs(SCD_es_calculator = "Batch Entry", wait_ = FALSE, values_ = FALSE)
 
