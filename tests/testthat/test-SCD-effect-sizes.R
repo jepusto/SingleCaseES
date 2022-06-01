@@ -390,23 +390,26 @@ check_load <- function(file, Kendall = FALSE) {
   # myfile <- tempfile()
   # write.csv(file, file = myfile)
 
-  data_path <- paste0("../testdata/", file)
-  app$setInputs(SCD_es_calculator = "Batch Entry")
+  # data_path <- paste0("../testdata/", file)
+  data_path <- system.file("tests","testdata", file, package = "SingleCaseES")
+  app$setInputs(SCD_es_calculator = "Batch Entry", wait_ = FALSE, values_ = FALSE)
 
   if (str_detect(file, "csv")) {
     
-    app$setInputs(dat_type = "dat")
+    app$setInputs(dat_type = "dat", wait_ = FALSE, values_ = FALSE)
     app$uploadFile(dat = data_path)
     
   } else if (str_detect(file, "xlsx")) {
     
-    app$setInputs(dat_type = "xlsx")
+    app$setInputs(dat_type = "xlsx", wait_ = FALSE, values_ = FALSE)
     app$uploadFile(xlsx = data_path)
     
   }
   
   app$setInputs(
-    BatchEntryTabs = "Variables",
+    BatchEntryTabs = "Variables"
+  )
+  app$setInputs(
     b_clusters = "Case_pseudonym",
     b_phase = "Condition",
     session_number = "Session_number",
@@ -447,12 +450,12 @@ test_that("Data are uploaded correctly.", {
   # csv file
   output_csv <- 
     check_load("McKissick.csv") %>% 
-    mutate(baseline_SD = as.numeric(baseline_SD))
-  
+    mutate(baseline_SD = as.numeric(if_else(baseline_SD == "-", NA_character_, baseline_SD)))
+           
   # excel file
   output_xlsx <- 
     check_load("McKissick.xlsx") %>% 
-    mutate(baseline_SD = as.numeric(baseline_SD))
+    mutate(baseline_SD = as.numeric(if_else(baseline_SD == "-", NA_character_, baseline_SD)))
   
   all_names <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U",
                  "LOR", "LRRd", "LRRi", "LRM", "SMD")
