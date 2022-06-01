@@ -13,7 +13,8 @@ Tau(
   intervention_phase = NULL,
   improvement = "increase",
   SE = "unbiased",
-  confidence = 0.95
+  confidence = 0.95,
+  trunc_const = FALSE
 )
 }
 \arguments{
@@ -46,6 +47,9 @@ to "unbiased".}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}
+
+\item{trunc_const}{logical value indicating whether to return the truncation
+constant used to calculate the standard error.}
 }
 \value{
 A list containing the estimate, standard error, and/or confidence 

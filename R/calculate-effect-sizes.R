@@ -28,7 +28,7 @@ convert_to_wide <- function(res, ES_names) {
     ES_names <- unlist(ES_names)
   }
   
-  output_names <- c("Est", "SE", "CI_lower", "CI_upper", "baseline_SD", "pooled_SD")
+  output_names <- c("Est", "SE", "CI_lower", "CI_upper", "baseline_SD", "pooled_SD", "trunc")
   val_names <- intersect(names(res), output_names)
   sym_val_names <- rlang::syms(val_names)
   val <- rlang::sym("val")
