@@ -441,32 +441,27 @@ shinyServer(function(input, output, session) {
   output$facetSelector <- renderUI({
     grouping_vars <- input$b_clusters
     aggregating_vars <- input$b_aggregate
-    facet_vars <- c("No facet", grouping_vars, aggregating_vars)
-    selectizeInput("bfacetSelector", label = "Select one variable as facet in the plot (e.g. pseudonym, behavior).", 
+    facet_vars <- c("None", grouping_vars, aggregating_vars)
+    selectizeInput("bfacetSelector", label = "Display plots for each value of this variable.", 
                    choices = facet_vars, selected = NULL, multiple = FALSE)
   })
   
-  output$filterbGrouping <- renderUI({
+  output$graph_filters <- renderUI({
     
-    grouping_vars <- input$b_clusters
+    grouping_vars <- setdiff(c(input$b_clusters, input$b_aggregate), input$bfacetSelector)
     
-    if (input$bfacetSelector %in% input$b_clusters & length(grouping_vars) > 1) {
-      grouping_vars <- grouping_vars[!grouping_vars %in% input$bfacetSelector]
-    }
-    
-    if (input$bfacetSelector == "No facet" || 
-        input$bfacetSelector %in% input$b_aggregate ||
-        (input$bfacetSelector %in% input$b_clusters & length(input$b_clusters) > 1)) {
+    if (length(grouping_vars) > 0) {
       
       grouping_vals <- lapply(grouping_vars, function(x) levels(as.factor(datClean()[,x])))
       names(grouping_vals) <- grouping_vars
-      header <- strong("Please select values for the grouping variables.")
+      
+      header <- strong("Select a value for each grouping variable.")
       
       grouping_selects <- lapply(grouping_vars, function(x) 
         selectizeInput(paste0("grouping_",x), label = x, choices = grouping_vals[[x]], 
                        selected = grouping_vals[[x]][1], multiple = FALSE))
       
-      if (length(grouping_vars) > 0) grouping_selects <- list(header, column(12, br()), grouping_selects)
+      grouping_selects <- list(header, column(12, br()), grouping_selects)
       
       grouping_selects
       
@@ -474,78 +469,20 @@ shinyServer(function(input, output, session) {
     
   })
   
-  output$filterbAggregating <- renderUI({
-    
-    aggregating_vars <- input$b_aggregate
-    
-    if (input$bfacetSelector %in% input$b_aggregate & length(aggregating_vars) > 1) {
-      aggregating_vars <- aggregating_vars[!aggregating_vars %in% input$bfacetSelector]
-    }
-    
-    if (input$bfacetSelector == "No facet" || 
-        input$bfacetSelector %in% input$b_clusters ||
-        (input$bfacetSelector %in% input$b_aggregate & length(input$b_aggregate) > 1)) {
-      
-      aggregating_vals <- lapply(aggregating_vars, function(x) levels(as.factor(datClean()[,x])))
-      names(aggregating_vals) <- aggregating_vars
-      header <- strong("Please select values for the aggregating variables.")
-      
-      aggregating_selects <- lapply(aggregating_vars, function(x) 
-        selectizeInput(paste0("aggregating_",x), label = x, choices = aggregating_vals[[x]], 
-                       selected = aggregating_vals[[x]][1], multiple = FALSE))
-      
-      if (length(aggregating_vars) > 0) {
-        aggregating_selects <- list(header, column(12, br()), aggregating_selects)
-      }
-      
-      aggregating_selects
-      
-    }
-    
-  })
-  
-  
   datGraph <- reactive({
     
     dat <- datClean()
     
-    if (!is.null(input$b_clusters)) {
+    if (!is.null(input$b_clusters) | !is.null(input$b_aggregate)) {
+
+      grouping_vars <- setdiff(c(input$b_clusters, input$b_aggregate), input$bfacetSelector)
       
-      if (input$bfacetSelector == "No facet" || input$bfacetSelector %in% input$b_aggregate) {
-        subset_vals <- sapply(input$b_clusters, function(x) datClean()[[x]] %in% input[[paste0("grouping_",x)]])
+      if (length(grouping_vars) > 0) {
+        subset_vals <- sapply(grouping_vars, function(x) datClean()[[x]] %in% input[[paste0("grouping_",x)]])
         dat <- dat[apply(subset_vals, 1, all),]
-      } else {
-        subset_vars <- input$b_clusters[!input$b_clusters %in% input$bfacetSelector]
-        if (length(subset_vars) > 0) {
-          subset_vals <- sapply(subset_vars, function(x) datClean()[[x]] %in% input[[paste0("grouping_",x)]])
-          dat <- dat[apply(subset_vals, 1, all),]
-        }
-      }
+      } 
       
     }
-    
-    return(dat)
-    
-  })
-  
-  datGraph2 <- reactive({
-    
-    dat <- datGraph()
-    
-    if (!is.null(input$b_aggregate)) {
-      
-      if (input$bfacetSelector == "No facet" || input$bfacetSelector %in% input$b_clusters) {
-        subset_vals <- sapply(input$b_aggregate, function(x) datGraph()[[x]] %in% input[[paste0("aggregating_",x)]])
-        dat <- dat[apply(subset_vals, 1, all),]
-      } else {
-        subset_vars <- input$b_aggregate[!input$b_aggregate %in% input$bfacetSelector]
-        if (length(subset_vars) > 0) {
-          subset_vals <- sapply(subset_vars, function(x) datGraph()[[x]] %in% input[[paste0("aggregating_",x)]])
-          dat <- dat[apply(subset_vals, 1, all),]
-        }
-      }
-      
-    } 
     
     return(dat)
     
@@ -554,22 +491,22 @@ shinyServer(function(input, output, session) {
   # output$datview3 <- renderTable(datGraph2())
   
   heightPlot <- reactive({
-    if (input$bfacetSelector == "No facet") {
+    if (input$bfacetSelector == "None") {
       height <- 300
     } else {
-      height <- 180 * (length(unique(datGraph2()[[input$bfacetSelector]])))
+      height <- 180 * (length(unique(datGraph()[[input$bfacetSelector]])))
     }
   })
   
   output$batchPlot <- renderPlot({
     
-    dat <- datGraph2()
+    dat <- datGraph()
     session_dat <- dat[[input$session_number]]
     outcome_dat <- dat[[input$b_out]]
     phase_dat <- dat[[input$b_phase]]
     phase_code <- if (!is.null(input$b_phase)) unique(phase_dat) else c("A","B")
     
-    if (input$bfacetSelector == "No facet") {
+    if (input$bfacetSelector == "None") {
       
       dat_graph <-
         data.frame(session = session_dat, outcome = outcome_dat, phase = phase_dat) %>%
