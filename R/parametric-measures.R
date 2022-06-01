@@ -553,7 +553,7 @@ calc_SMD <- function(A_data, B_data,
   
   J <- if (bias_correct) 1  - 3 / (4 * df - 1) else 1
   
-  if (is.na(s_sq) | s_sq == 0) stop("There is no variation in the outcome! The SMD is not an appropriate ES for these data.")
+  if (is.na(s_sq) | s_sq == 0) warning("There is no variation in the outcome! The SMD is not an appropriate ES for these data.")
   
   d <- J * diff(dat$M) / sqrt(s_sq) 
   
@@ -570,7 +570,13 @@ calc_SMD <- function(A_data, B_data,
     res$CI_upper <- CI[2] 
   }
   
-  res
+  if (std_dev == "baseline") {
+    res$`baseline_SD` = sqrt(s_sq)
+  } else {
+    res$`pooled_SD` = sqrt(s_sq)
+  }
+  
+  return(res)
 
 }
 

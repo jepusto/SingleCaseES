@@ -233,7 +233,7 @@ test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {
       warn = FALSE
     ) %>%
     dplyr::filter(ES == "Tau-BC") %>%
-    select(-ES) %>%
+    select(-c(ES, baseline_SD)) %>%
     rename_with(.fn = ~ paste("Tau-BC", ., sep = "_"), .cols = -Case_pseudonym)
   
   expect_equal(res_A, res_B)

@@ -1,5 +1,5 @@
 
-if (getRversion() >= "2.15.1") utils::globalVariables(c("n", "ES", "Est", "SE", "CI_upper", "CI_lower"))
+if (getRversion() >= "2.15.1") utils::globalVariables(c("n", "ES", "Est", "SE", "CI_upper", "CI_lower", "A", "B", "weights"))
 
 # get ES names
 get_ES_names <- function(ES) {
@@ -28,7 +28,7 @@ convert_to_wide <- function(res, ES_names) {
     ES_names <- unlist(ES_names)
   }
   
-  output_names <- c("Est", "SE", "CI_lower", "CI_upper", "trunc")
+  output_names <- c("Est", "SE", "CI_lower", "CI_upper", "baseline_SD", "pooled_SD", "trunc")
   val_names <- intersect(names(res), output_names)
   sym_val_names <- rlang::syms(val_names)
   val <- rlang::sym("val")
@@ -113,6 +113,7 @@ convert_to_wide <- function(res, ES_names) {
 #' @importFrom magrittr %>%
 #' @importFrom rlang !!!
 #' @importFrom rlang !!
+#' @importFrom rlang :=
 #' @importFrom rlang exec
 #' @importFrom dplyr .data
 #' @importFrom dplyr vars
@@ -199,9 +200,13 @@ calc_ES <- function(A_data, B_data,
 #'   size estimates will be averaged across values of these variables (but not
 #'   across the values of the \code{grouping} variables).
 #' @param weighting character string specifying the weighting scheme for use
-#'   when variables are specified in \code{aggregate}. Either \code{"1/V"}
-#'   or \code{"equal"} (the default). Note that \code{"1/V"} can only be used
-#'   for effect sizes with known standard errors.
+#'   when variables are specified in \code{aggregate}. Available is
+#'   \code{"1/V"}, \code{"equal"} (the default), \code{"Equal"}, \code{"nA"},
+#'   \code{"n_A"}, \code{"nB"}, \code{"n_B"}, \code{"nAnB"}, \code{"nA*nB"},
+#'   \code{"nA*nB"}, \code{"n_A*n_B"}, \code{"n_A * n_B"}, \code{"1/nA+1/nB"},
+#'   \code{"1/nA + 1/nB"}, \code{"1/n_A+1/n_B"}, or \code{"1/n_A + 1/n_B"}. Note
+#'   that \code{"1/V"} can only be used for effect sizes with known standard
+#'   errors.
 #' @param condition A variable name that identifies the treatment condition for
 #'   each observation in the series.
 #' @param outcome A variable name for the outcome data. Default is
@@ -284,7 +289,7 @@ calc_ES <- function(A_data, B_data,
 #'               bias_correct = TRUE,
 #'               confidence = NULL,
 #'               format = "wide")
-#' 
+#'
 #' # Aggregate across phase-pairs
 #' batch_calc_ES(dat = Schmidt2007,
 #'               grouping = c(Behavior_type, Case_pseudonym),
@@ -322,60 +327,87 @@ batch_calc_ES <- function(dat,
   
   grouping <- rlang::enquos(grouping)
   grouping <- tryCatch(tidyselect::vars_select(names(dat), !!!grouping), 
-                       error = function(e) stop("Grouping variables are not in the dataset."))
+                       error = function(e) stop("The `grouping` variables are not in the dataset."))
+  
+  condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), 
+                        error = function(e) stop("The `condition` variable is not in the dataset."))
+  
+  outcome <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), 
+                      error = function(e) stop("The `outcome` variable is not in the dataset."))
   
   if (tryCatch(!is.null(aggregate), error = function(e) TRUE)) {
     aggregate <- tryCatch(tidyselect::vars_select(names(dat), !!!rlang::enquos(aggregate)), 
-                          error = function(e) stop("Aggregating variables are not in the dataset."))
+                          error = function(e) stop("The `aggregate` variables are not in the dataset."))
   }
   
-  weighting <- tryCatch(tidyselect::vars_pull(c("1/V", "equal"), !! rlang::enquo(weighting)), 
-                        error = function(e) stop("Weighting must be a string specifying '1/V' or 'equal'."))
-  
-  condition <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(condition)), 
-                        error = function(e) stop("Condition variable is not in the dataset."))
-  
-  outcome <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(outcome)), 
-                      error = function(e) stop("Outcome variable is not in the dataset."))
-  
+  weights_args <- c("1/V", "equal", "Equal", "nA", "n_A", "nB", "n_B", 
+                    "nAnB", "nA*nB", "nA * nB", "n_A*n_B", "n_A * n_B", 
+                    "1/nA+1/nB", "1/nA + 1/nB", "1/n_A+1/n_B", "1/n_A + 1/n_B")
+  weighting <- tryCatch(match.arg(weighting, choices = weights_args),
+                        error = function(e) stop(paste("The `weighting` argument must be one of the following:", paste0("'",weights_args,"'", collapse = ", "))))
+
   if (tryCatch(!is.null(session_number), error = function(e) TRUE)) {
     session_number <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(session_number)), 
-                               error = function(e) stop("Session number variable is not in the dataset."))
+                               error = function(e) stop("The `session_number` variable is not in the dataset."))
   }
   
-  improvement <- tryCatch(tidyselect::vars_pull(c(names(dat), "increase", "decrease"), !! rlang::enquo(improvement)), 
-                          error = function(e) stop("Improvement must be a variable name or a string specifying 'increase' or 'decrease'."))
+  improvement_msg <- "The `improvement` argument must be a variable name or a string specifying 'increase' or 'decrease'."
+
+  improvement_quo <- rlang::enquo(improvement)
   
-  scale <- tryCatch(tidyselect::vars_pull(c(names(dat), "count", "rate", "proportion", "percentage", "other"), !! rlang::enquo(scale)), 
-                    error = function(e) stop("Scale must be a variable name or one of the accepted scale types. See ?batch_calc_ES for more details."))
-  
-  if (improvement %in% c("increase", "decrease")) {
+  if (tryCatch(is.character(improvement), error = function(e) FALSE)) {
+    improvement <- tryCatch(
+      match.arg(improvement, c("increase","decrease")),
+      error = function(e) stop(improvement_msg)
+    )
     dat$improvement <- improvement
     improvement <- "improvement"
+  } else {
+    improvement <- tryCatch(
+      tidyselect::vars_pull(names(dat), !!improvement_quo), 
+      error = function(e) stop(improvement_msg)
+    )
   }
   
-  if (scale %in% c("count", "rate", "proportion", "percentage", "other")) {
+  scale_msg <- "The `scale` argument must be a variable name or one of the accepted scale types. See ?batch_calc_ES for more details."
+  
+  scale_quo <- rlang::enquo(scale)
+  
+  if (tryCatch(is.character(scale), error = function(e) FALSE)) {
+    scale <- tryCatch(
+      match.arg(scale, c("count", "rate", "proportion", "percentage", "other")),
+      error = function(e) stop(scale_msg)
+    )
     dat$scale <- scale
     scale <- "scale"
+  } else {
+    scale <- tryCatch(
+      tidyselect::vars_pull(names(dat), !!scale_quo), 
+      error = function(e) stop(scale_msg)
+    )
   }
   
+  intervals_quo <- rlang::enquo(intervals)
   if (tryCatch(typeof(intervals) %in% c("double", "integer") || is.na(intervals), 
+               warning = function(w) FALSE,
                error = function(e) FALSE)) {
     dat$intervals <- intervals
     intervals <- "intervals"
   } else {
-    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(intervals)), 
-                          error = function(e) stop("Intervals variable is not in the dataset."))
-    
+    intervals <- tryCatch(tidyselect::vars_pull(names(dat), !!intervals_quo), 
+                          error = function(e) stop("The `intervals` variable is not in the dataset."))
   }
   
+  observation_length_quo <- rlang::enquo(observation_length)
+  
   if (tryCatch(typeof(observation_length) %in% c("double", "integer") || is.na(observation_length), 
+               warning = function(w) FALSE,
                error = function (e) FALSE)) {
     dat$observation_length <- observation_length
     observation_length <- "observation_length"
   } else {
-    observation_length <- tryCatch(tidyselect::vars_pull(names(dat), !! rlang::enquo(observation_length)), 
-                                   error = function(e) stop("Observation length variable is not in the dataset."))
+    observation_length <- tryCatch(tidyselect::vars_pull(names(dat), !!observation_length_quo), 
+                                   error = function(e) stop("The `observation_length` variable is not in the dataset."))
   }
   
   if (warn & "LOR" %in% ES & !all(dat[[scale]] %in% c("proportion","percentage"))) {
@@ -410,63 +442,111 @@ batch_calc_ES <- function(dat,
   
   ES_long_names <- names(ES_ests_long)
   
+  # Aggregation
+  
   if (is.null(aggregate)) {
     
     res <- ES_ests_long
     
-  } else if (!is.null(aggregate) & "SE" %in% ES_long_names) {
-    
-    if (weighting == "1/V") { 
-      ES_weights <- 
-        ES_ests_long %>% 
-        dplyr::mutate(weights = 1 / (SE^2))
-    } else if (weighting %in% c("equal", "Equal")) {
-      ES_weights <- 
-        ES_ests_long %>%
-        dplyr::mutate(weights = 1L)
-    }
-    
-    res_agg <- 
-      ES_weights %>% 
-      dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
-      dplyr::summarise(
-        Est = sum(Est * weights) / sum(weights),
-        SE = sqrt(sum(weights^2 * SE^2) / (sum(weights)^2)),
-        .groups = "drop"
-      )
-    
-    
-    if (!is.null(confidence)) {
-      res <-
-        res_agg %>%
-        dplyr::mutate(
-          CI_lower = Est - qnorm(1 - (1 - confidence) / 2) * SE,
-          CI_upper = Est + qnorm(1 - (1 - confidence) / 2) * SE
-        )
-    } else {
-      res <- res_agg
-    }
-    
   } else {
     
-    if (weighting %in% c("equal", "Equal")) {
+    # determine unique condition labels
+    
+    conditions <- dat %>% dplyr::pull({{condition}}) %>% unique()
+    
+    if (is.null(baseline_phase)) baseline_phase <- conditions[1]
+    
+    if (is.null(intervention_phase)) {
+      intervention_phase <- setdiff(conditions, baseline_phase)[1]
+      if (length(conditions) > 2) {
+        msg <- paste0("The 'condition' variable has more than two unique values. Treating '", intervention_phase, "' as the intervention phase.")
+        warning(msg)
+      }
+    }
+
+    # calculate weights
+    
+    if (weighting %in% c("1/V")) {
+      if (!("SE" %in% ES_long_names)) {
+        stop("Using `weighting = '1/V'` will not work because none of the chosen effect sizes have known standard errors. Consider specifying 'weighting' as 'equal' (the default), 'nA', 'nB', 'nA*nB', or '1/nA+1/nB' instead.")
+      }
+      
+      ES_weights <- 
+        ES_ests_long %>%
+        dplyr::mutate(
+          weights = 1 / SE^2
+        )
+      
+    } else if (weighting %in% c("equal","Equal")) {
+      
+      ES_weights <- 
+        ES_ests_long %>%
+        dplyr::mutate(
+          weights = 1L
+        )
+      
+    } else if (weighting %in% weights_args[-(1:3)]) {
+      
+      n_weights <- 
+        dat %>% 
+        dplyr::filter(!!rlang::sym(condition) %in% c(baseline_phase, intervention_phase)) %>% 
+        dplyr::mutate(!!rlang::sym(condition) := ifelse(!!rlang::sym(condition) == baseline_phase, "A", "B")) %>% 
+        dplyr::group_by(!!!rlang::syms(c(grouping, aggregate, condition))) %>% 
+        dplyr::summarise(n = dplyr::n(), .groups = "drop") %>% 
+        tidyr::pivot_wider(names_from = !!rlang::sym(condition), values_from = n) %>%
+        dplyr::ungroup() %>% 
+        dplyr::mutate(
+          weights = dplyr::case_when(
+            weighting %in% c("nA", "n_A") ~ as.numeric(A),
+            weighting %in% c("nB", "n_B") ~ as.numeric(B),
+            weighting %in% c("nAnB", "nA*nB", "nA * nB", "n_A*n_B", "n_A * n_B") ~ as.numeric(A*B),
+            weighting %in% c("1/nA+1/nB", "1/nA + 1/nB", "1/n_A+1/n_B", "1/n_A + 1/n_B") ~ as.numeric(1/A + 1/B)
+          )
+        ) %>% 
+        dplyr::select(-c(A,B))
+      
+      ES_weights <- 
+        ES_ests_long %>% 
+        dplyr::left_join(n_weights, by = c(grouping, aggregate))
+      
+    }
+    
+    # Aggregate
+    
+    if ("SE" %in% ES_long_names) {
       
       res <- 
-        ES_ests_long %>%
-        dplyr::mutate(weights = 1L) %>% 
+        ES_weights %>% 
+        dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
+        dplyr::summarise(
+          Est = sum(Est * weights) / sum(weights),
+          SE = sqrt(sum(weights^2 * SE^2) / (sum(weights)^2)),
+          .groups = "drop"
+        )
+      
+      if (!is.null(confidence)) {
+        res <-
+          res %>%
+          dplyr::mutate(
+            CI_lower = Est - qnorm(1 - (1 - confidence) / 2) * SE,
+            CI_upper = Est + qnorm(1 - (1 - confidence) / 2) * SE
+          )
+      } 
+      
+    } else {
+      
+      res <- 
+        ES_weights %>% 
         dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
         dplyr::summarise(
           Est = sum(Est * weights) / sum(weights),
           .groups = "drop"
         )
       
-    } else {
-      
-      stop("You should specify 'weighting' as 'equal' (the default) because none of the chosen effect size estimates have known standard errors.")
-      
     }
-    
   }
+  
+  # Wide or long format
   
   if (format == "long") {
     result <- res

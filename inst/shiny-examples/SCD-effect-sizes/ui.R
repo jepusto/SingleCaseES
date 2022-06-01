@@ -173,15 +173,17 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                   condition = "input.dat_type == 'dat'",
                                                                   fileInput('dat', 'Upload a .csv or .txt file', accept=c('text/csv', 'text/comma-separated-values,text/plain', '.csv', '.txt')),
                                                                   checkboxInput('header', 'File has a header?', TRUE),
-                                                                  radioButtons('sep', 'Data seperator', c(Commas=',', Semicolons=';', Tabs='\t', Spaces=' ')),
-                                                                  radioButtons('quote', 'Include quotes?', c('No'='', 'Double Quotes'='"', 'Single Quotes'="'"))
+                                                                  radioButtons('sep', 'Data seperator', c(Commas=',', Semicolons=';', Tabs='\t', Spaces=' '), inline = TRUE),
+                                                                  radioButtons('quote', 'Include quotes?', c('No'='', 'Double Quotes'='"', 'Single Quotes'="'"), inline = TRUE)
                                                                 ),
                                                                 conditionalPanel(
                                                                   condition = "input.dat_type == 'xlsx'",
                                                                   fileInput('xlsx', 'Upload a .xlsx file', accept = c('.xlsx')),
                                                                   checkboxInput('col_names', 'File has a header?', TRUE),
                                                                   selectInput("inSelect", "Select a sheet", "")
-                                                                )
+                                                                ),
+                                                                uiOutput("filtervarMapping"),
+                                                                uiOutput("filterMapping")
                                                                 ),
                                                    mainPanel(tableOutput("datview")))
                                      ),
@@ -194,11 +196,30 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          uiOutput("treatDefine"),
                                          uiOutput("outOrderImp"),
                                          conditionalPanel(condition = "input.bimprovement == 'series'",
-                                                          uiOutput("improvementVar"))
+                                                          uiOutput("improvementVar")),
+                                         br(),
+                                         br(),
+                                         br()
                                        ),
                                        mainPanel(tableOutput("datview2"))
                                      )
                                      ),
+                            tabPanel("Plot",
+                                     sidebarLayout(
+                                       sidebarPanel(
+                                         style = "max-height: 800px; overflow-y: auto",
+                                         uiOutput("facetSelector"),
+                                         uiOutput("graph_filters"),
+                                         br(),
+                                         br(),
+                                         br(),
+                                         br()
+                                       ),
+                                       mainPanel(plotOutput('batchPlot', height = "auto"))
+                                       # mainPanel(tableOutput("datview3"))
+                                     )
+                                     
+                            ),
                             tabPanel("Estimate", 
                                      sidebarLayout(
                                        sidebarPanel(
@@ -233,7 +254,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          conditionalPanel(condition = "input.b_aggregate != ''", 
                                                           radioButtons('weighting_scheme',
                                                                        label = "Weighting scheme to use for aggregating.",
-                                                                       choices = c("equal", "1/V"))
+                                                                       choices = c("equal", "1/V", "nA", "nB", "nA*nB", "1/nA + 1/nB"))
                                                           ),
                                          numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100),
                                          radioButtons("resultsformat", "Long or wide format?", c("Long" = "long", "Wide" = "wide"), inline = TRUE),

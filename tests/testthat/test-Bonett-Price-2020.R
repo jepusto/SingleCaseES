@@ -141,7 +141,7 @@ test_that("LRM works within calc_ES() and batch_calc_ES().", {
       warn = FALSE
     ) %>%
     dplyr::filter(ES == "LRM") %>%
-    select(-ES) %>%
+    select(-c(ES, baseline_SD)) %>%
     rename_with(.fn = ~ paste("LRM", ., sep = "_"), .cols = -Case_pseudonym)
   
   res_E <- 
@@ -156,7 +156,7 @@ test_that("LRM works within calc_ES() and batch_calc_ES().", {
       warn = FALSE
     ) %>%
     dplyr::filter(ES == "LRM") %>%
-    select(-ES) %>%
+    select(-c(ES, baseline_SD)) %>%
     rename_with(.fn = ~ paste("LRM", ., sep = "_"), .cols = -Case_pseudonym)
   
   expect_equal(res_A, res_B)
