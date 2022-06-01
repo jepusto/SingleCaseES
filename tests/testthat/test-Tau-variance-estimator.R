@@ -20,7 +20,7 @@ Tau_est <- function(yA, yB) {
   # Jack-knife variance estimator
   V_JK <- Q1 / (m - 1) + Q2 / (n - 1) - Tau^2 * (1 / (m - 1) + 1 / (n - 1)) + (1 - X) * (1 / (m * (n - 1)) + 1 / (n * (m - 1)))
   
-  data.frame(Tau = Tau, HM = sqrt(V_HM), Unb = sqrt(V_U), JK = sqrt(V_JK))
+  data.frame(Tau = Tau, HM = sqrt(V_HM), Unb = sqrt(V_U), JK = sqrt(V_JK), trunc = 1 / (m * n))
 }
 
 A_data <- rpois(10, lambda = 10)
@@ -29,10 +29,11 @@ B_data <- rpois(12, lambda = 12)
 test_that("Tau SEs agree with above.", {
   
   Tau_check <- Tau_est(yA = A_data, yB = B_data)
-  unbiased <- Tau(A_data, B_data, SE = "unbiased", confidence = NULL)$SE
+  unbiased <- Tau(A_data, B_data, SE = "unbiased", confidence = NULL, trunc_const = TRUE)
   Hanley <- Tau(A_data, B_data, SE = "Hanley", confidence = NULL)$SE
 
-  expect_equal(Tau_check$Unb, unbiased)
+  expect_equal(Tau_check$Unb, unbiased$SE)
   expect_equal(Tau_check$HM, Hanley)
+  expect_equal(Tau_check$trunc, unbiased$trunc)
   
 })

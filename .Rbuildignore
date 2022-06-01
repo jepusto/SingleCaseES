@@ -3,6 +3,7 @@
 ^\.Rproj\.user$
 simulations
 auxiliary
+images
 revdep
 README.Rmd
 README.md

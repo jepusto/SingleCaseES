@@ -75,7 +75,7 @@ D_linear_predictor_obs <- function(omega, Trt, m, n = length(Trt)) {
 #'   
 #' @export
 
-gem_scd <- function(Trt, outcome, m, fam){
+gem_scd <- function(Trt, outcome, m, fam) {
   
   #calculate the number of observations
   n <- length(outcome)
