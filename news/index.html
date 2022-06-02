@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SingleCaseES</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -66,23 +66,23 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.5.3.9999" id="singlecasees-0539999">SingleCaseES 0.5.3.9999<a class="anchor" aria-label="anchor" href="#singlecasees-0539999"></a></h2>
-<ul><li>batch_calc_ES() now provides several additional options for weights to use when aggregating effect sizes, including weighting by nA (the number of baseline phase observations), nB (the number of treatment phase observations), nA * nB, or 1 / nA + 1 / nB.</li>
+<h2 class="page-header" data-toc-text="0.6.0" id="singlecasees-060">SingleCaseES 0.6.0<a class="anchor" aria-label="anchor" href="#singlecasees-060"></a></h2>
+<ul><li>Changes to batch_calc_ES()<ul><li>batch_calc_ES() now provides several additional options for weights to use when aggregating effect sizes, including weighting by nA (the number of baseline phase observations), nB (the number of treatment phase observations), nA * nB, or 1 / nA + 1 / nB.</li>
+<li>For aggregating effect sizes, batch_calc_ES() now defaults to equal-weighting (rather than inverse-variance weighting)</li>
+<li>For aggregating effect sizes, batch_calc_ES() now provides more informative error messages for effect sizes that do not have standard errors (and therefore cannot be aggregated with inverse-variance weights).</li>
+<li>Corrected a cosmetic bug in a warning message of batch_calc_ES() when scale argument is specified as a variable and ES includes “LOR”.</li>
+</ul></li>
+<li>Changes to functions for specific effect sizes<ul><li>Added intervention_phase argument to NAP(), SMD(), and other user-facing effect size calculation functions.</li>
 <li>The SMD() function now reports the SD (baseline SD or pooled SD) used in the denominator of the standardized mean difference.</li>
 <li>The SMD() function now returns a warning instead of an error when the standard deviation is zero.</li>
-<li>SCD_effect_sizes shiny app changes<ul><li>The batch entry calculator now includes an interface for visualizing data series.</li>
+<li>Added option for Kendall’s rank correlation in the Tau_BC() function.</li>
+<li>Added warn argument to Tau_BC() function, to control printing of messages regarding baseline trend test.</li>
+</ul></li>
+<li>Changes to the SCD_effect_sizes shiny app<ul><li>The batch entry calculator now includes an interface for visualizing data series.</li>
 <li>The batch entry calculator now includes an interface for taking a subset of observations.</li>
 <li>Miscellaneous aesthetic and layout fixes.</li>
+<li>Added unit tests of shiny app results.</li>
 </ul></li>
-</ul></div>
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.5.0.9999" id="singlecasees-0509999">SingleCaseES 0.5.0.9999<a class="anchor" aria-label="anchor" href="#singlecasees-0509999"></a></h2>
-<ul><li>For aggregating effect sizes, batch_calc_ES() now defaults to equal-weighting (rather than inverse-variance weighting) and provides more informative error messages for effect sizes that do not have standard errors (and therefore cannot be aggregated with inverse-variance weights).</li>
-<li>Added unit tests for SCD_effect_sizes shiny app.</li>
-<li>Added intervention_phase argument to NAP(), SMD(), and other user-facing effect size calculation functions.</li>
-<li>Added warn argument to Tau_BC() function, to control printing of messages regarding baseline trend test.</li>
-<li>Added option for Kendall’s rank correlation in the Tau_BC() function.</li>
-<li>Corrected a cosmetic bug in a warning message of batch_calc_ES() when scale argument is specified as a variable and ES includes “LOR”.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0" id="singlecasees-050">SingleCaseES 0.5.0<small>2021-09-30</small><a class="anchor" aria-label="anchor" href="#singlecasees-050"></a></h2>
