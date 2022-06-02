@@ -58,7 +58,7 @@ the GUI through RStudio.
 
 # Acknowledgement ![]()
 
-<img src="https://raw.githubusercontent.com/jepusto/SingleCaseES/master/images/IES_InstituteOfEducationSciences_RGB.svg" width="40%" align = "right" alt = "Institute of Education Sciences logo"/>
+<img src="https://raw.githubusercontent.com/jepusto/SingleCaseES/main/images/IES_InstituteOfEducationSciences_RGB.svg" width="40%" align = "right" alt = "Institute of Education Sciences logo"/>
 
 The development of this R package was supported in part by the Institute
 of Education Sciences, U.S. Department of Education, through [Grant
@@ -73,13 +73,13 @@ Please cite this R package as follows:
 
 > Pustejovsky, J. E., Chen, M., & Swan, D. M. (2021). SingleCaseES: A
 > calculator for single-case effect size indices. R package version
-> 0.5.0. Retrieved from <https://github.com/jepusto/SingleCaseES>
+> 0.5.3.9999. Retrieved from <https://github.com/jepusto/SingleCaseES>
 
 Please cite the web applications as follows:
 
 > Pustejovsky, J. E., Chen, M., & Swan, D. M. (2021). Single-case effect
-> size calculator (Version 0.5.0) \[Web application\]. Retrieved from
-> <https://jepusto.shinyapps.io/SCD-effect-sizes>
+> size calculator (Version 0.5.3.9999) \[Web application\]. Retrieved
+> from <https://jepusto.shinyapps.io/SCD-effect-sizes>
 
 > Swan, D. M. & Pustejovsky, J. E. (2017). gem_scd: A web-based
 > calculator for the Gradual Effects Model (Version 0.1.0) \[Web
