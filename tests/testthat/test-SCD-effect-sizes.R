@@ -8,7 +8,10 @@ suppressWarnings(library(rvest))
 suppressWarnings(library(purrr))
 
 appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")
-app <- ShinyDriver$new(appDir)
+
+if (dependenciesInstalled()) {
+  app <- ShinyDriver$new(appDir, loadTimeout = 2e+05)
+}
 
 
 test_that("Title and tabs are correct", {
