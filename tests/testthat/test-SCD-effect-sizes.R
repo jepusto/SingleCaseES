@@ -30,7 +30,7 @@ test_that("Title and tabs are correct", {
 
 
 
-check_single <- function(ES, ES_family, A_data, B_data, Kendall = FALSE) {
+check_single <- function(app, ES, ES_family, A_data, B_data, Kendall = FALSE) {
   
   improvement <- ifelse(ES == "LRRd", "decrease", "increase")
   
@@ -91,10 +91,10 @@ test_that("Single-entry calculator works properly", {
   
   # app
   NOMs_name <- c("PND", "PAND", "PEM", "IRD", "Tau_U", "NAP", "Tau", "Tau_BC")
-  NOMs_app <- map_dfr(NOMs_name, ~ check_single(.x, ES_family = "Non-overlap", A_data = A_dat, B_data = B_dat))
+  NOMs_app <- map_dfr(NOMs_name, ~ check_single(app, .x, ES_family = "Non-overlap", A_data = A_dat, B_data = B_dat))
   
   Parametric_name <- c("LOR", "LRRi", "LRRd", "LRM", "SMD")
-  Parametric_app <- map_dfr(Parametric_name, ~ check_single(.x, ES_family = "Parametric", A_data = A_dat, B_data = B_dat))
+  Parametric_app <- map_dfr(Parametric_name, ~ check_single(app, .x, ES_family = "Parametric", A_data = A_dat, B_data = B_dat))
   
   output_app <- 
     bind_rows(NOMs_app, Parametric_app) %>% 
@@ -135,7 +135,7 @@ test_that("Single-entry calculator works properly", {
   
   # check when Kendall == TRUE for Tau_BC
   Kendall_app_res <- 
-    check_single(ES = "Tau_BC", ES_family = "Non-overlap", A_data = A_dat, B_data = B_dat, Kendall = TRUE) %>% 
+    check_single(app, ES = "Tau_BC", ES_family = "Non-overlap", A_data = A_dat, B_data = B_dat, Kendall = TRUE) %>% 
     mutate(ES_value = str_remove(ES_value, "(<br>){4,}.*")) %>%
     tidyr::separate(ES_value, c("Est", "SE", "CI"), "<br>", fill = "right") %>%
     mutate(
@@ -160,7 +160,7 @@ test_that("Single-entry calculator works properly", {
 
 
 
-check_batch <- function(example_dat, ES, Kendall = FALSE) {
+check_batch <- function(app, example_dat, ES, Kendall = FALSE) {
   NOMs <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U")
   Parametrics <- c("LOR", "LRRd", "LRRi", "LRM", "SMD")
   
@@ -226,13 +226,13 @@ test_that("Batch calculator is correct", {
   
   # Shiny app
   McKissick_app <- 
-    check_batch(example_dat = "McKissick", ES = all_names, Kendall = FALSE) %>% 
+    check_batch(app, example_dat = "McKissick", ES = all_names, Kendall = FALSE) %>% 
     dplyr::select(-baseline_SD)
   
-  Schmidt_app <- check_batch(example_dat = "Schmidt2007", ES = all_names, Kendall = FALSE) 
+  Schmidt_app <- check_batch(app, example_dat = "Schmidt2007", ES = all_names, Kendall = FALSE) 
   
   Wright_app <- 
-    check_batch(example_dat = "Wright2012", ES = all_names, Kendall = FALSE) %>% 
+    check_batch(app, example_dat = "Wright2012", ES = all_names, Kendall = FALSE) %>% 
     dplyr::select(-baseline_SD)
 
   # Package
@@ -314,9 +314,9 @@ test_that("Batch calculator is correct", {
   
   # Kendall == TRUE
   # Shiny app
-  McKissick_app_Kendall <- check_batch("McKissick", ES = "Tau_BC", Kendall = TRUE)
-  Schmidt_app_Kendall <- check_batch("Schmidt2007", ES = "Tau_BC", Kendall = TRUE)
-  Wright_app_Kendall <- check_batch("Wright2012", ES = "Tau_BC", Kendall = TRUE)
+  McKissick_app_Kendall <- check_batch(app, "McKissick", ES = "Tau_BC", Kendall = TRUE)
+  Schmidt_app_Kendall <- check_batch(app, "Schmidt2007", ES = "Tau_BC", Kendall = TRUE)
+  Wright_app_Kendall <- check_batch(app, "Wright2012", ES = "Tau_BC", Kendall = TRUE)
   
   # Package
   McKissick_pkg_Kendall <-
@@ -396,7 +396,7 @@ test_that("Batch calculator is correct", {
 
 # Check data uploading
 
-check_load <- function(file, Kendall = FALSE) {
+check_load <- function(app, file, Kendall = FALSE) {
 
   # myfile <- tempfile()
   # write.csv(file, file = myfile)
@@ -465,12 +465,12 @@ test_that("Data are uploaded correctly.", {
   
   # csv file
   output_csv <- 
-    check_load("McKissick.csv") %>% 
+    check_load(app, "McKissick.csv") %>% 
     mutate(baseline_SD = as.numeric(if_else(baseline_SD == "-", NA_character_, baseline_SD)))
            
   # excel file
   output_xlsx <- 
-    check_load("McKissick.xlsx") %>% 
+    check_load(app, "McKissick.xlsx") %>% 
     mutate(baseline_SD = as.numeric(if_else(baseline_SD == "-", NA_character_, baseline_SD)))
   
   all_names <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U",
