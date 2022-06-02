@@ -18,7 +18,7 @@ test_that("calc_ES() works with single observation in baseline.", {
     improvement = "decrease", scale = "percentage",
     ES = c("LOR","LRRd","LRRi")))
   
-  expect_error(calc_ES(A_data = A1, B_data = B3, 
+  expect_warning(calc_ES(A_data = A1, B_data = B3, 
                        improvement = "decrease", scale = "percentage",
                        ES = "SMD", warn = FALSE))
   
@@ -79,11 +79,11 @@ test_that("calc_ES() works with single observation in each phase", {
   expect_true(all(is.na(ratio_measures$Est)))
   expect_true(all(is.na(ratio_measures$SE)))
   
-  expect_error(calc_ES(A_data = A1, B_data = B1, 
+  expect_warning(calc_ES(A_data = A1, B_data = B1, 
                        improvement = "decrease", scale = "percentage",
                        ES = "SMD", warn = FALSE))
   
-  expect_error(calc_ES(A_data = A1, B_data = B1, 
+  expect_warning(calc_ES(A_data = A1, B_data = B1, 
                          improvement = "decrease", scale = "percentage",
                          ES = "SMD", std_dev = "pool", warn = FALSE))
   
@@ -104,7 +104,7 @@ test_that("calc_ES() works with three observations in each phase.", {
   
   ES_SE <- calc_ES(A_data = A3, B_data = B3, improvement = "decrease", scale = "percentage", ES = c("LOR","LRRd","LRRi","SMD","NAP","Tau"))
   
-  expect_identical(names(ES_SE), c("ES","Est","SE","CI_lower","CI_upper"))
+  expect_identical(names(ES_SE), c("ES","Est","SE","CI_lower","CI_upper","baseline_SD"))
   
   NOMs <- calc_ES(A_data = A3, B_data = B3, improvement = "decrease", ES = c("PND","PAND","PEM","IRD","Tau-U"))
   

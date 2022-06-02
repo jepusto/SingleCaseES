@@ -9,7 +9,7 @@ Shogren <- Shogren %>%
   group_by(Study, Case, Measure) %>%
   mutate(
     session_number = row_number(),
-    scale = ifelse(Recording_procedure == "EC", "count", "proportion"),
+    DV_scale = ifelse(Recording_procedure == "EC", "count", "proportion"),
     intervals = Session_length * 60 / interval_length,
     smd_improvement = ifelse(direction == "increase", "decrease", "increase")
   ) %>%
@@ -24,9 +24,9 @@ ShogrenSMD <- batch_calc_ES(dat = Shogren,
                             session_number = session_number,
                             improvement = smd_improvement,
                             ES = "SMD",
-                            scale = scale,
+                            scale = DV_scale,
                             intervals = intervals,
-                            observation_length = "Session_length",
+                            observation_length = Session_length,
                             format = "wide",
                             std_dev = "both",
                             bias_correct = FALSE) %>%
@@ -41,7 +41,7 @@ Shogren_LRR_LOR_PND <-
                 session_number = session_number,
                 improvement = direction,
                 ES = c("PND", "LRRd", "LOR"),
-                scale = scale,
+                scale = DV_scale,
                 intervals = "intervals",
                 observation_length = "Session_length",
                 format = "wide", 

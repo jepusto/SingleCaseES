@@ -140,15 +140,38 @@ shinyServer(function(input, output, session) {
       est <- ES()$est
       
       if (ES()$index %in% statistical_indices) {
+
         Est_txt <- paste("Effect size estimate:", fmt(est$Est[1]))
         SE_txt <- paste("Standard error:", fmt(est$SE[1]))
         CI_txt <- paste0(input$confidence,"% CI: [", fmt(est$CI_lower[1]), ", ", fmt(est$CI_upper[1]), "]")
-        if (nrow(est) > 1) {
-          pct_est <- paste("<br/>Percentage change:", pct(est$Est[2]))
-          pct_CI <- paste0(input$confidence,"% CI: [", pct(est$CI_lower[2]), ", ", pct(est$CI_upper[2]), "]")
-          pct_txt <- paste(pct_est, pct_CI, sep = "<br/>")
+        
+        note_SMD_no_variation <- NULL
+        pct_txt <- NULL
+        
+        if (ES()$index == "SMD" & input$SMD_denom == "baseline SD") {
+          if (sd(dat()$A) == 0) {
+            Est_txt <- SE_txt <- CI_txt <- SD_txt <- NULL
+            note_SMD_no_variation <- strong(style="color:red", "The baseline SD is zero. Please try the pooled SD or use other effect size metrics.")
+          } else {
+            SD_txt <- paste("Baseline SD:", fmt(est$`baseline_SD`[1]))
+          }
+          
+        } else if (ES()$index == "SMD" & input$SMD_denom == "pooled SD") {
+          if (all(c(sd(dat()$A), sd(dat()$B)) == 0)) {
+            Est_txt <- SE_txt <- CI_txt <- SD_txt <- NULL
+            note_SMD_no_variation <- strong(style ="color:red", "The pooled SD is zero. The SMD is not an appropriate effect size metric for these data.")
+          } else {
+            SD_txt <- paste("Pooled SD:", fmt(est$`pooled_SD`[1]))
+          }
+         
         } else {
-          pct_txt <- NULL
+          SD_txt <- NULL
+          
+          if (nrow(est) > 1) {
+            pct_est <- paste("<br/>Percentage change:", pct(est$Est[2]))
+            pct_CI <- paste0(input$confidence,"% CI: [", pct(est$CI_lower[2]), ", ", pct(est$CI_upper[2]), "]")
+            pct_txt <- paste(pct_est, pct_CI, sep = "<br/>")
+          } 
         }
         
         note_txt_TauBC <- NULL
@@ -165,7 +188,8 @@ shinyServer(function(input, output, session) {
         }
         
         note_txt <- "<br/>Note: SE and CI are based on the assumption that measurements are mutually independent (i.e., not auto-correlated)." 
-        HTML(paste(Est_txt, SE_txt, CI_txt, pct_txt, note_txt_TauBC, note_txt, sep = "<br/>"))
+        
+        HTML(paste(Est_txt, SE_txt, CI_txt, SD_txt, pct_txt, note_txt_TauBC, note_SMD_no_variation, note_txt, sep = "<br/>"))
         
       } else {
         Est_txt <- paste("Effect size estimate:", fmt(est$Est))
@@ -220,13 +244,61 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  output$datview <- renderTable(datFile())
-  output$datview2 <- renderTable(datFile())
   
-  
-  output$clusterPhase <- renderUI({
+  output$filtervarMapping <- renderUI({
     
     var_names <- names(datFile())
+    list(
+      selectizeInput("filters", label = "Filtering variables", choices = var_names, selected = NULL, multiple = TRUE)
+    )
+    
+  })
+  
+  output$filterMapping <- renderUI({
+    
+    filter_vars <- input$filters  
+    filter_vals <- lapply(filter_vars, function(x) levels(as.factor(datFile()[,x])))
+    names(filter_vals) <- filter_vars
+    header <- strong("Please select values for each filtering variable.")
+    
+    filter_selects <- lapply(filter_vars, function(x) 
+      selectizeInput(paste0("filter_",x), label = x, choices = filter_vals[[x]], 
+                     selected = filter_vals[[x]][1], multiple = TRUE))
+    
+    if (length(filter_vars) > 0) {
+      filter_selects <- list(header, column(12, br()), filter_selects)
+    }
+    
+    filter_selects
+    
+  })
+  
+  datClean <- reactive({
+    
+    if (input$dat_type == "example") {
+      data(list = input$example)
+      dat <- get(input$example)
+    } else {
+      dat <- datFile()
+    }
+    
+    if (!is.null(input$filters)) {
+      subset_vals <- sapply(input$filters, function(x) datFile()[[x]] %in% input[[paste0("filter_",x)]])
+      dat <- dat[apply(subset_vals, 1, all),]
+      dat <- droplevels(dat)
+    }
+      
+    return(dat)
+    
+  })
+  
+  output$datview <- renderTable(datClean())
+  
+  
+  # variables tab
+  output$clusterPhase <- renderUI({
+    
+    var_names <- names(datClean())
     if (input$dat_type == "dat" || input$dat_type == "xlsx") {
       
       list(
@@ -251,11 +323,11 @@ shinyServer(function(input, output, session) {
       
     }
   })
-
-
+  
+  
   output$baseDefine <- renderUI({
     
-    phase_choices <- if (!is.null(input$b_phase)) unique(datFile()[[input$b_phase]]) else c("A","B")
+    phase_choices <- if (!is.null(input$b_phase)) unique(datClean()[[input$b_phase]]) else c("A","B")
     
     if (input$dat_type == "dat") {
       selectInput("b_base", label = "Baseline phase value", choices = phase_choices)
@@ -267,7 +339,7 @@ shinyServer(function(input, output, session) {
   
   output$treatDefine <- renderUI({
     
-    phase_choices <- if (!is.null(input$b_phase)) unique(datFile()[[input$b_phase]]) else c("A","B")
+    phase_choices <- if (!is.null(input$b_phase)) unique(datClean()[[input$b_phase]]) else c("A","B")
     trt_choices <- setdiff(phase_choices, input$b_base)
     
     if (input$dat_type == "dat") {
@@ -277,12 +349,12 @@ shinyServer(function(input, output, session) {
       selectInput("b_treat", label = "Treatment phase value", choices = trt_choices, selected = curMap$phase_vals[2])  
     }
   })
-
-    
+  
+  
   output$outOrderImp <- renderUI({
-
-    var_names <- names(datFile())
-
+    
+    var_names <- names(datClean())
+    
     if (input$dat_type == "dat") {
       list(
         selectInput("session_number", label = "Session number", choices = var_names, selected = var_names[5]),
@@ -302,7 +374,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$improvementVar <- renderUI({
-    var_names <- names(datFile())
+    var_names <- names(datClean())
     
     if (input$dat_type == "dat") {
       list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names))
@@ -311,7 +383,7 @@ shinyServer(function(input, output, session) {
       list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names, selected = curMap$direction_var))
     }
   })
-   
+  
   # Measurement details taken out of the following function - might be useful later
   # selectInput("bmeasurementProcedure", label = "Measurement Procedure",
   #                  choices = c("all continuous recording", "all interval recording", "all event counting", "all other", "by series" = "series")),
@@ -320,25 +392,25 @@ shinyServer(function(input, output, session) {
   #                                   choices = var_names)),
   #      conditionalPanel(condition = "input.bmeasurementProcedure == 'series' | input.bmeasurementProcedure == 'all continuous recording'",
   #                       textInput("bfloor", label = "Optional floor for log-prevalence odds-ratio", value = NA)),
- 
+  
   output$measurementProc <- renderUI({
     
-    var_names <- names(datFile())
+    var_names <- names(datClean())
     
     if (input$dat_type == "dat") {  
       
       list(
         selectInput("boutScale", label = "Outcome Scale",
-                         choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series")),
+                    choices = c("all percentage" = "percentage", "all proportion" = "proportion", "all count" = "count", "all rate" = "rate", "all other" = "other", "by series" = "series")),
         conditionalPanel(condition = "input.boutScale == 'series'",
-                        selectInput("bscalevar", "Select variable identifying outcome scale",
-                                    choices = var_names)),
+                         selectInput("bscalevar", "Select variable identifying outcome scale",
+                                     choices = var_names)),
         selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
-                   choices = c(NA, var_names), selected = NA),
+                    choices = c(NA, var_names), selected = NA),
         selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
-                   choices = c(NA, var_names), selected = NA),
+                    choices = c(NA, var_names), selected = NA),
         numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
-                    value = NA, min = 0)
+                     value = NA, min = 0)
       )
       
     } else {
@@ -353,22 +425,133 @@ shinyServer(function(input, output, session) {
                                      choices = var_names,
                                      selected = (if(!is.null(curMap$scale_var)){curMap$scale_var}else{NA}))),
         selectInput("bintervals", label = "Optionally, a variable identifying the number of intervals per observation session.",
-                choices = c(NA, var_names), selected = curMap$intervals),
+                    choices = c(NA, var_names), selected = curMap$intervals),
         selectInput("bobslength", label = "Optionally, a variable identifying the length of each observation session.",
-                choices = c(NA, var_names), selected = curMap$observation_length),
+                    choices = c(NA, var_names), selected = curMap$observation_length),
         numericInput("blrrfloor", label = "Optionally, provide a floor for the log-response or log-odds ratio? Must be greater than or equal to 0.", 
-                 value = NA, min = 0)
+                     value = NA, min = 0)
       )
       
     }
   }) 
+  
+  output$datview2 <- renderTable(datClean())
+  
+  # Plot
+  output$facetSelector <- renderUI({
+    grouping_vars <- input$b_clusters
+    aggregating_vars <- input$b_aggregate
+    facet_vars <- c("None", grouping_vars, aggregating_vars)
+    selectizeInput("bfacetSelector", label = "Display plots for each value of this variable.", 
+                   choices = facet_vars, selected = NULL, multiple = FALSE)
+  })
+  
+  output$graph_filters <- renderUI({
+    
+    grouping_vars <- setdiff(c(input$b_clusters, input$b_aggregate), input$bfacetSelector)
+    
+    if (length(grouping_vars) > 0) {
+      
+      grouping_vals <- lapply(grouping_vars, function(x) levels(as.factor(datClean()[,x])))
+      names(grouping_vals) <- grouping_vars
+      
+      header <- strong("Select a value for each grouping variable.")
+      
+      grouping_selects <- lapply(grouping_vars, function(x) 
+        selectizeInput(paste0("grouping_",x), label = x, choices = grouping_vals[[x]], 
+                       selected = grouping_vals[[x]][1], multiple = FALSE))
+      
+      grouping_selects <- list(header, column(12, br()), grouping_selects)
+      
+      grouping_selects
+      
+    }
+    
+  })
+  
+  datGraph <- reactive({
+    
+    dat <- datClean()
+    
+    if (!is.null(input$b_clusters) | !is.null(input$b_aggregate)) {
+
+      grouping_vars <- setdiff(c(input$b_clusters, input$b_aggregate), input$bfacetSelector)
+      
+      if (length(grouping_vars) > 0) {
+        subset_vals <- sapply(grouping_vars, function(x) datClean()[[x]] %in% input[[paste0("grouping_",x)]])
+        dat <- dat[apply(subset_vals, 1, all),]
+      } 
+      
+    }
+    
+    return(dat)
+    
+  })
+  
+  # output$datview3 <- renderTable(datGraph2())
+  
+  heightPlot <- reactive({
+    if (input$bfacetSelector == "None") {
+      height <- 300
+    } else {
+      height <- 180 * (length(unique(datGraph()[[input$bfacetSelector]])))
+    }
+  })
+  
+  output$batchPlot <- renderPlot({
+    
+    dat <- datGraph()
+    session_dat <- dat[[input$session_number]]
+    outcome_dat <- dat[[input$b_out]]
+    phase_dat <- dat[[input$b_phase]]
+    phase_code <- if (!is.null(input$b_phase)) unique(phase_dat) else c("A","B")
+    
+    if (input$bfacetSelector == "None") {
+      
+      dat_graph <-
+        data.frame(session = session_dat, outcome = outcome_dat, phase = phase_dat) %>%
+        dplyr::filter(phase %in% c(input$b_base, input$b_treat))
+      
+      phase_change <-
+        dat_graph %>%
+        dplyr::filter(phase == phase_code[2]) %>%
+        dplyr::mutate(treat_change = suppressWarnings(min(session)) - 0.5) %>%
+        dplyr::select(treat_change) %>%
+        unique()
+      
+    } else {
+      
+      facet_dat <- dat[[input$bfacetSelector]]
+      
+      dat_graph <-
+        data.frame(facet = facet_dat, session = session_dat, outcome = outcome_dat, phase = phase_dat) %>%
+        dplyr::filter(phase %in% c(input$b_base, input$b_treat))
+      
+      phase_change <-
+        dat_graph %>%
+        group_by(facet) %>%
+        dplyr::filter(phase == phase_code[2]) %>%
+        dplyr::mutate(treat_change = suppressWarnings(min(session)) - 0.5) %>%
+        dplyr::select(facet, treat_change) %>%
+        unique()
+      
+    }
+    
+    ggplot(dat_graph, aes(session, outcome, color = phase)) +
+      geom_point(size = 2) + geom_line() +
+      {if ("facet" %in% names(dat_graph)) facet_grid(facet ~ .)} +
+      geom_vline(data = phase_change, aes(xintercept = treat_change), linetype = "dashed") +
+      scale_color_brewer(type = "qual", palette = 2) +
+      theme_bw() + theme(legend.position = "bottom")
+    
+  }, height = function() heightPlot(), width = function() 700)
 
 
   batchModel <- eventReactive(input$batchest, {
     
     if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
       if (input$boutScale == "series") {
-        scale_val <- input$bscalevar
+        scale_val <- as.symbol(input$bscalevar)
       } else{
         scale_val <- input$boutScale
       }
@@ -377,7 +560,7 @@ shinyServer(function(input, output, session) {
     }
     
     if(input$bimprovement == "series") {
-      improvement <- input$bseldir
+      improvement <- as.symbol(input$bseldir)
     } else {
       improvement <- input$bimprovement
     }
@@ -394,9 +577,9 @@ shinyServer(function(input, output, session) {
       pretest_trend <- input$bsignificance_level
     }
     
-    if(is.null(input$b_aggregate)) {
+    if (is.null(input$b_aggregate)) {
       
-      batch_calc_ES(dat = datFile(),
+      batch_calc_ES(dat = datClean(),
                     grouping = input$b_clusters,
                     condition = input$b_phase,
                     outcome = input$b_out,
@@ -416,7 +599,7 @@ shinyServer(function(input, output, session) {
       
     } else{
       
-      batch_calc_ES(dat = datFile(),
+      batch_calc_ES(dat = datClean(),
                     grouping = input$b_clusters,
                     condition = input$b_phase,
                     outcome = input$b_out,
@@ -447,7 +630,7 @@ shinyServer(function(input, output, session) {
     filename = "SCD effect size estimates.csv",
     content = function(file) {
       dat <- batchModel()
-      write.csv(dat, file, row.names=FALSE)
+      write.csv(dat, file, row.names=FALSE, na = "")
     },
     contentType = "text/csv"
   )
@@ -485,7 +668,25 @@ shinyServer(function(input, output, session) {
         ''
       )
     }
-
+    
+    # filter the data
+    
+    filter_vars <- input$filters
+    filter_vals <- if(length(filter_vars) > 0) lapply(paste0("filter_", filter_vars), 
+                                                        function(x) paste0('"', input[[x]], '"', collapse = ",")) else NULL
+    filter_vals <- paste0("%in% c(", filter_vals, ")")
+    filter_string <- paste(input$filters, filter_vals, collapse = " & ")
+      
+    if (!is.null(input$filters)) {
+      clean_dat <- c(
+        parse_code_chunk("dat-filter", args = list(user_filterString = filter_string)),
+        ''
+      )
+    } else {
+      clean_dat <- c()
+    } 
+    
+    
     # batch calculation
     if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
       if (input$boutScale == "series") {
@@ -577,7 +778,7 @@ shinyServer(function(input, output, session) {
           '')
     }
 
-    res <- c(header_res, '', read_res, '', output_res)
+    res <- c(header_res, '', read_res, '', clean_dat, '', output_res)
     paste(res, collapse = "\n")
   })
 
@@ -586,7 +787,7 @@ shinyServer(function(input, output, session) {
   })
 
   output$clip <- renderUI({
-    rclipboard::rclipButton("clipbtn", "Copy", batch_syntax(), icon("clipboard"))
+    rclipboard::rclipButton("clipbtn", "Copy", batch_syntax(), modal = FALSE, icon("clipboard"))
   })
 
   session$onSessionEnded(function() {

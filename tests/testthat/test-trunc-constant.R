@@ -15,11 +15,11 @@ test_that("LRRi, LRRd, SMD, Tau and their standard errors are positive for count
   
   ABd <- calc_ES(A_data = A_dat, B_data = B_dat, 
                  improvement = "decrease", scale = "count", 
-                 ES = c("LRRd","LRRi","SMD","Tau"))
+                 ES = c("LRRd","LRRi","SMD","Tau")) %>% dplyr::select(-baseline_SD)
   ABd <- rbind(ABd, Tau(A_dat, B_dat, improvement = "decrease", SE = "Hanley"))
   ABi <- calc_ES(A_data = A_dat, B_data = B_dat, 
                  improvement = "increase", scale = "count", 
-                 ES = c("LRRd","LRRi","SMD","Tau"))
+                 ES = c("LRRd","LRRi","SMD","Tau")) %>% dplyr::select(-baseline_SD)
   ABi <- rbind(ABi, Tau(A_dat, B_dat, improvement = "increase", SE = "Hanley"))
   
   expect_equal(ABd$Est, -ABi$Est)
@@ -30,11 +30,11 @@ test_that("LRRi, LRRd, SMD, Tau and their standard errors are positive for count
   
   CDd <- calc_ES(A_data = C_dat, B_data = D_dat, 
                  improvement = "decrease", scale = "count", std_dev = "pool",
-                 ES = c("LRRd","LRRi","SMD","Tau"))
+                 ES = c("LRRd","LRRi","SMD","Tau")) %>% dplyr::select(-pooled_SD)
   CDd <- rbind(CDd, Tau(C_dat, D_dat, improvement = "decrease", SE = "Hanley"))
   CDi <- calc_ES(A_data = C_dat, B_data = D_dat, 
                  improvement = "increase", scale = "count", std_dev = "pool",
-                 ES = c("LRRd","LRRi","SMD","Tau"))
+                 ES = c("LRRd","LRRi","SMD","Tau")) %>% dplyr::select(-pooled_SD)
   CDi <- rbind(CDi, Tau(C_dat, D_dat, improvement = "increase", SE = "Hanley"))
   
   
@@ -43,7 +43,7 @@ test_that("LRRi, LRRd, SMD, Tau and their standard errors are positive for count
   expect_equal(CDd$CI_lower, -CDi$CI_upper)
   expect_equal(CDd$CI_upper, -CDi$CI_lower)
   expect_true(all(CDd$SE > 0))
-  expect_error(SMD(A_data = C_dat, B_data = D_dat, std_dev = "baseline"))
+  expect_warning(SMD(A_data = C_dat, B_data = D_dat, std_dev = "baseline"))
   
 
   EFd <- calc_ES(A_data = E_dat, B_data = F_dat, 
@@ -60,8 +60,8 @@ test_that("LRRi, LRRd, SMD, Tau and their standard errors are positive for count
   expect_equal(EFd$CI_lower, -EFi$CI_upper)
   expect_equal(EFd$CI_upper, -EFi$CI_lower)
   expect_true(all(EFd$SE > 0))
-  expect_error(SMD(A_data = E_dat, B_data = F_dat, std_dev = "baseline"))
-  expect_error(SMD(A_data = E_dat, B_data = F_dat, std_dev = "pool"))
+  expect_warning(SMD(A_data = E_dat, B_data = F_dat, std_dev = "baseline"))
+  expect_warning(SMD(A_data = E_dat, B_data = F_dat, std_dev = "pool"))
   
   EGd <- calc_ES(A_data = E_dat, B_data = G_dat, 
                  improvement = "decrease", scale = "count", 
@@ -79,7 +79,7 @@ test_that("LRRi, LRRd, SMD, Tau and their standard errors are positive for count
   expect_equal(EGd$CI_lower, -EGi$CI_upper)
   expect_equal(EGd$CI_upper, -EGi$CI_lower)
   expect_true(all(EGd$SE > 0))
-  expect_error(SMD(A_data = E_dat, B_data = G_dat, std_dev = "baseline"))
-  expect_error(SMD(A_data = E_dat, B_data = G_dat, std_dev = "pool"))
+  expect_warning(SMD(A_data = E_dat, B_data = G_dat, std_dev = "baseline"))
+  expect_warning(SMD(A_data = E_dat, B_data = G_dat, std_dev = "pool"))
   
 })
