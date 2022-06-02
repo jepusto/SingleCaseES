@@ -1,11 +1,11 @@
-### Accessing the calculator
+# Accessing the calculator
 
 There are two ways to access this tool: via a website or on your own
 computer, using the RStudio software. Since you are reading this now,
 you have presumably already figured out at least one of these. Read on
 to learn more about both options.
 
-#### Access through the shinyapps.io website
+## Access through the shinyapps.io website
 
 The simplest way to access the calculator is via the web, at
 <https://jepusto.shinyapps.io/SCD-effect-sizes/>. This version of the
@@ -17,7 +17,7 @@ available---especially towards the end of the month. If you intend to
 use the calculator extensively, please install it on your own computer 
 by following the steps below.
 
-#### Access through RStudio
+## Access through RStudio
 
 To run the effect size calculator on your own computer, you
 will need to install two pieces of software (R and RStudio), both of

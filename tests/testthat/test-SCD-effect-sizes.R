@@ -24,7 +24,7 @@ test_that("Title and tabs are correct", {
   # tabs
   app$waitForValue("SCD_es_calculator")
   app$findWidget("SCD_es_calculator")$listTabs()
-  expect_equal(app$findWidget("SCD_es_calculator")$listTabs(), c("About", "Calculator", "Batch Entry"))
+  expect_equal(app$findWidget("SCD_es_calculator")$listTabs(), c("About", "Single-Series Calculator", "Multiple-Series Calculator"))
   
 })
 
@@ -36,7 +36,7 @@ check_single <- function(app, ES, ES_family, A_data, B_data, Kendall = FALSE) {
   
   
   app$setInputs(
-    SCD_es_calculator = "Calculator",
+    SCD_es_calculator = "Single-Series Calculator",
     A_dat = toString(A_data),
     B_dat = toString(B_data),
     ES_family = ES_family,
@@ -168,7 +168,7 @@ check_batch <- function(app, example_dat, ES, Kendall = FALSE) {
   bESpar <- ES[ES %in% Parametrics]
   
   app$setInputs(
-    SCD_es_calculator = "Batch Entry",
+    SCD_es_calculator = "Multiple-Series Calculator",
     example = example_dat,
     BatchEntryTabs = "Variables"
   )
@@ -403,7 +403,7 @@ check_load <- function(app, file, Kendall = FALSE) {
   data_path <- paste0("../testdata/", file)
   # data_path <- system.file("tests","testdata", file, package = "SingleCaseES")
   
-  app$setInputs(SCD_es_calculator = "Batch Entry")
+  app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
 
   if (str_detect(file, "csv")) {
     

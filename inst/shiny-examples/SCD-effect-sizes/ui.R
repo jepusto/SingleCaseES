@@ -9,14 +9,14 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                 includeMarkdown("markdown/About.md")),
                                        tabPanel("Accessing the calculator", 
                                                 includeMarkdown("markdown/Accessing.md")),
-                                       tabPanel("Using the single-entry calculator", 
-                                                includeMarkdown("markdown/using_single.md")),
-                                       tabPanel("Using the batch-entry calculator", 
-                                                includeMarkdown("markdown/using_batch.md")),
+                                       tabPanel("Using the single-series calculator", 
+                                                includeMarkdown("markdown/using_single_series.md")),
+                                       tabPanel("Using the multiple-series calculator", 
+                                                includeMarkdown("markdown/using_multiple_series.md")),
                                        tabPanel("Example data", 
                                                 includeMarkdown("markdown/example-data.md"))
                           )),
-                 tabPanel("Calculator",
+                 tabPanel("Single-Series Calculator",
                           fluidRow(column(12,
                                           h3("Data input"),
                                           h5("Enter data values, separated by commas, spaces, or tabs.")
@@ -156,7 +156,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                             
                           )
                  ),
-                 tabPanel("Batch Entry",
+                 tabPanel("Multiple-Series Calculator",
                           tabsetPanel(
                             id = "BatchEntryTabs",
                             tabPanel("Data",
