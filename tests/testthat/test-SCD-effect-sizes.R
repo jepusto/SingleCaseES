@@ -7,22 +7,15 @@ suppressWarnings(library(stringr))
 suppressWarnings(library(rvest))
 suppressWarnings(library(purrr))
 
-skip_on_cran()
-
 appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")
-
-if (!dependenciesInstalled()) {
-  tryCatch(installDependencies(), error = function(e) NULL)
-}
-
-if (dependenciesInstalled()) {
-  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
-}
-
 
 test_that("Title and tabs are correct", {
   
   skip_on_cran()
+  
+  if (dependenciesInstalled()) {
+    app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  }
   
   # title
   appTitle <- app$getTitle()[[1]]
@@ -74,6 +67,10 @@ check_single <- function(ES, ES_family, A_data, B_data, Kendall = FALSE) {
 test_that("Single-entry calculator works properly", {
   
   skip_on_cran()
+
+  if (dependenciesInstalled()) {
+    app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  }
   
   full_names <- list(IRD = "Robust Improvement Rate Difference",
                      NAP = "Non-overlap of All Pairs",
@@ -219,6 +216,10 @@ check_batch <- function(example_dat, ES, Kendall = FALSE) {
 test_that("Batch calculator is correct", {
   
   skip_on_cran()
+
+  if (dependenciesInstalled()) {
+    app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  }
   
   all_names <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U",
                  "LOR", "LRRd", "LRRi", "LRM", "SMD")
@@ -457,6 +458,10 @@ check_load <- function(file, Kendall = FALSE) {
 test_that("Data are uploaded correctly.", {
   
   skip_on_cran()
+  
+  if (dependenciesInstalled()) {
+    app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  }
   
   # csv file
   output_csv <- 
