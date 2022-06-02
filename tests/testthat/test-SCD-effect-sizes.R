@@ -9,6 +9,10 @@ suppressWarnings(library(purrr))
 
 appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")
 
+if (!dependenciesInstalled()) {
+  tryCatch(installDependencies(), error = function(e) NULL)
+}
+
 if (dependenciesInstalled()) {
   app <- ShinyDriver$new(appDir, loadTimeout = 2e+05)
 }

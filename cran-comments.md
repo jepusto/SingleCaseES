@@ -5,15 +5,15 @@ This is major release that includes new features in the built-in shiny app, new 
 ## Test environments
 
 * local Windows 10 Education, R 4.2.0
-- ubuntu 20.04.3 LTS (on Github), R devel, release, oldrelease
-- macOS-latest (on Github), R release
-- windows-latest (on Github), R release
+* ubuntu 20.04.3 LTS (on Github), R devel, release, oldrelease
+* macOS-latest (on Github), R release
+* windows-latest (on Github), R release
 * win-builder (devel, release, oldrelease)
 * r-hub:
   ? Windows Server 2008 R2 SP1, R-release, 32/64 bit
   - Ubuntu Linux 16.04 LTS, R-release, GCC
-  - Fedora Linux, R-devel, clang, gfortran
-  - Debian Linux, R-release, GCC
+  ? Fedora Linux, R-devel, clang, gfortran
+  ? Debian Linux, R-release, GCC
 
 ## R CMD check results
 
