@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SingleCaseES</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9999</span>
       </span>
     </div>
 
@@ -89,41 +89,22 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>A_data</dt>
-<dd><p>vector of numeric data for A phase. Missing values are dropped.</p></dd>
-<dt>B_data</dt>
-<dd><p>vector of numeric data for B phase. Missing values are dropped.</p></dd>
-<dt>condition</dt>
-<dd><p>vector identifying the treatment condition for each
-observation in the series.</p></dd>
-<dt>outcome</dt>
-<dd><p>vector of outcome data for the entire series.</p></dd>
-<dt>baseline_phase</dt>
-<dd><p>character string specifying which value of
-<code>condition</code> corresponds to the baseline phase. Defaults to first
-observed value of <code>condition</code>.</p></dd>
-<dt>intervention_phase</dt>
-<dd><p>character string specifying which value of
-<code>condition</code> corresponds to the intervention phase. Defaults to second
-unique value of <code>condition</code>.</p></dd>
-<dt>improvement</dt>
-<dd><p>character string indicating direction of improvement.
-Default is "increase".</p></dd>
-<dt>std_dev</dt>
-<dd><p>character string controlling how to calculate the standard
-deviation in the denominator of the effect size. Set to <code>"baseline"</code>
-(the default) to use the baseline standard deviation. Set to <code>"pool"</code>
-to use the pooled standard deviation.</p></dd>
-<dt>bias_correct</dt>
-<dd><p>logical value indicating whether to use bias-correction
-(i.e., Hedges' g). Default is <code>TRUE</code></p></dd>
-<dt>confidence</dt>
-<dd><p>confidence level for the reported interval estimate. Set to
-<code>NULL</code> to omit confidence interval calculations.</p></dd>
-</dl></div>
+    <p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+    </div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list containing the estimate, standard error, and confidence
+    
+
+<p>A list containing the estimate, standard error, and confidence
   interval.</p>
     </div>
     <div id="details">
@@ -145,14 +126,14 @@ to use the pooled standard deviation.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, bias_correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.959294 0.8237984 0.3446789 3.573909</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper baseline_SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.959294 0.8237984 0.3446789 3.573909    2.503331</span>
 <span class="r-in"><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.649932 0.6340935 0.4071314 2.892732</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper baseline_SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.649932 0.6340935 0.4071314 2.892732    2.503331</span>
 <span class="r-in"><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, std_dev <span class="op">=</span> <span class="st">"pool"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.876247 0.6374216 0.6269241 3.125571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper pooled_SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.876247 0.6374216 0.6269241 3.125571  2.431752</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

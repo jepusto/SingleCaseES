@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SingleCaseES</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9999</span>
       </span>
     </div>
 
@@ -92,48 +92,23 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>A_data</dt>
-<dd><p>vector of numeric data for A phase. Missing values are dropped.</p></dd>
-<dt>B_data</dt>
-<dd><p>vector of numeric data for B phase. Missing values are dropped.</p></dd>
-<dt>condition</dt>
-<dd><p>vector identifying the treatment condition for each
-observation in the series.</p></dd>
-<dt>outcome</dt>
-<dd><p>vector of outcome data for the entire series.</p></dd>
-<dt>baseline_phase</dt>
-<dd><p>character string specifying which value of
-<code>condition</code> corresponds to the baseline phase. Defaults to first
-observed value of <code>condition</code>.</p></dd>
-<dt>intervention_phase</dt>
-<dd><p>character string specifying which value of
-<code>condition</code> corresponds to the intervention phase. Defaults to second
-unique value of <code>condition</code>.</p></dd>
-<dt>ES</dt>
-<dd><p>character string or character vector specifying which effect size
-index or indices to calculate. Available effect sizes are <code>"LRRd"</code>,
-<code>"LRRi"</code>, <code>"LRM"</code>, <code>"LOR"</code>, <code>"SMD"</code>, <code>"NAP"</code>,
-<code>"IRD"</code>, <code>"PND"</code>, <code>"PEM"</code>, <code>"PAND"</code>, <code>"Tau"</code>,
-<code>"Tau-U"</code>, and <code>"Tau-BC"</code>. Set to <code>"all"</code> for all available
-effect sizes. Set to <code>"parametric"</code> for all parametric effect sizes.
-Set to <code>"NOM"</code> for all non-overlap measures. Defaults to calculating
-the LRRd, LRRi, SMD, and Tau indices.</p></dd>
-<dt>improvement</dt>
-<dd><p>character string indicating direction of improvement.
-Default is "increase".</p></dd>
-<dt>...</dt>
-<dd><p>further arguments used for calculating some of the effect size
-indices.</p></dd>
-<dt>confidence</dt>
-<dd><p>confidence level for the reported interval estimate. Set to
-<code>NULL</code> to omit confidence interval calculations.</p></dd>
-<dt>format</dt>
-<dd><p>character string specifying whether to organize the results in
-<code>"long"</code> format or <code>"wide"</code> format. Defaults to <code>"long"</code>.</p></dd>
-</dl></div>
+    <p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+    </div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame containing the estimate, standard error, and/or
+    
+
+<p>A data.frame containing the estimate, standard error, and/or
   confidence interval for each specified effect size.</p>
     </div>
     <div id="details">
@@ -147,31 +122,31 @@ indices.</p></dd>
 <span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">calc_ES</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ES        Est         SE    CI_lower    CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 LRRi  0.1953962 0.05557723  0.08646679  0.30432554</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  SMD  1.6499319 0.63409351  0.40713144  2.89273232</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Tau  0.8333333 0.13801311  0.19468122  0.97203517</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ES        Est         SE    CI_lower    CI_upper baseline_SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 LRRi  0.1953962 0.05557723  0.08646679  0.30432554          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  SMD  1.6499319 0.63409351  0.40713144  2.89273232    2.503331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Tau  0.8333333 0.13801311  0.19468122  0.97203517          NA</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Using the condition and outcome arguments</span></span>
 <span class="r-in"><span class="va">phase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">calc_ES</span><span class="op">(</span>condition <span class="op">=</span> <span class="va">phase</span>, outcome <span class="op">=</span> <span class="va">outcome</span>, baseline_phase <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ES        Est         SE    CI_lower    CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 LRRi  0.1953962 0.05557723  0.08646679  0.30432554</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  SMD  1.6499319 0.63409351  0.40713144  2.89273232</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Tau  0.8333333 0.13801311  0.19468122  0.97203517</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ES        Est         SE    CI_lower    CI_upper baseline_SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 LRRi  0.1953962 0.05557723  0.08646679  0.30432554          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  SMD  1.6499319 0.63409351  0.40713144  2.89273232    2.503331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Tau  0.8333333 0.13801311  0.19468122  0.97203517          NA</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Example from Parker &amp; Vannest (2009)</span></span>
 <span class="r-in"><span class="va">yA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">7</span>, <span class="fl">5</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">yB</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">9</span>, <span class="fl">7</span>, <span class="fl">9</span>, <span class="fl">7</span>, <span class="fl">5</span>, <span class="fl">9</span>, <span class="fl">11</span>, <span class="fl">11</span>, <span class="fl">10</span>, <span class="fl">9</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">calc_ES</span><span class="op">(</span><span class="va">yA</span>, <span class="va">yB</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ES        Est         SE   CI_lower   CI_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LRRd -0.8102983 0.14867023 -1.1016866 -0.5189100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 LRRi  0.8102983 0.14867023  0.5189100  1.1016866</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  SMD  2.8531844 0.78308117  1.3183735  4.3879953</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Tau  0.9272727 0.06385245  0.4999482  0.9901458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ES        Est         SE   CI_lower   CI_upper baseline_SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 LRRd -0.8102983 0.14867023 -1.1016866 -0.5189100          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 LRRi  0.8102983 0.14867023  0.5189100  1.1016866          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  SMD  2.8531844 0.78308117  1.3183735  4.3879953    1.494434</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Tau  0.9272727 0.06385245  0.4999482  0.9901458          NA</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

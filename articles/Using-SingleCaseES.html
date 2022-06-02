@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SingleCaseES</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9999</span>
       </span>
     </div>
 
@@ -292,20 +292,20 @@
 <span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, improvement <span class="op">=</span> <span class="st">"increase"</span><span class="op">)</span>
-<span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper</span>
-<span class="co">#&gt; 1 SMD 1.649932 0.6340935 0.4071314 2.892732</span>
+<span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper baseline_SD</span>
+<span class="co">#&gt; 1 SMD 1.649932 0.6340935 0.4071314 2.892732    2.503331</span>
 
 <span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, improvement <span class="op">=</span> <span class="st">"decrease"</span><span class="op">)</span>
-<span class="co">#&gt;    ES       Est        SE  CI_lower   CI_upper</span>
-<span class="co">#&gt; 1 SMD -1.649932 0.6340935 -2.892732 -0.4071314</span></code></pre></div>
+<span class="co">#&gt;    ES       Est        SE  CI_lower   CI_upper baseline_SD</span>
+<span class="co">#&gt; 1 SMD -1.649932 0.6340935 -2.892732 -0.4071314    2.503331</span></code></pre></div>
 <p>The <code>std_dev</code> argument controls whether the effect size estimate is based on the standard deviation of the baseline phase alone (the default, <code>std_dev = "baseline"</code>), or based on the standard deviation after pooling across both phases (<code>std_dev = "pool"</code>):</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, std_dev <span class="op">=</span> <span class="st">"baseline"</span><span class="op">)</span>
-<span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper</span>
-<span class="co">#&gt; 1 SMD 1.649932 0.6340935 0.4071314 2.892732</span>
+<span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper baseline_SD</span>
+<span class="co">#&gt; 1 SMD 1.649932 0.6340935 0.4071314 2.892732    2.503331</span>
 <span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, std_dev <span class="op">=</span> <span class="st">"pool"</span><span class="op">)</span>
-<span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper</span>
-<span class="co">#&gt; 1 SMD 1.876247 0.6374216 0.6269241 3.125571</span></code></pre></div>
+<span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper pooled_SD</span>
+<span class="co">#&gt; 1 SMD 1.876247 0.6374216 0.6269241 3.125571  2.431752</span></code></pre></div>
 <p>By default the <code><a href="../reference/SMD.html">SMD()</a></code> function uses the Hedges’ g bias correction for small sample sizes. The bias correction can be turned off by specifying the argument <code>bias_correct = FALSE</code>. The width of the confidence intervals is controlled via the <code>confidence</code> argument, and no confidence intervals will be produced if the argument is set to <code>confidence = NULL</code>.</p>
 </div>
 <div class="section level3">
@@ -447,20 +447,20 @@
 <p>Setting <code>ES = "all"</code> will return all available effect sizes:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>
-<span class="co">#&gt;        ES        Est         SE    CI_lower    CI_upper</span>
-<span class="co">#&gt; 1    LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679</span>
-<span class="co">#&gt; 2    LRRi  0.1953962 0.05557723  0.08646679  0.30432554</span>
-<span class="co">#&gt; 3     LOR  0.2609312 0.07356710  0.11674235  0.40512007</span>
-<span class="co">#&gt; 4     SMD  1.6499319 0.63409351  0.40713144  2.89273232</span>
-<span class="co">#&gt; 5     LRM  0.2186892 0.07641543  0.06891771  0.36846070</span>
-<span class="co">#&gt; 6     NAP  0.9166667 0.06900656  0.59734061  0.98601758</span>
-<span class="co">#&gt; 7     IRD  0.6904762         NA          NA          NA</span>
-<span class="co">#&gt; 8    PAND  0.8461538         NA          NA          NA</span>
-<span class="co">#&gt; 9     PND  0.7142857         NA          NA          NA</span>
-<span class="co">#&gt; 10    PEM  1.0000000         NA          NA          NA</span>
-<span class="co">#&gt; 11    Tau  0.8333333 0.13801311  0.19468122  0.97203517</span>
-<span class="co">#&gt; 12  Tau-U  0.7380952         NA          NA          NA</span>
-<span class="co">#&gt; 13 Tau-BC  0.2857143 0.35951593 -0.32607024  0.71806125</span></code></pre></div>
+<span class="co">#&gt;        ES        Est         SE    CI_lower    CI_upper baseline_SD</span>
+<span class="co">#&gt; 1    LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679          NA</span>
+<span class="co">#&gt; 2    LRRi  0.1953962 0.05557723  0.08646679  0.30432554          NA</span>
+<span class="co">#&gt; 3     LOR  0.2609312 0.07356710  0.11674235  0.40512007          NA</span>
+<span class="co">#&gt; 4     SMD  1.6499319 0.63409351  0.40713144  2.89273232    2.503331</span>
+<span class="co">#&gt; 5     LRM  0.2186892 0.07641543  0.06891771  0.36846070          NA</span>
+<span class="co">#&gt; 6     NAP  0.9166667 0.06900656  0.59734061  0.98601758          NA</span>
+<span class="co">#&gt; 7     IRD  0.6904762         NA          NA          NA          NA</span>
+<span class="co">#&gt; 8    PAND  0.8461538         NA          NA          NA          NA</span>
+<span class="co">#&gt; 9     PND  0.7142857         NA          NA          NA          NA</span>
+<span class="co">#&gt; 10    PEM  1.0000000         NA          NA          NA          NA</span>
+<span class="co">#&gt; 11    Tau  0.8333333 0.13801311  0.19468122  0.97203517          NA</span>
+<span class="co">#&gt; 12  Tau-U  0.7380952         NA          NA          NA          NA</span>
+<span class="co">#&gt; 13 Tau-BC  0.2857143 0.35951593 -0.32607024  0.71806125          NA</span></code></pre></div>
 <p><code>ES = "NOM"</code> will return all of the non-overlap measures:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"NOM"</span><span class="op">)</span>
@@ -476,12 +476,12 @@
 <p>and <code>ES = "parametric"</code> will return all of the parametric effect sizes:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"parametric"</span><span class="op">)</span>
-<span class="co">#&gt;     ES        Est         SE    CI_lower    CI_upper</span>
-<span class="co">#&gt; 1 LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679</span>
-<span class="co">#&gt; 2 LRRi  0.1953962 0.05557723  0.08646679  0.30432554</span>
-<span class="co">#&gt; 3  LOR  0.2609312 0.07356710  0.11674235  0.40512007</span>
-<span class="co">#&gt; 4  SMD  1.6499319 0.63409351  0.40713144  2.89273232</span>
-<span class="co">#&gt; 5  LRM  0.2186892 0.07641543  0.06891771  0.36846070</span></code></pre></div>
+<span class="co">#&gt;     ES        Est         SE    CI_lower    CI_upper baseline_SD</span>
+<span class="co">#&gt; 1 LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679          NA</span>
+<span class="co">#&gt; 2 LRRi  0.1953962 0.05557723  0.08646679  0.30432554          NA</span>
+<span class="co">#&gt; 3  LOR  0.2609312 0.07356710  0.11674235  0.40512007          NA</span>
+<span class="co">#&gt; 4  SMD  1.6499319 0.63409351  0.40713144  2.89273232    2.503331</span>
+<span class="co">#&gt; 5  LRM  0.2186892 0.07641543  0.06891771  0.36846070          NA</span></code></pre></div>
 <p>If the <code>ES</code> argument is omitted, <code><a href="../reference/calc_ES.html">calc_ES()</a></code> will return LRRd, LRRi, SMD, and Tau by default.</p>
 <div class="section level3">
 <h3 id="further-arguments">Further arguments<a class="anchor" aria-label="anchor" href="#further-arguments"></a>
@@ -515,12 +515,12 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"parametric"</span>, scale <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span>
 <span class="co">#&gt; Warning: LOR can only be calculated for proportions or percentages. It will</span>
 <span class="co">#&gt; return NAs for other outcome scales.</span>
-<span class="co">#&gt;     ES        Est         SE    CI_lower    CI_upper</span>
-<span class="co">#&gt; 1 LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679</span>
-<span class="co">#&gt; 2 LRRi  0.1953962 0.05557723  0.08646679  0.30432554</span>
-<span class="co">#&gt; 3  LOR         NA         NA          NA          NA</span>
-<span class="co">#&gt; 4  SMD  1.6499319 0.63409351  0.40713144  2.89273232</span>
-<span class="co">#&gt; 5  LRM  0.2186892 0.07641543  0.06891771  0.36846070</span></code></pre></div>
+<span class="co">#&gt;     ES        Est         SE    CI_lower    CI_upper baseline_SD</span>
+<span class="co">#&gt; 1 LRRd -0.1953962 0.05557723 -0.30432554 -0.08646679          NA</span>
+<span class="co">#&gt; 2 LRRi  0.1953962 0.05557723  0.08646679  0.30432554          NA</span>
+<span class="co">#&gt; 3  LOR         NA         NA          NA          NA          NA</span>
+<span class="co">#&gt; 4  SMD  1.6499319 0.63409351  0.40713144  2.89273232    2.503331</span>
+<span class="co">#&gt; 5  LRM  0.2186892 0.07641543  0.06891771  0.36846070          NA</span></code></pre></div>
 <p>Any additional arguments will be used in the calculation of effect sizes for which they are relevant and will be ignored if they are not relevant.</p>
 </div>
 <div class="section level3">
@@ -529,16 +529,16 @@
 <p>Finally, <code><a href="../reference/calc_ES.html">calc_ES()</a></code> includes an option to change the format of the output. The function defaults to <code>format = "long"</code>; setting <code>format = "wide"</code> will return all of the results as a single line, rather than one line per effect size:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NAP"</span>,<span class="st">"PND"</span>,<span class="st">"SMD"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;    ES       Est         SE  CI_lower  CI_upper</span>
-<span class="co">#&gt; 1 NAP 0.9166667 0.06900656 0.5973406 0.9860176</span>
-<span class="co">#&gt; 2 PND 0.7142857         NA        NA        NA</span>
-<span class="co">#&gt; 3 SMD 1.6499319 0.63409351 0.4071314 2.8927323</span>
+<span class="co">#&gt;    ES       Est         SE  CI_lower  CI_upper baseline_SD</span>
+<span class="co">#&gt; 1 NAP 0.9166667 0.06900656 0.5973406 0.9860176          NA</span>
+<span class="co">#&gt; 2 PND 0.7142857         NA        NA        NA          NA</span>
+<span class="co">#&gt; 3 SMD 1.6499319 0.63409351 0.4071314 2.8927323    2.503331</span>
 
 <span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NAP"</span>,<span class="st">"PND"</span>,<span class="st">"SMD"</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span>
 <span class="co">#&gt;     NAP_Est     NAP_SE NAP_CI_lower NAP_CI_upper   PND_Est  SMD_Est    SMD_SE</span>
 <span class="co">#&gt; 1 0.9166667 0.06900656    0.5973406    0.9860176 0.7142857 1.649932 0.6340935</span>
-<span class="co">#&gt;   SMD_CI_lower SMD_CI_upper</span>
-<span class="co">#&gt; 1    0.4071314     2.892732</span></code></pre></div>
+<span class="co">#&gt;   SMD_CI_lower SMD_CI_upper SMD_baseline_SD</span>
+<span class="co">#&gt; 1    0.4071314     2.892732        2.503331</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -2423,6 +2423,9 @@ CI_lower
 <th style="text-align:right;">
 CI_upper
 </th>
+<th style="text-align:right;">
+baseline_SD
+</th>
 </tr></thead>
 <tbody>
 <tr>
@@ -2444,6 +2447,9 @@ LRRd
 <td style="text-align:right;">
 -0.4194785
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2464,6 +2470,9 @@ LRRi
 <td style="text-align:right;">
 1.1946496
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2471,6 +2480,9 @@ Period 1
 </td>
 <td style="text-align:left;">
 LOR
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 NA
@@ -2504,6 +2516,9 @@ SMD
 <td style="text-align:right;">
 4.6036610
 </td>
+<td style="text-align:right;">
+1.625741
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2523,6 +2538,9 @@ LRM
 </td>
 <td style="text-align:right;">
 1.4462438
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -2544,6 +2562,9 @@ LRRd
 <td style="text-align:right;">
 0.0736015
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2564,6 +2585,9 @@ LRRi
 <td style="text-align:right;">
 1.2928234
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2571,6 +2595,9 @@ Period 2
 </td>
 <td style="text-align:left;">
 LOR
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 NA
@@ -2604,6 +2631,9 @@ SMD
 <td style="text-align:right;">
 2.4849431
 </td>
+<td style="text-align:right;">
+5.576779
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2623,6 +2653,9 @@ LRM
 </td>
 <td style="text-align:right;">
 3.3709400
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -2644,6 +2677,9 @@ LRRd
 <td style="text-align:right;">
 -0.0550199
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2664,6 +2700,9 @@ LRRi
 <td style="text-align:right;">
 1.4406575
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2671,6 +2710,9 @@ Period 3
 </td>
 <td style="text-align:left;">
 LOR
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 NA
@@ -2704,6 +2746,9 @@ SMD
 <td style="text-align:right;">
 5.0074754
 </td>
+<td style="text-align:right;">
+2.330179
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2723,6 +2768,9 @@ LRM
 </td>
 <td style="text-align:right;">
 2.0632824
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 </tbody>
@@ -2789,6 +2837,9 @@ CI_lower
 <th style="text-align:right;position: sticky; top:0; background-color: green;">
 CI_upper
 </th>
+<th style="text-align:right;position: sticky; top:0; background-color: green;">
+baseline_SD
+</th>
 </tr></thead>
 <tbody>
 <tr>
@@ -2816,6 +2867,9 @@ LRRd
 <td style="text-align:right;">
 -1.3381445
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2842,6 +2896,9 @@ LRRi
 <td style="text-align:right;">
 2.1602520
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2855,6 +2912,9 @@ Disruptive Behavior
 </td>
 <td style="text-align:left;">
 LOR
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 NA
@@ -2894,6 +2954,9 @@ SMD
 <td style="text-align:right;">
 2.9567811
 </td>
+<td style="text-align:right;">
+11.427978
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2919,6 +2982,9 @@ LRM
 </td>
 <td style="text-align:right;">
 2.5186572
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -2946,6 +3012,9 @@ LRRd
 <td style="text-align:right;">
 0.1078148
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2972,6 +3041,9 @@ LRRi
 <td style="text-align:right;">
 2.0008657
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -2985,6 +3057,9 @@ Disruptive Behavior
 </td>
 <td style="text-align:left;">
 LOR
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 NA
@@ -3024,6 +3099,9 @@ SMD
 <td style="text-align:right;">
 1.4315070
 </td>
+<td style="text-align:right;">
+9.459459
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3049,6 +3127,9 @@ LRM
 </td>
 <td style="text-align:right;">
 3.2537362
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3076,6 +3157,9 @@ LRRd
 <td style="text-align:right;">
 -0.5582741
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3101,6 +3185,9 @@ LRRi
 </td>
 <td style="text-align:right;">
 0.7387500
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3128,6 +3215,9 @@ LOR
 <td style="text-align:right;">
 3.2150084
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3153,6 +3243,9 @@ SMD
 </td>
 <td style="text-align:right;">
 1.8147108
+</td>
+<td style="text-align:right;">
+28.246911
 </td>
 </tr>
 <tr>
@@ -3180,6 +3273,9 @@ LRM
 <td style="text-align:right;">
 1.2193752
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3205,6 +3301,9 @@ LRRd
 </td>
 <td style="text-align:right;">
 0.9721975
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3232,6 +3331,9 @@ LRRi
 <td style="text-align:right;">
 0.2816742
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3257,6 +3359,9 @@ LOR
 </td>
 <td style="text-align:right;">
 2.9912736
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3284,6 +3389,9 @@ SMD
 <td style="text-align:right;">
 0.8516771
 </td>
+<td style="text-align:right;">
+17.320508
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3309,6 +3417,9 @@ LRM
 </td>
 <td style="text-align:right;">
 0.2969423
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3336,6 +3447,9 @@ LRRd
 <td style="text-align:right;">
 -0.9715813
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3362,6 +3476,9 @@ LRRi
 <td style="text-align:right;">
 2.2408858
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3375,6 +3492,9 @@ Disruptive Behavior
 </td>
 <td style="text-align:left;">
 LOR
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 NA
@@ -3414,6 +3534,9 @@ SMD
 <td style="text-align:right;">
 2.9563411
 </td>
+<td style="text-align:right;">
+7.156739
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3439,6 +3562,9 @@ LRM
 </td>
 <td style="text-align:right;">
 3.0865702
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3466,6 +3592,9 @@ LRRd
 <td style="text-align:right;">
 -0.9144692
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3492,6 +3621,9 @@ LRRi
 <td style="text-align:right;">
 2.3878658
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3505,6 +3637,9 @@ Disruptive Behavior
 </td>
 <td style="text-align:left;">
 LOR
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 NA
@@ -3544,6 +3679,9 @@ SMD
 <td style="text-align:right;">
 1.8475289
 </td>
+<td style="text-align:right;">
+9.481529
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3569,6 +3707,9 @@ LRM
 </td>
 <td style="text-align:right;">
 2.2895333
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3596,6 +3737,9 @@ LRRd
 <td style="text-align:right;">
 -0.9450231
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3621,6 +3765,9 @@ LRRi
 </td>
 <td style="text-align:right;">
 0.5760456
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3648,6 +3795,9 @@ LOR
 <td style="text-align:right;">
 3.0192934
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3673,6 +3823,9 @@ SMD
 </td>
 <td style="text-align:right;">
 1.6471986
+</td>
+<td style="text-align:right;">
+26.013497
 </td>
 </tr>
 <tr>
@@ -3700,6 +3853,9 @@ LRM
 <td style="text-align:right;">
 0.9251564
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3725,6 +3881,9 @@ LRRd
 </td>
 <td style="text-align:right;">
 0.6319385
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3752,6 +3911,9 @@ LRRi
 <td style="text-align:right;">
 0.6346935
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3777,6 +3939,9 @@ LOR
 </td>
 <td style="text-align:right;">
 3.5188340
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3804,6 +3969,9 @@ SMD
 <td style="text-align:right;">
 1.2635670
 </td>
+<td style="text-align:right;">
+23.699467
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3829,6 +3997,9 @@ LRM
 </td>
 <td style="text-align:right;">
 0.9589569
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3856,6 +4027,9 @@ LRRd
 <td style="text-align:right;">
 -0.7235180
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3882,6 +4056,9 @@ LRRi
 <td style="text-align:right;">
 1.6125902
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3895,6 +4072,9 @@ Disruptive Behavior
 </td>
 <td style="text-align:left;">
 LOR
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 NA
@@ -3934,6 +4114,9 @@ SMD
 <td style="text-align:right;">
 1.8912095
 </td>
+<td style="text-align:right;">
+13.093743
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -3959,6 +4142,9 @@ LRM
 </td>
 <td style="text-align:right;">
 2.2743277
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -3986,6 +4172,9 @@ LRRd
 <td style="text-align:right;">
 -0.8191455
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -4012,6 +4201,9 @@ LRRi
 <td style="text-align:right;">
 2.0345154
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -4025,6 +4217,9 @@ Disruptive Behavior
 </td>
 <td style="text-align:left;">
 LOR
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 NA
@@ -4064,6 +4259,9 @@ SMD
 <td style="text-align:right;">
 1.9232446
 </td>
+<td style="text-align:right;">
+8.934256
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -4089,6 +4287,9 @@ LRM
 </td>
 <td style="text-align:right;">
 2.2577750
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -4116,6 +4317,9 @@ LRRd
 <td style="text-align:right;">
 0.7042239
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -4141,6 +4345,9 @@ LRRi
 </td>
 <td style="text-align:right;">
 0.2387961
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -4168,6 +4375,9 @@ LOR
 <td style="text-align:right;">
 0.9610588
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -4193,6 +4403,9 @@ SMD
 </td>
 <td style="text-align:right;">
 1.1940361
+</td>
+<td style="text-align:right;">
+13.380227
 </td>
 </tr>
 <tr>
@@ -4220,6 +4433,9 @@ LRM
 <td style="text-align:right;">
 0.4424964
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -4245,6 +4461,9 @@ LRRd
 </td>
 <td style="text-align:right;">
 -1.6515088
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -4272,6 +4491,9 @@ LRRi
 <td style="text-align:right;">
 1.9207829
 </td>
+<td style="text-align:right;">
+NA
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -4297,6 +4519,9 @@ LOR
 </td>
 <td style="text-align:right;">
 5.6115130
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 <tr>
@@ -4324,6 +4549,9 @@ SMD
 <td style="text-align:right;">
 1.3736013
 </td>
+<td style="text-align:right;">
+48.551232
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -4349,6 +4577,9 @@ LRM
 </td>
 <td style="text-align:right;">
 4.1409134
+</td>
+<td style="text-align:right;">
+NA
 </td>
 </tr>
 </tbody>
@@ -4496,12 +4727,12 @@ Period 3
               outcome <span class="op">=</span> <span class="va">Outcome</span>, 
               ES <span class="op">=</span> <span class="st">"SMD"</span>, 
               improvement <span class="op">=</span> <span class="st">"decrease"</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span>
-<span class="co">#&gt;   Case_pseudonym ES      Est    SE CI_lower CI_upper</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Period 1       SMD    2.75 0.943   0.906      4.60</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Period 2       SMD    1.21 0.650  -<span style="color: #BB0000;">0.063</span><span style="color: #BB0000; text-decoration: underline;">3</span>     2.48</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Period 3       SMD    2.89 1.08    0.763      5.01</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 7</span></span>
+<span class="co">#&gt;   Case_pseudonym ES      Est    SE CI_lower CI_upper baseline_SD</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Period 1       SMD    2.75 0.943   0.906      4.60        1.63</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Period 2       SMD    1.21 0.650  -<span style="color: #BB0000;">0.063</span><span style="color: #BB0000; text-decoration: underline;">3</span>     2.48        5.58</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Period 3       SMD    2.89 1.08    0.763      5.01        2.33</span>
 
 <span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">McKissick</span>, 
               grouping <span class="op">=</span> <span class="va">Case_pseudonym</span>, 
@@ -4510,12 +4741,12 @@ Period 3
               ES <span class="op">=</span> <span class="st">"SMD"</span>, 
               improvement <span class="op">=</span> <span class="st">"decrease"</span>,
               std_dev <span class="op">=</span> <span class="st">"pool"</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span>
-<span class="co">#&gt;   Case_pseudonym ES      Est    SE CI_lower CI_upper</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Period 1       SMD    2.58 0.853   0.909      4.25</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Period 2       SMD    1.12 0.588  -<span style="color: #BB0000;">0.034</span><span style="color: #BB0000; text-decoration: underline;">5</span>     2.27</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Period 3       SMD    2.34 0.727   0.920      3.77</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 7</span></span>
+<span class="co">#&gt;   Case_pseudonym ES      Est    SE CI_lower CI_upper pooled_SD</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Period 1       SMD    2.58 0.853   0.909      4.25      2.74</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Period 2       SMD    1.12 0.588  -<span style="color: #BB0000;">0.034</span><span style="color: #BB0000; text-decoration: underline;">5</span>     2.27      6.97</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Period 3       SMD    2.34 0.727   0.920      3.77      2.95</span></code></pre></div>
 <p>Arguments common to several functions will be used when calculating any of the effect sizes for which they are relevant. For example, the <code>bias_correct</code> argument applies to all of the parametric effect sizes:</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">McKissick</span>, 
@@ -4528,24 +4759,24 @@ Period 3
               observation_length <span class="op">=</span> <span class="va">Session_length</span>,
               bias_correct <span class="op">=</span> <span class="cn">FALSE</span>,
               warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 6</span></span>
-<span class="co">#&gt;    Case_pseudonym ES       Est     SE CI_lower CI_upper</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Period 1       LRRd  -<span style="color: #BB0000;">0.822</span>  0.198  -<span style="color: #BB0000;">1.21</span>    -<span style="color: #BB0000;">0.435</span> </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Period 1       LRRi   0.822  0.198   0.435    1.21  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Period 1       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Period 1       SMD    4.82   2.58   -<span style="color: #BB0000;">0.229</span>    9.87  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Period 1       LRM    0.850  0.304   0.254    1.45  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Period 2       LRRd  -<span style="color: #BB0000;">0.650</span>  0.349  -<span style="color: #BB0000;">1.33</span>     0.032<span style="text-decoration: underline;">8</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Period 2       LRRi   0.650  0.349  -<span style="color: #BB0000;">0.032</span><span style="color: #BB0000; text-decoration: underline;">8</span>   1.33  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Period 2       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Period 2       SMD    1.51   0.874  -<span style="color: #BB0000;">0.199</span>    3.23  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Period 2       LRM    0.717  1.35   -<span style="color: #BB0000;">1.94</span>     3.37  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Period 3       LRRd  -<span style="color: #BB0000;">0.807</span>  0.353  -<span style="color: #BB0000;">1.50</span>    -<span style="color: #BB0000;">0.114</span> </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Period 3       LRRi   0.807  0.353   0.114    1.50  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Period 3       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Period 3       SMD    3.19   1.25    0.751    5.64  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Period 3       LRM    0.910  0.589  -<span style="color: #BB0000;">0.244</span>    2.06</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 7</span></span>
+<span class="co">#&gt;    Case_pseudonym ES       Est     SE CI_lower CI_upper baseline_SD</span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Period 1       LRRd  -<span style="color: #BB0000;">0.822</span>  0.198  -<span style="color: #BB0000;">1.21</span>    -<span style="color: #BB0000;">0.435</span>        <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Period 1       LRRi   0.822  0.198   0.435    1.21         <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Period 1       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>            <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Period 1       SMD    4.82   2.58   -<span style="color: #BB0000;">0.229</span>    9.87          1.63</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Period 1       LRM    0.850  0.304   0.254    1.45         <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Period 2       LRRd  -<span style="color: #BB0000;">0.650</span>  0.349  -<span style="color: #BB0000;">1.33</span>     0.032<span style="text-decoration: underline;">8</span>       <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Period 2       LRRi   0.650  0.349  -<span style="color: #BB0000;">0.032</span><span style="color: #BB0000; text-decoration: underline;">8</span>   1.33         <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Period 2       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>            <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Period 2       SMD    1.51   0.874  -<span style="color: #BB0000;">0.199</span>    3.23          5.58</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Period 2       LRM    0.717  1.35   -<span style="color: #BB0000;">1.94</span>     3.37         <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Period 3       LRRd  -<span style="color: #BB0000;">0.807</span>  0.353  -<span style="color: #BB0000;">1.50</span>    -<span style="color: #BB0000;">0.114</span>        <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Period 3       LRRi   0.807  0.353   0.114    1.50         <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Period 3       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>            <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Period 3       SMD    3.19   1.25    0.751    5.64          2.33</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Period 3       LRM    0.910  0.589  -<span style="color: #BB0000;">0.244</span>    2.06         <span style="color: #BB0000;">NA</span></span></code></pre></div>
 <p>The <code>bias_correct</code> argument cannot be specified differently for different effect size functions. If you wanted bias corrected values for the LRRd effect size and not for the SMD effect size, you would need to call <code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code> separately for the two different effect sizes.</p>
 </div>
 <div class="section level4">
@@ -4573,24 +4804,24 @@ Period 3
               observation_length <span class="op">=</span> <span class="va">Session_length</span>,
               confidence <span class="op">=</span> <span class="cn">NULL</span>,
               warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 4</span></span>
-<span class="co">#&gt;    Case_pseudonym ES       Est     SE</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Period 1       LRRd  -<span style="color: #BB0000;">0.807</span>  0.198</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Period 1       LRRi   0.807  0.198</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Period 1       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>    </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Period 1       SMD    2.75   0.943</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Period 1       LRM    0.850  0.304</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Period 2       LRRd  -<span style="color: #BB0000;">0.610</span>  0.349</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Period 2       LRRi   0.610  0.349</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Period 2       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>    </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Period 2       SMD    1.21   0.650</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Period 2       LRM    0.717  1.35 </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Period 3       LRRd  -<span style="color: #BB0000;">0.748</span>  0.353</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Period 3       LRRi   0.748  0.353</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Period 3       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>    </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Period 3       SMD    2.89   1.08 </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Period 3       LRM    0.910  0.589</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 5</span></span>
+<span class="co">#&gt;    Case_pseudonym ES       Est     SE baseline_SD</span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Period 1       LRRd  -<span style="color: #BB0000;">0.807</span>  0.198       <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Period 1       LRRi   0.807  0.198       <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Period 1       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Period 1       SMD    2.75   0.943        1.63</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Period 1       LRM    0.850  0.304       <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Period 2       LRRd  -<span style="color: #BB0000;">0.610</span>  0.349       <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Period 2       LRRi   0.610  0.349       <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Period 2       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Period 2       SMD    1.21   0.650        5.58</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Period 2       LRM    0.717  1.35        <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Period 3       LRRd  -<span style="color: #BB0000;">0.748</span>  0.353       <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Period 3       LRRi   0.748  0.353       <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Period 3       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Period 3       SMD    2.89   1.08         2.33</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Period 3       LRM    0.910  0.589       <span style="color: #BB0000;">NA</span></span></code></pre></div>
 </div>
 </div>
 </div>
