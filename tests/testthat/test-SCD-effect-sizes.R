@@ -200,6 +200,8 @@ check_batch <- function(app, example_dat, ES, Kendall = FALSE) {
   
   app$setInputs(batchest = "click")
   
+  Sys.sleep(2)
+  
   output_app <- app$getValue(name = "batchTable")
   
   output_app_table <-
@@ -398,13 +400,10 @@ test_that("Batch calculator is correct", {
 
 check_load <- function(app, file, Kendall = FALSE) {
 
-  # myfile <- tempfile()
-  # write.csv(file, file = myfile)
-
   data_path <- paste0("../testdata/", file)
   # data_path <- system.file("tests","testdata", file, package = "SingleCaseES")
   
-  app$setInputs(SCD_es_calculator = "Batch Entry", wait_ = FALSE, values_ = FALSE)
+  app$setInputs(SCD_es_calculator = "Batch Entry")
 
   if (str_detect(file, "csv")) {
     
@@ -421,15 +420,26 @@ check_load <- function(app, file, Kendall = FALSE) {
   app$setInputs(
     BatchEntryTabs = "Variables"
   )
+  
   app$setInputs(
     b_clusters = "Case_pseudonym",
     b_phase = "Condition",
     session_number = "Session_number",
     b_out = "Outcome",
     bimprovement = "decrease",
-    BatchEntryTabs = "Estimate",
+    wait_ = FALSE, values_ = FALSE
+  )
+  
+  app$setInputs(
+    BatchEntryTabs = "Estimate"
+  )
+  
+  app$setInputs(
     bESno = c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U"),
-    bESpar = c("LOR", "LRRd", "LRRi", "LRM", "SMD"),
+    bESpar = c("LOR", "LRRd", "LRRi", "LRM", "SMD")
+  )
+  
+  app$setInputs(
     boutScale = "count",
     wait_ = FALSE, values_ = FALSE
   )
@@ -439,7 +449,10 @@ check_load <- function(app, file, Kendall = FALSE) {
   } else if (Kendall == FALSE) {
     app$setInputs(btau_calculation = "Nlap", wait_=FALSE, values_=FALSE)
   }
+  
   app$setInputs(batchest = "click")
+  
+  Sys.sleep(2)
   
   output_app <- app$getValue(name = "batchTable")
   
