@@ -2,6 +2,7 @@
 
 * Revised in-app documentation for the SCD_effect_sizes web app.
 
+
 # SingleCaseES 0.6.0
 
 * Changes to batch_calc_ES()
