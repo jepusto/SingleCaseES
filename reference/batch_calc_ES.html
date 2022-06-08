@@ -99,25 +99,131 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>dat</dt>
+<dd><p>data frame containing SCD series for which effect sizes will be
+calculated.</p></dd>
+
+
+<dt>grouping</dt>
+<dd><p>A variable name or list of (unquoted) variable names that
+uniquely identify each data series.</p></dd>
+
+
+<dt>condition</dt>
+<dd><p>A variable name that identifies the treatment condition for
+each observation in the series.</p></dd>
+
+
+<dt>outcome</dt>
+<dd><p>A variable name for the outcome data. Default is</p></dd>
+
+
+<dt>aggregate</dt>
+<dd><p>A variable name of list of (unquoted) variable names that
+identify additional grouping variables. Effect sizes will be calculated
+separately for each unique value of these variables, after which the effect
+size estimates will be averaged across values of these variables (but not
+across the values of the <code>grouping</code> variables).</p></dd>
+
+
+<dt>weighting</dt>
+<dd><p>character string specifying the weighting scheme for use
+when variables are specified in <code>aggregate</code>. Available is
+<code>"1/V"</code>, <code>"equal"</code> (the default), <code>"Equal"</code>, <code>"nA"</code>,
+<code>"n_A"</code>, <code>"nB"</code>, <code>"n_B"</code>, <code>"nAnB"</code>, <code>"nA*nB"</code>,
+<code>"nA*nB"</code>, <code>"n_A*n_B"</code>, <code>"n_A * n_B"</code>, <code>"1/nA+1/nB"</code>,
+<code>"1/nA + 1/nB"</code>, <code>"1/n_A+1/n_B"</code>, or <code>"1/n_A + 1/n_B"</code>. Note
+that <code>"1/V"</code> can only be used for effect sizes with known standard
+errors.</p></dd>
+
+
+<dt>session_number</dt>
+<dd><p>A variable name used to order the data within each
+series.</p></dd>
+
+
+<dt>baseline_phase</dt>
+<dd><p>character string specifying which value of
+<code>condition</code> corresponds to the baseline phase. If <code>NULL</code> (the
+default), the first observed value of <code>condition</code> within the series
+will be used.</p></dd>
+
+
+<dt>intervention_phase</dt>
+<dd><p>character string specifying which value of
+<code>condition</code> corresponds to the intervention phase. If <code>NULL</code> (the
+default), the second unique value of <code>condition</code> within the series
+will be used.</p></dd>
+
+
+<dt>ES</dt>
+<dd><p>character string or character vector specifying which effect size
+index or indices to calculate. Available effect sizes are <code>"LRRd"</code>,
+<code>"LRRi"</code>, <code>"LRM"</code>, <code>"LOR"</code>, <code>"SMD"</code>, <code>"NAP"</code>,
+<code>"IRD"</code>, <code>"PND"</code>, <code>"PEM"</code>, <code>"PAND"</code>, <code>"Tau"</code>,
+<code>"Tau-U"</code>, and <code>"Tau-BC"</code>. Set to <code>"all"</code> for all available
+effect sizes. Set to <code>"parametric"</code> for all parametric effect sizes.
+Set to <code>"NOM"</code> for all non-overlap measures. Defaults to calculating
+the LRRd, LRRi, SMD, and Tau indices.</p></dd>
+
+
+<dt>improvement</dt>
+<dd><p>character string either indicating the direction of
+uniform improvement ("increase" or "decrease") or the variable name of a
+variable identifying the direction of improvement for each series. Default
+is "increase".</p></dd>
+
+
+<dt>scale</dt>
+<dd><p>character string indicating the common scale of the outcome
+variable across all of the series in the data set or the name of a variable
+within the dataset that identifies the outcome scale within each series.
+Possible values for the scale are <code>"percentage"</code> for a percentage with
+range 0-100, <code>"proportion"</code> for a proportion with range 0-1,
+<code>"count"</code> for a frequency count (0 or positive integers),
+<code>"rate"</code> for a standardized rate per minute. If a vector, the most
+frequent unique value will be used and missing values will be ignored.
+Defaults to <code>NA</code>.</p></dd>
+
+
+<dt>intervals</dt>
+<dd><p>for interval recording procedures. Either the total number
+of intervals per observation session common to all series in the dataset,
+or the name of a variable within the dataset that identifies the number of
+intervals for each observation. If a variable name, the mean number of
+intervals within each series will be used. Missing values will be ignored.
+Defaults to <code>NA</code>.</p></dd>
+
+
+<dt>observation_length</dt>
+<dd><p>Used for the log-response ratio. Either the common
+observation session length (in minutes) across all series in the dataset or
+a variable name containing the observation session length for each
+observation. If a variable name, the mean observation session length within
+each series will be used. Missing values will be ignored. Defaults to
+<code>NA</code>.</p></dd>
+
+
+<dt>confidence</dt>
+<dd><p>confidence level for the reported interval estimate. Set to
+<code>NULL</code> to omit confidence interval calculations.</p></dd>
+
+
+<dt>format</dt>
+<dd><p>character string specifying whether to organize the results in
+<code>"long"</code> format or <code>"wide"</code> format. Defaults to <code>"long"</code>.</p></dd>
+
+
+<dt>warn</dt>
+<dd><p>logical indicating whether warnings should be displayed. Default
+is <code>TRUE</code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>further arguments used for calculating some of the effect size
+indices.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

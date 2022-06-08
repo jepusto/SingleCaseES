@@ -89,17 +89,59 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>A_data</dt>
+<dd><p>vector of numeric data for A phase. Missing values are dropped.</p></dd>
+
+
+<dt>B_data</dt>
+<dd><p>vector of numeric data for B phase. Missing values are dropped.</p></dd>
+
+
+<dt>condition</dt>
+<dd><p>vector identifying the treatment condition for each
+observation in the series.</p></dd>
+
+
+<dt>outcome</dt>
+<dd><p>vector of outcome data for the entire series.</p></dd>
+
+
+<dt>baseline_phase</dt>
+<dd><p>character string specifying which value of
+<code>condition</code> corresponds to the baseline phase. Defaults to first
+observed value of <code>condition</code>.</p></dd>
+
+
+<dt>intervention_phase</dt>
+<dd><p>character string specifying which value of
+<code>condition</code> corresponds to the intervention phase. Defaults to second
+unique value of <code>condition</code>.</p></dd>
+
+
+<dt>improvement</dt>
+<dd><p>character string indicating direction of improvement.
+Default is "increase".</p></dd>
+
+
+<dt>SE</dt>
+<dd><p>character value indicating which formula to use for calculating the
+standard error of NAP, with possible values <code>"unbiased"</code> for the
+exactly unbiased estimator, <code>"Hanley"</code> for the Hanley-McNeil
+estimator, <code>"null"</code> for the (known) variance under the null hypothesis
+of no effect, or <code>"none"</code> to not calculate a standard error. Defaults
+to "unbiased".</p></dd>
+
+
+<dt>confidence</dt>
+<dd><p>confidence level for the reported interval estimate. Set to
+<code>NULL</code> to omit confidence interval calculations.</p></dd>
+
+
+<dt>trunc_const</dt>
+<dd><p>logical value indicating whether to return the truncation
+constant used to calculate the standard error.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     

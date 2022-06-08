@@ -89,17 +89,57 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-<p></p>
-    </div>
+    <dl><dt>A_data</dt>
+<dd><p>vector of numeric data for A phase. Missing values are dropped.</p></dd>
+
+
+<dt>B_data</dt>
+<dd><p>vector of numeric data for B phase. Missing values are dropped.</p></dd>
+
+
+<dt>condition</dt>
+<dd><p>vector identifying the treatment condition for each
+observation in the series.</p></dd>
+
+
+<dt>outcome</dt>
+<dd><p>vector of outcome data for the entire series.</p></dd>
+
+
+<dt>baseline_phase</dt>
+<dd><p>character string specifying which value of
+<code>condition</code> corresponds to the baseline phase. Defaults to first
+observed value of <code>condition</code>.</p></dd>
+
+
+<dt>intervention_phase</dt>
+<dd><p>character string specifying which value of
+<code>condition</code> corresponds to the intervention phase. Defaults to second
+unique value of <code>condition</code>.</p></dd>
+
+
+<dt>improvement</dt>
+<dd><p>character string indicating direction of improvement.
+Default is "increase".</p></dd>
+
+
+<dt>std_dev</dt>
+<dd><p>character string controlling how to calculate the standard
+deviation in the denominator of the effect size. Set to <code>"baseline"</code>
+(the default) to use the baseline standard deviation. Set to <code>"pool"</code>
+to use the pooled standard deviation.</p></dd>
+
+
+<dt>bias_correct</dt>
+<dd><p>logical value indicating whether to use bias-correction
+(i.e., Hedges' g). Default is <code>TRUE</code></p></dd>
+
+
+<dt>confidence</dt>
+<dd><p>confidence level for the reported interval estimate. Set to
+<code>NULL</code> to omit confidence interval calculations.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     
