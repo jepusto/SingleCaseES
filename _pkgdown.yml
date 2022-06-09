@@ -25,13 +25,13 @@ authors:
     
 reference:
   - title: "Calculating one or more effect size estimates"
-    desc: "Functions for calculating one or more effect size estimates."
+    desc: "Functions for calculating one or more effect size estimates"
     contents:
       - batch_calc_ES
       - calc_ES
       - calc_phase_pairs
   - title: "Calculating non-overlap effect size indices"
-    desc: "Functions for calculating non-overlap effect size indices for single-case designs."
+    desc: "Functions for calculating non-overlap effect size indices for single-case designs"
     contents: 
       - IRD
       - NAP
@@ -42,7 +42,7 @@ reference:
       - Tau_BC
       - Tau_U
   - title: "Calculating parametric effect size indices"
-    desc: "Functions for calculating parametric effect size indices for single-case designs."
+    desc: "Functions for calculating parametric effect size indices for single-case designs"
     contents: 
       - LRRd
       - LRRi
@@ -53,8 +53,8 @@ reference:
     desc: "Function for estimating the gradual effects model for single-case designs"
     contents:
       - gem_scd
-  - title: "Shiny App"
-    desc: "Function to launch shiny app"
+  - title: "Shiny Apps"
+    desc: "Functions to launch shiny apps"
     contents:
         - SCD_effect_sizes
         - shine_gem_scd
