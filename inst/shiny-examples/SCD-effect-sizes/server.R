@@ -626,6 +626,8 @@ shinyServer(function(input, output, session) {
 
   })
   
+  output$batchTable <- renderTable(batchModel(), na = "-", digits = function() input$bdigits)
+
   output$downloadES <- downloadHandler(
     filename = "SCD effect size estimates.csv",
     content = function(file) {
@@ -634,8 +636,6 @@ shinyServer(function(input, output, session) {
     },
     contentType = "text/csv"
   )
-  
-  output$batchTable <- renderTable(batchModel(), na = "-")
   
   #------------------------------
   # Syntax for replication in R

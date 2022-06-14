@@ -100,39 +100,41 @@ Now select the “Estimate” tab. You will need to specify the following:
 
 3. __Confidence level__: For effect size indices that have known sampling variances, the calculator will report approximate confidence intervals. Specify your preferred coverage level for the confidence interval. The default is 95% confidence intervals. 
 
-4. __Long or wide format?__ This option is only relevant if you select more than one effect size index. If you select long, each effect size estimate (and any accompanying standard errors and confidence interval) will appear in a separate row. If you select wide, each effect size will appear in a separate column, with a single line per data series. 
+4 __Digits:__ The number of digits reported for the effect size estimates (and confidence intervals if applicable). For instance, an NAP of 0.85456 will be rounded to 0.855 if you select 3 digits, or to 0.85 if you select 2 digits. 
 
-5.  If you select the __Tau-BC__ index (one of the available non-overlap effect sizes), several additional options will appear:
+5. __Long or wide format?__ This option is only relevant if you select more than one effect size index. If you select long, each effect size estimate (and any accompanying standard errors and confidence interval) will appear in a separate row. If you select wide, each effect size will appear in a separate column, with a single line per data series. 
 
-    5.1 __Choose a method for calculating Tau index__: Specify a method for calculating the Tau index after adjusting for baseline trend. If you select “Tau (non-overlap)”, then it will be calculated just as it is for the Tau effect size. If you select “Kendall rank correlation,” then it will be calculated using Kendall’s rank correlation with an adjustment for ties (as originally proposed by Tarlow, 2017).
-    
-    5.2 __Use baseline trend test for Tau-BC?__ If “Always adjusting for baseline trend” the outcomes are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Tau index. If “Pretest for baseline trend, adjust if significant” then a significance level needs to be specified in the following input.
-    
-    5.3 __Significance level for baseline trend test__: What significance level to use for the baseline trend test. The default is 0.05.
+6.  If you select the __Tau-BC__ index (one of the available non-overlap effect sizes), several additional options will appear:
 
-6. If using the __SMD__ effect size (one of the available parametric effect sizes), one additional input is needed:
+    6.1 __Choose a method for calculating Tau index__: Specify a method for calculating the Tau index after adjusting for baseline trend. If you select “Tau (non-overlap)”, then it will be calculated just as it is for the Tau effect size. If you select “Kendall rank correlation,” then it will be calculated using Kendall’s rank correlation with an adjustment for ties (as originally proposed by Tarlow, 2017).
     
-    6.1 __Standardize SMD__: For the standardized mean difference effect size index, an option will appear allowing you to select whether to calculate the denominator using the standard deviation of the baseline observations (baseline SD) or using the standard deviation pooled across the baseline and treatment phases (pooled SD). The selected SD will be reported in the output as long as no aggregation variables are selected. It will not be reported if effect sizes are aggregated. 
+    6.2 __Use baseline trend test for Tau-BC?__ If “Always adjusting for baseline trend” the outcomes are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Tau index. If “Pretest for baseline trend, adjust if significant” then a significance level needs to be specified in the following input.
+    
+    6.3 __Significance level for baseline trend test__: What significance level to use for the baseline trend test. The default is 0.05.
 
-7. If using the __LOR__, __LRRd__, or __LRRi__ effect sizes (all parametric effect sizes), several further pieces of information are needed. This information is used for calculating a truncation constant for mean levels very near the floor of 0. 
+7. If using the __SMD__ effect size (one of the available parametric effect sizes), one additional input is needed:
     
-    7.1 __Outcome Scale__: 
+    7.1 __Standardize SMD__: For the standardized mean difference effect size index, an option will appear allowing you to select whether to calculate the denominator using the standard deviation of the baseline observations (baseline SD) or using the standard deviation pooled across the baseline and treatment phases (pooled SD). The selected SD will be reported in the output as long as no aggregation variables are selected. It will not be reported if effect sizes are aggregated. 
+
+8. If using the __LOR__, __LRRd__, or __LRRi__ effect sizes (all parametric effect sizes), several further pieces of information are needed. This information is used for calculating a truncation constant for mean levels very near the floor of 0. 
+    
+    8.1 __Outcome Scale__: 
   
-    7.1.1 If all of the data series use the same measurement, then select the appropriate outcome scale - “all percentage”, “all proportion”, “all count”, “all rate”, or “all other.”
+    8.1.1 If all of the data series use the same measurement, then select the appropriate outcome scale - “all percentage”, “all proportion”, “all count”, “all rate”, or “all other.”
     
-    7.1.2 If the outcome scale varies from series to series, select “by series.” If this is the case, then you will need to include a variable in your dataset that specifies “percentage”, “proportion”, “count”, “rate”, or “other” for each series, and then select the variable name in the drop box that appears.
+    8.1.2 If the outcome scale varies from series to series, select “by series.” If this is the case, then you will need to include a variable in your dataset that specifies “percentage”, “proportion”, “count”, “rate”, or “other” for each series, and then select the variable name in the drop box that appears.
     
-    7.1.3 Note: LRRi and LRRd accept data for all outcome scales while LOR is only calculated for data series that are on a proportion or percentage scale. 
+    8.1.3 Note: LRRi and LRRd accept data for all outcome scales while LOR is only calculated for data series that are on a proportion or percentage scale. 
     
-    7.2 __Intervals per observation session__: Here you can select a variable in the dataset containing the number of intervals per observation session. For series that were not observed using an interval method, the value for the entry should be left blank. This information is used for calculating a truncation constant for mean values very near the floor of 0.
+    8.2 __Intervals per observation session__: Here you can select a variable in the dataset containing the number of intervals per observation session. For series that were not observed using an interval method, the value for the entry should be left blank. This information is used for calculating a truncation constant for mean values very near the floor of 0.
     
-    7.3 __Length of each observation session__: Here you are able to select a variable in the dataset containing the length of each observation session (in minutes). If this value is unknown, it should be set to missing (NA). This information is used for calculating a truncation constant for mean values very near the floor of 0.
+    8.3 __Length of each observation session__: Here you are able to select a variable in the dataset containing the length of each observation session (in minutes). If this value is unknown, it should be set to missing (NA). This information is used for calculating a truncation constant for mean values very near the floor of 0.
     
-    7.4 __Floor for the log-response or log-odds ratio__: Here you are able to specify your own truncation constant instead of using the constant calculated based on the information in previous fields. 
+    8.4 __Floor for the log-response or log-odds ratio__: Here you are able to specify your own truncation constant instead of using the constant calculated based on the information in previous fields. 
 
-8. After you have selected one or more effect sizes, the “Estimate” button will appear. Click “Estimate” to view the calculated effect sizes and associated information. 
+9. After you have selected one or more effect sizes, the “Estimate” button will appear. Click “Estimate” to view the calculated effect sizes and associated information. 
 
-9. Click “Download results” to download the effect size estimates as a .csv file
+10. Click “Download results” to download the effect size estimates as a .csv file
 
 ## Syntax for R
 

@@ -257,6 +257,9 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                        choices = c("equal", "1/V", "nA", "nB", "nA*nB", "1/nA + 1/nB"))
                                                           ),
                                          numericInput("bconfidence", label = "Confidence level (for any effect size with standard errors)", value = 95, min = 0, max = 100),
+                                         numericInput("bdigits","Digits",
+                                                      value = 2, min = 1, 
+                                                      max = 16, step = 1),
                                          radioButtons("resultsformat", "Long or wide format?", c("Long" = "long", "Wide" = "wide"), inline = TRUE),
                                          conditionalPanel(condition = "input.bESpar.length > 0 || input.bESno.length > 0", 
                                                           actionButton("batchest", "Estimate"))
