@@ -18,7 +18,7 @@ Once you have accessed the calculator using one of these methods, you will need 
 
 ## Access through RStudio
 
-To access the effect size calculator on your own computer, you will need to install two pieces of open-source and freely available software (R and RStudio) and follow further steps to configure the software. Details for installation and RStudio access are described below. 
+To access the effect size calculator on your own computer, you will need to install two pieces of open-source and freely available software (R and RStudio) and follow further steps to configure the software. Details for installation and RStudio access are described below. A video walk-through is available at <https://www.youtube.com/watch?v=Zg-fheKHvw4&t=1s>.
 
 1. Install R via <http://cran.r-project.org/>
 

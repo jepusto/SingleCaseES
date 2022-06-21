@@ -1,4 +1,6 @@
-# Single-entry calculator
+# Single-series calculator
+
+For a video demonstration of the single-series calculator, visit <https://www.youtube.com/watch?v=5DwRtpKmnNE&t=4s>
 
 To use the single-case entry calculator, click on the "Single-Series Calculator" tab at the top of the screen.
 
