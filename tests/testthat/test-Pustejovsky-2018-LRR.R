@@ -1,7 +1,7 @@
 context("Pustejovsky (2018) examples.")
 
-library(tidyr)
-library(dplyr)
+suppressWarnings(library(dplyr))
+suppressWarnings(library(tidyr))
 
 #----------------------------------
 # McKissick (2010) example

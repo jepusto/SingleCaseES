@@ -20,7 +20,8 @@ nocite: |
 ---
 
 ```{r setup, include = FALSE}
-library(kableExtra)
+if (requireNamespace("kableExtra", quietly = TRUE)) library(kableExtra)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -553,10 +554,17 @@ data(Schmidt2007)
 
 Here are the first few rows of the data
 
-```{r, echo = F}
-knitr::kable(head(Schmidt2007[,c("Case_pseudonym", "Behavior_type", "Session_number", "Outcome", "Condition", "Phase_num", "Metric", "Session_length", "direction", "n_Intervals")], n = 10), longtable = TRUE) %>%
+```{r, echo = FALSE}
+Schmidt_kable <- 
+  knitr::kable(head(subset(Schmidt2007,select = c(Case_pseudonym, Behavior_type, Session_number, Outcome, Condition, Phase_num, Metric, Session_length, direction, n_Intervals)), n = 10), longtable = TRUE)
+
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  Schmidt_kable %>%
   kable_styling() %>%
   scroll_box(width = "100%")
+} else {
+  Schmidt_kable
+}
 ```
 
 The Schmidt (2007) dataset contains many variables, but for now let's focus on the following:
@@ -635,8 +643,8 @@ mckissick_ES <- batch_calc_ES(dat = McKissick,
 Note that all of the inputs related to variable names are bare (i.e., no
 quotes). Let's take a look at a table of the output.
 
-```{r, echo = F}
-kable(mckissick_ES) 
+```{r, echo = FALSE}
+knitr::kable(mckissick_ES, digits = 3) 
 ```
 
 The output will always start with one or more columns corresponding to each
@@ -673,11 +681,18 @@ schmidt_ES <- batch_calc_ES(dat = Schmidt2007,
 
 The syntax is similar to the example with the McKissick dataset, except for two things. Here, we've provided a vector of variable names for `grouping` that identify each series for which we want an effect size. Instead of providing a uniform direction of improvement to the `improvement` variable, we've provided a variable name, `direction`, which will account for the fact that the two behavior types have different directions of therapeutic improvement. Here is a table of the output:
 
-```{r, echo = F}
-kable(schmidt_ES) %>%
-  kable_styling() %>%
-  scroll_box(width = "100%", height = "800px", 
-             fixed_thead = list(enabled = TRUE, background = "green"))
+```{r, echo = FALSE}
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  kable(schmidt_ES, digits = 3) %>%
+    kable_styling() %>%
+    scroll_box(
+      width = "100%", height = "800px", 
+      fixed_thead = list(enabled = TRUE, background = "green")
+    )
+} else {
+  knitr::kable(schmidt_ES, digits = 3)
+}
+
 ```
 
 The first three columns are the unique values from the variables supplied to `grouping`, followed by the effect size information.
@@ -702,9 +717,14 @@ schmidt_ES_agg <-
 ```
 
 The resulting data frame has just one effect size estimate per case per outcome because the estimates for each unique `phase_num` have been averaged together:
-```{r, echo = F}
-kable(schmidt_ES_agg) %>%
-  kable_styling()
+```{r, echo = FALSE}
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  kable(schmidt_ES_agg, digits = 3) %>%
+    kable_styling()
+} else {
+  knitr::kable(schmidt_ES_agg, digits = 3)
+}
+
 ```
 The package currently allows two different weighting schemes when aggregating
 effect sizes. The default option, `weighting = "1/V"`, takes a weighted average
@@ -728,9 +748,13 @@ schmidt_ES_agg <-
   )
 ```
 
-```{r, echo = F}
-kable(schmidt_ES_agg) %>%
-  kable_styling()
+```{r, echo = FALSE}
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  kable(schmidt_ES_agg, digits = 3) %>%
+    kable_styling()
+} else {
+  knitr::kable(schmidt_ES_agg, digits = 3)
+}
 ```
 
 Further weighting options may be added in future releases of the package.
@@ -759,8 +783,8 @@ mckissick_ES <- batch_calc_ES(dat = McKissick,
 
 Here, we've specified the outcome scale is a count, and that each session lasted 20 minutes. Note that we get a warning about the log odds ratio. Let's take a look at the output:
 
-```{r, echo = F}
-kable(mckissick_ES)
+```{r, echo = FALSE}
+knitr::kable(mckissick_ES, digits = 3)
 ```
 
 Once again, we have a column specifying the case to which the effect sizes correspond, as well as a column specifying the effect size metric. The log odds ratio returns all `NA`s, because the log odds ratio can't be estimate for count outcomes.
@@ -781,11 +805,17 @@ schmidt_ES <- batch_calc_ES(dat = Schmidt2007,
 
 Unlike the previous example, where we specified a uniform value for the `scale` and `observation_length`, we now have to specify variable names for `scale`, `observation_length`, and the number of `intervals`. Note that we get some warnings again about the LOR effect size. Let's take a look at the output:
 
-```{r}
-kable(schmidt_ES) %>%
-  kable_styling() %>%
-  scroll_box(width = "100%", height = "800px", 
-             fixed_thead = list(enabled = TRUE, background = "green"))
+```{r, echo = FALSE}
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  kable(schmidt_ES, digits = 3) %>%
+    kable_styling() %>%
+    scroll_box(
+      width = "100%", height = "800px", 
+      fixed_thead = list(enabled = TRUE, background = "green")
+    )
+} else {
+  knitr::kable(schmidt_ES, digits = 3)
+}
 ```
 
 In this case, LOR is all `NA` for the outcomes that are disruptive behaviors because those are counts and therefore the LOR isn't an appropriate effect size. However, for the percentage of on task behavior, the LOR *was* estimated.
@@ -811,8 +841,8 @@ mckissick_wide_ES <-
 
 The default argument for the batch calculator is `format = "long"`, but if you want each case to be on a single line, specifying `format = "wide"` will provide the output that way, just like `calc_ES()`. Here's the output:
 
-```{r, echo = F}
-kable(mckissick_wide_ES)
+```{r, echo = FALSE}
+knitr::kable(mckissick_wide_ES, digits = 3)
 ```
 
 In this case there is a column for NAP, NAP's standard error, and the upper and

@@ -1,5 +1,17 @@
 context("Test SCD_effect_sizes Shiny app")
 
+skip_if_not_installed("shiny")
+skip_if_not_installed("shinytest")
+skip_if_not_installed("stringr")
+skip_if_not_installed("rvest")
+skip_if_not_installed("ggplot2")
+skip_if_not_installed("markdown")
+skip_if_not_installed("readxl")
+skip_if_not_installed("glue")
+skip_if_not_installed("janitor")
+skip_if_not_installed("rclipboard")
+skip_if_not_installed("Kendall")
+
 suppressWarnings(library(shiny))
 suppressWarnings(library(shinytest))
 suppressWarnings(library(dplyr))
@@ -7,15 +19,15 @@ suppressWarnings(library(stringr))
 suppressWarnings(library(rvest))
 suppressWarnings(library(purrr))
 
+skip_if_not(dependenciesInstalled())
+
 appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")
 
 test_that("Title and tabs are correct", {
   
   skip_on_cran()
   
-  if (dependenciesInstalled()) {
-    app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
-  }
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
   
   # title
   appTitle <- app$getTitle()[[1]]
@@ -68,9 +80,7 @@ test_that("Single-entry calculator works properly", {
   
   skip_on_cran()
 
-  if (dependenciesInstalled()) {
-    app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
-  }
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
   
   full_names <- list(IRD = "Robust Improvement Rate Difference",
                      NAP = "Non-overlap of All Pairs",
@@ -218,11 +228,9 @@ check_batch <- function(app, example_dat, ES, Kendall = FALSE) {
 test_that("Batch calculator is correct", {
   
   skip_on_cran()
-
-  if (dependenciesInstalled()) {
-    app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
-  }
   
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+
   all_names <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U",
                  "LOR", "LRRd", "LRRi", "LRM", "SMD")
   
@@ -401,7 +409,7 @@ test_that("Batch calculator is correct", {
 check_load <- function(app, file, Kendall = FALSE) {
 
   data_path <- paste0("../testdata/", file)
-  # data_path <- system.file("tests","testdata", file, package = "SingleCaseES")
+  # data_path <- system.file("tests/testdata", file, package = "SingleCaseES")
   
   app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
 
@@ -472,9 +480,7 @@ test_that("Data are uploaded correctly.", {
   
   skip_on_cran()
   
-  if (dependenciesInstalled()) {
-    app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
-  }
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
   
   # csv file
   output_csv <- 

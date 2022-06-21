@@ -537,7 +537,7 @@ shinyServer(function(input, output, session) {
       
     }
     
-    ggplot(dat_graph, aes(session, outcome, color = phase)) +
+    ggplot(dat_graph, aes(session, outcome, color = factor(phase))) +
       geom_point(size = 2) + geom_line() +
       {if ("facet" %in% names(dat_graph)) facet_grid(facet ~ .)} +
       geom_vline(data = phase_change, aes(xintercept = treat_change), linetype = "dashed") +
@@ -626,6 +626,8 @@ shinyServer(function(input, output, session) {
 
   })
   
+  output$batchTable <- renderTable(batchModel(), na = "-", digits = function() input$bdigits)
+
   output$downloadES <- downloadHandler(
     filename = "SCD effect size estimates.csv",
     content = function(file) {
@@ -634,8 +636,6 @@ shinyServer(function(input, output, session) {
     },
     contentType = "text/csv"
   )
-  
-  output$batchTable <- renderTable(batchModel(), na = "-")
   
   #------------------------------
   # Syntax for replication in R

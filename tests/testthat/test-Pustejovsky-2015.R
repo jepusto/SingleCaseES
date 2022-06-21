@@ -1,6 +1,6 @@
 context("Pustejovsky (2015) examples.")
 
-library(dplyr)
+suppressWarnings(library(dplyr))
 
 data("Shogren")
 

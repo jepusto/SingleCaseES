@@ -36,6 +36,9 @@ test_that("Tau-BC is correct.", {
 })
 
 test_that("The formula for Kendall's rank correlation is correct.", {
+  
+  skip_if_not_installed("Kendall")
+  
   # Example 3.1 in Kendall (1970), p.35
   A <- c(1, 2.5, 2.5, 4.5, 4.5, 6.5, 6.5, 8, 9.5, 9.5)
   B <- c(1, 2, rep(4.5, 4), rep(8, 3), 10)
@@ -75,6 +78,8 @@ test_that("The formula for Kendall's rank correlation is correct.", {
 
 test_that("Tau-BC is correct regarding pretest_trend argument.", {
   
+  skip_if_not_installed("Kendall")
+  
   A <- c(20, 20, 26, 25, 22, 23)
   B <- c(28, 25, 24, 27, 30, 30, 29)
   
@@ -92,13 +97,13 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
   
   expect_message(Tau_BC(A, B, pretest_trend = .05))
   
-  
   A_data <- c(1, 1, 3, 3, 5, 5)
   B_data <- c(5, 6, 4, 8, 9)
   m <- length(A_data)
   n <- length(B_data)
   session_A <- 1:m
   session_B <- (m + 1) : (m + n)
+  
   pval_slope_A <- Kendall::Kendall(A_data, session_A)$sl
   
   Tau_BC_05 <- Tau_BC(A_data, B_data, pretest_trend = .05, report_correction = TRUE)
@@ -124,11 +129,12 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
   expect_equal(Tau_Kendall_increase$CI_upper, -Tau_Kendall_decrease$CI_lower)
 })
 
-library(Kendall)
 
 test_that("Tau-BC works on an example.", {
   
   skip_on_cran()
+  skip_if_not_installed("Kendall")
+  library(Kendall)
   
   source("http://ktarlow.com/stats/r/bctau.txt")
   
