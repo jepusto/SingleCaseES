@@ -6,11 +6,7 @@ Once you have accessed the calculator using one of these methods, you will need 
 
 - The __single-series calculator__ estimates effect sizes using data from two phases (i.e. a baseline phase and treatment phase) within a _single_ series.
 
-<<<<<<< HEAD
-- The __multiple-series calculator__ estimates effect sizes using data from _multiple_ series, distinguished by one or more series identifier variables. This is useful if you are calculating effect sizes for several participants in a primary study (e.g., four participants from a multiple baseline design) or calculating effect sizes for multiple cases from multiple studies (e.g., for a meta-analysis for findings from single-case research designs).
-=======
 - The __multiple-series calculator__ estimates effect sizes using data from _multiple_ series, distinguished by one or more series identifier variables. This is useful if you are calculating effect sizes for several participants in a primary study (e.g., four participants from a multiple baseline design) or calculating effect sizes for multiple cases from multiple studies (e.g., for a meta-analysis of findings from single-case research designs).
->>>>>>> d26149f53533c8ed8b248fa4c6d060213d4e7537
 
 ## Access through the shinyapps.io website
 
@@ -22,7 +18,7 @@ Once you have accessed the calculator using one of these methods, you will need 
 
 ## Access through RStudio
 
-To access the effect size calculator on your own computer, you will need to install two pieces of open-source and freely available software (R and RStudio) and follow further steps to configure the software. Details for installation and RStudio access are described below. For video instructions, visit <https://www.youtube.com/watch?v=Zg-fheKHvw4&t=1s>
+To access the effect size calculator on your own computer, you will need to install two pieces of open-source and freely available software (R and RStudio) and follow further steps to configure the software. Details for installation and RStudio access are described below. A video walk-through is available at <https://www.youtube.com/watch?v=Zg-fheKHvw4&t=1s>.
 
 1. Install R via <http://cran.r-project.org/>
 
