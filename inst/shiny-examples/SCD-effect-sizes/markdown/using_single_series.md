@@ -1,6 +1,6 @@
 # Single-series calculator
 
-For video instructions on using the single-series calculator, visit <https://www.youtube.com/watch?v=5DwRtpKmnNE&t=4s>.
+For video instructions on using the single-series calculator, visit <https://www.youtube.com/watch?v=5DwRtpKmnNE&t=4s>
 
 To use the single-case entry calculator we first click on the "Single-Series Calculator" section at the top of the screen.
 
