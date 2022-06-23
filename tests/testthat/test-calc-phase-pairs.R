@@ -27,6 +27,28 @@ test_that("calc_phase_pairs() replicates Schmidt (2007), Thorne (2008) phase pai
   
   expect_identical(Schmidt2007$Phase_num, Schmidt2007$phase_pair)
   
+  # shuffle Schmidt2007 by rows
+  set.seed(12345)
+  dat_shuffled <- Schmidt2007 %>% slice(., sample(1:n())) 
+  
+  dat_shuffled <- 
+    Schmidt2007 %>% 
+    slice(., sample(1:n())) %>% 
+    group_by(Behavior_type, Case_pseudonym) %>% 
+    mutate(phase_pair_wrong = calc_phase_pairs(Condition))
+  
+  dat_shuffled <- 
+    dat_shuffled %>% 
+    group_by(Behavior_type, Case_pseudonym) %>% 
+    arrange(Behavior_type, Case_pseudonym, Session_number) %>% 
+    mutate(
+      phase_pair_right = calc_phase_pairs(Condition),
+      compare_false = if_else(Phase_num == phase_pair_wrong, 0, 1)
+    )
+  
+  expect_equal(dat_shuffled$Phase_num, dat_shuffled$phase_pair_right)
+  expect_true(sum(dat_shuffled$compare_false) > 0)
+  
   data("Schmidt2012")
   
   Thorne_pairs <- 

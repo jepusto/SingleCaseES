@@ -301,11 +301,17 @@ shinyServer(function(input, output, session) {
     var_names <- names(datClean())
     if (input$dat_type == "dat" || input$dat_type == "xlsx") {
       
+      b_aggregate_choices <- if (input$calcPhasePair) {
+        c(var_names, "phase_pair_calculated")
+      } else {
+        var_names
+      }
+      
       list(
         selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
                        selected = NULL, multiple = TRUE),
-        selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", choices = var_names,
-                       selected = NULL, multiple = TRUE),
+        selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", 
+                       choices = b_aggregate_choices, selected = NULL, multiple = TRUE),
         selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = var_names[3])
       )
       
@@ -435,7 +441,28 @@ shinyServer(function(input, output, session) {
     }
   }) 
   
-  output$datview2 <- renderTable(datClean())
+  datClean2 <- reactive({
+    dat <- datClean()
+    
+    if (input$calcPhasePair) {
+      grouping_vars <- input$b_clusters
+      sessin_var <- input$session_number
+      phase_var <- input$b_phase
+      
+      dat <- 
+        dat %>% 
+        dplyr::group_by(!!!rlang::syms(grouping_vars)) %>% 
+        dplyr::arrange(!!!rlang::syms(grouping_vars), !!rlang::sym(sessin_var)) %>% 
+        dplyr::mutate(phase_pair_calculated = calc_phase_pairs(!!rlang::sym(phase_var))) %>% 
+        dplyr::ungroup() %>% 
+        as.data.frame() # so that levels(as.factor(datClean2()[,x]))) would work
+    }
+    
+    return(dat)
+    
+  })
+  
+  output$datview2 <- renderTable(datClean2())
   
   # Plot
   output$facetSelector <- renderUI({
@@ -452,7 +479,7 @@ shinyServer(function(input, output, session) {
     
     if (length(grouping_vars) > 0) {
       
-      grouping_vals <- lapply(grouping_vars, function(x) levels(as.factor(datClean()[,x])))
+      grouping_vals <- lapply(grouping_vars, function(x) levels(as.factor(datClean2()[,x])))
       names(grouping_vals) <- grouping_vars
       
       header <- strong("Select a value for each grouping variable.")
@@ -471,14 +498,14 @@ shinyServer(function(input, output, session) {
   
   datGraph <- reactive({
     
-    dat <- datClean()
+    dat <- datClean2()
     
     if (!is.null(input$b_clusters) | !is.null(input$b_aggregate)) {
 
       grouping_vars <- setdiff(c(input$b_clusters, input$b_aggregate), input$bfacetSelector)
       
       if (length(grouping_vars) > 0) {
-        subset_vals <- sapply(grouping_vars, function(x) datClean()[[x]] %in% input[[paste0("grouping_",x)]])
+        subset_vals <- sapply(grouping_vars, function(x) datClean2()[[x]] %in% input[[paste0("grouping_",x)]])
         dat <- dat[apply(subset_vals, 1, all),]
       } 
       
@@ -488,7 +515,6 @@ shinyServer(function(input, output, session) {
     
   })
   
-  # output$datview3 <- renderTable(datGraph2())
   
   heightPlot <- reactive({
     if (input$bfacetSelector == "None") {
@@ -509,7 +535,7 @@ shinyServer(function(input, output, session) {
     if (input$bfacetSelector == "None") {
       
       dat_graph <-
-        data.frame(session = session_dat, outcome = outcome_dat, phase = phase_dat) %>%
+        data.frame(session = session_dat, outcome = outcome_dat, phase = as.factor(phase_dat)) %>%
         dplyr::filter(phase %in% c(input$b_base, input$b_treat))
       
       phase_change <-
@@ -524,7 +550,7 @@ shinyServer(function(input, output, session) {
       facet_dat <- dat[[input$bfacetSelector]]
       
       dat_graph <-
-        data.frame(facet = facet_dat, session = session_dat, outcome = outcome_dat, phase = phase_dat) %>%
+        data.frame(facet = facet_dat, session = session_dat, outcome = outcome_dat, phase = as.factor(phase_dat)) %>%
         dplyr::filter(phase %in% c(input$b_base, input$b_treat))
       
       phase_change <-
@@ -537,7 +563,7 @@ shinyServer(function(input, output, session) {
       
     }
     
-    ggplot(dat_graph, aes(session, outcome, color = factor(phase))) +
+    ggplot(dat_graph, aes(session, outcome, color = phase)) +
       geom_point(size = 2) + geom_line() +
       {if ("facet" %in% names(dat_graph)) facet_grid(facet ~ .)} +
       geom_vline(data = phase_change, aes(xintercept = treat_change), linetype = "dashed") +
@@ -555,8 +581,14 @@ shinyServer(function(input, output, session) {
       } else{
         scale_val <- input$boutScale
       }
+      
+      intervals <- if (input$bintervals == "NA") NA else input$bintervals
+      obslength <- if (input$bobslength == "NA") NA else input$bobslength
+      D_const <- if (is.null(input$blrrfloor)) NA else input$blrrfloor
+      
     } else {
       scale_val <- "other"
+      intervals <- obslength <- D_const <- NA
     }
     
     if(input$bimprovement == "series") {
@@ -579,7 +611,7 @@ shinyServer(function(input, output, session) {
     
     if (is.null(input$b_aggregate)) {
       
-      batch_calc_ES(dat = datClean(),
+      batch_calc_ES(dat = datClean2(),
                     grouping = input$b_clusters,
                     condition = input$b_phase,
                     outcome = input$b_out,
@@ -590,6 +622,9 @@ shinyServer(function(input, output, session) {
                     improvement = improvement,
                     pct_change = input$b_pct_change,
                     scale = scale_val,
+                    intervals = intervals,
+                    observation_length = obslength,
+                    D_const = D_const,
                     std_dev = input$bSMD_denom,
                     confidence = input$bconfidence / 100,
                     Kendall = Kendall, 
@@ -599,7 +634,7 @@ shinyServer(function(input, output, session) {
       
     } else{
       
-      batch_calc_ES(dat = datClean(),
+      batch_calc_ES(dat = datClean2(),
                     grouping = input$b_clusters,
                     condition = input$b_phase,
                     outcome = input$b_out,
@@ -612,6 +647,9 @@ shinyServer(function(input, output, session) {
                     improvement = improvement,
                     pct_change = input$b_pct_change,
                     scale = scale_val,
+                    intervals = intervals,
+                    observation_length = obslength,
+                    D_const = D_const,
                     std_dev = input$bSMD_denom,
                     confidence = input$bconfidence / 100,
                     Kendall = Kendall, 
@@ -686,6 +724,23 @@ shinyServer(function(input, output, session) {
       clean_dat <- c()
     } 
     
+    # clean the data
+    if (input$calcPhasePair) {
+      grouping <- paste(input$b_clusters, collapse=', ')
+      condition <- input$b_phase
+      session_number <- input$session_number
+      
+      clean_dat2 <- c(clean_dat,
+                      parse_code_chunk("dat-clean", 
+                                       args = list(user_grouping = grouping,
+                                                   user_condition = condition,
+                                                   user_session_number = session_number)),
+                      ''
+      )
+    } else {
+      clean_dat2 <- clean_dat
+    }
+    
     
     # batch calculation
     if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
@@ -694,8 +749,14 @@ shinyServer(function(input, output, session) {
       } else{
         scale_val <- input$boutScale
       }
+      
+      intervals <- if (input$bintervals == "NA") NA else input$bintervals
+      obslength <- if (input$bobslength == "NA") NA else input$bobslength
+      D_const <- if (is.null(input$blrrfloor)) NA else input$blrrfloor
+      
     } else {
       scale_val <- "other"
+      intervals <- obslength <- D_const <- NA
     }
 
     if (input$bimprovement == "series") {
@@ -728,6 +789,9 @@ shinyServer(function(input, output, session) {
     improvement <- improvement
     pct_change <- input$b_pct_change
     scale <- scale_val
+    intervals <- intervals
+    obslength <- obslength
+    D_const <- D_const
     std_dev <- input$bSMD_denom
     confidence <- input$bconfidence / 100
     Kendall <- Kendall
@@ -748,6 +812,9 @@ shinyServer(function(input, output, session) {
                                        user_improvement = improvement,
                                        user_pct_change = pct_change,
                                        user_scale = scale,
+                                       user_intervals = intervals,
+                                       user_obslength = obslength,
+                                       user_D_const = D_const,
                                        user_std_dev = std_dev,
                                        user_confidence = confidence,
                                        user_Kendall = Kendall,
@@ -770,6 +837,9 @@ shinyServer(function(input, output, session) {
                                        user_improvement = improvement,
                                        user_pct_change = pct_change,
                                        user_scale = scale,
+                                       user_intervals = intervals,
+                                       user_obslength = obslength,
+                                       user_D_const = D_const,
                                        user_std_dev = std_dev,
                                        user_confidence = confidence,
                                        user_Kendall = Kendall,
@@ -778,7 +848,7 @@ shinyServer(function(input, output, session) {
           '')
     }
 
-    res <- c(header_res, '', read_res, '', clean_dat, '', output_res)
+    res <- c(header_res, '', read_res, '', clean_dat2, '', output_res)
     paste(res, collapse = "\n")
   })
 
