@@ -730,15 +730,13 @@ shinyServer(function(input, output, session) {
       condition <- input$b_phase
       session_number <- input$session_number
       
-      clean_dat2 <- c(clean_dat,
+      clean_dat <- c(clean_dat,
                       parse_code_chunk("dat-clean", 
                                        args = list(user_grouping = grouping,
                                                    user_condition = condition,
                                                    user_session_number = session_number)),
                       ''
       )
-    } else {
-      clean_dat2 <- clean_dat
     }
     
     
@@ -848,7 +846,7 @@ shinyServer(function(input, output, session) {
           '')
     }
 
-    res <- c(header_res, '', read_res, '', clean_dat2, '', output_res)
+    res <- c(header_res, '', read_res, '', clean_dat, '', output_res)
     paste(res, collapse = "\n")
   })
 
