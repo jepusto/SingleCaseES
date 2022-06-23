@@ -29,7 +29,6 @@ test_that("calc_phase_pairs() replicates Schmidt (2007), Thorne (2008) phase pai
   
   # shuffle Schmidt2007 by rows
   set.seed(12345)
-  dat_shuffled <- Schmidt2007 %>% slice(., sample(1:n())) 
   
   dat_shuffled <- 
     Schmidt2007 %>% 
