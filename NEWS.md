@@ -4,6 +4,8 @@
 * Changes to the SCD_effect_sizes shiny app
     * The multiple series calculator gains an option for changing the number of digits displayed in the output.
     * Fixed a bug in the SCD_effect_sizes app (multiple-series calculator) plotting facilities, which caused an error if the phase variable was numeric.
+    * Fixed a bug in the multiple-series calculator so that `bintervals`, `bobslength`, and `blrrfloor` are used for calculating LOR and LRR effect sizes.
+    * Added an option to calculate phase pair numbers in the multiple-series calculator for uploaded data sets.
 
 
 # SingleCaseES 0.6.0
