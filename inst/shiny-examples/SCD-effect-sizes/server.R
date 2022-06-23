@@ -446,13 +446,13 @@ shinyServer(function(input, output, session) {
     
     if (input$calcPhasePair) {
       grouping_vars <- input$b_clusters
-      sessin_var <- input$session_number
+      session_var <- input$session_number
       phase_var <- input$b_phase
       
       dat <- 
         dat %>% 
         dplyr::group_by(!!!rlang::syms(grouping_vars)) %>% 
-        dplyr::arrange(!!!rlang::syms(grouping_vars), !!rlang::sym(sessin_var)) %>% 
+        dplyr::arrange(!!!rlang::syms(grouping_vars), !!rlang::sym(session_var)) %>% 
         dplyr::mutate(phase_pair_calculated = calc_phase_pairs(!!rlang::sym(phase_var))) %>% 
         dplyr::ungroup() %>% 
         as.data.frame() # so that levels(as.factor(datClean2()[,x]))) would work
