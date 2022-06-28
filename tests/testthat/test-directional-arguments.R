@@ -1,6 +1,6 @@
 context("Improvement arguments work properly.")
 
-library(dplyr)
+suppressWarnings(library(dplyr))
 
 symmetric_ES <- c("LRRd","LRRi","SMD","Tau","NAP","PEM")
 

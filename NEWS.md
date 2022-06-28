@@ -1,6 +1,9 @@
 # SingleCaseES 0.6.0.9999
 
-* Revised in-app documentation for the SCD_effect_sizes web app.
+* Revised in-app documentation for the SCD_effect_sizes web app. Added links to video demonstrations.
+* Changes to the SCD_effect_sizes shiny app
+    * The multiple series calculator gains an option for changing the number of digits displayed in the output.
+    * Fixed a bug in the SCD_effect_sizes app (multiple-series calculator) plotting facilities, which caused an error if the phase variable was numeric.
 
 
 # SingleCaseES 0.6.0
