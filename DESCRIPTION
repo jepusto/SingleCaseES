@@ -40,7 +40,7 @@ Suggests:
     markdown,
     knitr,
     rmarkdown,
-    prettydoc,
+    cleanrmd,
     Kendall,
     kableExtra,
     covr,
@@ -52,4 +52,4 @@ LazyData: TRUE
 RoxygenNote: 7.1.2
 Encoding: UTF-8
 Language: en-US
-VignetteBuilder: knitr, rmarkdown, prettydoc
+VignetteBuilder: knitr, rmarkdown, cleanrmd

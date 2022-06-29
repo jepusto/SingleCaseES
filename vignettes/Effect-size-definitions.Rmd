@@ -4,13 +4,12 @@ author: "James E. Pustejovsky, Daniel M. Swan, and Man Chen"
 bibliography: references.bibtex
 date: "`r Sys.Date()`"
 output: 
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
+  cleanrmd::html_document_clean:
+    theme: holiday
+    highlight: kate
     toc: true
     toc_depth: 2
-    number_sections: true
-    link-citations: true 
+    mathjax: default
 link-citations: yes
 csl: apa.csl
 vignette: >
@@ -27,18 +26,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The SingleCaseES package provides R functions for calculating basic,
-within-case effect size indices for single-case designs, including several
-non-overlap measures and parametric effect size measures, and for estimating the
-gradual effects model developed by @Swan2018gradual. Standard errors and
-confidence intervals are provided for the subset of effect sizes indices with
-known sampling distributions. This vignette covers the mathematical definitions
-of the basic non-overlap and parametric effect size measures, along with some
-details about how they are estimated. @parker2011effect provides a review of the
-non-overlap measures, including worked examples of the calculations.
-@pustejovsky2018procedural provides a critical review of non-overlap measures
-and parametric effect sizes. However, neither of these reviews include details
-about standard error calculations.
+The SingleCaseES package provides R functions for calculating basic, within-case effect size indices for single-case designs, including several non-overlap measures and parametric effect size measures, and for estimating the gradual effects model developed by @Swan2018gradual. Estimation procedures for standard errors and confidence intervals are provided for the subset of effect sizes indices with known sampling distributions. This vignette covers the mathematical definitions of the basic non-overlap and parametric effect size measures, along with some details about how they are estimated. @parker2011effect provides a review of the non-overlap measures, including worked examples of the calculations. @pustejovsky2018procedural provides a critical review of non-overlap measures and parametric effect sizes. However, neither of these reviews include details about standard error calculations.
 
 # Notation
 
@@ -104,6 +92,7 @@ $$
 with $Q_1$ and $Q_2$ defined as above. This standard error is based on the same assumptions as the unbiased SE.
 
 A limitation of $SE_{unbiased}$ and $SE_{Hanley}$ is that they will be equal to zero when there is complete non-overlap (i.e., when $\text{NAP}$ is equal to zero or equal to one). In order to ensure a strictly positive standard error for NAP, the SingleCaseES package calculates $SE_{unbiased}$ and $SE_{Hanley}$ using a truncation of NAP. Specifically, the formulas are evaluated using
+
 $$
 \widetilde{\text{NAP}} = \text{max}\left\{\frac{1}{2 mn}, \ \text{min}\left\{\frac{2mn - 1}{2mn}, \ \text{NAP} \right\} \right\}
 $$
@@ -153,12 +142,13 @@ The sampling distribution of PND has not been described, and so standard errors 
 ## PEM
 
 @ma2006alternative proposed the percent exceeding the median, defined as the proportion of observations in phase B that improve upon the median of phase A. @ma2006alternative did not specify an effect size parameter corresponding to this index. However, it would be reasonable to define the parameter as the probability that a randomly selected observation from the B phase represents an improvement over the median of the distribution of A phase outcomes. Let $\eta_A$ denote the median of the distribution of outcomes in phase A. For an outcome where increase is desirable, the PEM parameter would then be
+
 $$
 \xi = \text{Pr}\left(Y_B > \eta_A\right) + 0.5 \times \text{Pr}\left(Y_B = \eta_A\right).
 $$
 For an outcome where decrease is desirable, it would be
 $$
-\xi = \text{Pr}\left(Y_B < \psi_A\right) + 0.5 \times \text{Pr}\left(Y_B = \psi_A\right).
+\xi = \text{Pr}\left(Y_B < \eta_A\right) + 0.5 \times \text{Pr}\left(Y_B = \eta_A\right).
 $$
 
 ### Estimation
@@ -203,8 +193,7 @@ The sampling distribution of PAND has not been described, and so standard errors
 
 ## IRD
 
-The robust improvement rate difference is defined as the robust phi coefficient corresponding to a certain $2 \times 2$ table that is a function of the degree of overlap between the observations each phase [@parker2011effect]. 
-This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase [@pustejovsky2018procedural]. 
+The robust improvement rate difference is defined as the robust phi coefficient corresponding to a certain $2 \times 2$ table that is a function of the degree of overlap between the observations each phase [@parker2011effect].  This effect size does not have a stable parameter definition because its magnitude depends on the number of observations in each phase [@pustejovsky2018procedural]. 
 
 ### Estimation
 
@@ -239,7 +228,6 @@ Robust IRD is algebraically related to PAND as
 $$
 \text{IRD} = 1 - \frac{(m + n)^2}{2mn}\left(1 - \text{PAND}\right). 
 $$
-
 Just as with PAND, the sampling distribution of robust IRD has not been described, and so standard errors and confidence intervals are not available.
 
 ## Tau
@@ -268,11 +256,13 @@ $$
 \text{Tau} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w_{ij} = 2 \times \text{NAP} - 1.
 $$
 
-### Standard errors and confidence intervals 
+### Standard errors 
 
 Standard errors and confidence intervals for Tau are calculated using transformations of the corresponding SEs and CIs for NAP. All of the methods assume that the observations are mutually independent and are identically distributed within each phase. 
 
 Standard errors for Tau are calculated as $SE_{\text{Tau}} = 2 SE_{\text{NAP}}$, where $SE_{\text{NAP}}$ is the standard error for NAP calculated based on one of the available methods (unbiased, Hanley, or null). 
+
+### Confidence intervals
 
 The CI for $\tau$ is calculated as 
 
@@ -324,6 +314,7 @@ If the pre-test for A phase time trend is used, then slope of the baseline trend
 If the pre-test for A phase time trend is not used, then the outcomes are adjusted for baseline trend using Theil-Sen regression, regardless of whether the slope is significantly different from zero. The residuals from Theil-Sen regression are then used to calculate the Kendall's rank correlation or Tau (non-overlap) index.
 
 The formal definition of Tau-BC require positing a model for the time trend in the data series. Thus, suppose that the outcomes can be expressed in terms of a linear time trend and an error term:
+
 $$
 \begin{aligned}
 y_i^A &= \alpha + \beta (i) + \epsilon_i^A, \quad \text{for} \quad i = 1,...,m \\
@@ -331,10 +322,12 @@ y_j^B &= \alpha + \beta (m + j) + \epsilon_j^B \quad \text{for} \quad j = 1,...,
 \end{aligned}
 $$
 Within each phase, assume that the error terms are independent and share a common distribution. The Tau-BC parameter can then be defined as the Tau parameter for the distribution of the error terms, or
+
 $$
 \tau_{BC} = \text{Pr}(\epsilon^B > \epsilon^A) - \text{Pr}(\epsilon^B < \epsilon^A).
 $$
 An equivalent definition in terms of the outcome distributions is
+
 $$
 \tau_{BC} = \text{Pr}\left[Y_j^B - \beta (m + j - i) > Y_i^A \right] - \text{Pr}\left[Y_j^B - \beta (m + j - i) < Y_i^A\right]
 $$
@@ -347,10 +340,12 @@ $$
 s_{hi} = \frac{y_i^A - y_h^A}{i - h}
 $$
 for $i = 1,...,m - 1$ and $h = i+1,...,m$. The overall slope estimate is taken to be the median over all $m(m - 1) / 2$ slope pairs:
+
 $$
 \hat\beta = \text{median}\left\{s_{12},...,s_{(m-1)m}\right\}.
 $$
 The intercept term is estimated by taking the median observation in the A phase after correcting for the estimated linear time trend:
+
 $$
 \hat\alpha = \text{median}\left\{y_1^A - \hat\beta \times 1, \ y_2^A - \hat\beta \times 2, ..., \ y_m^A - \hat\beta \times m\right\}.
 $$
@@ -358,6 +353,7 @@ However, the intercept estimate is irrelevant for purposes of estimating Tau-BC 
 
 After estimating the phase A time trend, $\tau_{BC}$ is estimated by de-trending the full data series and calculating Kendall's rank correlation or Tau (non-overlap) on the de-trended observations. Specifically, set $\hat\epsilon_i^A = y_i^A - \hat\beta (i) - \hat\alpha$ for $i = 1,...,m$ and $\hat\epsilon_j^B = y_j^B - \hat\beta (m + j) - \hat\alpha$. For an outcome where increase is desirable, calculate 
 $$w^\epsilon_{ij} = I\left(\hat\epsilon^B_j > \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j < \hat\epsilon^A_i\right)$$
+
 or, for an outcome where decrease is desirable, calculate
 $$w^\epsilon_{ij} = I\left(\hat\epsilon^B_j < \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j > \hat\epsilon^A_i\right).$$
 
@@ -367,14 +363,17 @@ $$
 $$
 
 If calculated with Kendall's rank correlation, Tau-BC is estimated as the rank correlation between $\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}$ and a dummy coded variable $\left\{0_1,\dots,0_m, 1_1,\dots,1_n \right\}$, with an adjustment for ties [@kendall1970rank, p. 35]. Specifically, 
+
 $$
 \text{Tau}_{BC}^* = \frac{1}{D} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij},
 $$
 where 
+
 $$
 D = \sqrt{m \times n \times \left(\frac{(m+n)(m+n-1)}{2}-U\right)}
 $$
 and $U$ is the number of ties between all possible pairs of observations (including pairs within phase A, pairs within phase B, and pairs of one phase A and one phase B data point). $U$ can be computed as 
+
 $$
 U = \sum_{i=1}^{m - 1} \sum_{j = i+1}^m I\left(\hat\epsilon^A_i = \hat\epsilon^A_j\right) + \sum_{i=1}^{n - 1} \sum_{j = i+1}^n I\left(\hat\epsilon^B_i = \hat\epsilon^B_j\right) + \sum_{i=1}^m \sum_{j=1}^n I\left(\hat\epsilon^A_i = \hat\epsilon^B_j\right).
 $$
@@ -482,14 +481,14 @@ $$
 R_1 = \ln\left(\tilde{y}_B\right) - \ln\left(\tilde{y}_A\right).
 $$
 
-However, $R_1$ will be biased when the one or both phases include only a small number of observations. A bias-corrected estimator is given by 
+However, $R_1$ will be biased when one or both phases include only a small number of observations. A bias-corrected estimator is given by 
 
 $$
 R_2 = \ln\left(\tilde{y}_B\right) + \frac{\tilde{s}_B^2}{2 n \tilde{y}_B^2} - \ln\left(\tilde{y}_A\right) - \frac{\tilde{s}_A^2}{2 m \tilde{y}_A^2}.
 $$
 The bias-corrected estimator is the default option in SingleCaseES. 
 
-### Standard errors and confidence intervals
+### Standard errors
 
 Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for $R_1$ or $R_2$ is given by
 
@@ -497,7 +496,9 @@ $$
 SE_R = \sqrt{\frac{\tilde{s}_A^2}{m \tilde{y}_A^2} + \frac{\tilde{s}_B^2}{n \tilde{y}_B^2}}.
 $$
 
-Under the same assumption, an approximate confidence interval for $\psi$ is 
+### Confidence intervals
+
+Under the same assumptions, an approximate confidence interval for $\psi$ is 
 
 $$
 [R - z_{\alpha / 2} \times SE_R,\quad R + z_{\alpha / 2} \times SE_R].
@@ -520,7 +521,6 @@ To account for the possibility that the sample means may be equal to zero or one
 $$
 \tilde{y}_A = \text{max} \left\{ \text{min}\left[\bar{y}_A, 1 - \frac{1}{2 D m}\right], \frac{1}{2 D m}\right\}
 $$
-
 and
 
 $$
@@ -528,6 +528,7 @@ $$
 $$
 
 where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes [@pustejovsky2018using].To ensure that the corresponding standard error is strictly positive, it is calculated using truncated sample variances, given by
+
 $$
 \tilde{s}_A^2 = \text{max}\left\{s_A^2, \ \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \ \frac{1}{D^2 n^3}\right\}.
 $$
@@ -545,13 +546,15 @@ LOR_2 = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) - \frac{\til
 $$
 This estimator uses a small-sample correction to reduce bias when one or both phases include only a small number of observations.
 
-### Standard errors and confidence intervals
+### Standard errors 
 
 Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for $LOR$ is given by
 
 $$
 SE_{LOR} = \sqrt{\frac{\tilde{s}^2_A}{n_A \tilde{y}_A^2 (1 - \tilde{y}_A)^2} + \frac{\tilde{s}^2_B}{n_B \tilde{y}_B^2 (1 - \tilde{y}_B)^2}}.
 $$
+
+### Confidence intervals
 
 Under the same assumption, an approximate confidence interval for $\psi$ is
 
@@ -562,10 +565,12 @@ $$
 ## LRM
 
 @bonett2020interval described the log ratio of medians (LRM) effect size, which can be used to quantify the change in medians from phase A to phase B. The LRM is the natural logarithm of the ratio of medians. This effect size is appropriate for outcomes that are skewed or right-censored [@bonett2020interval]. For an outcome where increase is desirable, the LRM parameter is defined as
+
 $$
 \lambda = \ln\left(\eta_B / \eta_A\right) = \ln(\eta_B) - \ln(\eta_A),
 $$
-where $\eta_B$ and $\eta_A$ are the population median for phase B and phase A, respectively. For an outcome where decrease is desirable, the LRM parameter has the opposite sign:
+where $\eta_B$ and $\eta_A$ are the population medians for phase B and phase A, respectively. For an outcome where decrease is desirable, the LRM parameter has the opposite sign:
+
 $$
 \lambda = \ln\left(\eta_A / \eta_B\right) = \ln(\eta_A) - \ln(\eta_B).
 $$
@@ -573,12 +578,13 @@ $$
 ### Estimation
 
 A natural estimator of the $\lambda$ is given by
+
 $$
 LRM = \ln\left(m_B\right) - \ln\left(m_A\right),
 $$
 where $m_B$ and $m_A$ are the sample medians for phase B and phase A, respectively. Note that the sample median might be zero for either phase B and phase A in some single-case design data, resulting in infinite LRM. 
 
-### Standard errors and confidence intervals
+### Standard errors
 
 Standard errors and confidence intervals for LRM can be obtained under the assumption that the outcome data within each phase are mutually independent and follow a common distribution. Using the fact that the logarithm of the median is the same or close to the median of the log-transformed outcomes, the standard error for $LRM$ can be calculated using the order statistics within each phase [@bonett2020confidence]. Let
 $$
@@ -596,6 +602,8 @@ $$
 SE_{LRM} = \sqrt{\left(\frac{\ln\left(y^B_{(u_B)}\right)-\ln\left(y^B_{(l_B)}\right)}{2\ q_B}\right)^2 + \left(\frac{\ln\left(y^A_{(u_A)}\right)-\ln\left(y^A_{(l_A)}\right)}{2\ q_A}\right)^2},
 $$
 [@bonett2020confidence] where $y^A_{(l_A)}, y^A_{(u_A)}$ are the $l_A$ and $u_A$ order statistics of the phase A outcomes and $y^B_{(l_B)}, y^B_{(u_B)}$ are the $l_B$ and $u_B$ order statistics of the phase B outcomes.
+
+### Confidence intervals
 
 An approximate confidence interval for $\lambda$ is 
 $$
