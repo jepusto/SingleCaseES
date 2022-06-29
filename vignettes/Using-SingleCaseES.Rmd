@@ -1,15 +1,16 @@
 ---
 title: "Basic effect sizes calculations using SingleCaseES"
-author: "Daniel M. Swan and James E. Pustejovsky"
+author: "Daniel M. Swan, James E. Pustejovsky, and Paulina Grekov"
 bibliography: references.bibtex
-date: "September 22, 2021"
+date: "`r Sys.Date()`"
 output: 
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
+  cleanrmd::html_document_clean:
+    theme: holiday
+    highlight: kate
     toc: true
     toc_depth: 2 
     number_sections: true
+link-citations: yes
 csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Basic effect sizes calculations using SingleCaseES}

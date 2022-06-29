@@ -4,13 +4,12 @@ author: "James E. Pustejovsky, Daniel M. Swan, and Man Chen"
 bibliography: references.bibtex
 date: "`r Sys.Date()`"
 output: 
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
+  cleanrmd::html_document_clean:
+    theme: holiday
+    highlight: kate
     toc: true
     toc_depth: 2
-    number_sections: true
-    link-citations: true 
+    mathjax: default
 link-citations: yes
 csl: apa.csl
 vignette: >
