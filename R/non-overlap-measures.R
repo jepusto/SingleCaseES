@@ -122,16 +122,17 @@ calc_NAP <- function(A_data, B_data,
     
     res$SE <- sqrt(V)  
     if (trunc_const) res$trunc <- trunc
+    
+    if (!is.null(confidence)) {
+      h <- (m + n) / 2 - 1
+      z <- qnorm(1 - (1 - confidence) / 2)
+      f <- function(x) m * n * (NAP - x)^2 * (2 - x) * (1 + x) - 
+        z^2 * x * (1 - x) * (2 + h + (1 + 2 * h) * x * (1 - x))
+      res$CI_lower <- if (NAP > 0) uniroot(f, c(0, NAP))$root else 0
+      res$CI_upper <- if (NAP < 1) uniroot(f, c(NAP, 1))$root else 1
+    }
+    
   } 
-  
-  if (!is.null(confidence)) {
-    h <- (m + n) / 2 - 1
-    z <- qnorm(1 - (1 - confidence) / 2)
-    f <- function(x) m * n * (NAP - x)^2 * (2 - x) * (1 + x) - 
-      z^2 * x * (1 - x) * (2 + h + (1 + 2 * h) * x * (1 - x))
-    res$CI_lower <- if (NAP > 0) uniroot(f, c(0, NAP))$root else 0
-    res$CI_upper <- if (NAP < 1) uniroot(f, c(NAP, 1))$root else 1
-  }
   
   res
 }
