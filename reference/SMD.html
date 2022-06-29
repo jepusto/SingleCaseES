@@ -73,18 +73,18 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">SMD</span><span class="op">(</span>
-  <span class="va">A_data</span>,
-  <span class="va">B_data</span>,
-  <span class="va">condition</span>,
-  <span class="va">outcome</span>,
-  baseline_phase <span class="op">=</span> <span class="cn">NULL</span>,
-  intervention_phase <span class="op">=</span> <span class="cn">NULL</span>,
-  improvement <span class="op">=</span> <span class="st">"increase"</span>,
-  std_dev <span class="op">=</span> <span class="st">"baseline"</span>,
-  bias_correct <span class="op">=</span> <span class="cn">TRUE</span>,
-  confidence <span class="op">=</span> <span class="fl">0.95</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">SMD</span><span class="op">(</span></span>
+<span>  <span class="va">A_data</span>,</span>
+<span>  <span class="va">B_data</span>,</span>
+<span>  <span class="va">condition</span>,</span>
+<span>  <span class="va">outcome</span>,</span>
+<span>  baseline_phase <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  intervention_phase <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  improvement <span class="op">=</span> <span class="st">"increase"</span>,</span>
+<span>  std_dev <span class="op">=</span> <span class="st">"baseline"</span>,</span>
+<span>  bias_correct <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  confidence <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -163,18 +163,18 @@ to use the pooled standard deviation.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, bias_correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, bias_correct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper baseline_SD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.959294 0.8237984 0.3446789 3.573909    2.503331</span>
-<span class="r-in"><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper baseline_SD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.649932 0.6340935 0.4071314 2.892732    2.503331</span>
-<span class="r-in"><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, std_dev <span class="op">=</span> <span class="st">"pool"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">SMD</span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, std_dev <span class="op">=</span> <span class="st">"pool"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ES      Est        SE  CI_lower CI_upper pooled_SD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 SMD 1.876247 0.6374216 0.6269241 3.125571  2.431752</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -189,7 +189,7 @@ to use the pooled standard deviation.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

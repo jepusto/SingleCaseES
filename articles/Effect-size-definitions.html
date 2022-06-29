@@ -92,7 +92,7 @@
       <h1 data-toc-skip>Effect size definitions and mathematical details</h1>
                         <h4 data-toc-skip class="author">James E. Pustejovsky, Daniel M. Swan, and Man Chen</h4>
             
-            <h4 data-toc-skip class="date">2022-06-21</h4>
+            <h4 data-toc-skip class="date">2022-06-29</h4>
       
       
       <div class="hidden name"><code>Effect-size-definitions.Rmd</code></div>
@@ -101,7 +101,7 @@
 
     
     
-<p>The SingleCaseES package provides R functions for calculating basic, within-case effect size indices for single-case designs, including several non-overlap measures and parametric effect size measures, and for estimating the gradual effects model developed by <span class="citation">Swan &amp; Pustejovsky (<a href="#ref-Swan2018gradual" role="doc-biblioref">2018</a>)</span>. Standard errors and confidence intervals are provided for the subset of effect sizes indices with known sampling distributions. This vignette covers the mathematical definitions of the basic non-overlap and parametric effect size measures, along with some details about how they are estimated. <span class="citation">Parker, Vannest, &amp; Davis (<a href="#ref-parker2011effect" role="doc-biblioref">2011</a>)</span> provides a review of the non-overlap measures, including worked examples of the calculations. <span class="citation">Pustejovsky (<a href="#ref-pustejovsky2018procedural" role="doc-biblioref">2019</a>)</span> provides a critical review of non-overlap measures and parametric effect sizes. However, neither of these reviews include details about standard error calculations.</p>
+<p>The SingleCaseES package provides R functions for calculating basic, within-case effect size indices for single-case designs, including several non-overlap measures and parametric effect size measures, and for estimating the gradual effects model developed by <span class="citation">Swan &amp; Pustejovsky (<a href="#ref-Swan2018gradual" role="doc-biblioref">2018</a>)</span>. Estimation procedures for standard errors and confidence intervals are provided for the subset of effect sizes indices with known sampling distributions. This vignette covers the mathematical definitions of the basic non-overlap and parametric effect size measures, along with some details about how they are estimated. <span class="citation">Parker, Vannest, &amp; Davis (<a href="#ref-parker2011effect" role="doc-biblioref">2011</a>)</span> provides a review of the non-overlap measures, including worked examples of the calculations. <span class="citation">Pustejovsky (<a href="#ref-pustejovsky2018procedural" role="doc-biblioref">2019</a>)</span> provides a critical review of non-overlap measures and parametric effect sizes. However, neither of these reviews include details about standard error calculations.</p>
 <div class="section level2">
 <h2 id="notation">Notation<a class="anchor" aria-label="anchor" href="#notation"></a>
 </h2>
@@ -151,7 +151,8 @@ SE_{\text{unbiased}} = \sqrt{\frac{\text{NAP}(1 - \text{NAP}) + n Q_1 + m Q_2 - 
 SE_{\text{Hanley}} = \sqrt{\frac{1}{mn}\left(\text{NAP}(1 - \text{NAP}) + (n - 1)Q_1 + (m - 1)Q_2\right)},
 \]</span></p>
 <p>with <span class="math inline">\(Q_1\)</span> and <span class="math inline">\(Q_2\)</span> defined as above. This standard error is based on the same assumptions as the unbiased SE.</p>
-<p>A limitation of <span class="math inline">\(SE_{unbiased}\)</span> and <span class="math inline">\(SE_{Hanley}\)</span> is that they will be equal to zero when there is complete non-overlap (i.e., when <span class="math inline">\(\text{NAP}\)</span> is equal to zero or equal to one). In order to ensure a strictly positive standard error for NAP, the SingleCaseES package calculates <span class="math inline">\(SE_{unbiased}\)</span> and <span class="math inline">\(SE_{Hanley}\)</span> using a truncation of NAP. Specifically, the formulas are evaluated using <span class="math display">\[
+<p>A limitation of <span class="math inline">\(SE_{unbiased}\)</span> and <span class="math inline">\(SE_{Hanley}\)</span> is that they will be equal to zero when there is complete non-overlap (i.e., when <span class="math inline">\(\text{NAP}\)</span> is equal to zero or equal to one). In order to ensure a strictly positive standard error for NAP, the SingleCaseES package calculates <span class="math inline">\(SE_{unbiased}\)</span> and <span class="math inline">\(SE_{Hanley}\)</span> using a truncation of NAP. Specifically, the formulas are evaluated using</p>
+<p><span class="math display">\[
 \widetilde{\text{NAP}} = \text{max}\left\{\frac{1}{2 mn}, \ \text{min}\left\{\frac{2mn - 1}{2mn}, \ \text{NAP} \right\} \right\}
 \]</span> in place of <span class="math inline">\(\text{NAP}\)</span>.</p>
 <p>A final method for estimating a standard error is to work under the null hypothesis that there is no effect—i.e., that the data points from each phase are sampled from the same distribution. Under the null hypothesis, the sampling variance of <span class="math inline">\(\text{NAP}\)</span> depends only on the number of observations in each phase:</p>
@@ -192,10 +193,11 @@ SE_{\text{null}} = \sqrt{\frac{m + n + 1}{12 m n}}
 <div class="section level3">
 <h3 id="pem">PEM<a class="anchor" aria-label="anchor" href="#pem"></a>
 </h3>
-<p><span class="citation">Ma (<a href="#ref-ma2006alternative" role="doc-biblioref">2006</a>)</span> proposed the percent exceeding the median, defined as the proportion of observations in phase B that improve upon the median of phase A. <span class="citation">Ma (<a href="#ref-ma2006alternative" role="doc-biblioref">2006</a>)</span> did not specify an effect size parameter corresponding to this index. However, it would be reasonable to define the parameter as the probability that a randomly selected observation from the B phase represents an improvement over the median of the distribution of A phase outcomes. Let <span class="math inline">\(\eta_A\)</span> denote the median of the distribution of outcomes in phase A. For an outcome where increase is desirable, the PEM parameter would then be <span class="math display">\[
+<p><span class="citation">Ma (<a href="#ref-ma2006alternative" role="doc-biblioref">2006</a>)</span> proposed the percent exceeding the median, defined as the proportion of observations in phase B that improve upon the median of phase A. <span class="citation">Ma (<a href="#ref-ma2006alternative" role="doc-biblioref">2006</a>)</span> did not specify an effect size parameter corresponding to this index. However, it would be reasonable to define the parameter as the probability that a randomly selected observation from the B phase represents an improvement over the median of the distribution of A phase outcomes. Let <span class="math inline">\(\eta_A\)</span> denote the median of the distribution of outcomes in phase A. For an outcome where increase is desirable, the PEM parameter would then be</p>
+<p><span class="math display">\[
 \xi = \text{Pr}\left(Y_B &gt; \eta_A\right) + 0.5 \times \text{Pr}\left(Y_B = \eta_A\right).
 \]</span> For an outcome where decrease is desirable, it would be <span class="math display">\[
-\xi = \text{Pr}\left(Y_B &lt; \psi_A\right) + 0.5 \times \text{Pr}\left(Y_B = \psi_A\right).
+\xi = \text{Pr}\left(Y_B &lt; \eta_A\right) + 0.5 \times \text{Pr}\left(Y_B = \eta_A\right).
 \]</span></p>
 <div class="section level4">
 <h4 id="estimation-2">Estimation<a class="anchor" aria-label="anchor" href="#estimation-2"></a>
@@ -259,8 +261,7 @@ m - \tilde{i} &amp; \tilde{j} \\ \hline
 <p>Robust IRD is algebraically related to PAND as</p>
 <p><span class="math display">\[
 \text{IRD} = 1 - \frac{(m + n)^2}{2mn}\left(1 - \text{PAND}\right). 
-\]</span></p>
-<p>Just as with PAND, the sampling distribution of robust IRD has not been described, and so standard errors and confidence intervals are not available.</p>
+\]</span> Just as with PAND, the sampling distribution of robust IRD has not been described, and so standard errors and confidence intervals are not available.</p>
 </div>
 </div>
 <div class="section level3">
@@ -283,10 +284,14 @@ m - \tilde{i} &amp; \tilde{j} \\ \hline
 \]</span></p>
 </div>
 <div class="section level4">
-<h4 id="standard-errors-and-confidence-intervals">Standard errors and confidence intervals<a class="anchor" aria-label="anchor" href="#standard-errors-and-confidence-intervals"></a>
+<h4 id="standard-errors-1">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-1"></a>
 </h4>
 <p>Standard errors and confidence intervals for Tau are calculated using transformations of the corresponding SEs and CIs for NAP. All of the methods assume that the observations are mutually independent and are identically distributed within each phase.</p>
 <p>Standard errors for Tau are calculated as <span class="math inline">\(SE_{\text{Tau}} = 2 SE_{\text{NAP}}\)</span>, where <span class="math inline">\(SE_{\text{NAP}}\)</span> is the standard error for NAP calculated based on one of the available methods (unbiased, Hanley, or null).</p>
+</div>
+<div class="section level4">
+<h4 id="confidence-intervals">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals"></a>
+</h4>
 <p>The CI for <span class="math inline">\(\tau\)</span> is calculated as</p>
 <p><span class="math display">\[
 [L_{\tau}, U_{\tau}] = [2 L_{\theta} - 1, 2 U_{\theta} - 1],
@@ -323,14 +328,17 @@ m - \tilde{i} &amp; \tilde{j} \\ \hline
 <p><span class="citation">Tarlow (<a href="#ref-tarlow2017improved" role="doc-biblioref">2017</a>)</span> proposed to modify the Tau effect size index by first adjusting the observations for a linear trend in the A phase. The index can be calculated with or without conducting a pre-test for significance of the A phase time trend. We provide two approaches to calculate Tau no matter whether the baseline trend is significant or not. The first approach is using Kendall’s rank correlation (with adjustment for ties), as used in Tarlow (2017). The second one is using Tau (non-overlap) index (without adjustment for ties).</p>
 <p>If the pre-test for A phase time trend is used, then slope of the baseline trend is first tested using Kendall’s rank correlation. If the baseline slope is significantly different from zero, the outcomes are adjusted for baseline trend using Theil-Sen regression, and the residuals from Theil-Sen regression are used to calculate the Kendall’s rank correlation or Tau (non-overlap) index. If the baseline slope is not significantly different from zero, then no baseline trend adjustment is made, and the Tau-BC effect size is calculated using Kendall’s rank correlation or Tau (non-overlap) index.</p>
 <p>If the pre-test for A phase time trend is not used, then the outcomes are adjusted for baseline trend using Theil-Sen regression, regardless of whether the slope is significantly different from zero. The residuals from Theil-Sen regression are then used to calculate the Kendall’s rank correlation or Tau (non-overlap) index.</p>
-<p>The formal definition of Tau-BC require positing a model for the time trend in the data series. Thus, suppose that the outcomes can be expressed in terms of a linear time trend and an error term: <span class="math display">\[
+<p>The formal definition of Tau-BC require positing a model for the time trend in the data series. Thus, suppose that the outcomes can be expressed in terms of a linear time trend and an error term:</p>
+<p><span class="math display">\[
 \begin{aligned}
 y_i^A &amp;= \alpha + \beta (i) + \epsilon_i^A, \quad \text{for} \quad i = 1,...,m \\
 y_j^B &amp;= \alpha + \beta (m + j) + \epsilon_j^B \quad \text{for} \quad j = 1,...,n.
 \end{aligned}
-\]</span> Within each phase, assume that the error terms are independent and share a common distribution. The Tau-BC parameter can then be defined as the Tau parameter for the distribution of the error terms, or <span class="math display">\[
+\]</span> Within each phase, assume that the error terms are independent and share a common distribution. The Tau-BC parameter can then be defined as the Tau parameter for the distribution of the error terms, or</p>
+<p><span class="math display">\[
 \tau_{BC} = \text{Pr}(\epsilon^B &gt; \epsilon^A) - \text{Pr}(\epsilon^B &lt; \epsilon^A).
-\]</span> An equivalent definition in terms of the outcome distributions is <span class="math display">\[
+\]</span> An equivalent definition in terms of the outcome distributions is</p>
+<p><span class="math display">\[
 \tau_{BC} = \text{Pr}\left[Y_j^B - \beta (m + j - i) &gt; Y_i^A \right] - \text{Pr}\left[Y_j^B - \beta (m + j - i) &lt; Y_i^A\right]
 \]</span> for <span class="math inline">\(i=1,...,m\)</span> and <span class="math inline">\(j = 1,...,n\)</span>.</p>
 <div class="section level4">
@@ -338,20 +346,26 @@ y_j^B &amp;= \alpha + \beta (m + j) + \epsilon_j^B \quad \text{for} \quad j = 1,
 </h4>
 <p>Estimation of <span class="math inline">\(\tau_{BC}\)</span> entails correcting the data series for the baseline slope <span class="math inline">\(\beta\)</span>. If using the baseline trend pre-test, the null hypothesis of <span class="math inline">\(H_0: \beta = 0\)</span> is first tested using Kendall’s rank correlation. If the test is not significant, then set <span class="math inline">\(\hat\beta = 0\)</span> and <span class="math inline">\(\hat\alpha = 0\)</span>. If the test is significant or if the pre-test for baseline time trend is not used, then the slope is estimated by Theil-Sen regression. Specifically, we calculate the slope between every pair of observations in the A phase: <span class="math display">\[
 s_{hi} = \frac{y_i^A - y_h^A}{i - h}
-\]</span> for <span class="math inline">\(i = 1,...,m - 1\)</span> and <span class="math inline">\(h = i+1,...,m\)</span>. The overall slope estimate is taken to be the median over all <span class="math inline">\(m(m - 1) / 2\)</span> slope pairs: <span class="math display">\[
+\]</span> for <span class="math inline">\(i = 1,...,m - 1\)</span> and <span class="math inline">\(h = i+1,...,m\)</span>. The overall slope estimate is taken to be the median over all <span class="math inline">\(m(m - 1) / 2\)</span> slope pairs:</p>
+<p><span class="math display">\[
 \hat\beta = \text{median}\left\{s_{12},...,s_{(m-1)m}\right\}.
-\]</span> The intercept term is estimated by taking the median observation in the A phase after correcting for the estimated linear time trend: <span class="math display">\[
+\]</span> The intercept term is estimated by taking the median observation in the A phase after correcting for the estimated linear time trend:</p>
+<p><span class="math display">\[
 \hat\alpha = \text{median}\left\{y_1^A - \hat\beta \times 1, \ y_2^A - \hat\beta \times 2, ..., \ y_m^A - \hat\beta \times m\right\}.
 \]</span> However, the intercept estimate is irrelevant for purposes of estimating Tau-BC because the Tau estimator is a function of ranks and is invariant to a linear shift of the data series.</p>
-<p>After estimating the phase A time trend, <span class="math inline">\(\tau_{BC}\)</span> is estimated by de-trending the full data series and calculating Kendall’s rank correlation or Tau (non-overlap) on the de-trended observations. Specifically, set <span class="math inline">\(\hat\epsilon_i^A = y_i^A - \hat\beta (i) - \hat\alpha\)</span> for <span class="math inline">\(i = 1,...,m\)</span> and <span class="math inline">\(\hat\epsilon_j^B = y_j^B - \hat\beta (m + j) - \hat\alpha\)</span>. For an outcome where increase is desirable, calculate <span class="math display">\[w^\epsilon_{ij} = I\left(\hat\epsilon^B_j &gt; \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j &lt; \hat\epsilon^A_i\right)\]</span> or, for an outcome where decrease is desirable, calculate <span class="math display">\[w^\epsilon_{ij} = I\left(\hat\epsilon^B_j &lt; \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j &gt; \hat\epsilon^A_i\right).\]</span></p>
+<p>After estimating the phase A time trend, <span class="math inline">\(\tau_{BC}\)</span> is estimated by de-trending the full data series and calculating Kendall’s rank correlation or Tau (non-overlap) on the de-trended observations. Specifically, set <span class="math inline">\(\hat\epsilon_i^A = y_i^A - \hat\beta (i) - \hat\alpha\)</span> for <span class="math inline">\(i = 1,...,m\)</span> and <span class="math inline">\(\hat\epsilon_j^B = y_j^B - \hat\beta (m + j) - \hat\alpha\)</span>. For an outcome where increase is desirable, calculate <span class="math display">\[w^\epsilon_{ij} = I\left(\hat\epsilon^B_j &gt; \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j &lt; \hat\epsilon^A_i\right)\]</span></p>
+<p>or, for an outcome where decrease is desirable, calculate <span class="math display">\[w^\epsilon_{ij} = I\left(\hat\epsilon^B_j &lt; \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j &gt; \hat\epsilon^A_i\right).\]</span></p>
 <p>Tau-BC (non-overlap) is then estimated by <span class="math display">\[
 \text{Tau}_{BC} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij}.
 \]</span></p>
-<p>If calculated with Kendall’s rank correlation, Tau-BC is estimated as the rank correlation between <span class="math inline">\(\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}\)</span> and a dummy coded variable <span class="math inline">\(\left\{0_1,\dots,0_m, 1_1,\dots,1_n \right\}\)</span>, with an adjustment for ties <span class="citation">(<a href="#ref-kendall1970rank" role="doc-biblioref">Kendall, 1970, p. 35</a>)</span>. Specifically, <span class="math display">\[
+<p>If calculated with Kendall’s rank correlation, Tau-BC is estimated as the rank correlation between <span class="math inline">\(\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}\)</span> and a dummy coded variable <span class="math inline">\(\left\{0_1,\dots,0_m, 1_1,\dots,1_n \right\}\)</span>, with an adjustment for ties <span class="citation">(<a href="#ref-kendall1970rank" role="doc-biblioref">Kendall, 1970, p. 35</a>)</span>. Specifically,</p>
+<p><span class="math display">\[
 \text{Tau}_{BC}^* = \frac{1}{D} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij},
-\]</span> where <span class="math display">\[
+\]</span> where</p>
+<p><span class="math display">\[
 D = \sqrt{m \times n \times \left(\frac{(m+n)(m+n-1)}{2}-U\right)}
-\]</span> and <span class="math inline">\(U\)</span> is the number of ties between all possible pairs of observations (including pairs within phase A, pairs within phase B, and pairs of one phase A and one phase B data point). <span class="math inline">\(U\)</span> can be computed as <span class="math display">\[
+\]</span> and <span class="math inline">\(U\)</span> is the number of ties between all possible pairs of observations (including pairs within phase A, pairs within phase B, and pairs of one phase A and one phase B data point). <span class="math inline">\(U\)</span> can be computed as</p>
+<p><span class="math display">\[
 U = \sum_{i=1}^{m - 1} \sum_{j = i+1}^m I\left(\hat\epsilon^A_i = \hat\epsilon^A_j\right) + \sum_{i=1}^{n - 1} \sum_{j = i+1}^n I\left(\hat\epsilon^B_i = \hat\epsilon^B_j\right) + \sum_{i=1}^m \sum_{j=1}^n I\left(\hat\epsilon^A_i = \hat\epsilon^B_j\right).
 \]</span></p>
 <p>We prefer and recommend to use the Tau-AB form, which divides by <span class="math inline">\(m \times n\)</span> rather than by <span class="math inline">\(D\)</span>, because it leads to a simpler interpretation. Furthermore, using <span class="math inline">\(D\)</span> means that <span class="math inline">\(\text{Tau}_{BC}^*\)</span> may be sensitive to variation in phase lengths. To see this sensitivity, consider a scenario where there are no tied values and so every value <span class="math inline">\(\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}\)</span> is unique. In this case, <span class="math inline">\(U = 0\)</span> and <span class="math display">\[
@@ -359,7 +373,7 @@ D = \sqrt{\frac{1}{2} m n (m + n)(m + n - 1)} = m n \sqrt{1 + \frac{m - 1}{2n} +
 \]</span> Thus, the denominator will always be larger than <span class="math inline">\(m n\)</span>, meaning that <span class="math inline">\(\text{Tau}_{BC}^*\)</span> will always be smaller than <span class="math inline">\(\text{Tau}_{BC}\)</span>. Further, the largest and smallest possible values of <span class="math inline">\(\text{Tau}_{BC}^*\)</span> will be <span class="math inline">\(\pm m n / D\)</span>, or about <span class="math inline">\(1 / \sqrt{2}\)</span> when <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> are close to equal. In contrast, the largest and smallest possible values of <span class="math inline">\(\text{Tau}_{BC}\)</span> are always -1 and 1, respectively.</p>
 </div>
 <div class="section level4">
-<h4 id="standard-errors-and-confidence-intervals-1">Standard errors and confidence intervals<a class="anchor" aria-label="anchor" href="#standard-errors-and-confidence-intervals-1"></a>
+<h4 id="standard-errors-and-confidence-intervals">Standard errors and confidence intervals<a class="anchor" aria-label="anchor" href="#standard-errors-and-confidence-intervals"></a>
 </h4>
 <p>The exact sampling distribution of <span class="math inline">\(\text{Tau}_{BC}^*\)</span> (Kendall, adjusted for ties) has not been described. <span class="citation">Tarlow (<a href="#ref-tarlow2017improved" role="doc-biblioref">2017</a>)</span> proposed to approximate its sampling variance using <span class="math display">\[
 SE_{Kendall} = \sqrt{\frac{2 (1 - \text{Tau}_{BC}^2)}{m + n}},
@@ -409,7 +423,7 @@ SE_{d_A} = \left(1 - \frac{3}{4(m + n) - 9}\right)\sqrt{\frac{1}{m} + \frac{1}{n
 \]</span></p>
 </div>
 <div class="section level4">
-<h4 id="confidence-intervals">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals"></a>
+<h4 id="confidence-intervals-1">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-1"></a>
 </h4>
 <p>Whether the estimator is based on the baseline or pooled standard deviation, an approximate confidence interval for <span class="math inline">\(\delta\)</span> is given by</p>
 <p><span class="math display">\[
@@ -442,19 +456,23 @@ SE_{d_A} = \left(1 - \frac{3}{4(m + n) - 9}\right)\sqrt{\frac{1}{m} + \frac{1}{n
 <p><span class="math display">\[
 R_1 = \ln\left(\tilde{y}_B\right) - \ln\left(\tilde{y}_A\right).
 \]</span></p>
-<p>However, <span class="math inline">\(R_1\)</span> will be biased when the one or both phases include only a small number of observations. A bias-corrected estimator is given by</p>
+<p>However, <span class="math inline">\(R_1\)</span> will be biased when one or both phases include only a small number of observations. A bias-corrected estimator is given by</p>
 <p><span class="math display">\[
 R_2 = \ln\left(\tilde{y}_B\right) + \frac{\tilde{s}_B^2}{2 n \tilde{y}_B^2} - \ln\left(\tilde{y}_A\right) - \frac{\tilde{s}_A^2}{2 m \tilde{y}_A^2}.
 \]</span> The bias-corrected estimator is the default option in SingleCaseES.</p>
 </div>
 <div class="section level4">
-<h4 id="standard-errors-and-confidence-intervals-2">Standard errors and confidence intervals<a class="anchor" aria-label="anchor" href="#standard-errors-and-confidence-intervals-2"></a>
+<h4 id="standard-errors-2">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-2"></a>
 </h4>
 <p>Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for <span class="math inline">\(R_1\)</span> or <span class="math inline">\(R_2\)</span> is given by</p>
 <p><span class="math display">\[
 SE_R = \sqrt{\frac{\tilde{s}_A^2}{m \tilde{y}_A^2} + \frac{\tilde{s}_B^2}{n \tilde{y}_B^2}}.
 \]</span></p>
-<p>Under the same assumption, an approximate confidence interval for <span class="math inline">\(\psi\)</span> is</p>
+</div>
+<div class="section level4">
+<h4 id="confidence-intervals-2">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-2"></a>
+</h4>
+<p>Under the same assumptions, an approximate confidence interval for <span class="math inline">\(\psi\)</span> is</p>
 <p><span class="math display">\[
 [R - z_{\alpha / 2} \times SE_R,\quad R + z_{\alpha / 2} \times SE_R].
 \]</span></p>
@@ -474,12 +492,12 @@ SE_R = \sqrt{\frac{\tilde{s}_A^2}{m \tilde{y}_A^2} + \frac{\tilde{s}_B^2}{n \til
 <p>To account for the possibility that the sample means may be equal to zero or one, even if the mean levels are strictly between zero and one, the LOR is calculated using <em>truncated</em> sample means, given by</p>
 <p><span class="math display">\[
 \tilde{y}_A = \text{max} \left\{ \text{min}\left[\bar{y}_A, 1 - \frac{1}{2 D m}\right], \frac{1}{2 D m}\right\}
-\]</span></p>
-<p>and</p>
+\]</span> and</p>
 <p><span class="math display">\[
 \tilde{y}_B = \text{max} \left\{ \text{min}\left[\bar{y}_B, 1 - \frac{1}{2 D n}\right], \frac{1}{2 D n}\right\},
 \]</span></p>
-<p>where <span class="math inline">\(D\)</span> is a constant that depends on the scale and recording procedure used to measure the outcomes <span class="citation">(<a href="#ref-pustejovsky2018using" role="doc-biblioref">Pustejovsky, 2018</a>)</span>.To ensure that the corresponding standard error is strictly positive, it is calculated using truncated sample variances, given by <span class="math display">\[
+<p>where <span class="math inline">\(D\)</span> is a constant that depends on the scale and recording procedure used to measure the outcomes <span class="citation">(<a href="#ref-pustejovsky2018using" role="doc-biblioref">Pustejovsky, 2018</a>)</span>.To ensure that the corresponding standard error is strictly positive, it is calculated using truncated sample variances, given by</p>
+<p><span class="math display">\[
 \tilde{s}_A^2 = \text{max}\left\{s_A^2, \ \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \ \frac{1}{D^2 n^3}\right\}.
 \]</span></p>
 <p>A basic estimator of the LOR is given by</p>
@@ -492,12 +510,16 @@ LOR_2 = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) - \frac{\til
 \]</span> This estimator uses a small-sample correction to reduce bias when one or both phases include only a small number of observations.</p>
 </div>
 <div class="section level4">
-<h4 id="standard-errors-and-confidence-intervals-3">Standard errors and confidence intervals<a class="anchor" aria-label="anchor" href="#standard-errors-and-confidence-intervals-3"></a>
+<h4 id="standard-errors-3">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-3"></a>
 </h4>
 <p>Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for <span class="math inline">\(LOR\)</span> is given by</p>
 <p><span class="math display">\[
 SE_{LOR} = \sqrt{\frac{\tilde{s}^2_A}{n_A \tilde{y}_A^2 (1 - \tilde{y}_A)^2} + \frac{\tilde{s}^2_B}{n_B \tilde{y}_B^2 (1 - \tilde{y}_B)^2}}.
 \]</span></p>
+</div>
+<div class="section level4">
+<h4 id="confidence-intervals-3">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-3"></a>
+</h4>
 <p>Under the same assumption, an approximate confidence interval for <span class="math inline">\(\psi\)</span> is</p>
 <p><span class="math display">\[
 [LOR - z_{\alpha / 2} \times SE_{LOR},\quad LOR + z_{\alpha / 2} \times SE_{LOR}],
@@ -507,20 +529,23 @@ SE_{LOR} = \sqrt{\frac{\tilde{s}^2_A}{n_A \tilde{y}_A^2 (1 - \tilde{y}_A)^2} + \
 <div class="section level3">
 <h3 id="lrm">LRM<a class="anchor" aria-label="anchor" href="#lrm"></a>
 </h3>
-<p><span class="citation">Bonett &amp; Price (<a href="#ref-bonett2020interval" role="doc-biblioref">2020b</a>)</span> described the log ratio of medians (LRM) effect size, which can be used to quantify the change in medians from phase A to phase B. The LRM is the natural logarithm of the ratio of medians. This effect size is appropriate for outcomes that are skewed or right-censored <span class="citation">(<a href="#ref-bonett2020interval" role="doc-biblioref">Bonett &amp; Price, 2020b</a>)</span>. For an outcome where increase is desirable, the LRM parameter is defined as <span class="math display">\[
+<p><span class="citation">Bonett &amp; Price (<a href="#ref-bonett2020interval" role="doc-biblioref">2020b</a>)</span> described the log ratio of medians (LRM) effect size, which can be used to quantify the change in medians from phase A to phase B. The LRM is the natural logarithm of the ratio of medians. This effect size is appropriate for outcomes that are skewed or right-censored <span class="citation">(<a href="#ref-bonett2020interval" role="doc-biblioref">Bonett &amp; Price, 2020b</a>)</span>. For an outcome where increase is desirable, the LRM parameter is defined as</p>
+<p><span class="math display">\[
 \lambda = \ln\left(\eta_B / \eta_A\right) = \ln(\eta_B) - \ln(\eta_A),
-\]</span> where <span class="math inline">\(\eta_B\)</span> and <span class="math inline">\(\eta_A\)</span> are the population median for phase B and phase A, respectively. For an outcome where decrease is desirable, the LRM parameter has the opposite sign: <span class="math display">\[
+\]</span> where <span class="math inline">\(\eta_B\)</span> and <span class="math inline">\(\eta_A\)</span> are the population medians for phase B and phase A, respectively. For an outcome where decrease is desirable, the LRM parameter has the opposite sign:</p>
+<p><span class="math display">\[
 \lambda = \ln\left(\eta_A / \eta_B\right) = \ln(\eta_A) - \ln(\eta_B).
 \]</span></p>
 <div class="section level4">
 <h4 id="estimation-10">Estimation<a class="anchor" aria-label="anchor" href="#estimation-10"></a>
 </h4>
-<p>A natural estimator of the <span class="math inline">\(\lambda\)</span> is given by <span class="math display">\[
+<p>A natural estimator of the <span class="math inline">\(\lambda\)</span> is given by</p>
+<p><span class="math display">\[
 LRM = \ln\left(m_B\right) - \ln\left(m_A\right),
 \]</span> where <span class="math inline">\(m_B\)</span> and <span class="math inline">\(m_A\)</span> are the sample medians for phase B and phase A, respectively. Note that the sample median might be zero for either phase B and phase A in some single-case design data, resulting in infinite LRM.</p>
 </div>
 <div class="section level4">
-<h4 id="standard-errors-and-confidence-intervals-4">Standard errors and confidence intervals<a class="anchor" aria-label="anchor" href="#standard-errors-and-confidence-intervals-4"></a>
+<h4 id="standard-errors-4">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-4"></a>
 </h4>
 <p>Standard errors and confidence intervals for LRM can be obtained under the assumption that the outcome data within each phase are mutually independent and follow a common distribution. Using the fact that the logarithm of the median is the same or close to the median of the log-transformed outcomes, the standard error for <span class="math inline">\(LRM\)</span> can be calculated using the order statistics within each phase <span class="citation">(<a href="#ref-bonett2020confidence" role="doc-biblioref">Bonett &amp; Price, 2020a</a>)</span>. Let <span class="math display">\[
 \begin{aligned}
@@ -532,6 +557,10 @@ q_A = \Phi^{-1}\left(\frac{1}{2^m}\sum_{i=0}^{l_A - 1} \frac{m!}{i!(m - i)!}\rig
 \]</span> The standard error of LRM is then <span class="math display">\[
 SE_{LRM} = \sqrt{\left(\frac{\ln\left(y^B_{(u_B)}\right)-\ln\left(y^B_{(l_B)}\right)}{2\ q_B}\right)^2 + \left(\frac{\ln\left(y^A_{(u_A)}\right)-\ln\left(y^A_{(l_A)}\right)}{2\ q_A}\right)^2},
 \]</span> <span class="citation">(<a href="#ref-bonett2020confidence" role="doc-biblioref">Bonett &amp; Price, 2020a</a>)</span> where <span class="math inline">\(y^A_{(l_A)}, y^A_{(u_A)}\)</span> are the <span class="math inline">\(l_A\)</span> and <span class="math inline">\(u_A\)</span> order statistics of the phase A outcomes and <span class="math inline">\(y^B_{(l_B)}, y^B_{(u_B)}\)</span> are the <span class="math inline">\(l_B\)</span> and <span class="math inline">\(u_B\)</span> order statistics of the phase B outcomes.</p>
+</div>
+<div class="section level4">
+<h4 id="confidence-intervals-4">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-4"></a>
+</h4>
 <p>An approximate confidence interval for <span class="math inline">\(\lambda\)</span> is <span class="math display">\[
 \left[LRM - z_{\alpha/2} \times SE_{LRM},\quad LRM + z_{\alpha/2} \times SE_{LRM}\right],
 \]</span> where <span class="math inline">\(z_{\alpha/2}\)</span> is <span class="math inline">\(1 - \alpha/2\)</span> critical value from a standard normal distribution.</p>
@@ -638,7 +667,7 @@ Vargha, A., &amp; Delaney, H. D. (2000). <span class="nocase">A critique and imp
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
