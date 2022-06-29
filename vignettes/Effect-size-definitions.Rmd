@@ -4,13 +4,12 @@ author: "James E. Pustejovsky, Daniel M. Swan, and Man Chen"
 bibliography: references.bibtex
 date: "`r Sys.Date()`"
 output: 
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
+  cleanrmd::html_document_clean:
+    theme: holiday
+    highlight: kate
     toc: true
     toc_depth: 2
-    number_sections: true
-    link-citations: true 
+    mathjax: default
 link-citations: yes
 csl: apa.csl
 vignette: >
@@ -482,7 +481,7 @@ $$
 R_1 = \ln\left(\tilde{y}_B\right) - \ln\left(\tilde{y}_A\right).
 $$
 
-However, $R_1$ will be biased when the one or both phases include only a small number of observations. A bias-corrected estimator is given by 
+However, $R_1$ will be biased when one or both phases include only a small number of observations. A bias-corrected estimator is given by 
 
 $$
 R_2 = \ln\left(\tilde{y}_B\right) + \frac{\tilde{s}_B^2}{2 n \tilde{y}_B^2} - \ln\left(\tilde{y}_A\right) - \frac{\tilde{s}_A^2}{2 m \tilde{y}_A^2}.
@@ -496,6 +495,7 @@ Under the assumption that the outcomes in each phase are mutually independent, a
 $$
 SE_R = \sqrt{\frac{\tilde{s}_A^2}{m \tilde{y}_A^2} + \frac{\tilde{s}_B^2}{n \tilde{y}_B^2}}.
 $$
+
 ### Confidence intervals
 
 Under the same assumptions, an approximate confidence interval for $\psi$ is 
@@ -553,6 +553,7 @@ Under the assumption that the outcomes in each phase are mutually independent, a
 $$
 SE_{LOR} = \sqrt{\frac{\tilde{s}^2_A}{n_A \tilde{y}_A^2 (1 - \tilde{y}_A)^2} + \frac{\tilde{s}^2_B}{n_B \tilde{y}_B^2 (1 - \tilde{y}_B)^2}}.
 $$
+
 ### Confidence intervals
 
 Under the same assumption, an approximate confidence interval for $\psi$ is
@@ -568,7 +569,7 @@ $$
 $$
 \lambda = \ln\left(\eta_B / \eta_A\right) = \ln(\eta_B) - \ln(\eta_A),
 $$
-where $\eta_B$ and $\eta_A$ are the population median for phase B and phase A, respectively. For an outcome where decrease is desirable, the LRM parameter has the opposite sign:
+where $\eta_B$ and $\eta_A$ are the population medians for phase B and phase A, respectively. For an outcome where decrease is desirable, the LRM parameter has the opposite sign:
 
 $$
 \lambda = \ln\left(\eta_A / \eta_B\right) = \ln(\eta_A) - \ln(\eta_B).

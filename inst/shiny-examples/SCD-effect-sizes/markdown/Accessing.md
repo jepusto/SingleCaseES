@@ -6,7 +6,7 @@ Once you have accessed the calculator using one of these methods, you will need 
 
 - The __single-series calculator__ estimates effect sizes using data from two phases (i.e. a baseline phase and treatment phase) within a _single_ series.
 
-- The __multiple-series calculator__ estimates effect sizes using data from _multiple_ series, distinguished by one or more series identifier variables. This is useful if you are calculating effect sizes for several participants in a primary study (e.g., four participants from a multiple baseline design) or calculating effect sizes for multiple cases from multiple studies (e.g., for a meta-analysis for findings from single-case research designs).
+- The __multiple-series calculator__ estimates effect sizes using data from _multiple_ series, distinguished by one or more series identifier variables. This is useful if you are calculating effect sizes for several participants in a primary study (e.g., four participants from a multiple baseline design) or calculating effect sizes for multiple cases from multiple studies (e.g., for a meta-analysis of findings from single-case research designs).
 
 ## Access through the shinyapps.io website
 

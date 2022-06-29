@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "Basic effect sizes calculations using SingleCaseES"
 author: "Daniel M. Swan and James E. Pustejovsky"
@@ -1668,3 +1669,740 @@ batch_calc_ES(dat = McKissick,
 
 
 # References
+=======
+---
+title: "Basic effect sizes calculations using SingleCaseES"
+author: "Daniel M. Swan, James E. Pustejovsky, and Paulina Grekov"
+bibliography: references.bibtex
+date: "`r Sys.Date()`"
+output: 
+  cleanrmd::html_document_clean:
+    theme: holiday
+    highlight: kate
+    toc: true
+    toc_depth: 2 
+    number_sections: true
+link-citations: yes
+csl: apa.csl
+vignette: >
+  %\VignetteIndexEntry{Basic effect sizes calculations using SingleCaseES}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+nocite: |
+  @pustejovsky2015measurement, @scruggs1987quantitative
+---
+
+```{r setup, include = FALSE}
+if (requireNamespace("kableExtra", quietly = TRUE)) library(kableExtra)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  error = TRUE
+)
+```
+
+The `SingleCaseES` package provides R functions for calculating basic,
+within-case effect size indices for single-case designs, including several
+non-overlap measures and parametric effect size measures, and for estimating the
+gradual effects model [@Swan2018gradual]. Standard errors and
+confidence intervals are provided for the subset of effect sizes indices with
+known sampling distributions. 
+
+The package also includes two graphical user interfaces for interactive use (designed using
+[Shiny](https://shiny.rstudio.com/)), both of which
+are also available as web apps hosted through
+[shinyapps.io](https://www.shinyapps.io/):
+
+-   `SCD_effect_sizes()` opens an interactive calculator for the basic
+    non-overlap indices and parametric effect sizes. It is also
+    available at <https://jepusto.shinyapps.io/SCD-effect-sizes>
+-   `shine_gem_scd()` opens an interactive calculator for the gradual
+    effects model. It is also available at
+    <https://jepusto.shinyapps.io/gem-scd>
+
+In this vignette, we introduce the package's primary functions for carrying out effect size calculations. We demonstrate how to use the functions for calculating an effect size from a single data series, how to use the `calc_ES()` function for calculating multiple effect sizes from a single data series, and how to use `batch_calc_ES()` for calculating one or multiple effect sizes from multiple data series.
+
+To start, be sure to load the package:
+
+```{r}
+library(SingleCaseES)
+```
+
+# Individual effect size functions
+
+The `SingleCaseES` package includes functions for calculating the major non-overlap measures that have been proposed for use with single-case designs, as well as several parametric effect size measures. The following non-overlap measures are available (function names are listed in parentheses):
+
+-   Percentage of non-overlapping data (`PND`)
+-   Percentage of all non-overlapping data (`PAND`)
+-   Robust improvement rate difference (`IRD`)
+-   Percentage exceeding the median (`PEM`)
+-   Non-overlap of all pairs (`NAP`)
+-   Tau non-overlap (`Tau`)
+-   Baseline-corrected Tau (`Tau_BC`)
+-   Tau-U, which includes baseline trend adjustment (`Tau_U`)
+
+The following parametric effect sizes are available:
+
+-   Within-case standardized mean difference (`SMD`)
+-   The increasing and decreasing versions of the log response ratio (`LRRi` and `LRRd`)
+-   Log odds ratio (`LOR`)
+-   Log ratio of medians (`LRM`)
+
+All of the functions for calculating individual effect sizes follow the same syntax. For demonstration purposes, let's take a look at the syntax for `NAP()`, which calculates the non-overlap of all pairs [@parker2009improved]:
+
+```{r}
+args(NAP)
+```
+We will first demonstrate two methods for inputting data from a single SCD series, then explain the further arguments of the function.
+
+## Inputting data
+
+There are two formats in which data can be provided to the functions: the `A_data` and `B_data` inputs, or the `condition` and `outcome` inputs. Both formats can be used for any of the non-overlap or parametric measures. 
+
+### Using the `A_data`, `B_data` inputs
+
+The first input format involves providing separate vectors for the data from each phase, where A corresponds to the baseline phase and B corresponds to the treatment phase.
+
+Here are some hypothetical data from the A and B phases of a single-case data series:
+```{r}
+A <- c(20, 20, 26, 25, 22, 23)
+B <- c(28, 25, 24, 27, 30, 30, 29)
+```
+We can feed these data into the `NAP` function as follows:
+```{r}
+NAP(A_data = A, B_data = B)
+```
+The result reports the NAP effect size estimate for these hypothetical data, along with a standard error and a 95% confidence interval. 
+
+### Using the `condition`, `outcome` inputs
+
+The second input format involves providing a single vector containing _all_ of the outcome data from the series, along with a vector that describes the phase of each observation in the data.
+For example, the hypothetical data above contains 6 baseline phase observations and 7 treatment phase observations. Therefore, the `condition` input should consist of six entries of `'A'` followed by seven entries of `'B'`: 
+```{r}
+phase <- c(rep("A", 6), rep("B", 7))
+phase
+```
+This format also requires providing a single vector containing all of the outcome data from the series. Here is the hypothetical data from above, reformatted to follow this structure:
+```{r}
+outcome_dat <- c(A, B)
+outcome_dat
+```
+We can feed these data into the `NAP` function as follows:
+```{r}
+NAP(condition = phase, outcome = outcome_dat)
+```
+
+It's important to note a few further distinctions that can be made when using the `condition` and `outcome` inputs.
+If the vector provided to `condition` has more than two values, the effect size function will assume that the first value of `condition` is the baseline phase and the second unique value of `condition` is the intervention phase. 
+```{r}
+phase2 <- c(rep("A", 5), rep("B", 5), rep("C",3))
+NAP(condition = phase2, outcome = outcome_dat)
+```
+In some single-case data series, the initial observation might not be in the baseline phase. For example, an SCD with four cases might use a cross-over treatment reversal design, where two of the cases follow an ABAB design and the other two cases follow a BABA design. To handle this situation, we will need to specify the baseline phase using the `baseline_phase` argument:
+```{r}
+phase_rev <- c(rep("B", 7), rep("A", 6))
+outcome_rev <- c(B, A)
+NAP(condition = phase_rev, outcome = outcome_rev, baseline_phase = "A")
+```
+In data series that include more than two unique phases, it is also possible to specify which one should be used as the intervention phase using the `intervention_phase` argument: 
+```{r}
+NAP(condition = phase2, outcome = outcome_dat, 
+    baseline_phase = "A", intervention_phase = "C")
+
+NAP(condition = phase2, outcome = outcome_dat, 
+    baseline_phase = "B", intervention_phase = "C")
+```
+
+## Direction of improvement 
+
+All of the effect size functions in `SingleCaseES` are defined based on some assumption about the direction of therapeutic improvement in the outcome (e.g., improvement would correspond to _increases_ in on-task behavior but to _decreases_ in aggressive behavior). For all of the effect size functions, it is important to specify the direction of therapeutic improvement for the data series by providing a value for the `improvement` argument, either "increase" or "decrease":
+```{r}
+NAP(A_data = A, B_data = B, improvement = "decrease")
+```
+The `NAP()` function and most of the other effect size functions default to assuming that increases in the outcome correspond to improvements. 
+
+## Standard error and confidence intervals
+
+The `NAP`, `Tau`, and `Tau_BC` functions provide several possible methods for calculating the standard error. By default, the exactly unbiased standard errors are used. However, the function can also produce standard errors using the Hanley-McNeil estimator, the standard error under the null hypothesis of no effect, or no standard errors at all:
+
+```{r}
+NAP(A_data = A, B_data = B, SE = "unbiased")
+
+NAP(A_data = A, B_data = B, SE = "Hanley")
+
+NAP(A_data = A, B_data = B, SE = "null")
+
+NAP(A_data = A, B_data = B, SE = "none")
+```
+
+The functions also produce confidnece intervals for NAP, Tau, and Tau_BC. By default, a 95% CI is calculated. This can be adjusted by setting the `confidence` argument to a value between 0 and 1. To omit the confidence interval all together, set the value to `NULL`:
+
+```{r}
+NAP(A_data = A, B_data = B)
+
+NAP(A_data = A, B_data = B, confidence = .99)
+
+NAP(A_data = A, B_data = B, confidence = .90)
+
+NAP(A_data = A, B_data = B, confidence = NULL)    
+```
+
+## Other non-overlap indices
+
+The `SingleCaseES` package includes functions for calculating several other non-overlap indices in addition to NAP. All of the functions accept data in either the `A_data`, `B_data` format or the `condition`, `outcome` format with optional baseline  specification, and all of the functions include an argument to specify the direction of improvement. Like the function for NAP, the functions for Tau (`Tau`) and baseline-corrected Tau (`Tau_BC`) can produce unbiased standard errors, Hanley-McNeil standard errors, standard errors under the null hypothesis of no effect, or no standard errors at all. Only `NAP`, `Tau`, and `Tau_BC` return standard errors and confidence intervals. The remaining non-overlap measures return only a point estimate:
+
+```{r}
+Tau(A_data = A, B_data = B)
+Tau_BC(A_data = A, B_data = B)
+PND(A_data = A, B_data = B)
+PEM(A_data = A, B_data = B)
+PAND(A_data = A, B_data = B)
+IRD(A_data = A, B_data = B)
+Tau_U(A_data = A, B_data = B)
+```
+
+## Further options for `SMD()`
+
+The standardized mean difference parameter is defined as the difference between the mean level of the outcome in phase B and the mean level of the outcome in phase A, scaled by the within-case standard deviation of the outcome in phase A. As with all functions discussed so far, the `SMD()` function accepts data in either the `A_data`, `B_data` format or the `condition`, `outcome` format with optional baseline phase specification. In addition, direction of improvement can be specified as discussed above, with "increase" being the default. Changing the direction of the improvement does not change the magnitude of the effect size, but does change its sign:
+
+```{r}
+SMD(A_data = A, B_data = B, improvement = "increase")
+
+SMD(A_data = A, B_data = B, improvement = "decrease")
+```
+The `std_dev` argument controls whether the effect size estimate is based on the standard  deviation of the baseline phase alone (the default, `std_dev = "baseline"`), or based on the standard deviation after pooling across both phases (`std_dev = "pool"`):
+
+```{r}
+SMD(A_data = A, B_data = B, std_dev = "baseline")
+SMD(A_data = A, B_data = B, std_dev = "pool")
+```
+By default the `SMD()` function uses the Hedges' g bias correction for small sample sizes. The bias correction can be turned off by specifying the argument `bias_correct = FALSE`. 
+
+The `SMD()` function also produces a 95% confidence interval by default. This can be adjusted by setting the `confidence` argument to a value between 0 and 1. To omit the confidence interval all together, set the argument to `confidence = NULL`.
+
+## Further options for log response ratios (`LRRi()` and `LRRd()`)
+
+The response ratio parameter is the ratio of the mean level of the outcome during phase B to the mean level of the outcome during phase A. The log response ratio is the natural logarithm of the response ratio. This effect size is appropriate for outcomes measured on a ratio scale, such that zero corresponds to the true absence of the outcome. 
+
+### Direction of improvement
+
+The package includes two versions of the LRR:
+
+- LRR-increasing (`LRRi()`) is defined so that positive values correspond to therapeutic improvements
+
+- LRR-decreasing (`LRRd()`) is defined so that negative values correspond to therapeutic improvements.
+
+If you are estimating an effect size for a single series, pick the version of LRR that corresponds to the therapeutic improvement expected for your dependent variable. Similarly, if you are estimating effect sizes for a set of SCD series with the same therapeutic direction, pick the version that corresponds to your intervention's expected change.
+
+If you are estimating effect sizes for interventions where the direction of improvement depends upon the series or study, the choice between LRRi and LRRd is slightly more involved. 
+
+For example, imagine we have ten studies to meta-analyze. For eight studies, the outcome are initiations of peer interaction, so therapeutic improvements correspond to increases in behavior. For the other two studies, the outcomes were episodes of verbal aggression towards peers, so the therapeutic direction was a decrease. In this context it would be sensible to pick the `LRRi()` function, because most of the outcomes are positively valenced. For the final two studies, we would specify `improvement = "decrease"`, which would ensure that the sign and magnitude of the outcomes were consistent with the direction of therapeutic improvement (i.e. a larger log-ratio represents a larger change in the desired direction). Conversely, if most of the outcomes had a negative valence and only a few had a positive valence, then we would use `LRRd()` and we would specify `improvement = "increase"` for the few series that had positive-valence outcomes.
+
+### Outcome scale
+
+LRR differs from other effect size indices for single-case designs in that calculating it involves some further information about how the outcome variable was measured. One important piece of information to know is the scale of the outcome measurements. For outcomes that are measured by frequency counting, the scale might be expressed as a raw count (`scale = "count"`) or as a standardized rate per minute (`scale = "rate"`). For outcomes that are measures of state behavior, where the main dimension of interest is the proportion of time that the behavior occurs, the scale might be expressed as a percentage (ranging from 0 to 100%; `scale = "percentage"`) or as a proportion (ranging from 0 to 1; `scale = "proportion"`). For outcomes that don't fit into any of these categories, set `scale = "other"`.
+
+The scale of the outcome variable has two important implications for how log response ratios are estimated. First, outcomes measured as percentages or proportions need to be coded so that the direction of therapeutic improvement is consistent with the direction of the effect size. Consequently, changing the improvement direction will alter the _magnitude_, in addition to the sign, of the effect size [see @pustejovsky2018using, pp. 16-18 for further details]. Here is an example:
+```{r}
+A <- c(20, 20, 26, 25, 22, 23)
+B <- c(28, 25, 24, 27, 30, 30, 29)
+
+LRRi(A_data = A, B_data = B, scale = "percentage")
+
+LRRi(A_data = A, B_data = B, improvement = "decrease", scale = "percentage")
+```
+Assuming that improvements correspond to increases, the LRRi value is positive and equal to `r round(LRRi(A_data = A, B_data = B, scale = "percentage")$Est, 2)`. Assuming that improvements correspond to decreases, the LRRi value is negative and smaller in magnitude, equal to `r round(LRRi(A_data = A, B_data = B, improvement = "decrease", scale = "percentage")$Est, 2)`.
+
+Note that if the outcome is a count (the default for both LRR functions) or rate, changing  the improvement direction merely changes the sign of the effect size: 
+```{r}
+A <- c(20, 20, 26, 25, 22, 23)
+B <- c(28, 25, 24, 27, 30, 30, 29)
+
+LRRi(A_data = A, B_data = B, scale = "count")
+LRRi(A_data = A, B_data = B, scale = "count", improvement = "decrease")
+```
+
+The scale of the outcome has one further important implication. To account for the possibility of a sample mean of zero, the `LRRd()` and `LRRi()` functions use a truncated sample mean, where the truncation level is determined by the scale of the outcome and some further details of how the outcomes were measured. For rates, the truncated mean requires specifying the  length of the observation session in minutes:
+
+```{r}
+A <- c(0, 0, 0, 0)
+B <- c(28, 25, 24, 27, 30, 30, 29)
+LRRd(A_data = A, B_data = B, scale = "rate")
+LRRd(A_data = A, B_data = B, scale = "rate", observation_length = 30)
+```
+
+If no additional information is provided and there is a sample mean of 0, the function returns a value of `NaN`. 
+
+For outcomes specified as percentages or proportions, the argument `intervals` must be supplied. For interval recording methods such as partial interval recording or momentary time sampling, provide the number of intervals. For continuous recording, set `intervals` equal to 60 times the length of the observation session in minutes: 
+```{r}
+LRRd(A_data = A, B_data = B, scale = "percentage")
+LRRd(A_data = A, B_data = B, scale = "percentage", intervals = 180)
+```
+You can also specify your own value for the constant used to truncate the sample mean using the `D_const` argument. If a vector, the mean will be used.
+
+### Additional arguments 
+
+Both LRR functions return a effect size that has been bias-corrected for small sample sizes by default. To omit the bias correction, set `bias_correct = FALSE`. Finally, as with the non-overlap measures, the `confidence` argument can be used to change the default 95% confidence interval, or set to `NULL` to omit confidence interval calculations.
+
+## Further options for `LOR()`
+
+The odds ratio parameter is the ratio of the odds that the outcome occurs during phase B to the odds that the outcome occurs during phase A. The log-odds ratio (LOR) is the natural logarithm of the odds ratio. This effect size is appropriate for outcomes measured on a percentage or proportion scale. The `LOR()` function works almost identically to the `LRRi()` and `LRRd()` functions, but there are a few exceptions.
+
+The `LOR()` function only works with outcomes that are on proportion or percentage scales:
+
+```{r}
+A_pct <- c(20, 20, 25, 25, 20, 25)
+B_pct <- c(30, 25, 25, 25, 35, 30, 25)
+
+LOR(A_data = A_pct, B_data = B_pct, scale = "percentage")
+
+LOR(A_data = A_pct/100, B_data = B_pct/100, scale = "proportion")
+
+LOR(A_data = A_pct, B_data = B_pct, scale = "count")
+
+LOR(A_data = A_pct, B_data = B_pct, scale = "proportion")
+```
+
+As with the LRR functions, `LOR()` includes an argument to specify the direction of therapeutic improvement, with the default assumption being that a therapeutic improvement is an increase in the behavior. In contrast to LRRi and LRRd, changing the direction of therapeutic improvement only reverses the sign of the LOR, but does not change its absolute magnitude:
+
+```{r}
+LOR(A_data = A_pct, B_data = B_pct,
+    scale = "percentage", improvement = "increase")
+
+LOR(A_data = A_pct, B_data = B_pct,
+    scale = "percentage", improvement = "decrease")
+```
+
+Similar to the LRR functions, `LOR()` will be calculated using truncated sample means for cases where phase means are close to the extremes of the scale. To use truncated means, the number of intervals per observation session must be specified using the `intervals` argument:
+
+```{r}
+LOR(A_data = c(0,0,0), B_data = B_pct,
+   scale = "percentage")
+LOR(A_data = c(0,0,0), B_data = B_pct,
+    scale = "percentage", intervals = 20)
+```
+
+For data measured using continuous recording, set the number of intervals equal to 60 times the length of the observation session in minutes. Just like the LRR functions, it is possible to specify your own truncation constant using the `D_const` argument. By default the `LOR()` function uses a bias correction for small sample sizes, but this can be turned off by specifying the argument `bias_correct = FALSE`. The width of the confidence intervals is controlled via the `confidence` argument; set the argument to `confidence = NULL` to omit the confidence interval calculations.
+
+# calc_ES()
+
+The `calc_ES()` function will calculate multiple effect sizes estimates for a single SCD series. Just as with the individual effect size functions, `calc_ES()` accepts data in either the `A_data`, `B_data` format or the `condition`, `outcome` format. Here we use the `A_data`, `B_data` format:
+```{r}
+A <- c(20, 20, 26, 25, 22, 23)
+B <- c(28, 25, 24, 27, 30, 30, 29)
+calc_ES(A_data = A, B_data = B, ES = c("NAP","PND","Tau-U"))
+```
+Here is the same calculation in the `condition`, `outcome` format:
+```{r}
+phase <- c(rep("A", length(A)), rep("B", length(B)))
+outcome <- c(A, B)
+calc_ES(condition = phase, outcome = outcome, baseline_phase = "A", 
+        ES = c("NAP","PND","Tau-U"))
+```
+
+To specify which effect size to calculate, use the `ES` argument, which can include any of the following metrics: `"LRRd"`, `"LRRi"`, `"LOR"`, `"LRM"`, `"SMD"`, `"NAP"`, `"PND"`, `"PEM"`, `"PAND"`, `"IRD"`, `"Tau"`, `"Tau_BC"` or `"Tau-U"`. 
+```{r}
+calc_ES(A_data = A, B_data = B, ES = "SMD")
+```
+
+To calculate multiple effect size estimates, provide a list of effect sizes to the `ES` argument. 
+```{r}
+calc_ES(A_data = A, B_data = B, ES = c("NAP", "PND", "Tau-U"))
+```
+
+Setting `ES = "all"` will return all available effect sizes:
+```{r}
+calc_ES(A_data = A, B_data = B, ES = "all")
+```
+Setting `ES = "NOM"` will return all of the non-overlap measures.
+```{r}
+calc_ES(A_data = A, B_data = B, ES = "NOM")
+```
+Setting `ES = "parametric"` will return all of the parametric effect sizes: 
+```{r}
+calc_ES(A_data = A, B_data = B, ES = "parametric")
+```
+If the `ES` argument is omitted, `calc_ES()` will return LRRd, LRRi, SMD, and Tau by default. 
+```{r}
+calc_ES(A_data = A, B_data = B)
+```
+
+## Further arguments
+
+All of the individual effect size functions have the further argument `improvement`, and several of them also have further optional arguments. Include these arguments in `calc_ES()` in order to pass them on to the individual effect size calculation functions. Any additional arguments included in `calc_ES()` will be used in the calculation of effect sizes for which they are relevant, but will be ignored if they are not relevant.
+For example, the direction of improvement can be changed from the default `increase` to `decrease`: 
+```{r}
+calc_ES(A_data = A, B_data = B, ES = "NOM", improvement = "decrease")
+```
+
+It is also possible to change the method for calculating the standard error for the `NAP`, `Tau`, and `Tau_BC` functions, as well as the coverage of the confidence interval. For example, to omit the confidence interval calculations for NAP and Tau, we can include the argument `confidence = NULL`:
+```{r}
+calc_ES(A_data = A, B_data = B, ES = "NOM", improvement = "decrease", confidence = NULL)
+```
+
+For `SMD()` there are several other inputs such as `std_dev`, `bias_correct`, and `confidence` which control how the effect size estimate is calculated, the usage of the Hedges' g bias correction for small sample sizes, and the coverage of the confidence interval. 
+The log response ratio and log odds ratio functions also include arguments for the outcome scale on which the input scores are measured and optional entries for session lengths and intervals. 
+All of these additional options are discussed in more depth in the first section of this vignette. 
+
+
+## Long vs. wide format
+
+Finally, `calc_ES()` includes an option to change the format of the output. The function defaults to `format = "long"`; setting `format = "wide"` will return all of the results as a single line, rather than one line per effect size:
+
+```{r}
+calc_ES(A_data = A, B_data = B, ES = c("NAP","PND","SMD"))
+
+calc_ES(A_data = A, B_data = B, ES = c("NAP","PND","SMD"), format = "wide")
+```
+
+# batch_calc_ES()
+
+Most single-case studies include multiple cases, and many also include multiple dependent variables measured on each case. Thus, it will often be of interest to calculate effect size estimates for _multiple_ data series from a study, or even from multiple studies. The `batch_calc_ES()` function does exactly this---calculating any of the previously detailed effect sizes for each of several data series. Its syntax is a bit more involved than the previous functions, and so we provide several examples here. In what follows, we will assume that you are already comfortable using the `es_calc()` function as well as the other individual effect size functions in the package.
+
+## Data organization
+
+Unlike with the other functions in the package, the input data for `batch_calc_ES()` must be organized in a data frame, with one line corresponding to each observation within a series, and columns corresponding to different variables (e.g. outcome, phase, session number). One or more variables must be included that uniquely identify every data series. Let's look at two examples.
+
+### McKissick
+
+The `McKissick` dataset is data drawn from @McKissick2010randomizing, a single-case design study of a group contingency intervention. The study used a multiple baseline design across three classrooms. The outcome data are event counts of disruptive behaviors observed at the classroom level. 
+
+```{r}
+data(McKissick)
+```
+
+Here are the first few rows of the data:
+
+```{r, echo = FALSE}
+knitr::kable(head(McKissick, n = 10))
+```
+
+### Schmidt (2007)
+
+The `Schmidt2007` dataset are data drawn from @Schmidt2007effects. This data set is somewhat more complicated. It has two outcomes for each participant, and the outcomes differ in directions of therapeutic improvement and measurement scale. The study used an ABAB design, replicated across three participants. Each series therefore has four phases: a baseline phase, a treatment phase, a return to baseline phase, and a second treatment phase.
+
+```{r}
+data(Schmidt2007)
+```
+
+Here are the first few rows of the data
+
+```{r, echo = FALSE}
+Schmidt_kable <- 
+  knitr::kable(head(subset(Schmidt2007,select = c(Case_pseudonym, Behavior_type, Session_number, Outcome, Condition, Phase_num, Metric, Session_length, direction, n_Intervals)), n = 10), longtable = TRUE)
+
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  Schmidt_kable %>%
+  kable_styling() %>%
+  scroll_box(width = "100%")
+} else {
+  Schmidt_kable
+}
+```
+
+The Schmidt (2007) dataset contains many variables, but for now let's focus on the following:
+
+- `Case_Pseudonym` uniquely identifies each of the three participants
+- `Behavior_type` specifies whether the outcome is disruptive behavior or on-task behavior
+- `Session_number` specifies the order of the sessions within each data series
+- `Outcome` contains the dependent variable measurements
+- `Condition` specifies whether the outcome is in a baseline ("A") condition or a treatment ("B") condition 
+- `Phase_num` specifies whether the session is in the first or second pair of phases in  the design
+- `Metric` specifies whether the dependent variable is percentage or count data
+- `Session_length` specifies the length of the observation session
+- `direction` specifies the direction of therapeutic improvement
+- `n_Intervals` specifies the number of intervals per session for the dependent variable measured using partial interval recording.
+
+## Main arguments of `batch_calc_ES()`
+
+Here are the arguments for the batch calculator function:
+
+```{r}
+args(batch_calc_ES)
+```
+
+This function has a lot of arguments, but many of them are optional and only used for certain effect size metrics (these options are described in more detail in previous sections). For the moment, let's focus on the first few arguments, which are all we need to get going. 
+
+- The argument `dat` should be a dataframe containing all of the observations for all of the data series of interest. 
+
+- The `grouping` argument should specify the set of variables that uniquely identify each series. For a single study consisting of several series, like the McKissick dataset, this might simply be a variable name that identifies the participant pseudonym. Specify using bare variable names (i.e., without quotes).
+
+- The `condition` argument should be the variable that identifies the treatment condition for each observation in the series. Specify using a bare variable name. The values for the baseline and treatment phases should be uniform across all of the series within a dataset. That is, if some series are coded as "0" for baseline and "1" for treatment, whereas other series had "A" as baseline and "B" as treatment, you will first need to clean you data and standardize the coding.
+
+- The `outcome` argument should be the variable that contains the outcomes of interest. Specify using a bare variable name.
+
+- The `ES` argument allows you to specify which effect sizes to calculate. By default, the batch calculator generates estimates of LRRd, LRRi, SMD, and Tau. However, you're probably going to want to specify your own effect sizes. Just as in `calc_ES`, specify your desired effect sizes as a character vector, with the individual options of `"LRRd"`, `"LRRi"`, `"LOR"`, `"LRM"`, `"SMD"`, `"NAP"`, `"PND"`, `"PEM"`, `"PAND"`, `"IRD"`, `"Tau"`, `"Tau_BC"` or `"Tau-U"`, in addition to `"all"` for all effect sizes, `"NOM"` for all non-overlap measures, and `"parametric"` for all parametric effect sizes.
+
+All of the remaining arguments are truly optional, and we'll introduce them as we go along. 
+
+## Using grouping variables
+
+Let's try applying the function to the McKissick data. Remember that these data contains an identifier for each case (`Case_pseudonym`), a variable (`Condition`) identifying the baseline ("A") and treatment ("B") phases, and an outcome variable containing the values of the outcomes. The outcomes are disruptive behaviors, so a decrease in the behavior corresponds to therapeutic improvement. Just as with the `calc_ES()` function, we'll need to specify the direction of therapeutic improvement using the `improvement` argument. In this example, we will calculate estimates of NAP and PND, to keep things simple:
+```{r}
+mckissick_ES <- batch_calc_ES(dat = McKissick,
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              improvement = "decrease",
+              ES = c("NAP", "PND"))
+```
+Note that all of the inputs related to variable names are bare (i.e., no quotes). Let's take a look at a table of the output.
+```{r, echo = FALSE}
+kable(mckissick_ES) 
+```
+
+The output will always start with one or more columns corresponding to each unique combination of values from the `grouping` argument, followed by a column describing the effect size reported in each row. The column called `Est` contains the effect size estimates. If *any* of the requested effect sizes have standard
+errors and confidence intervals, there will also be columns corresponding to the standard error and the upper and lower limit. Here, PND has `NA` for each of those, because it does not have a known standard error or confidence interval.
+
+Now let's look at an example using the Schmidt data. Remember that these data contain a pseudonym that uniquely identifies each of the three participants (`Case_Pseudonym`) as well as a variable that specifies whether the outcome is disruptive behavior or on-task behavior (`Behavior_type`). Furthermore, these data come from a treatment reversal design with two pairs of AB phases for each combination of case and behavior type. Each pair of AB phases is labeled in the variable `Phase_num`. We're going to want an effect size for each combination of pseudonym, behavior, and phase pair. The data also have an outcome variable (`Outcome`) and a variable identifying whether it was in the baseline ("A") or treatment ("B") phase (`Condition`). Finally, the the two different behavior types have different direction therapeutic improvement, so there is a variable called `direction` that specifies `"increase"` for on-task behavior or `"decrease"` for disruptive
+behavior. 
+
+Here's an example of how to calculate NAP and LRRi for these data:
+
+```{r}
+schmidt_ES <- batch_calc_ES(
+  dat = Schmidt2007,
+  grouping = c(Case_pseudonym, Behavior_type, Phase_num), 
+  condition = Condition,
+  outcome = Outcome, 
+  improvement = direction,
+  ES = c("NAP", "LRRi")
+)
+```
+
+The syntax is similar to the example with the McKissick dataset, except for two things. Here, we've provided a vector of variable names for `grouping` that identify each series for which we want an effect size. Instead of providing a uniform direction of improvement to the `improvement` variable, we've provided a variable name, `direction`, which will account for the fact that the two behavior types have different directions of therapeutic improvement. Here is a table of the output:
+
+```{r, echo = FALSE}
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  kable(schmidt_ES, digits = 3) %>%
+    kable_styling() %>%
+    scroll_box(
+      width = "100%", height = "800px", 
+      fixed_thead = list(enabled = TRUE, background = "green")
+    )
+} else {
+  knitr::kable(schmidt_ES, digits = 3)
+}
+```
+
+The first three columns are the unique values from the variables supplied to `grouping`, followed by the effect size information.
+
+## Aggregating across replications
+
+The Schmidt study used an ABAB design, and as a consequence we end up with not one but _two_ effect size estimates for each case and each outcome. Under some circumstances, it may make sense to aggregate---or average together---the effect size estimates from the first and second AB pairs for each case. Doing so simplifies the structure of the resulting effect size dataset, so that there is just one effect size estimate per case per outcome. The `batch_calc_ES` function includes an optional argument called `aggregate` that allows you to aggregate effect size estimates across a grouping variable. To use it, specify the name of one or more variables across which to aggregate. These variables will then be treated as grouping variables for purposes of effect size calculation (just like those specified in the `grouping` argument), but the results will then be aggregated over the unique values of the variables. 
+
+Here's an example of how to use `aggregate` with the Schmidt dataset (for simplicity, we will calculate only the NAP effect size). Rather than specifying `Phase_num` as a grouping variable, we specify it as an `aggregate` variable:
+
+```{r}
+schmidt_ES_agg <- 
+  batch_calc_ES(
+    dat = Schmidt2007,
+    grouping = c(Case_pseudonym, Behavior_type),
+    aggregate = Phase_num,
+    condition = Condition,
+    outcome = Outcome, 
+    improvement = direction,
+    ES = "NAP"
+  )
+```
+
+The resulting data frame has just one effect size estimate per case per outcome because the estimates for each unique `phase_num` have been averaged together:
+```{r, echo = FALSE}
+kable(schmidt_ES_agg) %>%
+  kable_styling()
+```
+
+The package allows for several different weighting schemes: 
+
+- `"equal"` (the default) or `"Equal"`: Equal weighting takes the simple arithmetic average of the effect size estimates.
+- `"1/V"`: Inverse variance weighting takes a weighted average of the effect size estimates with weights that are inversely proportional to the sampling variances of the estimates (i.e., the square of the standard error). This weighting scheme is the most efficient approach if the components being averaged together are all estimating the same underlying parameter. However, inverse variance weighting will not work for effect size estimates that do not have a known standard error, such as PND or PAND.
+- `"nA"` or `"n_A"`: uses the number of baseline phase observations as the weights for aggregating.
+- `"nB"` or `"n_B"`: uses the number of treatment phase observations as the weights for aggregating.
+- `"nAnB"`, `"nA*nB"`, `"nA * nB"`, `"n_A*n_B"`, or `"n_A * n_B"`: uses the product of the number of baseline and treatment phases as the weights for aggregating.
+- `"1/nA+1/nB"`, `"1/nA + 1/nB"`, `"1/n_A+1/n_B"`, or `"1/n_A + 1/n_B"`: uses the sum of the inverse number of baseline phases and the inverse number of treatment phases as the weights for aggregating.
+
+Here is an example of using equal weighting for calculating aggregated effect sizes across pairs of AB phases:
+```{r}
+schmidt_ES_agg <- 
+  batch_calc_ES(
+    dat = Schmidt2007,
+    grouping = c(Case_pseudonym, Behavior_type),
+    aggregate = Phase_num,
+    weighting = "equal",
+    condition = Condition,
+    outcome = Outcome, 
+    improvement = direction,
+    ES = "NAP"
+  )
+
+```
+
+```{r, echo = FALSE}
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  kable(schmidt_ES_agg, digits = 3) %>%
+    kable_styling()
+} else {
+  knitr::kable(schmidt_ES_agg, digits = 3)
+}
+```
+
+## Dealing with outcome scales.
+
+By default, the batch calculator assumes the outcome scale is `"other"`. If using this default assumption, the log odd ratio and the log response ratio will not be calculated if a phase mean is equal to zero. Just as with `calc_ES()`, you may need to specify the outcome scales as well as things like the length of the observation session or the number of intervals in each observation session in order to calculate parametric effect sizes. If these values are the same for all observations in the dataset, you can specify them as further arguments to `batch_calc_ES()`. Here is an example using the McKissick dataset, where we specify that all of the outcomes are measured as counts during 20-minute observation periods:
+```{r}
+mckissick_ES <- batch_calc_ES(dat = McKissick,
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              improvement = "decrease",
+              scale = "count",
+              observation_length = 20,
+              ES = "parametric")
+```
+Note that we get a warning about the log odds ratio. Let's take a look at the output:
+```{r, echo = FALSE}
+knitr::kable(mckissick_ES, digits = 3)
+```
+Once again, we have a column specifying the case to which the effect sizes correspond, as well as a column specifying the effect size metric. The log odds ratio returns all `NA`s, because the log odds ratio can't be estimate for count outcomes.
+
+Let's suppose that we are interested in estimating effect sizes using data where the measurement scale---as well as perhaps measurement details like the observation length or the number of intervals---varies depending on the data series. The Schmidt data is one example of this. Remember that the Schmidt data has a variable specifying the measurement scale of the outcome (`Metric`) which is `"percentage"` for desirable behavior and `"count"` for disruptive behaviors. It also has a variable that specifies the length of the observation session (`Session_length`), and a variable that specifies the number of intervals per session for the dependent variable measured using partial interval recording (`n_Intervals`). The value of `Session_length` is `NA` for the percentage outcomes and the value of `n_Intervals` is `NA` for the count outcomes because those details are not relevant for those outcome measurement scales. Let's try it out:
+
+```{r}
+schmidt_ES <- batch_calc_ES(dat = Schmidt2007,
+              grouping = c(Case_pseudonym, Behavior_type, Phase_num), 
+              condition = Condition,
+              outcome = Outcome, 
+              improvement = direction,
+              scale = Metric,
+              observation_length = Session_length,
+              intervals = n_Intervals,
+              ES = c("parametric"))
+```
+
+Unlike the previous example, where we specified a uniform value for the `scale` and `observation_length`, we now have to specify variable names for `scale`, `observation_length`, and the number of `intervals`. Note that we get some warnings again about the LOR effect size. Let's take a look at the output:
+
+```{r, echo = FALSE}
+if (requireNamespace("kableExtra", quietly = TRUE)) {
+  kable(schmidt_ES, digits = 3) %>%
+    kable_styling() %>%
+    scroll_box(
+      width = "100%", height = "800px", 
+      fixed_thead = list(enabled = TRUE, background = "green")
+    )
+} else {
+  knitr::kable(schmidt_ES, digits = 3)
+}
+```
+
+In this case, LOR is all `NA` for the outcomes that are disruptive behaviors because those are counts and therefore the LOR isn't an appropriate effect size. However, for the percentage of on task behavior, the LOR *was* estimated.
+
+## Further arguments
+
+### Output format
+
+We can also request the effect sizes in a wide format:
+
+```{r}
+mckissick_wide_ES <- 
+  batch_calc_ES(
+    dat = McKissick,
+    grouping = Case_pseudonym, 
+    condition = Condition,
+    outcome = Outcome, 
+    improvement = "decrease",
+    ES = c("NAP", "PND"),
+    format = "wide"
+  )
+```
+
+The default argument for the batch calculator is `format = "long"`, but if you want each case to be on a single line, specifying `format = "wide"` will provide the output that way, just like `calc_ES()`. Here's the output:
+
+```{r, echo = FALSE}
+knitr::kable(mckissick_wide_ES)
+```
+
+In this case there are columns for NAP, NAP's standard error, and the upper and lower bounds of the confidence interval. PND only has a column for the estimate, but remember that the values for SE and upper and lower CI were all `NA` in the long format. Columns that would have all `NA` values are removed when specifying `format = "wide"`.
+
+### Suppressing warnings
+
+Remember how, when we asked for the LOR for counts, the calculator gave us a bunch of warning messages? If you're asking for the LOR, and some of your outcomes are in a scale other than percentage or proportion, you can specify the argument `warn = FALSE` (by default it is set to `TRUE`) if you want to suppress the warning messages. You will still get NA for any series with an inappropriate outcome scale.
+
+```{r}
+batch_calc_ES(dat = McKissick,
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              improvement = "decrease",
+              scale = "count",
+              observation_length = 20,
+              ES = c("LRRi","LOR"),
+              warn = FALSE)
+```
+
+### Arguments to individual effect size functions
+
+The `...` argument allows you to specify arguments particular to an individual
+function such as `std_dev` for the `SMD()` function. For instance, compare the results of calculating a pooled SMD versus the default, baseline phase only SMD:
+
+```{r}
+batch_calc_ES(dat = McKissick, 
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              ES = "SMD", 
+              improvement = "decrease")
+
+batch_calc_ES(dat = McKissick, 
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              ES = "SMD", 
+              improvement = "decrease",
+              std_dev = "pool")
+```
+
+Arguments common to several functions will be used when calculating any of the effect sizes for which they are relevant. For example, the `bias_correct` argument applies to all of the parametric effect sizes:
+
+```{r}
+batch_calc_ES(dat = McKissick, 
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              ES = "parametric", 
+              improvement = "decrease",
+              scale = Procedure, 
+              observation_length = Session_length,
+              bias_correct = FALSE,
+              warn = FALSE)
+```
+
+The `bias_correct` argument cannot be specified differently for different effect size functions. If you want to obtain bias-corrected values for the LRRd effect size but not for the SMD effect size, you would need to call `batch_calc_ES()` separately for the two different effect sizes.
+
+### Order of observations
+
+The `session_number` argument orders the data within each series by the specified variable. This argument is only important if baseline-corrected Tau or Tau-U is being calculated. For these effect sizes, the ordering of the baseline phase is important because they involve adjustments for trend in the baseline phase. This argument is irrelevant for all of the other effect sizes.
+
+### Specifying a baseline phase
+
+The `baseline_phase` argument works the same was as in the `calc_ES()` function. If nothing is specified, the first phase in each series will be treated as the baseline phase. However, if the baseline phase is not always the first phase in each series, such as an SCD with four cases that use a cross-over treatment reversal design, where two of the cases follow an ABAB design and the other two cases follow a BABA design, you will need to specify the `baseline_phase` in the same way as in the `calc_ES()` function.
+
+### Confidence levels 
+
+The `confidence` argument controls the confidence intervals in the same way as all the other functions. To skip calculating confidence intervals, specify `confidence = NULL`:
+
+```{r}
+batch_calc_ES(dat = McKissick, 
+              grouping = Case_pseudonym, 
+              condition = Condition,
+              outcome = Outcome, 
+              ES = "parametric", 
+              improvement = "decrease",
+              scale = Procedure, 
+              observation_length = Session_length,
+              confidence = NULL,
+              warn = FALSE)
+```
+
+# References
+>>>>>>> 5882cb1e6ab05543c576401164aef195d2c88d53
