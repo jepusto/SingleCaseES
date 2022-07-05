@@ -445,29 +445,18 @@ shinyServer(function(input, output, session) {
     dat <- datClean()
     
     if (input$calcPhasePair) {
-<<<<<<< HEAD
       grouping_vars <- setdiff(input$b_clusters, "phase_pair_calculated")
-=======
-      grouping_vars <- input$b_clusters
->>>>>>> dcdfd8911c4b8174f82a421f8ea578421ec8472b
       session_var <- input$session_number
       phase_var <- input$b_phase
       
       dat <- 
         dat %>% 
         dplyr::group_by(!!!rlang::syms(grouping_vars)) %>% 
-<<<<<<< HEAD
         dplyr::mutate(
           phase_pair_calculated = calc_phase_pairs(!!rlang::sym(phase_var), session = !!rlang::sym(session_var))
         ) %>% 
         dplyr::ungroup() %>% 
         as.data.frame() 
-=======
-        dplyr::arrange(!!!rlang::syms(grouping_vars), !!rlang::sym(session_var)) %>% 
-        dplyr::mutate(phase_pair_calculated = calc_phase_pairs(!!rlang::sym(phase_var))) %>% 
-        dplyr::ungroup() %>% 
-        as.data.frame() # so that levels(as.factor(datClean2()[,x]))) would work
->>>>>>> dcdfd8911c4b8174f82a421f8ea578421ec8472b
     }
     
     return(dat)
@@ -596,12 +585,11 @@ shinyServer(function(input, output, session) {
       
       intervals <- if (input$bintervals == "NA") NA else input$bintervals
       obslength <- if (input$bobslength == "NA") NA else input$bobslength
-      D_const <- if (is.na(input$blrrfloor)) 0 else input$blrrfloor
+      D_const <- if (is.null(input$blrrfloor)) NA else input$blrrfloor
       
     } else {
       scale_val <- "other"
-      intervals <- obslength <- NA
-      D_const <- 0
+      intervals <- obslength <- D_const <- NA
     }
     
     if(input$bimprovement == "series") {
