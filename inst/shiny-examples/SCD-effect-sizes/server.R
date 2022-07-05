@@ -445,18 +445,29 @@ shinyServer(function(input, output, session) {
     dat <- datClean()
     
     if (input$calcPhasePair) {
+<<<<<<< HEAD
       grouping_vars <- setdiff(input$b_clusters, "phase_pair_calculated")
+=======
+      grouping_vars <- input$b_clusters
+>>>>>>> dcdfd8911c4b8174f82a421f8ea578421ec8472b
       session_var <- input$session_number
       phase_var <- input$b_phase
       
       dat <- 
         dat %>% 
         dplyr::group_by(!!!rlang::syms(grouping_vars)) %>% 
+<<<<<<< HEAD
         dplyr::mutate(
           phase_pair_calculated = calc_phase_pairs(!!rlang::sym(phase_var), session = !!rlang::sym(session_var))
         ) %>% 
         dplyr::ungroup() %>% 
         as.data.frame() 
+=======
+        dplyr::arrange(!!!rlang::syms(grouping_vars), !!rlang::sym(session_var)) %>% 
+        dplyr::mutate(phase_pair_calculated = calc_phase_pairs(!!rlang::sym(phase_var))) %>% 
+        dplyr::ungroup() %>% 
+        as.data.frame() # so that levels(as.factor(datClean2()[,x]))) would work
+>>>>>>> dcdfd8911c4b8174f82a421f8ea578421ec8472b
     }
     
     return(dat)
