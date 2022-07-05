@@ -301,17 +301,17 @@ shinyServer(function(input, output, session) {
     var_names <- names(datClean())
     if (input$dat_type == "dat" || input$dat_type == "xlsx") {
       
-      b_aggregate_choices <- if (input$calcPhasePair) {
+      b_clu_agg_choices <- if (input$calcPhasePair) {
         c(var_names, "phase_pair_calculated")
       } else {
         var_names
       }
       
       list(
-        selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
-                       selected = NULL, multiple = TRUE),
+        selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", 
+                       choices = b_clu_agg_choices, selected = NULL, multiple = TRUE),
         selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", 
-                       choices = b_aggregate_choices, selected = NULL, multiple = TRUE),
+                       choices = b_clu_agg_choices, selected = NULL, multiple = TRUE),
         selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = var_names[3])
       )
       
@@ -445,17 +445,18 @@ shinyServer(function(input, output, session) {
     dat <- datClean()
     
     if (input$calcPhasePair) {
-      grouping_vars <- input$b_clusters
+      grouping_vars <- setdiff(input$b_clusters, "phase_pair_calculated")
       session_var <- input$session_number
       phase_var <- input$b_phase
       
       dat <- 
         dat %>% 
         dplyr::group_by(!!!rlang::syms(grouping_vars)) %>% 
-        dplyr::arrange(!!!rlang::syms(grouping_vars), !!rlang::sym(session_var)) %>% 
-        dplyr::mutate(phase_pair_calculated = calc_phase_pairs(!!rlang::sym(phase_var))) %>% 
+        dplyr::mutate(
+          phase_pair_calculated = calc_phase_pairs(!!rlang::sym(phase_var), session = !!rlang::sym(session_var))
+        ) %>% 
         dplyr::ungroup() %>% 
-        as.data.frame() # so that levels(as.factor(datClean2()[,x]))) would work
+        as.data.frame() 
     }
     
     return(dat)
@@ -584,11 +585,12 @@ shinyServer(function(input, output, session) {
       
       intervals <- if (input$bintervals == "NA") NA else input$bintervals
       obslength <- if (input$bobslength == "NA") NA else input$bobslength
-      D_const <- if (is.null(input$blrrfloor)) NA else input$blrrfloor
+      D_const <- if (is.na(input$blrrfloor)) 0 else input$blrrfloor
       
     } else {
       scale_val <- "other"
-      intervals <- obslength <- D_const <- NA
+      intervals <- obslength <- NA
+      D_const <- 0
     }
     
     if(input$bimprovement == "series") {

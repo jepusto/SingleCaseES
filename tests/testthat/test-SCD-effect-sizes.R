@@ -520,3 +520,145 @@ test_that("Data are uploaded correctly.", {
   expect_equivalent(output_xlsx, McKissick_pkg)
 
 })
+
+
+test_that("The calcPhasePair works in the app.", {
+  
+  skip_on_cran()
+  
+  NOMs <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U")
+  Parametrics <- c("LOR", "LRRd", "LRRi", "LRM", "SMD")
+  
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  # data_path <- "../testdata/ex_issue73.csv"
+  data_path <- "D:tests/testdata/ex_issue73.csv"
+  
+  app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
+  app$setInputs(dat_type = "dat")
+  app$uploadFile(dat = data_path) # <-- This should be the path to the file, relative to the app's tests/shinytest directory
+  app$setInputs(BatchEntryTabs = "Variables")
+  app$setInputs(calcPhasePair = TRUE)
+  app$setInputs(b_clusters = "Behavior_type")
+  app$setInputs(b_clusters = c("Behavior_type", "Case_pseudonym"))
+  app$setInputs(b_aggregate = "phase_pair_calculated")
+  app$setInputs(b_phase = "Condition")
+  app$setInputs(session_number = "Session_number")
+  app$setInputs(b_out = "Outcome")
+  app$setInputs(bimprovement = "series")
+  app$setInputs(bseldir = "Direction")
+  app$setInputs(BatchEntryTabs = "Plot")
+  app$setInputs(BatchEntryTabs = "Estimate")
+  app$setInputs(bESpar = "LRRi")
+  app$setInputs(bESpar = c("LRRd", "LRRi"))
+  app$setInputs(boutScale = "series")
+  app$setInputs(bscalevar = "Metric")
+  app$setInputs(batchest = "click")
+  
+  Sys.sleep(2)
+  
+  output_app <- app$getValue(name = "batchTable")
+  
+  output_app_table <-
+    xml2::read_html(output_app) %>% 
+    rvest::html_table(fill = TRUE) %>%
+    as.data.frame() %>%
+    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
+    mutate(across(Est:CI_upper, as.numeric))
+  
+  data <- read.csv("D:tests/testdata/ex_issue73.csv")
+  dat <-
+    data %>%
+    group_by(Behavior_type, Case_pseudonym) %>%
+    mutate(phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)) %>%
+    ungroup()
+  output_pkg <-
+    batch_calc_ES(dat = dat,
+                  grouping = c(Behavior_type, Case_pseudonym),
+                  condition = Condition,
+                  outcome = Outcome,
+                  aggregate = c(phase_pair_calculated),
+                  weighting = "equal",
+                  session_number = Session_number,
+                  baseline_phase = "A",
+                  intervention_phase = "B",
+                  ES = c("LRRd", "LRRi"),
+                  improvement = Direction,
+                  pct_change = FALSE,
+                  scale = Metric,
+                  intervals = NA,
+                  observation_length = NA,
+                  D_const = NA,
+                  std_dev = "baseline",
+                  confidence = 0.95,
+                  Kendall = FALSE,
+                  pretest_trend = FALSE,
+                  format = "long"
+    ) %>%
+    mutate(across(Est:CI_upper, ~ round(., 2))) 
+  
+  expect_equal(output_app_table, output_pkg, check.attributes = FALSE)
+  
+})
+
+
+test_that("The bintervals and bobslength options work in the app.", {
+  
+  skip_on_cran()
+  
+  NOMs <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U")
+  Parametrics <- c("LOR", "LRRd", "LRRi", "LRM", "SMD")
+  
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  data_path <- "../testdata/ex_issue74.csv"
+  # data_path <- "D:tests/testdata/ex_issue74.csv"
+  
+  app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
+  app$setInputs(dat_type = "dat")
+  app$uploadFile(dat = data_path) # <-- This should be the path to the file, relative to the app's tests/shinytest directory
+  app$setInputs(BatchEntryTabs = "Variables")
+  app$setInputs(b_clusters = "Case_pseudonym")
+  app$setInputs(session_number = "Session_number")
+  app$setInputs(BatchEntryTabs = "Plot")
+  app$setInputs(BatchEntryTabs = "Estimate")
+  app$setInputs(bESpar = c("LRRd", "LRRi"))
+  app$setInputs(boutScale = "count")
+  app$setInputs(batchest = "click")
+  
+  Sys.sleep(2)
+  
+  output_app <- app$getValue(name = "batchTable")
+  
+  output_app_table <-
+    xml2::read_html(output_app) %>% 
+    rvest::html_table(fill = TRUE) %>%
+    as.data.frame() %>%
+    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
+    mutate(across(Est:CI_upper, as.numeric))
+  
+  data <- read.csv("D:tests/testdata/ex_issue74.csv")
+  output_pkg <-
+    batch_calc_ES(dat = data,
+                  grouping = Case_pseudonym,
+                  condition = Condition,
+                  outcome = Outcome,
+                  session_number = Session_number,
+                  baseline_phase = "A",
+                  intervention_phase = "B",
+                  ES = c("LRRd", "LRRi"),
+                  improvement = "increase",
+                  pct_change = FALSE,
+                  scale = "count",
+                  intervals = NA,
+                  observation_length = NA,
+                  D_const = NA,
+                  std_dev = "baseline",
+                  confidence = 0.95,
+                  Kendall = FALSE,
+                  pretest_trend = FALSE,
+                  format = "long"
+    ) %>%
+    mutate(across(Est:CI_upper, ~ round(., 2))) 
+  
+  expect_equal(output_app_table, output_pkg, check.attributes = FALSE)
+  
+})

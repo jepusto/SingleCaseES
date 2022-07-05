@@ -41,6 +41,6 @@ identical(x, dat_sorted$x)
 library(dplyr)
 Schmidt2007 \%>\%
   group_by(Behavior_type, Case_pseudonym) \%>\%
-  mutate(phase_pair = calc_phase_pairs(Condition))
+  mutate(phase_pair = calc_phase_pairs(Condition, session = Session_number))
 
 }
