@@ -1,11 +1,12 @@
 Package: SingleCaseES
 Type: Package
 Title: A Calculator for Single-Case Effect Sizes
-Version: 0.6.0.9999
+Version: 0.6.1
 Authors@R: c(
   person(c("James","E."), "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre")),
   person("Man", "Chen", email = "manchen9005@gmail.com", role = "aut"),
-  person(c("Daniel","M."), "Swan", email = "dms031000@gmail.com", role = "aut")
+  person(c("Daniel","M."), "Swan", email = "dms031000@gmail.com", role = "aut"),
+  person("Paulina", "Grekov", email = "grekov.paulina@gmail.com", role = "ctb")
   )
 Description: 
   Provides R functions for calculating basic effect size indices for 

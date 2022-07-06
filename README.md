@@ -72,18 +72,18 @@ of Education.
 Please cite this R package as follows:
 
 > Pustejovsky, J. E., Chen, M., & Swan, D. M. (2022). SingleCaseES: A
-> calculator for single-case effect size indices. R package version
-> 0.6.0.9999. Retrieved from <https://github.com/jepusto/SingleCaseES>
+> calculator for single-case effect size indices (Version 0.6.1) \[R
+> package\]. <https://jepusto.github.io/SingleCaseES/>
 
 Please cite the web applications as follows:
 
 > Pustejovsky, J. E., Chen, M., & Swan, D. M. (2022). Single-case effect
-> size calculator (Version 0.6.0.9999) \[Web application\]. Retrieved
-> from <https://jepusto.shinyapps.io/SCD-effect-sizes>
+> size calculator (Version 0.6.1) \[Web application\].
+> <https://jepusto.shinyapps.io/SCD-effect-sizes>
 
 > Swan, D. M. & Pustejovsky, J. E. (2017). gem_scd: A web-based
 > calculator for the Gradual Effects Model (Version 0.1.0) \[Web
-> application\]. Retrieved from: <https://jepusto.shinyapps.io/gem-scd>
+> application\]. <https://jepusto.shinyapps.io/gem-scd>
 
 # Installation
 

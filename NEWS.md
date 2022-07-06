@@ -1,4 +1,4 @@
-# SingleCaseES 0.6.0.9999
+# SingleCaseES 0.6.1
 
 * Revised in-app documentation for the SCD_effect_sizes web app. Added links to video demonstrations.
 * Changes to the SCD_effect_sizes shiny app

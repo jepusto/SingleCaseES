@@ -1,6 +1,6 @@
 # Single-case effect size calculator
 
-Version 0.6.0.9999
+Version 0.6.1
 
 Designed and built by James E. Pustejovsky, Man Chen, & Daniel M. Swan. Contributions from Paulina Grekov (documentation).
 
@@ -22,5 +22,4 @@ The development of this application was supported in part by the Institute of Ed
 
 Please cite this software as follows:
 
-> Pustejovsky, J. E, Chen, M., & Swan, D. M. (2021). Single-case effect size calculator (Version 0.6.0.9999) [Web application]. Retrieved from
-> <https://jepusto.shinyapps.io/SCD-effect-sizes/>
+> Pustejovsky, J. E, Chen, M., & Swan, D. M. (2022). Single-case effect size calculator (Version 0.6.1) [Web application]. <https://jepusto.shinyapps.io/SCD-effect-sizes/>
