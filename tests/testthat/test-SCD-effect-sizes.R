@@ -692,7 +692,7 @@ test_that("The bintervals and bobslength options work in the app.", {
                   pretest_trend = FALSE,
                   format = "long"
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 2))) 
+    mutate(across(Est:CI_upper, ~ round(., 4L))) 
   
   out_pkg_2 <-
     batch_calc_ES(dat = data,

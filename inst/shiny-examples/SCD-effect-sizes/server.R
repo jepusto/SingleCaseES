@@ -320,9 +320,11 @@ shinyServer(function(input, output, session) {
       curMap <- exampleMapping[[input$example]]
       
       list(
-        selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", choices = var_names, 
+        selectizeInput("b_clusters", label = "Select all variables uniquely identifying cases (e.g. pseudonym, study, behavior).", 
+                       choices = var_names, 
                        selected = curMap$cluster_vars, multiple = TRUE),
-        selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", choices = var_names,
+        selectizeInput("b_aggregate", label = "Select all variables to average across after calculating effect size estimates.", 
+                       choices = var_names,
                        selected = curMap$aggregate_vars, multiple = TRUE),
         selectInput("b_phase", label = "Phase indicator", choices = var_names, selected = curMap$condition)
       )
