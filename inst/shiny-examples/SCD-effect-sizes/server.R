@@ -743,26 +743,33 @@ shinyServer(function(input, output, session) {
     
     # batch calculation
     if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
-      if (input$boutScale == "series") {
-        scale_val <- input$bscalevar
-      } else{
-        scale_val <- input$boutScale
-      }
+      
+      scale_val <- switch(input$boutScale,
+        "series" = paste0("\n                     scale = ", as.symbol(input$bscalevar), ","),
+        "percentage" = '\n            scale = "percentage",',
+        "proportion" = '\n            scale = "proportion",',
+        "count" = '\n                 scale = "count",',
+        "rate" = '\n                  scale = "rate",',
+        "other" = '\n                 scale = "other",',
+        c()
+      )
       
       intervals <- if (input$bintervals == "NA") NA else input$bintervals
       obslength <- if (input$bobslength == "NA") NA else input$bobslength
       D_const <- if (is.null(input$blrrfloor)) NA else input$blrrfloor
       
     } else {
-      scale_val <- "other"
+      # scale_val <- "other"
+      scale_val <- '\n                scale = "other",'
       intervals <- obslength <- D_const <- NA
     }
-
-    if (input$bimprovement == "series") {
-      improvement <- input$bseldir
-    } else {
-      improvement <- input$bimprovement
-    }
+    
+    improvement <- switch(input$bimprovement,
+                          "series" = paste0("\n                     improvement = ", as.symbol(input$bseldir), ","),
+                          "increase" = '\n                     improvement = "increase",',
+                          "decrease" = '\n                     improvement = "decrease",',
+                          c()
+    )
     
     if (input$btau_calculation == "Kendall") {
       Kendall <- TRUE
@@ -785,9 +792,7 @@ shinyServer(function(input, output, session) {
     baseline_phase <- input$b_base
     intervention_phase <- input$b_treat
     ES <- paste0('c("', paste(c(input$bESno, input$bESpar), collapse='", "'), '")')
-    improvement <- improvement
     pct_change <- input$b_pct_change
-    scale <- scale_val
     intervals <- intervals
     obslength <- obslength
     D_const <- D_const
@@ -810,7 +815,7 @@ shinyServer(function(input, output, session) {
                                        user_ES = ES,
                                        user_improvement = improvement,
                                        user_pct_change = pct_change,
-                                       user_scale = scale,
+                                       user_scale = scale_val,
                                        user_intervals = intervals,
                                        user_obslength = obslength,
                                        user_D_const = D_const,
@@ -835,7 +840,7 @@ shinyServer(function(input, output, session) {
                                        user_ES = ES,
                                        user_improvement = improvement,
                                        user_pct_change = pct_change,
-                                       user_scale = scale,
+                                       user_scale = scale_val,
                                        user_intervals = intervals,
                                        user_obslength = obslength,
                                        user_D_const = D_const,
