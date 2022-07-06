@@ -6,6 +6,7 @@
     * Fixed a bug in the SCD_effect_sizes app (multiple-series calculator) plotting facilities, which caused an error if the phase variable was numeric.
     * Fixed a bug in the multiple-series calculator so that `bintervals`, `bobslength`, and `blrrfloor` are used for calculating LOR and LRR effect sizes.
     * Added an option to calculate phase pair numbers in the multiple-series calculator for uploaded data sets.
+* Added informative error messages to the truncation constant calculations.
 
 
 # SingleCaseES 0.6.0
