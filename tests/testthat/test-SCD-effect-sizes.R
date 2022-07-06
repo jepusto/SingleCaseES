@@ -15,8 +15,10 @@ skip_if_not_installed("Kendall")
 suppressWarnings(library(shiny))
 suppressWarnings(library(shinytest))
 suppressWarnings(library(dplyr))
+suppressWarnings(library(tidyr))
 suppressWarnings(library(stringr))
 suppressWarnings(library(rvest))
+suppressWarnings(library(xml2))
 suppressWarnings(library(purrr))
 
 skip_if_not(dependenciesInstalled())
@@ -109,7 +111,7 @@ test_that("Single-entry calculator works properly", {
   output_app <- 
     bind_rows(NOMs_app, Parametric_app) %>% 
     mutate(ES_value = str_remove(ES_value, "(<br>){4,}.*")) %>%
-    tidyr::separate(ES_value, c("Est", "SE", "CI","baseline_SD"), "<br>", fill = "right") %>%
+    separate(ES_value, c("Est", "SE", "CI","baseline_SD"), "<br>", fill = "right") %>%
     mutate(
       Est = as.numeric(str_remove(Est, "Effect size estimate: ")),
       SE = as.numeric(str_remove(SE, "Standard error: ")),
@@ -147,7 +149,7 @@ test_that("Single-entry calculator works properly", {
   Kendall_app_res <- 
     check_single(app, ES = "Tau_BC", ES_family = "Non-overlap", A_data = A_dat, B_data = B_dat, Kendall = TRUE) %>% 
     mutate(ES_value = str_remove(ES_value, "(<br>){4,}.*")) %>%
-    tidyr::separate(ES_value, c("Est", "SE", "CI"), "<br>", fill = "right") %>%
+    separate(ES_value, c("Est", "SE", "CI"), "<br>", fill = "right") %>%
     mutate(
       Est = as.numeric(str_remove(Est, "Effect size estimate: ")),
       SE = as.numeric(str_remove(SE, "Standard error: ")),
@@ -170,7 +172,7 @@ test_that("Single-entry calculator works properly", {
 
 
 
-check_batch <- function(app, example_dat, ES, Kendall = FALSE) {
+check_batch <- function(app, example_dat, ES, digits = 4, Kendall = FALSE) {
   NOMs <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U")
   Parametrics <- c("LOR", "LRRd", "LRRi", "LRM", "SMD")
   
@@ -199,6 +201,7 @@ check_batch <- function(app, example_dat, ES, Kendall = FALSE) {
     BatchEntryTabs = "Estimate", 
     bESno = bESno, 
     bESpar = bESpar, 
+    bdigits = digits,
     wait_=FALSE, values_=FALSE
   )
   
@@ -215,8 +218,8 @@ check_batch <- function(app, example_dat, ES, Kendall = FALSE) {
   output_app <- app$getValue(name = "batchTable")
   
   output_app_table <-
-    xml2::read_html(output_app) %>% 
-    rvest::html_table(fill = TRUE) %>%
+    read_html(output_app) %>% 
+    html_table(fill = TRUE) %>%
     as.data.frame() %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
@@ -237,13 +240,13 @@ test_that("Batch calculator is correct", {
   # Shiny app
   McKissick_app <- 
     check_batch(app, example_dat = "McKissick", ES = all_names, Kendall = FALSE) %>% 
-    dplyr::select(-baseline_SD)
+    select(-baseline_SD)
   
   Schmidt_app <- check_batch(app, example_dat = "Schmidt2007", ES = all_names, Kendall = FALSE) 
   
   Wright_app <- 
     check_batch(app, example_dat = "Wright2012", ES = all_names, Kendall = FALSE) %>% 
-    dplyr::select(-baseline_SD)
+    select(-baseline_SD)
 
   # Package
   data(McKissick)
@@ -266,7 +269,7 @@ test_that("Batch calculator is correct", {
                   format = "long",
                   warn = FALSE
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 2))) %>% 
+    mutate(across(Est:CI_upper, ~ round(., 4L))) %>% 
     dplyr::select(-baseline_SD)
   
   data(Schmidt2007)
@@ -291,7 +294,7 @@ test_that("Batch calculator is correct", {
                     format = "long",
                     warn = FALSE
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 2)))
+    mutate(across(Est:CI_upper, ~ round(., 4L)))
   
   data(Wright2012)
   Wright_pkg <-
@@ -313,9 +316,9 @@ test_that("Batch calculator is correct", {
                     format = "long",
                     warn = FALSE
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 2))) %>% 
+    mutate(across(Est:CI_upper, ~ round(., 4L))) %>% 
     mutate(Participant = as.character(Participant)) %>% 
-    dplyr::select(-baseline_SD)
+    select(-baseline_SD)
 
   expect_equal(McKissick_pkg, McKissick_app, check.attributes = FALSE)
   expect_equal(Schmidt_pkg, Schmidt_app, check.attributes = FALSE)
@@ -348,7 +351,7 @@ test_that("Batch calculator is correct", {
                   format = "long",
                   warn = FALSE
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 2)))
+    mutate(across(Est:CI_upper, ~ round(., 4L)))
   
   Schmidt_pkg_Kendall <-
     batch_calc_ES(dat = Schmidt2007,
@@ -371,7 +374,7 @@ test_that("Batch calculator is correct", {
                   format = "long",
                   warn = FALSE
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 2)))
+    mutate(across(Est:CI_upper, ~ round(., 4L)))
   
   data(Wright2012)
   Wright_pkg_Kendall <-
@@ -393,7 +396,7 @@ test_that("Batch calculator is correct", {
                   format = "long",
                   warn = FALSE
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 2))) %>% 
+    mutate(across(Est:CI_upper, ~ round(., 4L))) %>% 
     mutate(Participant = as.character(Participant))
   
   expect_equal(McKissick_pkg_Kendall, McKissick_app_Kendall, check.attributes = FALSE)
@@ -406,9 +409,9 @@ test_that("Batch calculator is correct", {
 
 # Check data uploading
 
-check_load <- function(app, file, Kendall = FALSE) {
+check_load <- function(app, file, digits = 4, Kendall = FALSE) {
 
-  data_path <- paste0("../testdata/", file)
+  data_path <- file.path("..", "testdata", file)
   # data_path <- system.file("tests/testdata", file, package = "SingleCaseES")
   
   app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
@@ -449,6 +452,7 @@ check_load <- function(app, file, Kendall = FALSE) {
   
   app$setInputs(
     boutScale = "count",
+    bdigits = digits,
     wait_ = FALSE, values_ = FALSE
   )
   
@@ -465,8 +469,8 @@ check_load <- function(app, file, Kendall = FALSE) {
   output_app <- app$getValue(name = "batchTable")
   
   output_app_table <-
-    xml2::read_html(output_app) %>% 
-    rvest::html_table(fill = TRUE) %>%
+    read_html(output_app) %>% 
+    html_table(fill = TRUE) %>%
     as.data.frame() %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
@@ -495,6 +499,7 @@ test_that("Data are uploaded correctly.", {
   all_names <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U",
                  "LOR", "LRRd", "LRRi", "LRM", "SMD")
   data(McKissick)
+  
   McKissick_pkg <-
     batch_calc_ES(dat = McKissick,
                   grouping = Case_pseudonym,
@@ -514,9 +519,207 @@ test_that("Data are uploaded correctly.", {
                   format = "long",
                   warn = FALSE
     ) %>%
-    mutate(across(Est:baseline_SD, ~ round(., 2))) 
+    mutate(across(Est:baseline_SD, ~ round(., 4L))) 
 
   expect_equivalent(output_csv, McKissick_pkg)
   expect_equivalent(output_xlsx, McKissick_pkg)
 
+})
+
+
+test_that("calcPhasePair works in the app.", {
+  
+  skip_on_cran()
+  
+  NOMs <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U")
+  Parametrics <- c("LRRd", "LRRi", "LRM", "SMD")
+  
+  # app output
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  data_path <- file.path("..", "testdata", "ex_issue73.csv")
+  # data_path <- "tests/testdata/ex_issue73.csv"
+
+  app$setInputs(
+    SCD_es_calculator = "Multiple-Series Calculator",
+    dat_type = "dat", 
+    wait_=FALSE, values_=FALSE
+  )
+  
+  app$uploadFile(dat = data_path)
+
+  app$setInputs(
+    BatchEntryTabs = "Variables",
+    calcPhasePair = TRUE
+  )
+  
+  app$setInputs(b_clusters = c("Behavior_type", "Case_pseudonym"))
+  
+  app$setInputs(
+    b_aggregate = "phase_pair_calculated",
+    b_phase = "Condition",
+    session_number = "Session_number",
+    b_out = "Outcome",
+    bimprovement = "series"
+  )
+  
+  app$setInputs(bseldir = "Direction")
+  
+  app$setInputs(
+    BatchEntryTabs = "Estimate",
+    bESno = NOMs,
+    bESpar = Parametrics
+  )
+  
+  app$setInputs(boutScale = "series")
+  
+  app$setInputs(
+    bscalevar = "Metric",
+    bdigits = 4
+  )
+  app$setInputs(batchest = "click")
+  
+  Sys.sleep(2)
+  
+  output_app <- app$getValue(name = "batchTable")
+  
+  output_app_table <-
+    read_html(output_app) %>% 
+    html_table(fill = TRUE) %>%
+    as.data.frame() %>%
+    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
+    mutate(across(Est:CI_upper, as.numeric))
+  
+  # package output
+  data <- read.csv(data_path)
+  
+  dat <-
+    data %>%
+    group_by(Behavior_type, Case_pseudonym) %>%
+    mutate(phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)) %>%
+    ungroup()
+  
+  output_pkg <-
+    batch_calc_ES(dat = dat,
+                  grouping = c(Behavior_type, Case_pseudonym),
+                  condition = Condition,
+                  outcome = Outcome,
+                  aggregate = c(phase_pair_calculated),
+                  weighting = "equal",
+                  session_number = Session_number,
+                  baseline_phase = "A",
+                  intervention_phase = "B",
+                  ES = c(NOMs, Parametrics),
+                  improvement = Direction,
+                  pct_change = FALSE,
+                  scale = Metric,
+                  intervals = NA,
+                  observation_length = NA,
+                  std_dev = "baseline",
+                  confidence = 0.95,
+                  Kendall = FALSE,
+                  pretest_trend = FALSE,
+                  format = "long"
+    ) %>%
+    mutate(across(Est:CI_upper, ~ round(., 4L))) 
+  
+  expect_equal(output_app_table, output_pkg, check.attributes = FALSE)
+  
+})
+
+
+check_bint_bobslen <- function(file, bint = NA, bobslen = NA) {
+  
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  data_path <- file.path("..", "testdata", file)
+  # data_path <- paste0("tests/testdata/", file)
+  
+  app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
+  app$setInputs(dat_type = "dat")
+  app$uploadFile(dat = data_path)
+  app$setInputs(BatchEntryTabs = "Variables")
+  app$setInputs(b_clusters = "Case_pseudonym")
+  app$setInputs(session_number = "Session_number")
+  app$setInputs(BatchEntryTabs = "Plot")
+  app$setInputs(BatchEntryTabs = "Estimate")
+  app$setInputs(bESpar = c("LOR", "LRRi", "LRRd"))
+  app$setInputs(bintervals = bint)
+  app$setInputs(bobslength = bobslen)
+  app$setInputs(bdigits = 4)
+  app$setInputs(batchest = "click")
+  
+  Sys.sleep(2)
+  
+  output_app <- app$getValue(name = "batchTable")
+  
+  output_app_table <-
+    read_html(output_app) %>% 
+    html_table(fill = TRUE) %>%
+    as.data.frame() %>%
+    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
+    mutate(across(Est:CI_upper, as.numeric))
+  
+  return(output_app_table)
+  
+}
+
+test_that("The bintervals and bobslength options work in the app.", {
+  
+  skip_on_cran()
+  
+  out_app_NA <- check_bint_bobslen(file = "ex_issue74.csv")
+  out_app_1 <- check_bint_bobslen(file = "ex_issue74.csv", bint = "n_intervals1", bobslen = "Session_length1")
+  out_app_2 <- check_bint_bobslen(file = "ex_issue74.csv", bint = "n_intervals2", bobslen = "Session_length2")
+  
+  data <- read.csv("../testdata/ex_issue74.csv")
+  out_pkg_1 <-
+    batch_calc_ES(dat = data,
+                  grouping = c(Case_pseudonym),
+                  condition = Condition,
+                  outcome = Outcome,
+                  session_number = Session_number,
+                  baseline_phase = "A",
+                  intervention_phase = "B",
+                  ES = c("LOR", "LRRd", "LRRi"),
+                  improvement = "increase",
+                  pct_change = FALSE,
+                  scale = "percentage",
+                  intervals = n_intervals1,
+                  observation_length = Session_length1,
+                  D_const = NA,
+                  std_dev = "baseline",
+                  confidence = 0.95,
+                  Kendall = FALSE,
+                  pretest_trend = FALSE,
+                  format = "long"
+    ) %>%
+    mutate(across(Est:CI_upper, ~ round(., 4L))) 
+  
+  out_pkg_2 <-
+    batch_calc_ES(dat = data,
+                  grouping = c(Case_pseudonym),
+                  condition = Condition,
+                  outcome = Outcome,
+                  session_number = Session_number,
+                  baseline_phase = "A",
+                  intervention_phase = "B",
+                  ES = c("LOR", "LRRd", "LRRi"),
+                  improvement = "increase",
+                  pct_change = FALSE,
+                  scale = "percentage",
+                  intervals = n_intervals2,
+                  observation_length = Session_length2,
+                  D_const = NA,
+                  std_dev = "baseline",
+                  confidence = 0.95,
+                  Kendall = FALSE,
+                  pretest_trend = FALSE,
+                  format = "long"
+    ) %>%
+    mutate(across(Est:CI_upper, ~ round(., 4L))) 
+  
+  expect_error(expect_equal(out_app_NA, out_app_1, check.attributes = FALSE))
+  expect_error(expect_equal(out_app_NA, out_app_2, check.attributes = FALSE))
+  expect_equal(out_app_1, out_pkg_1, check.attributes = FALSE)
+  expect_equal(out_app_2, out_pkg_2, check.attributes = FALSE)
+  
 })

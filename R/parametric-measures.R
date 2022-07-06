@@ -23,6 +23,14 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
   if (all(is.na(intervals))) intervals <- NA
   
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
+  
+  if (!is.null(scale) && !is.na(scale)) {
+    scale <- tryCatch(
+      match.arg(scale, c("count","rate","percentage","proportion","other")),
+      error = function(e) stop("`scale` argument must be one of 'count', 'rate', 'percentage', 'proportion', or 'other'.")
+    )
+  }
+  
   if (length(observation_length) > 1L) observation_length <- mean(observation_length, na.rm = TRUE)
   if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
   

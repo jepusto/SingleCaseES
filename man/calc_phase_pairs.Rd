@@ -4,27 +4,43 @@
 \alias{calc_phase_pairs}
 \title{Calculate phase pair numbers}
 \usage{
-calc_phase_pairs(x)
+calc_phase_pairs(x, session = seq_along(x))
 }
 \arguments{
 \item{x}{vector of phase/condition labels.}
+
+\item{session}{numeric vector of measurement occasions, used to sort \code{x}
+before calculating phase pairs.}
 }
 \value{
 A vector containing an integer phase number for every observation.
 }
 \description{
 Calculates a vector containing a unique phase number for every
-  sequential occurrence of a phase or treatment condition. This is useful for 
-  creating a grouping variable to be used in calculating effect sizes for each 
-  pair of A-B phases within treatment reversal designs.
+  sequential occurrence of a phase or treatment condition. This is useful for
+  creating a grouping variable to be used in calculating effect sizes for
+  each pair of A-B phases within treatment reversal designs.
 }
 \examples{
+# Basic use-case
 x <- rep(c("A","B","C","B","C","A","C"), c(4:10))
 calc_phase_pairs(x)
 
+# Using session argument to handle sort order
+session <- sample(seq_along(x))
+x_scrambled <- x[session]
+dat <- data.frame(
+  x = x_scrambled,
+  session = session,
+  phase_pair = calc_phase_pairs(x_scrambled, session = session)
+)
+dat_sorted <- dat[order(session),]
+identical(x, dat_sorted$x)
+
+# With a grouped data.frame
 library(dplyr)
-Schmidt2007 \%>\% 
+Schmidt2007 \%>\%
   group_by(Behavior_type, Case_pseudonym) \%>\%
-  mutate(phase_pair = calc_phase_pairs(Condition))
+  mutate(phase_pair = calc_phase_pairs(Condition, session = Session_number))
 
 }

@@ -6,13 +6,22 @@ suppressWarnings(library(tidyr))
 test_that("calc_phase_pairs() returns a vector the same length as the input.", {
   
   n_phases <- 20
-  x <- rep(sample(LETTERS[1:3], size = n_phases, replace = TRUE), rpois(n_phases, lambda = 5))  
+  x <- rep(sample(LETTERS[1:2], size = n_phases, replace = TRUE), 1L + rpois(n_phases, lambda = 5))  
   phase_pairs <- calc_phase_pairs(x)
   
   expect_identical(length(x), length(phase_pairs))
   
   phase_reps <- table(rle(x)$values)
   expect_identical(as.vector(tapply(phase_pairs, x, max)), as.vector(phase_reps))
+  
+  p <- rep(sample(LETTERS[1:3], size = n_phases, replace = TRUE), 1L + rpois(n_phases, lambda = 5))  
+  phase_pairs <- calc_phase_pairs(p)
+  
+  session <- sample(seq_along(p))
+  p_scrambled <- p[session]
+  phase_pairs_scrambled = calc_phase_pairs(p_scrambled, session = session)
+  expect_identical(phase_pairs, phase_pairs_scrambled[order(session)])
+  
 })
 
 
@@ -26,6 +35,27 @@ test_that("calc_phase_pairs() replicates Schmidt (2007), Thorne (2008) phase pai
     mutate(phase_pair = calc_phase_pairs(Condition))
   
   expect_identical(Schmidt2007$Phase_num, Schmidt2007$phase_pair)
+  
+  # shuffle Schmidt2007 by rows
+  set.seed(12345)
+  
+  dat_shuffled <- 
+    Schmidt2007 %>% 
+    slice_sample(prop = 1) %>% 
+    group_by(Behavior_type, Case_pseudonym) %>% 
+    mutate(
+      phase_pair_wrong = calc_phase_pairs(Condition),
+      phase_pair_session = calc_phase_pairs(Condition, session = Session_number)
+    ) %>%
+    arrange(Behavior_type, Case_pseudonym, Session_number) %>% 
+    mutate(
+      phase_pair_right = calc_phase_pairs(Condition),
+      compare_false = if_else(Phase_num == phase_pair_wrong, 0, 1)
+    )
+  
+  expect_equal(dat_shuffled$Phase_num, dat_shuffled$phase_pair_session)
+  expect_equal(dat_shuffled$Phase_num, dat_shuffled$phase_pair_right)
+  expect_true(sum(dat_shuffled$compare_false) > 0)
   
   data("Schmidt2012")
   

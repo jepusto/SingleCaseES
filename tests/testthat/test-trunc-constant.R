@@ -83,3 +83,34 @@ test_that("LRRi, LRRd, SMD, Tau and their standard errors are positive for count
   expect_warning(SMD(A_data = E_dat, B_data = G_dat, std_dev = "pool"))
   
 })
+
+test_that("trunc_const() works for batched datasets.", {
+  
+  data("Schmidt2007")
+  Schmidt2007$Metric <- ifelse(Schmidt2007$Metric == "count","Natural Count", "Percentage")
+  
+  expect_error(
+    output_pkg <-
+      batch_calc_ES(dat = Schmidt2007,
+                    grouping = c(Behavior_type, Case_pseudonym, Phase_num),
+                    condition = Condition,
+                    outcome = Outcome,
+                    session_number = Session_number,
+                    baseline_phase = "A",
+                    intervention_phase = "B",
+                    ES = c("LRRd", "LRRi"),
+                    improvement = direction,
+                    pct_change = FALSE,
+                    scale = Metric,
+                    intervals = NA,
+                    observation_length = NA,
+                    D_const = NA,
+                    std_dev = "baseline",
+                    confidence = 0.95,
+                    Kendall = FALSE,
+                    pretest_trend = FALSE,
+                    format = "long"
+      )     
+  )
+
+})
