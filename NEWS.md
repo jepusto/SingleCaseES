@@ -1,3 +1,7 @@
+# SingleCaseES 0.6.1.9999
+
+* Fixed a bug in the SCD_effect_sizes app (multiple-series calculator), which led to incorrect R syntax when `phase_pair_calculated` is included as a grouping variable.
+
 # SingleCaseES 0.6.1
 
 * Revised in-app documentation for the SCD_effect_sizes web app. Added links to video demonstrations.

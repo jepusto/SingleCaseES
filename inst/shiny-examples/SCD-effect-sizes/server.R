@@ -520,7 +520,7 @@ shinyServer(function(input, output, session) {
   
   
   heightPlot <- reactive({
-    if (input$bfacetSelector == "None") {
+    if (is.null(input$bfacetSelector) || input$bfacetSelector == "None") {
       height <- 300
     } else {
       height <- 180 * (length(unique(datGraph()[[input$bfacetSelector]])))
@@ -535,7 +535,7 @@ shinyServer(function(input, output, session) {
     phase_dat <- dat[[input$b_phase]]
     phase_code <- if (!is.null(input$b_phase)) unique(phase_dat) else c("A","B")
     
-    if (input$bfacetSelector == "None") {
+    if (is.null(input$bfacetSelector) || input$bfacetSelector == "None"){
       
       dat_graph <-
         data.frame(session = session_dat, outcome = outcome_dat, phase = as.factor(phase_dat)) %>%
@@ -729,7 +729,9 @@ shinyServer(function(input, output, session) {
     
     # clean the data
     if (input$calcPhasePair) {
-      grouping <- paste(input$b_clusters, collapse=', ')
+      grouping_vars <- setdiff(input$b_clusters, "phase_pair_calculated")
+      grouping <- paste(grouping_vars, collapse=', ')
+      
       condition <- input$b_phase
       session_number <- input$session_number
       
