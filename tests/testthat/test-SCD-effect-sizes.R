@@ -48,7 +48,6 @@ check_single <- function(app, ES, ES_family, A_data, B_data, Kendall = FALSE) {
   
   improvement <- ifelse(ES == "LRRd", "decrease", "increase")
   
-  
   app$setInputs(
     SCD_es_calculator = "Single-Series Calculator",
     A_dat = toString(A_data),
@@ -66,6 +65,9 @@ check_single <- function(app, ES, ES_family, A_data, B_data, Kendall = FALSE) {
     }
   } else if (ES_family == "Parametric") {
     app$setInputs(parametric_ES = ES, wait_=FALSE, values_=FALSE)
+    if (ES == "PoGO") {
+      app$setInputs(goal_level = 10, wait_=FALSE, values_=FALSE)
+    }
   }
   
   app$setInputs(improvement = improvement, digits = 5, wait_=FALSE, values_=FALSE)

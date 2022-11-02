@@ -230,6 +230,9 @@ test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {
     select(-ES) %>%
     rename_with(.fn = ~ paste("Tau-BC", ., sep = "_"), .cols = -Case_pseudonym)
   
+  all_names <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U",
+                 "LOR", "LRRd", "LRRi", "LRM", "SMD")
+  
   res_D <- 
     batch_calc_ES(
       McKissick,
@@ -238,7 +241,7 @@ test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {
       outcome = Outcome, 
       session_number = Session_number,
       improvement = "decrease",
-      ES = "all",
+      ES = all_names,
       warn = FALSE
     ) %>%
     dplyr::filter(ES == "Tau-BC") %>%
