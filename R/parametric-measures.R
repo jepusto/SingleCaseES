@@ -706,13 +706,18 @@ calc_LRM <- function(A_data, B_data,
 #'
 #' @details The percent of goal obtained (PoGO) effect size parameter is defined
 #'   as the ratio of the difference in the mean level of behavior during phase B
-#'   and phase A to the difference between the \code{goal} level of behavior and the
-#'   mean level of behavior during phase A, timed by 100.
+#'   and phase A to the difference between the \code{goal} level of behavior and
+#'   the mean level of behavior during phase A, timed by 100.
 #'
-#' @references Patrona, E., Ferron, J., Olszewski, A., Kelley, E., & Goldstein,
-#'   H. (2022). Effects of explicit vocabulary interventions for preschoolers:
-#'   An exploratory application of the percent of goal obtained (PoGO) effect
-#'   size metric. 
+#' @references Ferron, J., Goldstein, H., Olszewski, A., & Rohrer, L. (2020).
+#'   Indexing effects in single-case experimental designs by estimating the
+#'   percent of goal obtained. \emph{Evidence-Based Communication Assessment and
+#'   Intervention, 14}(1-2), 6-27. doi:\doi{10.1080/17489539.2020.1732024}
+#'
+#'   Patrona, E., Ferron, J., Olszewski, A., Kelley, E., & Goldstein, H. (2022).
+#'   Effects of explicit vocabulary interventions for preschoolers: An
+#'   exploratory application of the percent of goal obtained (PoGO) effect size
+#'   metric. \emph{Journal of Speech, Language, and Hearing Research}, forthcoming.
 #'
 #' @return A data frame containing the estimate, standard error, and confidence
 #'   interval.
@@ -764,8 +769,7 @@ calc_PoGO <- function(A_data, B_data, goal,
                     SE = SE_PoGO, stringsAsFactors = FALSE)
   
   if (!is.null(confidence)) {
-    CI <- PoGO + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE_PoGO # what is the df?
-    # CI <- PoGO + c(-1, 1) * qt(1 - (1 - confidence) / 2, n_A + n_B - 2) * SE_PoGO # what is the df?
+    CI <- PoGO + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE_PoGO 
     res$CI_lower <- CI[1]
     res$CI_upper <- CI[2] 
     

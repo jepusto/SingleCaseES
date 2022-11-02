@@ -25,13 +25,13 @@ where $s_{\beta-\alpha}^2 = \frac{s_A^2}{n_A} + \frac{s_B^2}{n_B}$ and $s_{\gamm
 __Confidence interval.__ An approximate confidence interval for $PoGO$ is given by 
 
 $$
-[PoGO - t \times SE_{PoGO},\quad PoGO + t \times SE_{PoGO}],
+[PoGO - z_{\alpha / 2} \times SE_{PoGO},\quad PoGO + z_{\alpha / 2} \times SE_{PoGO}],
 $$
 
-where $t$ is the critical value from a t distribution with degrees of freedom ***. 
+where $z_{\alpha / 2}$ is the $1 - \alpha / 2$ critical value from a standard normal distribution. 
 
 #### Primary references
 
 Ferron, J., Goldstein, H., Olszewski, A., & Rohrer, L. (2020). Indexing effects in single-case experimental designs by estimating the percent of goal obtained. _Evidence-Based Communication Assessment and Intervention, 14_(1-2), 6-27. doi: [10.1080/17489539.2020.1732024](https://doi.org/10.1080/17489539.2020.1732024)
 
-__Remember to add Patrona et al.__
+Patrona, E., Ferron, J., Olszewski, A., Kelley, E., & Goldstein, H. (2022). Effects of explicit vocabulary interventions for preschoolers: An exploratory application of the Percent of Goal Obtained (PoGO) effect size metric. _Journal of Speech, Language, and Hearing Research_, forthcoming.
