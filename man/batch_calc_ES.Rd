@@ -19,6 +19,7 @@ batch_calc_ES(
   scale = "other",
   intervals = NA,
   observation_length = NA,
+  goal = NULL,
   confidence = 0.95,
   format = "long",
   warn = TRUE,
@@ -68,11 +69,11 @@ will be used.}
 \item{ES}{character string or character vector specifying which effect size
 index or indices to calculate. Available effect sizes are \code{"LRRd"},
 \code{"LRRi"}, \code{"LRM"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"},
-\code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"},
-\code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for all available
-effect sizes. Set to \code{"parametric"} for all parametric effect sizes.
-Set to \code{"NOM"} for all non-overlap measures. Defaults to calculating
-the LRRd, LRRi, SMD, and Tau indices.}
+\code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"PoGO"},
+\code{"Tau"}, \code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for
+all available effect sizes. Set to \code{"parametric"} for all parametric
+effect sizes. Set to \code{"NOM"} for all non-overlap measures. Defaults to
+calculating the LRRd, LRRi, SMD, and Tau indices.}
 
 \item{improvement}{character string either indicating the direction of
 uniform improvement ("increase" or "decrease") or the variable name of a
@@ -102,6 +103,12 @@ a variable name containing the observation session length for each
 observation. If a variable name, the mean observation session length within
 each series will be used. Missing values will be ignored. Defaults to
 \code{NA}.}
+
+\item{goal}{Used for the percent of goal obtained. Either a numeric common
+goal level across all series in the dataset or a variable name containing
+the goal level for each series. If a variable name, the mean goal level
+within each series will be used. Missing values will be ignored. Defaults
+to \code{NULL}.}
 
 \item{confidence}{confidence level for the reported interval estimate. Set to
 \code{NULL} to omit confidence interval calculations.}

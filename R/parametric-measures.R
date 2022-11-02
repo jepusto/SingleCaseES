@@ -696,3 +696,81 @@ calc_LRM <- function(A_data, B_data,
   res
   
 }
+
+#' @title Percent of Goal Obtained
+#'
+#' @description Calculates the percent of goal obtained effect size index
+#'
+#' @inheritParams calc_ES
+#' @param goal a numerical value indicating the goal level of behavior.
+#'
+#' @details The percent of goal obtained (PoGO) effect size parameter is defined
+#'   as the ratio of the difference in the mean level of behavior during phase B
+#'   and phase A to the difference between the \code{goal} level of behavior and the
+#'   mean level of behavior during phase A, timed by 100.
+#'
+#' @references Patrona, E., Ferron, J., Olszewski, A., Kelley, E., & Goldstein,
+#'   H. (2022). Effects of explicit vocabulary interventions for preschoolers:
+#'   An exploratory application of the percent of goal obtained (PoGO) effect
+#'   size metric. 
+#'
+#' @return A data frame containing the estimate, standard error, and confidence
+#'   interval.
+#'
+#' @examples
+#' A <- c(20, 20, 26, 25, 22, 23)
+#' B <- c(28, 25, 24, 27, 30, 30, 29)
+#' PoGO(A_data = A, B_data = B, goal = 30)
+#'
+#' @export
+
+
+PoGO <- function(A_data, B_data, condition, outcome, goal,
+                 baseline_phase = NULL,
+                 intervention_phase = NULL,
+                 improvement = "increase",
+                 confidence = .95) {
+  
+  if (missing(goal) | is.null(goal)) stop("You must provide the goal level of the behavior to calculate the PoGO effect size.")
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, goal = goal,  
+          baseline_phase = baseline_phase,
+          intervention_phase = intervention_phase,
+          ES = "PoGO", improvement = improvement, confidence = confidence)
+}
+
+
+calc_PoGO <- function(A_data, B_data, goal,
+                      improvement = "increase",
+                      confidence = .95, warn = TRUE, ...) {
+  
+  if (missing(goal) | is.null(goal)) stop("You must provide the goal level of the behavior to calculate the PoGO effect size.")
+  if (length(goal) > 1L) goal <- mean(goal, na.rm = TRUE)
+  
+  stats_AB <- summary_stats(A_data = A_data, B_data = B_data, warn = warn)
+  alpha_hat <- stats_AB$M[1]
+  beta_hat <- stats_AB$M[2]
+  V_A <- stats_AB$V[1]
+  V_B <- stats_AB$V[2]
+  n_A <- stats_AB$n[1]
+  n_B <- stats_AB$n[2]
+  PoGO <- 100 * (beta_hat - alpha_hat) / (goal - alpha_hat)
+  
+  var_PoGO <- ((V_A/n_A + V_B/n_B) + ((beta_hat - alpha_hat)/(goal - alpha_hat))^2 * (V_A/n_A)) / (goal - alpha_hat)^2
+  SE_PoGO <- sqrt(var_PoGO)
+  
+  res <- data.frame(ES = "PoGO", Est = PoGO, 
+                    SE = SE_PoGO, stringsAsFactors = FALSE)
+  
+  if (!is.null(confidence)) {
+    CI <- PoGO + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE_PoGO # what is the df?
+    # CI <- PoGO + c(-1, 1) * qt(1 - (1 - confidence) / 2, n_A + n_B - 2) * SE_PoGO # what is the df?
+    res$CI_lower <- CI[1]
+    res$CI_upper <- CI[2] 
+    
+  }
+  
+  res
+  
+}
