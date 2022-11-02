@@ -69,10 +69,14 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                             br(),
                                             selectInput("parametric_ES", 
                                                         label = "Effect size index", 
-                                                        choices = c("LOR", "LRRd", "LRRi", "LRM", "SMD"), 
+                                                        choices = c("LOR", "LRRd", "LRRi", "LRM", "PoGO", "SMD"), 
                                                         selected = "LRRd"),
                                             conditionalPanel(condition = "input.parametric_ES=='LRRi'|input.parametric_ES=='LRRd'",
-                                                             checkboxInput("pct_change","Convert LRR to % change"))
+                                                             checkboxInput("pct_change","Convert LRR to % change")),
+                                            conditionalPanel(condition = "input.parametric_ES=='PoGO'",
+                                                             numericInput("goal_level", 
+                                                                          label = "Goal level for the behavior", 
+                                                                          value = NULL))
                                           )
                               ),
                               selectInput("improvement",
@@ -149,7 +153,8 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                         conditionalPanel("input.parametric_ES == 'LRRi'|input.parametric_ES == 'LRRd'", withMathJax(includeMarkdown("markdown/LRR.md"))),
                                                                         conditionalPanel("input.parametric_ES == 'LRM'", withMathJax(includeMarkdown("markdown/LRM.md"))),
                                                                         conditionalPanel("input.parametric_ES == 'SMD'", withMathJax(includeMarkdown("markdown/SMD.md"))),
-                                                                        conditionalPanel("input.parametric_ES == 'LOR'", withMathJax(includeMarkdown("markdown/LOR.md")))
+                                                                        conditionalPanel("input.parametric_ES == 'LOR'", withMathJax(includeMarkdown("markdown/LOR.md"))),
+                                                                        conditionalPanel("input.parametric_ES == 'PoGO'", withMathJax(includeMarkdown("markdown/PoGO.md")))
                                                        )
                                       )
                             )
@@ -226,7 +231,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                        sidebarPanel(
                                          h4("Select Effect Sizes"),
                                          checkboxGroupInput("bESno", "Non-Overlap Effect Sizes", choices = c("IRD","NAP","PAND","PEM","PND","Tau","Tau-BC" = "Tau_BC","Tau-U" = "Tau_U"), inline = TRUE),
-                                         checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LOR", "LRRd", "LRRi", "LRM", "SMD"), inline = TRUE),
+                                         checkboxGroupInput("bESpar", "Parametric Effect Sizes", choices = c("LOR", "LRRd", "LRRi", "LRM", "PoGO", "SMD"), inline = TRUE),
                                          conditionalPanel(condition = "input.bESno.includes('Tau_BC')",
                                                           radioButtons("btau_calculation", label = "Choose a method for calculating Tau index",
                                                                        choices = c("Tau (non-overlap)" = "Nlap",
@@ -252,6 +257,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                                                        choices = c("baseline SD" = "baseline", "pooled SD" = "pool"), inline = TRUE)),
                                          conditionalPanel(condition = "input.bESpar.includes('LRRi') | input.bESpar.includes('LRRd') | input.bESpar.includes('LOR')",
                                                           uiOutput("measurementProc")),
+                                         conditionalPanel(condition = "input.bESpar.includes('PoGO')", uiOutput("goalLevel")),
                                          conditionalPanel(condition = "input.b_aggregate != ''", 
                                                           radioButtons('weighting_scheme',
                                                                        label = "Weighting scheme to use for aggregating.",

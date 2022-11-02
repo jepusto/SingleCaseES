@@ -9,7 +9,7 @@ library(Kendall, warn.conflicts = FALSE, quietly = TRUE)
 source("mappings.R")
 source("helper-functions.R", local = TRUE)
 
-statistical_indices <- c("NAP", "Tau", "Tau_BC", "SMD", "LRRi", "LRRd", "LOR", "LRM")
+statistical_indices <- c("NAP", "Tau", "Tau_BC", "SMD", "LRRi", "LRRd", "LOR", "LRM", "PoGO")
 
 full_names <- list(IRD = "Robust Improvement Rate Difference",
                    NAP = "Non-overlap of All Pairs",
@@ -23,6 +23,7 @@ full_names <- list(IRD = "Robust Improvement Rate Difference",
                    LRRd = "Log Response Ratio (decreasing)",
                    LRRi = "Log Response Ratio (increasing)",
                    LRM = "Log Ratio of Medians",
+                   PoGO = "Percent of Goal Obtained",
                    SMD = "Standardized Mean Difference (within-case)")
 
 
@@ -83,6 +84,7 @@ shinyServer(function(input, output, session) {
                      scale = input$outScale,
                      observation_length = input$obslength,
                      intervals = input$intervals,
+                     goal = input$goal_level,
                      D_const = input$lrrfloor,
                      # options for Tau_BC
                      Kendall = Kendall,
@@ -105,13 +107,13 @@ shinyServer(function(input, output, session) {
       )
     }
     
-    if (input$ES_family == "Parametric" & input$parametric_ES %in% c("LOR", "LRRi", "LRRd") & input$outScale == "percentage") {
+    if (input$ES_family == "Parametric" & input$parametric_ES %in% c("LOR", "LRRi", "LRRd", "PoGO") & input$outScale == "percentage") {
       validate(
         need(all(c(dat()$A, dat()$B) >= 0) & all(c(dat()$A, dat()$B) <= 100), message =  "For percentage scale, values must be between 0 and 100.")
       )
     }
     
-    if (input$ES_family == "Parametric" & input$parametric_ES %in% c("LOR", "LRRi", "LRRd") & input$outScale == "proportion") {
+    if (input$ES_family == "Parametric" & input$parametric_ES %in% c("LOR", "LRRi", "LRRd", "PoGO") & input$outScale == "proportion") {
       validate(
         need(all(c(dat()$A, dat()$B) >= 0) & all(c(dat()$A, dat()$B) <= 1), message = "For proportion scale, values must be between 0 and 1.")
       )
@@ -441,7 +443,33 @@ shinyServer(function(input, output, session) {
       )
       
     }
-  }) 
+  })
+  
+  output$goalLevel <- renderUI({
+    
+    var_names <- names(datClean())
+    
+    if (input$dat_type == "dat") {  
+      
+      list(
+        selectInput("bgoalLevel", "Set the goal level for PoGO.",
+                    choices = c("common goal" = "commonGoal", "different goals across series" = "goals")),
+        conditionalPanel(condition = "input.bgoalLevel == 'commonGoal'",
+                         numericInput("bcomgoal", label = "Provide a common goal level across series.",
+                                      value = NULL)),
+        conditionalPanel(condition = "input.bgoalLevel == 'goals'",
+                         selectInput("bgoalvar", "Select variable identifying goal level",
+                                     choices = var_names))
+      )
+      
+    } else {
+      
+      numericInput("bcomgoal", label = "Provide a common goal level across series.", value = NULL)
+      
+    }
+    
+  })
+  
   
   datClean2 <- reactive({
     dat <- datClean()
@@ -594,6 +622,20 @@ shinyServer(function(input, output, session) {
       intervals <- obslength <- D_const <- NA
     }
     
+    
+    if ("PoGO" %in% input$bESpar) {
+      
+      if (input$dat_type == "dat") {
+        if (input$bgoalLevel == "goals") goal_val <- as.symbol(input$bgoalvar) else goal_val <- input$bcomgoal
+      } else {
+        goal_val <- input$bcomgoal
+      }
+      
+    } else {
+      goal_val <- NULL
+    }
+    
+    
     if(input$bimprovement == "series") {
       improvement <- as.symbol(input$bseldir)
     } else {
@@ -628,6 +670,7 @@ shinyServer(function(input, output, session) {
                     intervals = intervals,
                     observation_length = obslength,
                     D_const = D_const,
+                    goal = goal_val,
                     std_dev = input$bSMD_denom,
                     confidence = input$bconfidence / 100,
                     Kendall = Kendall, 
@@ -653,6 +696,7 @@ shinyServer(function(input, output, session) {
                     intervals = intervals,
                     observation_length = obslength,
                     D_const = D_const,
+                    goal = goal_val,
                     std_dev = input$bSMD_denom,
                     confidence = input$bconfidence / 100,
                     Kendall = Kendall, 
@@ -749,7 +793,7 @@ shinyServer(function(input, output, session) {
     if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
       
       scale_val <- switch(input$boutScale,
-        "series" = paste0("\n                     scale = ", as.symbol(input$bscalevar), ","),
+        "series" = paste0("\n         scale = ", as.symbol(input$bscalevar), ","),
         "percentage" = '\n            scale = "percentage",',
         "proportion" = '\n            scale = "proportion",',
         "count" = '\n                 scale = "count",',
@@ -767,6 +811,23 @@ shinyServer(function(input, output, session) {
       scale_val <- '\n                scale = "other",'
       intervals <- obslength <- D_const <- NA
     }
+    
+    
+    if ("PoGO" %in% input$bESpar) {
+      if (input$dat_type == "dat") {
+        goal_val <- switch(input$bgoalLevel,
+                            "goals" = paste0(as.symbol(input$bgoalvar)),
+                            "commonGoal" = input$bcomgoal,
+                            c())
+      } else {
+        goal_val <- input$bcomgoal
+      }
+      
+    } else {
+      goal_val <- "NULL"
+      
+    }
+    
     
     improvement <- switch(input$bimprovement,
                           "series" = paste0("\n                     improvement = ", as.symbol(input$bseldir), ","),
@@ -800,6 +861,7 @@ shinyServer(function(input, output, session) {
     intervals <- intervals
     obslength <- obslength
     D_const <- D_const
+    goal <- goal_val
     std_dev <- input$bSMD_denom
     confidence <- input$bconfidence / 100
     Kendall <- Kendall
@@ -823,6 +885,7 @@ shinyServer(function(input, output, session) {
                                        user_intervals = intervals,
                                        user_obslength = obslength,
                                        user_D_const = D_const,
+                                       user_goal = goal,
                                        user_std_dev = std_dev,
                                        user_confidence = confidence,
                                        user_Kendall = Kendall,
@@ -848,6 +911,7 @@ shinyServer(function(input, output, session) {
                                        user_intervals = intervals,
                                        user_obslength = obslength,
                                        user_D_const = D_const,
+                                       user_goal = goal,
                                        user_std_dev = std_dev,
                                        user_confidence = confidence,
                                        user_Kendall = Kendall,

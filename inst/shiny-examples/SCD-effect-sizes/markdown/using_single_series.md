@@ -46,6 +46,10 @@ Check the "Show graph" box to display a plot of the data you have entered.
     
     5.4 __User-specified floor constant:__ You may also specify your own truncation constant instead of using the constant calculated based on the information in previous fields.
 
+6. If using the __PoGO__ effect size, one additional input is needed.
+    
+    6.1 __Goal level for the behavior:__ For the PoGO effect size index, an option will appear allowing you to set the goal level of the behavior. 
+  
 ## Results
 
 The single-series calculator will display an effect size estimate, as well as a standard error and confidence interval (if applicable) and baseline or pooled SD (if calculating the SMD). 
