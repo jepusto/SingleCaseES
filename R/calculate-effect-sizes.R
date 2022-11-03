@@ -423,7 +423,11 @@ batch_calc_ES <- function(dat,
   
   ES_names <- get_ES_names(ES)
   
-  if (tryCatch(!is.null(goal), error = function(e) TRUE)) {
+  if ("PoGO" %in% ES_names) {
+    
+    if (tryCatch(is.null(goal), error = function(e) TRUE)) {
+      stop("You must provide the goal level of the behavior to calculate the PoGO effect size.")
+    }
     
     if (tryCatch(typeof(goal) %in% c("double", "integer"), 
                  warning = function(w) FALSE,
@@ -433,9 +437,7 @@ batch_calc_ES <- function(dat,
     } else {
       goal <- tryCatch(tidyselect::vars_select(names(dat), !!rlang::enquo(goal)), 
                        error = function(e) stop("The `goal` level is missing. Please either indicate a numerical common goal level or add a `goal` variable in the dataset."))
-    }
-  } else {
-    if ("PoGO" %in% ES_names) stop("You must provide the goal level of the behavior to calculate the PoGO effect size.")
+    } 
   }
   
   if (!is.null(session_number)) dat <- dplyr::arrange(dat, !!rlang::sym(session_number))
