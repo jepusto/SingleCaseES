@@ -73,8 +73,7 @@ test_that("PoGO can be calculated correctly in batch_calc_ES().", {
                   goal = goal,
                   improvement = "decrease",
                   scale = "count",
-                  format = "long") %>% 
-    dplyr::select(Case_pseudonym, Est)
+                  format = "long")
   
   Mck_est2 <- 
     batch_calc_ES(McKissick_goal,
@@ -85,8 +84,7 @@ test_that("PoGO can be calculated correctly in batch_calc_ES().", {
                   goal = 10,
                   improvement = "increase",
                   scale = "percentage",
-                  format = "long") %>% 
-    dplyr::select(Case_pseudonym, Est)
+                  format = "long")
   
   Mck_est_calculated <- 
     McKissick_goal %>%
@@ -97,10 +95,10 @@ test_that("PoGO can be calculated correctly in batch_calc_ES().", {
       .groups = "drop"
     ) %>% 
     pivot_wider(names_from = Condition, values_from = Outcome) %>% 
-    mutate(Est = 100 * (B-A) / (goal - A)) %>% 
+    mutate(Est = 100 * (B - A) / (goal - A)) %>% 
     select(Case_pseudonym, Est)
   
   expect_equal(Mck_est1, Mck_est2)
-  expect_equal(Mck_est1, Mck_est_calculated)
+  expect_equal(select(Mck_est1, Case_pseudonym, Est), Mck_est_calculated)
   
 })

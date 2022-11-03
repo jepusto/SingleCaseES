@@ -425,10 +425,9 @@ batch_calc_ES <- function(dat,
   
   if ("PoGO" %in% ES_names) {
     
-    if (tryCatch(is.null(goal), error = function(e) TRUE)) {
+    if (tryCatch(is.null(goal), error = function(e) FALSE)) {
       stop("You must provide the goal level of the behavior to calculate the PoGO effect size.")
     }
-    
     if (tryCatch(typeof(goal) %in% c("double", "integer"), 
                  warning = function(w) FALSE,
                  error = function(e) FALSE)) {

@@ -37,4 +37,4 @@ Patrona, E., Ferron, J., Olszewski, A., Kelley, E., & Goldstein, H. (2022). Effe
 
 #### Additional references
 
-Dunlap, W. P., & Silver, N. C. (1986). Confidence intervals and standard error for ratios of normal variables. _Behavior Research Methods, Instruments, & Computers, 18_, 469-471. doi:[10.3758/BF03201412](https://doi.org/10.3758/BF03201412)
+Dunlap, W. P., & Silver, N. C. (1986). Confidence intervals and standard error for ratios of normal variables. _Behavior Research Methods, Instruments, & Computers, 18_, 469-471. doi: [10.3758/BF03201412](https://doi.org/10.3758/BF03201412)
