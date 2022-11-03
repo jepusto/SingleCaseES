@@ -36,7 +36,8 @@ $$
 \tilde{y}_A = \text{max} \left\{ \bar{y}_A, \frac{1}{2 D m}\right\} \qquad \text{and} \qquad \tilde{y}_B = \text{max} \left\{ \bar{y}_B, \frac{1}{2 D n}\right\},
 $$
 and 
-$$\\tilde{s}_A^2 = \text{max} \left\{ s_A^2, \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \frac{1}{D^2 n^3}\right\},
+$$
+\tilde{s}_A^2 = \text{max} \left\{ s_A^2, \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \frac{1}{D^2 n^3}\right\},
 $$
 where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes (Pustejovsky, 2018).
 

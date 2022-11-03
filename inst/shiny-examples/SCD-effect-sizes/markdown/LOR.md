@@ -5,6 +5,7 @@ The log-odds ratio is an effect size index that quantifies the change from phase
 $$
 \psi = \ln\left(\frac{\mu_B/(1-\mu_B)}{\mu_A/(1-\mu_A)}\right),
 $$
+
 where $\mu_A$ and $\mu_B$ denote the mean levels, as measured in proportions, in phases A and B respectively, and $\ln()$ is the natural logarithm function. The log odds ratio ranges from $-\infty$ to $\infty$, with a value of zero corresponding to no change in mean levels.
 
 #### Estimation
@@ -16,7 +17,8 @@ $$
 \tilde{y}_A = \text{max} \left\{ \bar{y}_A, \frac{1}{2 D m}\right\} \qquad \text{and} \qquad \tilde{y}_B = \text{max} \left\{ \bar{y}_B, \frac{1}{2 D n}\right\},
 $$
 and 
-$$\\tilde{s}_A^2 = \text{max} \left\{ s_A^2, \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \frac{1}{D^2 n^3}\right\},
+$$
+\tilde{s}_A^2 = \text{max} \left\{ s_A^2, \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \frac{1}{D^2 n^3}\right\},
 $$
 where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes (Pustejovsky, 2018).
 
