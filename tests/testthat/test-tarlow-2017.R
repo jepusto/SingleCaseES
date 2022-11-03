@@ -136,7 +136,7 @@ test_that("Tau-BC works on an example.", {
   skip_if_not_installed("Kendall")
   library(Kendall)
   
-  source("http://ktarlow.com/stats/r/bctau.txt")
+  source("https://ktarlow.com/stats/r/bctau.txt")
   
   A_data <- c(33, 25, 17, 25, 19, 21, 19, 14, 19, 17)
   B_data <- c(14, 15, 15, 9, 12, 7, 10, 6, 5, 2, 2, 3, 5, 4)

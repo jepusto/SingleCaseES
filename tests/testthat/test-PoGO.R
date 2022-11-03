@@ -102,3 +102,125 @@ test_that("PoGO can be calculated correctly in batch_calc_ES().", {
   expect_equal(select(Mck_est1, Case_pseudonym, Est), Mck_est_calculated)
   
 })
+
+
+test_that("PoGO results are conceptually correct.", {
+  
+  data("Schmidt2012")
+  gl <- 17
+  
+  Schmidt2012_goals <- 
+    Schmidt2012 %>%
+    group_by(Case, Behavior) %>%
+    mutate(
+      goal_fixed = gl,
+      goal_mean = mean(Outcome[Trt==1]),
+      goal_var = rpois(1, lambda = 18)
+    )
+  
+  # Fixed variable returns same result as common goal
+  
+  PoGO_fixed <- 
+    batch_calc_ES(
+      Schmidt2012_goals,
+      grouping = c(Case, Behavior),
+      condition = Trt,
+      baseline_phase = "0",
+      outcome = Outcome,
+      ES = "PoGO",
+      goal = goal_fixed
+    )
+  
+  PoGO_common <- 
+    batch_calc_ES(
+      Schmidt2012_goals,
+      grouping = c(Case, Behavior),
+      condition = Trt,
+      baseline_phase = "0",
+      outcome = Outcome,
+      ES = "PoGO",
+      goal = gl
+    )
+  
+  expect_identical(PoGO_fixed, PoGO_common)
+  
+  # PoGO with zero goal is the same as -LRRi
+  
+  PoGO_zero <- 
+    batch_calc_ES(
+      Schmidt2012_goals,
+      grouping = c(Case, Behavior),
+      condition = Trt,
+      baseline_phase = "0",
+      # intervention_phase = "1",
+      outcome = Outcome,
+      ES = c("PoGO","LRRi"),
+      goal = 0,
+      bias_correct = FALSE,
+      pct_change = TRUE,
+      confidence = NULL
+    )
+  
+  PoGO_zero %>%
+    dplyr::filter(ES %in% c("PoGO","Pct_Change_i")) %>%
+    group_by(Case, Behavior) %>%
+    summarise(Est = sum(Est), .groups = "drop") %>%
+    summarise(Est = max(abs(Est))) %>%
+    pull(Est) %>%
+    expect_lt(1e-8)
+  
+  PoGO_mean <- 
+    batch_calc_ES(
+      Schmidt2012_goals,
+      grouping = c(Case, Behavior),
+      condition = Trt,
+      baseline_phase = "0",
+      outcome = Outcome,
+      ES = "PoGO",
+      goal = goal_mean,
+      bias_correct = FALSE,
+      pct_change = TRUE
+    ) %>%
+    mutate(
+      hundred = 100
+    )
+  
+  expect_equal(PoGO_mean$Est, PoGO_mean$hundred)
+  
+  
+  PoGO_var <- 
+    batch_calc_ES(
+      Schmidt2012_goals,
+      grouping = c(Case, Behavior),
+      condition = Trt,
+      baseline_phase = "0",
+      outcome = Outcome,
+      ES = "PoGO",
+      goal = goal_var,
+      bias_correct = FALSE,
+      pct_change = TRUE
+    )
+  
+  PoGO_signs <- 
+    Schmidt2012_goals %>%
+    group_by(Case, Behavior, Trt) %>%
+    summarise(
+      across(c(Outcome, goal_var), mean),
+      .groups = "drop_last"
+    ) %>%
+    summarise(
+      base = Outcome[Trt==0],
+      outcome_diff = diff(Outcome),
+      goal_var = mean(goal_var),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      PoGO_sign = sign(goal_var - base) * sign(outcome_diff)
+    ) %>%
+    left_join(PoGO_var, by = c("Case", "Behavior"))
+  
+  expect_true(all(sign(PoGO_signs$Est) == PoGO_signs$PoGO_sign))  
+  
+})
+
+
