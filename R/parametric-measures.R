@@ -706,18 +706,27 @@ calc_LRM <- function(A_data, B_data,
 #'
 #' @details The percent of goal obtained (PoGO) effect size parameter is defined
 #'   as the ratio of the difference in the mean level of behavior during phase B
-#'   and phase A to the difference between the \code{goal} level of behavior and
-#'   the mean level of behavior during phase A, timed by 100.
+#'   versus during phase A to the difference between the goal level of behavior
+#'   and the mean level of behavior during phase A, multiplied by 100.
 #'
-#' @references Ferron, J., Goldstein, H., Olszewski, A., & Rohrer, L. (2020).
-#'   Indexing effects in single-case experimental designs by estimating the
-#'   percent of goal obtained. \emph{Evidence-Based Communication Assessment and
+#'   The standard error of PoGO is calculated based on Dunlap and Silver's
+#'   (1986) approximation for the standard error of a ratio. The confidence
+#'   interval for LRR is based on a large-sample (z) approximation.
+#'
+#' @references Dunlap, W. P., & Silver, N. C. (1986). Confidence intervals and
+#'   standard error for ratios of normal variables. \emph{Behavior Research
+#'   Methods, Instruments, & Computers, 18}, 469-471. doi:\doi{10.3758/BF03201412}
+#'
+#'   Ferron, J., Goldstein, H., Olszewski, A., & Rohrer, L. (2020). Indexing
+#'   effects in single-case experimental designs by estimating the percent of
+#'   goal obtained. \emph{Evidence-Based Communication Assessment and
 #'   Intervention, 14}(1-2), 6-27. doi:\doi{10.1080/17489539.2020.1732024}
 #'
 #'   Patrona, E., Ferron, J., Olszewski, A., Kelley, E., & Goldstein, H. (2022).
 #'   Effects of explicit vocabulary interventions for preschoolers: An
 #'   exploratory application of the percent of goal obtained (PoGO) effect size
-#'   metric. \emph{Journal of Speech, Language, and Hearing Research}, forthcoming.
+#'   metric. \emph{Journal of Speech, Language, and Hearing Research},
+#'   forthcoming.
 #'
 #' @return A data frame containing the estimate, standard error, and confidence
 #'   interval.
@@ -728,6 +737,7 @@ calc_LRM <- function(A_data, B_data,
 #' PoGO(A_data = A, B_data = B, goal = 30)
 #'
 #' @export
+#' 
 
 
 PoGO <- function(A_data, B_data, condition, outcome, goal,
@@ -762,8 +772,8 @@ calc_PoGO <- function(A_data, B_data, goal,
   n_B <- stats_AB$n[2]
   PoGO <- 100 * (beta_hat - alpha_hat) / (goal - alpha_hat)
   
-  var_PoGO <- ((V_A/n_A + V_B/n_B) + ((beta_hat - alpha_hat)/(goal - alpha_hat))^2 * (V_A/n_A)) / (goal - alpha_hat)^2
-  SE_PoGO <- sqrt(var_PoGO)
+  var_PoGO <- (V_A / n_A + V_B / n_B + (PoGO / 100)^2 * V_A / n_A) / (goal - alpha_hat)^2
+  SE_PoGO <- 100 * sqrt(var_PoGO)
   
   res <- data.frame(ES = "PoGO", Est = PoGO, 
                     SE = SE_PoGO, stringsAsFactors = FALSE)
