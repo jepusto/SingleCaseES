@@ -185,3 +185,57 @@ NULL
 #' problem behavior in young children with autism. 
 #' \emph{Child Development Research}, 2012, 1-13. doi:10.1155/2012/357291
 NULL
+
+#' @title Crozier and Tincani (2005)
+#' 
+#' @description Data from an ABAB design conducted by Crozier and Tincani (2005), which evaluated a social story intervention on the disruptive behavior of a preschool child with autism. 
+#' The dependent variable, number of disruptions, was measured using frequency counting for a 30-minute observation session.
+#' The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{session}. Within-series session-number
+#'   \item \code{phase}. Label for each unique phase (e.g., A1 is the first baseline phase, B2 is the second treatment phase)
+#'   \item \code{score}. Value for the outcome. 
+#’ }
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 24 rows and 3 variables
+#' @name Crozier2005
+#' @source Crozier, S., & Tincani, M. J. (2005). Using a modified social story to decrease disruptive behavior of a child with autism. Focus on Autism and Other Developmental Disabilities, 20(3), 150–157. 
+NULL
+
+#' @title Olszewski, et al. (2017)
+#' 
+#' @description Data from a multiple baseline design across behavior looking at four fluency measures (blends, segmenting, first part ID, first sound ID).
+#' The dependent variable is a score on a subtest, with a maximum score of 20.
+#' The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{behavior}. Outcome measure description (blends, segmenting, first part ID, or first sound ID)
+#'   \item \code{session}. Within-series session-number
+#'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
+#'   \item \code{score}. Value for the outcome. 
+#’ }
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 72 rows and 4 variables
+#' @name Olszewski2017
+#' @source Olszewski, A., Soto, X., & Goldstein, H. (2017). Modeling alphabet skills as instructive feedback within a phonological awareness intervention. American Journal of Speech-Language Pathology, 26(3), 769–790. 
+NULL
+
+#' @title English, et al. (1997)
+#' 
+#' @description Data from a multiple baseline design across participants conducted by English, et al. (1997), which evaluated the effects of peer-training on interaction skills. This dependent variable, number of communicative acts directed by the participant to their peers, was measured using frequency counting for a 10-minute observation session. 
+#' 
+#' \itemize{
+#'   \item \code{case}. Participant identifier
+#'   \item \code{session}. Within-series session-number
+#'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
+#'   \item \code{score}. Value for the outcome. 
+#’ }
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 59 rows and 4 variables
+#' @name English1997
+#' @source English, K., Goldstein, H., Shafer, K., & Kaczmarek, L. (1997). Promoting interactions among preschoolers with and without disabilities: Effects of a buddy skills-training program. Exceptional Children, 63(2), 229–243. 
+NULL
