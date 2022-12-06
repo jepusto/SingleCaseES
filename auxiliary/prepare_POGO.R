@@ -93,3 +93,64 @@ English1997 <- rbind(english_1997_1, english_1997_2, english_1997_3, english_199
 str(English1997)
 save(English1997, file = "data/English1997.Rdata", compress = TRUE, version = 2)
 
+#--------------------
+# Facon
+#--------------------
+
+Facon2008 <- read_excel("auxiliary/Figure4.xlsx") %>%
+  rename(session = `...1`,
+         score = `Series 1`) %>%
+  mutate(phase = c(rep("A", 4), rep("B", 3), rep("C", 7), rep("D", 5), rep("E", 4), rep("F", 8), rep("G", 3), rep("H", 9), rep("I", 6))) %>%
+  select(session, phase, score) 
+
+A <- "N/A"
+B <- 43
+C <- as.numeric(Facon2008 %>%
+                  filter(phase == "B") %>%
+                  arrange(desc(score)) %>%
+                  top_n(5) %>%
+                  summarise(mean(score)))
+D <- as.numeric(Facon2008 %>%
+                  filter(phase == "C") %>%
+                  arrange(desc(score)) %>%
+                  top_n(5) %>%
+                  summarise(mean(score)))
+E <- as.numeric(Facon2008 %>%
+                  filter(phase == "D") %>%
+                  arrange(desc(score)) %>%
+                  top_n(5) %>%
+                  summarise(mean(score)))
+F <- as.numeric(Facon2008 %>%
+                  filter(phase == "E") %>%
+                  arrange(desc(score)) %>%
+                  top_n(5) %>%
+                  summarise(mean(score)))
+G <- as.numeric(Facon2008 %>%
+                  filter(phase == "F") %>%
+                  arrange(desc(score)) %>%
+                  top_n(5) %>%
+                  summarise(mean(score)))
+H <- as.numeric(Facon2008 %>%
+                  filter(phase == "G") %>%
+                  arrange(desc(score)) %>%
+                  top_n(5) %>%
+                  summarise(mean(score)))
+I <- as.numeric(Facon2008 %>%
+                  filter(phase == "H") %>%
+                  arrange(desc(score)) %>%
+                  top_n(5) %>%
+                  summarise(mean(score)))
+
+Facon2008 <- Facon2008 %>%
+  mutate(criterion = ifelse(phase == "A", A, 0),
+         criterion = ifelse(phase == "B", B, criterion),
+         criterion = ifelse(phase == "C", C, criterion),
+         criterion = ifelse(phase == "D", D, criterion),
+         criterion = ifelse(phase == "E", E, criterion),
+         criterion = ifelse(phase == "F", F, criterion),
+         criterion = ifelse(phase == "G", G, criterion),
+         criterion = ifelse(phase == "H", H, criterion),
+         criterion = ifelse(phase == "I", I, criterion))
+
+str(Facon2008)
+save(Facon2008, file = "data/Facon2008.Rdata", compress = TRUE, version = 2)

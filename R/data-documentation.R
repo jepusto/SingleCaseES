@@ -226,6 +226,7 @@ NULL
 #' @title English, et al. (1997)
 #' 
 #' @description Data from a multiple baseline design across participants conducted by English, et al. (1997), which evaluated the effects of peer-training on interaction skills. This dependent variable, number of communicative acts directed by the participant to their peers, was measured using frequency counting for a 10-minute observation session. 
+#' The variables are as follows:
 #' 
 #' \itemize{
 #'   \item \code{case}. Participant identifier
@@ -238,4 +239,22 @@ NULL
 #' @format A data frame with 59 rows and 4 variables
 #' @name English1997
 #' @source English, K., Goldstein, H., Shafer, K., & Kaczmarek, L. (1997). Promoting interactions among preschoolers with and without disabilities: Effects of a buddy skills-training program. Exceptional Children, 63(2), 229–243. 
+NULL
+
+#' @title Facon, et al. (2008)
+#' 
+#' @description Data from a changing criterion design conducted by Facon, et al. (2008), which evaluated two operant learning procedures, shaping and fading, for treating selective mutism. The dependent variable, average speech loudness in dB, was measured during 15-minute observation sessions.
+#' The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{session}. Within-series session-number
+#'   \item \code{phase}. Label for each unique phase (A for baseline, each following for a change in criteria.
+#'   \item \code{score}. Value for the outcome. 
+#'   \item \code{criterion}. The fixed criterion value for each of the phases. The student moved to the next criterion when 80% of their utterances are equal or greater than the current criterion during at least 3 consecutive sessions. The first criterion was set at 43 dB with each following criterion equal to the mean score for the five best trials in the previous phase.
+#’ }
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 49 rows and 4 variables
+#' @name Facon2008
+#' @source Facon, B., Sahiri, S., & Riviѐre, V. (2008). A controlled single-case treatment of severe long-term selective mutism in a child with mental retardation. Behavior Therapy, 39, 313–321. 
 NULL
