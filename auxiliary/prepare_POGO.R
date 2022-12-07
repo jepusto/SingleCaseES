@@ -60,7 +60,7 @@ english_1997_1 <- read_excel("auxiliary/Figure3a.xlsx") %>%
   select(Column1, Column2) %>%
   rename(session = Column1,
          score = Column2) %>%
-  mutate(case = "1",
+  mutate(case = "Sue",
          phase = c(rep("A", 5), rep("B", 7)))
 
 english_1997_2 <- read_excel("auxiliary/Figure3b.xlsx") %>%
@@ -68,7 +68,7 @@ english_1997_2 <- read_excel("auxiliary/Figure3b.xlsx") %>%
   filter(!is.na(Column2)) %>%
   rename(session = Column1,
          score = Column2) %>%
-  mutate(case = "2",
+  mutate(case = "Done",
          phase = c(rep("A", 6), rep("B", 6)))
 
 english_1997_3 <- read_excel("auxiliary/Figure3c.xlsx") %>%
@@ -76,7 +76,7 @@ english_1997_3 <- read_excel("auxiliary/Figure3c.xlsx") %>%
   filter(!is.na(Column2)) %>%
   rename(session = Column1,
          score = Column2) %>%
-  mutate(case = "3",
+  mutate(case = "Jake",
          phase = c(rep("A", 11), rep("B", 6)))
 
 english_1997_4 <- read_excel("auxiliary/Figure3d.xlsx") %>%
@@ -84,7 +84,7 @@ english_1997_4 <- read_excel("auxiliary/Figure3d.xlsx") %>%
   filter(!is.na(Column2)) %>%
   rename(session = Column1,
          score = Column2) %>%
-  mutate(case = "4",
+  mutate(case = "Pete",
          phase = c(rep("A", 10), rep("B", 8)))
 
 English1997 <- rbind(english_1997_1, english_1997_2, english_1997_3, english_1997_4) %>%

@@ -229,7 +229,7 @@ NULL
 #' The variables are as follows:
 #' 
 #' \itemize{
-#'   \item \code{case}. Participant identifier
+#'   \item \code{case}. Participant pseudonym given by author
 #'   \item \code{session}. Within-series session-number
 #'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
 #'   \item \code{score}. Value for the outcome. 
