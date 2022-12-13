@@ -186,3 +186,36 @@ Olszewski_Compare <- Olszewski2017_PoGO %>%
 
 expect_equal(round(Olszewski_Compare$Article_ES,1), round(Olszewski_Compare$Est, 1))
 })
+
+test_that("POGO calculation agrees with article for Spencer 2012", {
+  load("data/Spencer2012.Rdata")
+  
+  Spencer2012_res <- data.frame(Observation = c("Child A1", "Child A2", "Child A3", "Child B1", "Child B2", "Child B3", "Child C1", "Child C2", "Child C3"),
+                                    Article_ES = c(33.333, 50, 46.875, 58.826, 44.444, 14.711, 72.222, 36.111, 27.778))
+  
+  spencer2012_long <- Spencer2012 %>%
+    group_by(Observation) %>%
+    pivot_longer(cols = c(Pre, Post), names_to = "Phase", values_to = "Score")
+  
+  Spencer2012_PoGO <- batch_calc_ES(dat = spencer2012_long,
+                grouping = Observation,
+                condition = Phase,
+                outcome = Score,
+                baseline_phase = "Pre",
+                intervention_phase = "Post",
+                ES = c("PoGO"),
+                goal = 4)
+  
+  Spencer2012_Compare <- left_join(Spencer2012_res, Spencer2012_PoGO, by = "Observation")
+  
+  expect_equal(round(Spencer2012_Compare$Article_ES,1), round(Spencer2012_Compare$Est, 1))
+  
+})
+
+test_that("POGO calculation agrees with article for Kelley 2015", {
+  load("data/Kelley2015.Rdata")
+  
+  kelley_dat <- Kelley2015 %>%
+    pivot_longer(cols = c(pre, post), names_to = "Phase", values_to = "Score") %>%
+    filter(condition == "treatment")
+})
