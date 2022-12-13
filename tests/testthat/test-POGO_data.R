@@ -1,5 +1,6 @@
 library(dplyr)
 library(tidyr)
+library(testthat)
 
 # Test Crozier 2005 Calculations
 
@@ -44,14 +45,12 @@ test_that("POGO calculation agrees with article for Crozier 2005", {
   
 })
 
-
+test_that("POGO calculation agrees with article for English1997", {
 ## Test English 1997 Calculations
 load("data/English1997.Rdata")
 
-English1997_res <- as.data.frame(cbind(c("Sue", "Don", "Jake", "Pete"),
-                                       c(79.1, 69, 35.8, 108.2))) %>%
-  rename(case = V1,
-         Article_ES = V2)
+English1997_res <- data.frame(case = c("Sue", "Don", "Jake", "Pete"),
+                              Article_ES = c(79.1, 69, 35.8, 108.2))
 
 English1997_PoGO <- batch_calc_ES(dat = English1997,
                                   grouping = c(case),
@@ -62,14 +61,16 @@ English1997_PoGO <- batch_calc_ES(dat = English1997,
 
 English_Compare <- left_join(English1997_res, English1997_PoGO, by = "case")
 
+expect_equal(round(English_Compare$Article_ES,0), round(English_Compare$Est, 0))
 
+})
+
+test_that("POGO calculation agrees with article for Facon 2008", {
 ## Test Facon 2008 Calculations
 load("data/Facon2008.Rdata")
 
-Facon2008_res <- as.data.frame(cbind(c("A to B", "B to C", "C to D", "D to E", "E to F", "F to G", "G to H", "H to I"),
-                                     c(4.6, 12.4, 23.3, 43.5, 62.1, 77.9, 87.4, 106.2))) %>%
-  rename(Phase_Shift = V1,
-         Article_ES = V2)
+Facon2008_res <- data.frame(Phase_Shift = c("A to B", "B to C", "C to D", "D to E", "E to F", "F to G", "G to H", "H to I"),
+                            Article_ES = c(4.6, 12.4, 23.3, 43.5, 62.1, 77.9, 87.4, 106.2))
 
 shift1_f <- batch_calc_ES(dat = Facon2008,
                         condition = phase,
@@ -139,13 +140,15 @@ Facon2008_PoGO <- rbind(shift1_f, shift2_f, shift3_f, shift4_f, shift5_f, shift6
 
 Facon_Compare <- cbind(Facon2008_res, Facon2008_PoGO)
 
+expect_equal(round(Facon_Compare$Article_ES,1), round(Facon_Compare$Est, 1))
+})
+
+test_that("POGO calculation agrees with article for Olszewski 2017", {
 ## Test Olszewski 2017 Calculations
 load("data/Olszewski2017.RData")
 
-Olszewski2017_res <- as.data.frame(cbind(c("Blends", "Segmenting", "First Part ID", "First Sound ID"),
-                                         c(23.0, 85.3, 100, 26))) %>%
-  rename(behavior = V1,
-         Article_ES = V2)
+Olszewski2017_res <- data.frame(behavior = c("Blends", "Segmenting", "First Part ID", "First Sound ID"),
+                                Article_ES = c(23.0, 85.3, 100, 26))
 
 Olszewski2017_PoGO <- batch_calc_ES(dat = Olszewski2017,
                                     grouping = c(behavior),
@@ -180,3 +183,6 @@ Olszewski_Compare <- Olszewski2017_PoGO %>%
   filter(behavior == "Blends" | behavior == "First Sound ID") %>%
   rbind(Segmenting_PoGO, FirstPart_PoGO) %>%
   left_join(Olszewski2017_res, by = "behavior")
+
+expect_equal(round(Olszewski_Compare$Article_ES,1), round(Olszewski_Compare$Est, 1))
+})
