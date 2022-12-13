@@ -154,3 +154,63 @@ Facon2008 <- Facon2008 %>%
 
 str(Facon2008)
 save(Facon2008, file = "data/Facon2008.Rdata", compress = TRUE, version = 2)
+
+#--------------------
+# Spencer
+#--------------------
+
+Spencer2012 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 5)
+
+str(Spencer2012)
+save(Spencer2012, file = "data/Spencer2012.Rdata", compress = TRUE, version = 2)
+
+#--------------------
+# Kelley
+#--------------------
+ 
+Kelley2015 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 7)
+
+treatment <- Kelley2015 %>% 
+  select(Treatment, `...2`, `...3`, `...4`) %>%
+  rename(observation = Treatment,
+         unit = `...2`, 
+         pre = `...3`,
+         post = `...4`) %>%
+  filter(observation != "Observation") %>%
+  mutate(condition = "treatment")
+
+control <- Kelley2015 %>%
+  select(Control, `...7`, `...8`, `...9`) %>%
+  rename(observation = Control,
+         unit = `...7`, 
+         pre = `...8`,
+         post = `...9`) %>%
+  filter(observation != "Observation") %>%
+  mutate(condition = "control")
+
+Kelley2015 <- rbind(treatment, control) %>%
+  select(condition, observation, unit, pre, post)
+
+str(Kelley2015)
+save(Kelley2015, file = "data/Kelley2015.Rdata", compress = TRUE, version = 2)
+
+#--------------------
+# Peters
+#--------------------
+
+Peters2020 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 12)
+
+str(Peters2020)
+save(Peters2020, file = "data/Peters2020.Rdata", compress = TRUE, version = 2)
+
+#--------------------
+# Dennis
+#--------------------
+
+Dennis2021 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 15)
+
+str(Dennis2021)
+save(Dennis2021, file = "data/Dennis2021.Rdata", compress = TRUE, version = 2)
+
+
+
