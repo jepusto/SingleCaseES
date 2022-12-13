@@ -186,25 +186,25 @@ NULL
 #' \emph{Child Development Research}, 2012, 1-13. doi:10.1155/2012/357291
 NULL
 
-#' @title Crozier and Tincani (2005)
+#' @title Crozier and Tincani (2015)
 #' 
-#' @description Data from an ABAB design conducted by Crozier and Tincani
-#'   (2005), which evaluated a social story intervention on the disruptive
-#'   behavior of a preschool child with autism. The dependent variable, number
-#'   of disruptions, was measured using frequency counting for a 30-minute
-#'   observation session. The variables are as follows:
+#' @description Data from an ABAB design that evaluated a social story intervention 
+#' on the disruptive behavior of a preschool child with autism. The dependent variable, 
+#' number of disruptions, was measured using frequency counting for a thirty minute observation
+#' session. The variables are as follows:
 #' 
 #' \itemize{
-#'   \item \code{session}. Within-series session-number.
-#'   \item \code{phase}. Label for each unique phase (e.g., A1 is the first baseline phase, B2 is the second treatment phase).
-#'   \item \code{score}. Value for the outcome. 
+#' \item \code{session}. Within-series session-number.
+#' \item \code{phase}. Lable for each unique phase (e.g., A1 is the first baseline phase, B2 is the second treatment phase).
+#' \item \code{score}. Value for the outcome.
 #' }
-#'
+#' 
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 24 rows and 3 variables
 #' @name Crozier2005
-#' @source Crozier, S., & Tincani, M. J. (2005). Using a modified social story to decrease disruptive behavior of a child with autism. Focus on Autism and Other Developmental Disabilities, 20(3), 150-157. 
+#' @source Crozier, S., & Tincani, M. J. (2005). Using a modified social story to decrease disruptive behavior of a child with autism. 
+#' Focus on Autism and Other Developmental Disabilities, 20(3), 150-157.
 NULL
 
 #' @title Olszewski, et al. (2017)
@@ -267,20 +267,24 @@ NULL
 
 #' @title Spencer et al. (2012)
 #' 
-#' @description Data from a repeated acquisition single-case experimental design evaluating vocabulary knowledge using an expressive definition task.
+#' @description Data from a repeated acquisition single-case experimental design 
+#' evaluating vocabulary knowledge using an expressive definition task.
 #' The variables are as follows:
 #' 
 #' \itemize{
-#'   \item \code{Observation}. Participant number. 
-#'   \item \code{Book}. Book used for evaluation.
-#'   \item \code{Pre}. Pre-intervention score on the expressive definition task. 
-#'   \item \code{Post}. Post-intervention score on the expressive definition task. 
+#' \item \code{Observation}. Participant number.
+#' \item \code{Book}. Book used for evaluation.
+#' \item \code{Pre}. Pre-intervention score on the expressive definition task.
+#' \item \code{Post}. Post-intervention score on the expressive definition task.
+#' }
 #' 
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 81 rows and 4 variables
 #' @name Spencer2012
-#' @source Spencer, E., Goldstein, H., Sherman, A., Noe, S., Tabbah, R., Ziolkowski, R., & Schneider, N. (2012). Effects of an automated vocabulary and comprehension intervention: An early efficacy study. Journal of Early Intervention, 34, 195-221. https://doi.org/10.1177/1053815112471990
+#' @source Spencer, E., Goldstein, H., Sherman, A., Noe, S., Tabbah, R., Ziolkowski, R., & Schneider, N. (2012). 
+#' Effects of an automated vocabulary and comprehension intervention: An early efficacy study. Journal of Early Intervention, 
+#' 34, 195-221. https://doi.org/10.1177/1053815112471990
 NULL
 
 #' @title Kelley et al. (2015)
@@ -289,11 +293,12 @@ NULL
 #' The variables are as follows:
 #' 
 #' \itemize{
-#'   \item \code{condition}. Indicates whether control or treatment group.
-#'   \item \code{observation}. Identifier for participant
-#'   \item \code{unit}. Classroom unit.
-#'   \item \code{Pre}. Pre-intervention score on the expressive definition task. 
-#'   \item \code{Post}. Post-intervention score on the expressive definition task. 
+#' \item \code{condition}. Indicates whether control or treatment group.
+#' \item \code{observation}. Identifier for participant
+#' \item \code{unit}. Classroom unit.
+#' \item \code{Pre}. Pre-intervention score on the expressive definition task. 
+#' \item \code{Post}. Post-intervention score on the expressive definition task. 
+#' }
 #' 
 #' @docType data
 #' @keywords datasets
@@ -301,7 +306,7 @@ NULL
 #' @name Kelley2015
 #' @source Kelley, E. S., Goldstein, H., Spencer, T., & Sherman, A. (2015). Effects of automated Tier 2 storybook intervention on vocabulary and comprehension learning in preschool children with limited oral language skills. Early Childhood Research Quarterly, 31, 47–61. https://doi.org/10.1016/j.ecresq.2014.12.004
 NULL
-  
+
 #' @title Peters-Sanders et al. (2020)
 #' 
 #' @description Data from a Repeated acquisition single-case experimental design evaluating vocabulary knowledge using an expressive definition task.
@@ -312,6 +317,7 @@ NULL
 #'   \item \code{Book}.Book used for evaluation.
 #'   \item \code{Pre}. Pre-intervention score on the expressive definition task. 
 #'   \item \code{Post}. Post-intervention score on the expressive definition task. 
+#' }
 #' 
 #' @docType data
 #' @keywords datasets
@@ -331,6 +337,7 @@ NULL
 #'   \item \code{Observation}. Within-series session-number
 #'   \item \code{Pre}. Pre-intervention score on the expressive definition task. 
 #'   \item \code{Post}. Post-intervention score on the expressive definition task. 
+#' }
 #' 
 #' @docType data
 #' @keywords datasets
@@ -338,3 +345,4 @@ NULL
 #' @name Dennis2021
 #' @source Dennis, L. R., & Whalon, K. J. (2021). Effects of teacher-versus application-delivered instruction on the expressive vocabulary of at-risk preschool children. Remedial and Special Education, 42(4), 195-206. https://doi.org/10.1177/0741932519900991
 NULL
+

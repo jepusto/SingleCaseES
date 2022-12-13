@@ -7,7 +7,7 @@ library(testthat)
 test_that("POGO calculation agrees with article for Crozier 2005", {
   
   # We should replace the load() with the following
-  # data("Crozier2005", package = "SingleCaseES")
+  data("Crozier2005", package = "SingleCaseES")
   load("data/Crozier2005.Rdata")
   
   Crozier2005_res <- data.frame(Phase_Shift = c("A1 to B1", "B1 to A2", "A2 to B2"), 
@@ -215,7 +215,82 @@ test_that("POGO calculation agrees with article for Spencer 2012", {
 test_that("POGO calculation agrees with article for Kelley 2015", {
   load("data/Kelley2015.Rdata")
   
+  Kelley2015_res <- data.frame(observation = c("240408", "240412", "240413", "240903", "240913", "240915", "241201", "241204", "241211"),
+                               Article_ES = c(33.33333333, 32.25850156, 100, 25.71449796, 50.00029412, 46.87516602, 58.62083234, 5.714555101, 83.33333333),
+                               Article_SE = 100*c(0.096225045, 0.105658281, 0.120697847, 0.154036724, 0.088234833, 0.170816987, 0.211244275, 0.057166015, 0.166666667))
+
   kelley_dat <- Kelley2015 %>%
     pivot_longer(cols = c(pre, post), names_to = "Phase", values_to = "Score") %>%
-    filter(condition == "treatment")
+    filter(condition == "treatment") %>%
+    mutate(Score = as.numeric(Score))
+  
+  Kelley2015_PoGO <- batch_calc_ES(dat = kelley_dat,
+                grouping = observation, 
+                condition = Phase,
+                outcome = Score,
+                baseline_phase = "pre",
+                intervention_phase = "post",
+                ES = c("PoGO"),
+                goal = 12)
+  
+  Kelley2015_Compare <- left_join(Kelley2015_PoGO, Kelley2015_res, by = "observation")
+  
+  expect_equal(round(Kelley2015_Compare$Article_ES,1), round(Kelley2015_Compare$Est, 1))
+  expect_equal(round(Kelley2015_Compare$Article_SE,1), round(Kelley2015_Compare$SE, 1))
+  
+})
+
+test_that("POGO calculation agrees with article for Peters 2020", {
+  load("data/Peters2020.Rdata")
+  
+  Peters2020_res <- data.frame(Observation = c("Child F1", "Child F2", "Child F3", "Child F4", "Child F5", "Child F6", "Child F7", "Child F8", "Child F9", 
+                                               "Child J1", "Child J2", "Child J3", "Child J4", "Child J5", "Child J6", "Child J7", "Child J8"),
+                               Article_ES = c(45.45454545, 24.52901388, 43.75, 47.54098361, 87.5, 50, 25, 56.8627451, 80.43478261,
+                                              14.08450704, 12.5, 12.5, 5.555555556, 67.1641791, 75, 76.8115942, 93.65079365),
+                               Article_SE = 100*c(0.135641715, 0.114136702, 0.090507378, 0.131092941, 0.098293817, 0.174768405, 0.20848209, 0.180583945, 0.174069647,
+                                              0.067576046, 0.051031036, 0.051031036, 0.030270132, 0.101676434, 0.097340735, 0.082401857, 0.095980561))
+  
+  peters_long <- Peters2020 %>%
+    pivot_longer(cols = c(Pre, Post), names_to = "phase", values_to = "score") 
+  
+  Peters2020_PoGO <- batch_calc_ES(dat = peters_long,
+                                   grouping = Observation,
+                                   condition = phase,
+                                   outcome = score,
+                                   baseline_phase = "Pre",
+                                   intervention_phase = "Post",
+                                   ES = c("PoGO"),
+                                   goal = 8)
+  
+  Peters2020_Compare <- left_join(Peters2020_PoGO, Peters2020_res, by = "Observation")
+  
+  expect_equal(round(Peters2020_Compare$Article_ES,1), round(Peters2020_Compare$Est, 1))
+  expect_equal(round(Peters2020_Compare$Article_SE,1), round(Peters2020_Compare$SE, 1))
+  
+})
+
+test_that("POGO calculation agrees with article for Dennis 2021", {
+  load("data/Dennis2021.Rdata")
+  
+  Dennis2021_res <- data.frame(Participant = c(1,2,3,4,5,6,1,2,3,4,5,6),
+                           Condition = c(rep("App", 6), rep("TCH", 6)),
+                           Article_ES = c(38.0952381, 11.26760563, 50, 57.14285714, 76.27118644, 23.72881356, 32.78688525, 7.246376812, 35.48387097, 34.54545455, 51.61290323, 14.28571429),
+                           Article_SE = 100*c(0.082972405, 0.059776573, 0.16511651, 0.074451044, 0.086261415, 0.096243717, 0.10868039, 0.065541587, 0.145493518, 0.097742848, 0.096234682, 0.117356181))
+  
+  dennis_long <- Dennis2021 %>%
+    pivot_longer(cols = c(Pre, Post), names_to = "phase", values_to = "score")
+  
+  Dennis2021_PoGO <- batch_calc_ES(dat = dennis_long,
+                grouping = c(Participant, Condition),
+                condition = phase,
+                outcome = score,
+                baseline_phase = "Pre",
+                intervention_phase = "Post",
+                ES = c("PoGO"),
+                goal = 9)
+  
+  Dennis2021_Compare <- left_join(Dennis2021_PoGO, Dennis2021_res, by = c("Participant", "Condition"))
+  
+  expect_equal(round(Dennis2021_Compare$Article_ES,1), round(Dennis2021_Compare$Est, 1))
+  expect_equal(round(Dennis2021_Compare$Article_SE,1), round(Dennis2021_Compare$SE, 1))
 })

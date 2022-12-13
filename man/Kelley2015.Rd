@@ -11,6 +11,15 @@ A data frame with 54 rows and 5 variables
 Kelley, E. S., Goldstein, H., Spencer, T., & Sherman, A. (2015). Effects of automated Tier 2 storybook intervention on vocabulary and comprehension learning in preschool children with limited oral language skills. Early Childhood Research Quarterly, 31, 47–61. https://doi.org/10.1016/j.ecresq.2014.12.004
 }
 \description{
+Data from a randomized control trial with embedded repeated acquisition single- case experimental design evaluating vocabulary knowledge using an expressive definition task.
+The variables are as follows:
 
+\itemize{
+\item \code{condition}. Indicates whether control or treatment group.
+\item \code{observation}. Identifier for participant
+\item \code{unit}. Classroom unit.
+\item \code{Pre}. Pre-intervention score on the expressive definition task. 
+\item \code{Post}. Post-intervention score on the expressive definition task. 
+}
 }
 \keyword{datasets}

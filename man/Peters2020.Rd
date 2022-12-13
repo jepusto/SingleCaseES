@@ -11,6 +11,14 @@ A data frame with 153 rows and 4 variables
 Peters-Sanders, L., Kelley, E., Haring, C., Madsen, K., Soto, X., Seven, Y., Hull, K., & Goldstein, H. (2020). Moving forward four words at a time: Effects of a supplemental preschool vocabulary. Language, Speech, and Hearing Services in Schools, 51, 165-175. https://doi.org/10.1044/2019_LSHSS-19-00029
 }
 \description{
+Data from a Repeated acquisition single-case experimental design evaluating vocabulary knowledge using an expressive definition task.
+The variables are as follows:
 
+\itemize{
+  \item \code{observation}. Identifier for participant
+  \item \code{Book}.Book used for evaluation.
+  \item \code{Pre}. Pre-intervention score on the expressive definition task. 
+  \item \code{Post}. Post-intervention score on the expressive definition task. 
+}
 }
 \keyword{datasets}
