@@ -188,20 +188,23 @@ NULL
 
 #' @title Crozier and Tincani (2005)
 #' 
-#' @description Data from an ABAB design conducted by Crozier and Tincani (2005), which evaluated a social story intervention on the disruptive behavior of a preschool child with autism. 
-#' The dependent variable, number of disruptions, was measured using frequency counting for a 30-minute observation session.
-#' The variables are as follows:
+#' @description Data from an ABAB design conducted by Crozier and Tincani
+#'   (2005), which evaluated a social story intervention on the disruptive
+#'   behavior of a preschool child with autism. The dependent variable, number
+#'   of disruptions, was measured using frequency counting for a 30-minute
+#'   observation session. The variables are as follows:
 #' 
 #' \itemize{
-#'   \item \code{session}. Within-series session-number
-#'   \item \code{phase}. Label for each unique phase (e.g., A1 is the first baseline phase, B2 is the second treatment phase)
+#'   \item \code{session}. Within-series session-number.
+#'   \item \code{phase}. Label for each unique phase (e.g., A1 is the first baseline phase, B2 is the second treatment phase).
 #'   \item \code{score}. Value for the outcome. 
-#’ }
+#' }
+#'
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 24 rows and 3 variables
 #' @name Crozier2005
-#' @source Crozier, S., & Tincani, M. J. (2005). Using a modified social story to decrease disruptive behavior of a child with autism. Focus on Autism and Other Developmental Disabilities, 20(3), 150–157. 
+#' @source Crozier, S., & Tincani, M. J. (2005). Using a modified social story to decrease disruptive behavior of a child with autism. Focus on Autism and Other Developmental Disabilities, 20(3), 150-157. 
 NULL
 
 #' @title Olszewski, et al. (2017)
@@ -215,7 +218,8 @@ NULL
 #'   \item \code{session}. Within-series session-number
 #'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
 #'   \item \code{score}. Value for the outcome. 
-#’ }
+#' }
+#' 
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 72 rows and 4 variables
@@ -233,7 +237,8 @@ NULL
 #'   \item \code{session}. Within-series session-number
 #'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
 #'   \item \code{score}. Value for the outcome. 
-#’ }
+#' }
+#' 
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 59 rows and 4 variables
@@ -251,7 +256,8 @@ NULL
 #'   \item \code{phase}. Label for each unique phase (A for baseline, each following for a change in criteria.
 #'   \item \code{score}. Value for the outcome. 
 #'   \item \code{criterion}. The fixed criterion value for each of the phases. The student moved to the next criterion when 80% of their utterances are equal or greater than the current criterion during at least 3 consecutive sessions. The first criterion was set at 43 dB with each following criterion equal to the mean score for the five best trials in the previous phase.
-#’ }
+#' }
+#' 
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 49 rows and 4 variables
