@@ -68,7 +68,7 @@ english_1997_2 <- read_excel("auxiliary/Figure3b.xlsx") %>%
   filter(!is.na(Column2)) %>%
   rename(session = Column1,
          score = Column2) %>%
-  mutate(case = "Done",
+  mutate(case = "Don",
          phase = c(rep("A", 6), rep("B", 6)))
 
 english_1997_3 <- read_excel("auxiliary/Figure3c.xlsx") %>%

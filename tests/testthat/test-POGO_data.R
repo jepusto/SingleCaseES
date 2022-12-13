@@ -35,6 +35,8 @@ shift3 <- batch_calc_ES(dat = Crozier2005,
 
 Crozier2005_PoGO <- rbind(shift1, shift2, shift3) 
 
+Crozier_Compare <- cbind(Crozier2005_res, Crozier2005_PoGO)
+
 ## Test English 1997 Calculations
 load("~/SingleCaseES/data/English1997.Rdata")
 
@@ -49,6 +51,8 @@ English1997_PoGO <- batch_calc_ES(dat = English1997,
                                   outcome = score,
                                   ES = c("PoGO"),
                                   goal = 21.25)
+
+English_Compare <- left_join(English1997_res, English1997_PoGO, by = "case")
 
 
 ## Test Facon 2008 Calculations
@@ -125,15 +129,15 @@ shift8_f <- batch_calc_ES(dat = Facon2008,
 
 Facon2008_PoGO <- rbind(shift1_f, shift2_f, shift3_f, shift4_f, shift5_f, shift6_f, shift7_f, shift8_f)
 
+Facon_Compare <- cbind(Facon2008_res, Facon2008_PoGO)
 
 ## Test Olszewski 2017 Calculations
 load("~/SingleCaseES/data/Olszewski2017.RData")
 
 Olszewski2017_res <- as.data.frame(cbind(c("Blends", "Segmenting", "First Part ID", "First Sound ID"),
                                          c(23.0, 85.3, 100, 26))) %>%
-  rename(Behavior = V1,
+  rename(behavior = V1,
          Article_ES = V2)
-##calculation of segmenting POGO done using average over last 5 assessments not including all time points for baseline
 
 Olszewski2017_PoGO <- batch_calc_ES(dat = Olszewski2017,
                                     grouping = c(behavior),
@@ -141,3 +145,30 @@ Olszewski2017_PoGO <- batch_calc_ES(dat = Olszewski2017,
                                     outcome = score,
                                     ES = c("PoGO"),
                                     goal = 20)
+
+Segmenting <- Olszewski2017 %>%
+  filter((session %in% 1:8 | session %in% 14:18) & behavior == "Segmenting")
+
+Segmenting_PoGO <- batch_calc_ES(dat = Segmenting,
+                                 condition = phase,
+                                 outcome = score,
+                                 ES = c("PoGO"), 
+                                 goal = 20) %>%
+  mutate(behavior = "Segmenting") %>%
+  select(behavior, ES, Est, SE, CI_lower, CI_upper)
+
+FirstPart <- Olszewski2017 %>%
+  filter((session %in% 1:11 | session %in% 14:18) & behavior == "First Part ID")
+
+FirstPart_PoGO <- batch_calc_ES(dat = FirstPart,
+                                condition = phase,
+                                outcome = score,
+                                ES = c("PoGO"),
+                                goal = 20) %>%
+  mutate(behavior = "First Part ID") %>%
+  select(behavior, ES, Est, SE, CI_lower, CI_upper)
+
+Olszewski_Compare <- Olszewski2017_PoGO %>%
+  filter(behavior == "Blends" | behavior == "First Sound ID") %>%
+  rbind(Segmenting_PoGO, FirstPart_PoGO) %>%
+  left_join(Olszewski2017_res, by = "behavior")
