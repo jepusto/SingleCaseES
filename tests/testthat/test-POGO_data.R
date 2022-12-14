@@ -1,14 +1,7 @@
 library(dplyr)
 library(tidyr)
-library(testthat)
-
-# Test Crozier 2005 Calculations
 
 test_that("POGO calculation agrees with article for Crozier 2005", {
-  
-  # We should replace the load() with the following
-  data("Crozier2005", package = "SingleCaseES")
-  load("data/Crozier2005.Rdata")
   
   Crozier2005_res <- data.frame(Phase_Shift = c("A1 to B1", "B1 to A2", "A2 to B2"), 
                                 Article_ES = c(79.1, 64.2, 97.92))
@@ -46,154 +39,153 @@ test_that("POGO calculation agrees with article for Crozier 2005", {
 })
 
 test_that("POGO calculation agrees with article for English1997", {
-## Test English 1997 Calculations
-load("data/English1997.Rdata")
 
-English1997_res <- data.frame(case = c("Sue", "Don", "Jake", "Pete"),
-                              Article_ES = c(79.1, 69, 35.8, 108.2))
-
-English1997_PoGO <- batch_calc_ES(dat = English1997,
-                                  grouping = c(case),
-                                  condition = phase,
-                                  outcome = score,
-                                  ES = c("PoGO"),
-                                  goal = 21.25)
-
-English_Compare <- left_join(English1997_res, English1997_PoGO, by = "case")
-
-expect_equal(round(English_Compare$Article_ES,0), round(English_Compare$Est, 0))
+  English1997_res <- data.frame(case = c("Sue", "Don", "Jake", "Pete"),
+                                Article_ES = c(79.1, 69, 35.8, 108.2))
+  
+  English1997_PoGO <- batch_calc_ES(dat = English1997,
+                                    grouping = c(case),
+                                    condition = phase,
+                                    outcome = score,
+                                    ES = c("PoGO"),
+                                    goal = 21.25)
+  
+  English_Compare <- left_join(English1997_res, English1997_PoGO, by = "case")
+  
+  expect_equal(round(English_Compare$Article_ES,0), round(English_Compare$Est, 0))
 
 })
 
 test_that("POGO calculation agrees with article for Facon 2008", {
-## Test Facon 2008 Calculations
-load("data/Facon2008.Rdata")
 
-Facon2008_res <- data.frame(Phase_Shift = c("A to B", "B to C", "C to D", "D to E", "E to F", "F to G", "G to H", "H to I"),
-                            Article_ES = c(4.6, 12.4, 23.3, 43.5, 62.1, 77.9, 87.4, 106.2))
-
-shift1_f <- batch_calc_ES(dat = Facon2008,
-                        condition = phase,
-                        outcome = score,
-                        baseline_phase = "A",
-                        intervention_phase = "B",
-                        ES = c("PoGO"),
-                        goal = 70)
-
-shift2_f <- batch_calc_ES(dat = Facon2008,
-                        condition = phase,
-                        outcome = score,
-                        baseline_phase = "A",
-                        intervention_phase = "C",
-                        ES = c("PoGO"),
-                        goal = 70)
-
-shift3_f <- batch_calc_ES(dat = Facon2008,
-                        condition = phase,
-                        outcome = score,
-                        baseline_phase = "A",
-                        intervention_phase = "D",
-                        ES = c("PoGO"),
-                        goal = 70)
-
-shift4_f <- batch_calc_ES(dat = Facon2008,
-                        condition = phase,
-                        outcome = score,
-                        baseline_phase = "A",
-                        intervention_phase = "E",
-                        ES = c("PoGO"),
-                        goal = 70)
-
-shift5_f <- batch_calc_ES(dat = Facon2008,
-                        condition = phase,
-                        outcome = score,
-                        baseline_phase = "A",
-                        intervention_phase = "F",
-                        ES = c("PoGO"),
-                        goal = 70)
-
-shift6_f <- batch_calc_ES(dat = Facon2008,
-                        condition = phase,
-                        outcome = score,
-                        baseline_phase = "A",
-                        intervention_phase = "G",
-                        ES = c("PoGO"),
-                        goal = 70)
-
-shift7_f <- batch_calc_ES(dat = Facon2008,
-                        condition = phase,
-                        outcome = score,
-                        baseline_phase = "A",
-                        intervention_phase = "H",
-                        ES = c("PoGO"),
-                        goal = 70)
-
-shift8_f <- batch_calc_ES(dat = Facon2008,
-                        condition = phase,
-                        outcome = score,
-                        baseline_phase = "A",
-                        intervention_phase = "I",
-                        ES = c("PoGO"),
-                        goal = 70)
-
-Facon2008_PoGO <- rbind(shift1_f, shift2_f, shift3_f, shift4_f, shift5_f, shift6_f, shift7_f, shift8_f)
-
-Facon_Compare <- cbind(Facon2008_res, Facon2008_PoGO)
-
-expect_equal(round(Facon_Compare$Article_ES,1), round(Facon_Compare$Est, 1))
+  Facon2008_res <- data.frame(Phase_Shift = c("A to B", "B to C", "C to D", "D to E", "E to F", "F to G", "G to H", "H to I"),
+                              Article_ES = c(4.6, 12.4, 23.3, 43.5, 62.1, 77.9, 87.4, 106.2))
+  
+  shift1_f <- batch_calc_ES(dat = Facon2008,
+                          condition = phase,
+                          outcome = score,
+                          baseline_phase = "A",
+                          intervention_phase = "B",
+                          ES = c("PoGO"),
+                          goal = 70)
+  
+  shift2_f <- batch_calc_ES(dat = Facon2008,
+                          condition = phase,
+                          outcome = score,
+                          baseline_phase = "A",
+                          intervention_phase = "C",
+                          ES = c("PoGO"),
+                          goal = 70)
+  
+  shift3_f <- batch_calc_ES(dat = Facon2008,
+                          condition = phase,
+                          outcome = score,
+                          baseline_phase = "A",
+                          intervention_phase = "D",
+                          ES = c("PoGO"),
+                          goal = 70)
+  
+  shift4_f <- batch_calc_ES(dat = Facon2008,
+                          condition = phase,
+                          outcome = score,
+                          baseline_phase = "A",
+                          intervention_phase = "E",
+                          ES = c("PoGO"),
+                          goal = 70)
+  
+  shift5_f <- batch_calc_ES(dat = Facon2008,
+                          condition = phase,
+                          outcome = score,
+                          baseline_phase = "A",
+                          intervention_phase = "F",
+                          ES = c("PoGO"),
+                          goal = 70)
+  
+  shift6_f <- batch_calc_ES(dat = Facon2008,
+                          condition = phase,
+                          outcome = score,
+                          baseline_phase = "A",
+                          intervention_phase = "G",
+                          ES = c("PoGO"),
+                          goal = 70)
+  
+  shift7_f <- batch_calc_ES(dat = Facon2008,
+                          condition = phase,
+                          outcome = score,
+                          baseline_phase = "A",
+                          intervention_phase = "H",
+                          ES = c("PoGO"),
+                          goal = 70)
+  
+  shift8_f <- batch_calc_ES(dat = Facon2008,
+                          condition = phase,
+                          outcome = score,
+                          baseline_phase = "A",
+                          intervention_phase = "I",
+                          ES = c("PoGO"),
+                          goal = 70)
+  
+  Facon2008_PoGO <- rbind(shift1_f, shift2_f, shift3_f, shift4_f, shift5_f, shift6_f, shift7_f, shift8_f)
+  
+  Facon_Compare <- cbind(Facon2008_res, Facon2008_PoGO)
+  
+  expect_equal(round(Facon_Compare$Article_ES,1), round(Facon_Compare$Est, 1))
 })
 
 test_that("POGO calculation agrees with article for Olszewski 2017", {
-## Test Olszewski 2017 Calculations
-load("data/Olszewski2017.RData")
 
-Olszewski2017_res <- data.frame(behavior = c("Blends", "Segmenting", "First Part ID", "First Sound ID"),
-                                Article_ES = c(23.0, 85.3, 100, 26))
-
-Olszewski2017_PoGO <- batch_calc_ES(dat = Olszewski2017,
-                                    grouping = c(behavior),
-                                    condition = phase,
-                                    outcome = score,
-                                    ES = c("PoGO"),
-                                    goal = 20)
-
-Segmenting <- Olszewski2017 %>%
-  filter((session %in% 1:8 | session %in% 14:18) & behavior == "Segmenting")
-
-Segmenting_PoGO <- batch_calc_ES(dat = Segmenting,
-                                 condition = phase,
-                                 outcome = score,
-                                 ES = c("PoGO"), 
-                                 goal = 20) %>%
-  mutate(behavior = "Segmenting") %>%
-  select(behavior, ES, Est, SE, CI_lower, CI_upper)
-
-FirstPart <- Olszewski2017 %>%
-  filter((session %in% 1:11 | session %in% 14:18) & behavior == "First Part ID")
-
-FirstPart_PoGO <- batch_calc_ES(dat = FirstPart,
-                                condition = phase,
-                                outcome = score,
-                                ES = c("PoGO"),
-                                goal = 20) %>%
-  mutate(behavior = "First Part ID") %>%
-  select(behavior, ES, Est, SE, CI_lower, CI_upper)
-
-Olszewski_Compare <- Olszewski2017_PoGO %>%
-  filter(behavior == "Blends" | behavior == "First Sound ID") %>%
-  rbind(Segmenting_PoGO, FirstPart_PoGO) %>%
-  left_join(Olszewski2017_res, by = "behavior")
-
-expect_equal(round(Olszewski_Compare$Article_ES,1), round(Olszewski_Compare$Est, 1))
+  Olszewski2017_res <- data.frame(behavior = c("Blends", "Segmenting", "First Part ID", "First Sound ID"),
+                                  Article_ES = c(23.0, 85.3, 100, 26))
+  
+  Olszewski2017_PoGO <- batch_calc_ES(dat = Olszewski2017,
+                                      grouping = c(behavior),
+                                      condition = phase,
+                                      outcome = score,
+                                      ES = c("PoGO"),
+                                      goal = 20)
+  
+  Segmenting <- 
+    Olszewski2017 %>%
+    dplyr::filter(
+      session %in% c(1:8,14:18), 
+      behavior == "Segmenting"
+    )
+  
+  Segmenting_PoGO <- batch_calc_ES(dat = Segmenting,
+                                   condition = phase,
+                                   outcome = score,
+                                   ES = c("PoGO"), 
+                                   goal = 20) %>%
+    mutate(behavior = "Segmenting") %>%
+    select(behavior, ES, Est, SE, CI_lower, CI_upper)
+  
+  FirstPart <- 
+    Olszewski2017 %>%
+    dplyr::filter(session %in% c(1:11,14:18), behavior == "First Part ID")
+  
+  FirstPart_PoGO <- batch_calc_ES(dat = FirstPart,
+                                  condition = phase,
+                                  outcome = score,
+                                  ES = c("PoGO"),
+                                  goal = 20) %>%
+    mutate(behavior = "First Part ID") %>%
+    select(behavior, ES, Est, SE, CI_lower, CI_upper)
+  
+  Olszewski_Compare <- Olszewski2017_PoGO %>%
+    dplyr::filter(behavior %in% c("Blends","First Sound ID")) %>%
+    rbind(Segmenting_PoGO, FirstPart_PoGO) %>%
+    left_join(Olszewski2017_res, by = "behavior")
+  
+  expect_equal(round(Olszewski_Compare$Article_ES,1), round(Olszewski_Compare$Est, 1))
 })
 
 test_that("POGO calculation agrees with article for Spencer 2012", {
-  load("data/Spencer2012.Rdata")
-  
+
   Spencer2012_res <- data.frame(Observation = c("Child A1", "Child A2", "Child A3", "Child B1", "Child B2", "Child B3", "Child C1", "Child C2", "Child C3"),
                                     Article_ES = c(33.333, 50, 46.875, 58.826, 44.444, 14.711, 72.222, 36.111, 27.778))
   
-  spencer2012_long <- Spencer2012 %>%
+  spencer2012_long <- 
+    Spencer2012 %>%
     group_by(Observation) %>%
     pivot_longer(cols = c(Pre, Post), names_to = "Phase", values_to = "Score")
   
@@ -213,15 +205,15 @@ test_that("POGO calculation agrees with article for Spencer 2012", {
 })
 
 test_that("POGO calculation agrees with article for Kelley 2015", {
-  load("data/Kelley2015.Rdata")
   
   Kelley2015_res <- data.frame(observation = c("240408", "240412", "240413", "240903", "240913", "240915", "241201", "241204", "241211"),
                                Article_ES = c(33.33333333, 32.25850156, 100, 25.71449796, 50.00029412, 46.87516602, 58.62083234, 5.714555101, 83.33333333),
                                Article_SE = 100*c(0.096225045, 0.105658281, 0.120697847, 0.154036724, 0.088234833, 0.170816987, 0.211244275, 0.057166015, 0.166666667))
 
-  kelley_dat <- Kelley2015 %>%
+  kelley_dat <- 
+    Kelley2015 %>%
     pivot_longer(cols = c(pre, post), names_to = "Phase", values_to = "Score") %>%
-    filter(condition == "treatment") %>%
+    dplyr::filter(condition == "treatment") %>%
     mutate(Score = as.numeric(Score))
   
   Kelley2015_PoGO <- batch_calc_ES(dat = kelley_dat,
@@ -241,8 +233,7 @@ test_that("POGO calculation agrees with article for Kelley 2015", {
 })
 
 test_that("POGO calculation agrees with article for Peters 2020", {
-  load("data/Peters2020.Rdata")
-  
+
   Peters2020_res <- data.frame(Observation = c("Child F1", "Child F2", "Child F3", "Child F4", "Child F5", "Child F6", "Child F7", "Child F8", "Child F9", 
                                                "Child J1", "Child J2", "Child J3", "Child J4", "Child J5", "Child J6", "Child J7", "Child J8"),
                                Article_ES = c(45.45454545, 24.52901388, 43.75, 47.54098361, 87.5, 50, 25, 56.8627451, 80.43478261,
@@ -270,25 +261,26 @@ test_that("POGO calculation agrees with article for Peters 2020", {
 })
 
 test_that("POGO calculation agrees with article for Dennis 2021", {
-  load("data/Dennis2021.Rdata")
-  
+
   Dennis2021_res <- data.frame(Participant = c(1,2,3,4,5,6,1,2,3,4,5,6),
                            Condition = c(rep("App", 6), rep("TCH", 6)),
                            Article_ES = c(38.0952381, 11.26760563, 50, 57.14285714, 76.27118644, 23.72881356, 32.78688525, 7.246376812, 35.48387097, 34.54545455, 51.61290323, 14.28571429),
                            Article_SE = 100*c(0.082972405, 0.059776573, 0.16511651, 0.074451044, 0.086261415, 0.096243717, 0.10868039, 0.065541587, 0.145493518, 0.097742848, 0.096234682, 0.117356181))
   
-  dennis_long <- Dennis2021 %>%
+  dennis_long <- 
+    Dennis2021 %>%
     pivot_longer(cols = c(Pre, Post), names_to = "phase", values_to = "score")
   
-  Dennis2021_PoGO <- batch_calc_ES(dat = dennis_long,
-                grouping = c(Participant, Condition),
-                condition = phase,
-                outcome = score,
-                baseline_phase = "Pre",
-                intervention_phase = "Post",
-                ES = c("PoGO"),
-                goal = 9)
-  
+  Dennis2021_PoGO <- 
+    batch_calc_ES(dat = dennis_long,
+                  grouping = c(Participant, Condition),
+                  condition = phase,
+                  outcome = score,
+                  baseline_phase = "Pre",
+                  intervention_phase = "Post",
+                  ES = c("PoGO"),
+                  goal = 9)
+    
   Dennis2021_Compare <- left_join(Dennis2021_PoGO, Dennis2021_res, by = c("Participant", "Condition"))
   
   expect_equal(round(Dennis2021_Compare$Article_ES,1), round(Dennis2021_Compare$Est, 1))
