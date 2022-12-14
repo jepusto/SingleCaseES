@@ -130,6 +130,8 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
 })
 
 
+
+
 test_that("Tau-BC works on an example.", {
   
   skip_on_cran()
