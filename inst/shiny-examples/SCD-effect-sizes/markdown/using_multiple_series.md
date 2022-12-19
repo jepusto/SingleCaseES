@@ -1,6 +1,6 @@
 # Using the Multiple-Series Calculator
 
-For a video demonstration of the multiple-series calculator, visit <https://www.youtube.com/watch?v=DSW7wuFG7og&t=322s>
+For a video demonstration of the multiple-series calculator, visit <https://www.youtube.com/watch?v=DSW7wuFG7og>
 
 To use the multiple-series entry calculator, click on the "Multiple-Series Calculator" tab at the top of the screen.
 
