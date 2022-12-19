@@ -133,21 +133,22 @@ before calculating phase pairs.</p></dd>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>phase_pair <span class="op">=</span> <span class="fu">calc_phase_pairs</span><span class="op">(</span><span class="va">Condition</span>, session <span class="op">=</span> <span class="va">Session_number</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 172 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   Behavior_type, Case_pseudonym [6]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Behavior_type  Procedure Metric Session_length Interval_length Case_pseudonym</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Disruptive Be… Event co… count              10              <span style="color: #BB0000;">NA</span> Faith         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 162 more rows, and 8 more variables: Session_number &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Phase &lt;chr&gt;, Condition &lt;chr&gt;, Outcome &lt;dbl&gt;, Phase_num &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   direction &lt;chr&gt;, n_Intervals &lt;dbl&gt;, phase_pair &lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Behavi…¹ Proce…² Metric Sessi…³ Inter…⁴ Case_…⁵ Sessi…⁶ Phase Condi…⁷ Outcome</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith         1 A1    A         22.9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith         2 A1    A         22.4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith         3 A1    A         27.8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith         4 A1    A         16.9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith         5 A1    A         21.8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith         6 A1    A          3.78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith         7 A1    A         18.1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith         8 A1    A         11.8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith         9 A1    A         22.1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Disrupt… Event … count       10      <span style="color: #BB0000;">NA</span> Faith        10 B1    B          4.99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 162 more rows, 4 more variables: Phase_num &lt;int&gt;, direction &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   n_Intervals &lt;dbl&gt;, phase_pair &lt;int&gt;, and abbreviated variable names</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ¹​Behavior_type, ²​Procedure, ³​Session_length, ⁴​Interval_length,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁵​Case_pseudonym, ⁶​Session_number, ⁷​Condition</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -163,7 +164,7 @@ before calculating phase pairs.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

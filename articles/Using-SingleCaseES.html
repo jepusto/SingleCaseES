@@ -90,10 +90,12 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Basic effect sizes calculations using SingleCaseES</h1>
-                        <h4 data-toc-skip class="author">Daniel M. Swan, James E. Pustejovsky, and Paulina Grekov</h4>
+      <h1 data-toc-skip>Basic effect sizes calculations using
+SingleCaseES</h1>
+                        <h4 data-toc-skip class="author">Daniel M. Swan,
+James E. Pustejovsky, and Paulina Grekov</h4>
             
-            <h4 data-toc-skip class="date">2022-07-07</h4>
+            <h4 data-toc-skip class="date">2022-12-19</h4>
       
       
       <div class="hidden name"><code>Using-SingleCaseES.Rmd</code></div>
@@ -102,24 +104,44 @@
 
     
     
-<p>The <code>SingleCaseES</code> package provides R functions for calculating basic, within-case effect size indices for single-case designs, including several non-overlap measures and parametric effect size measures, and for estimating the gradual effects model <span class="citation">(<a href="#ref-Swan2018gradual" role="doc-biblioref">Swan &amp; Pustejovsky, 2018</a>)</span>. Standard errors and confidence intervals are provided for the subset of effect sizes indices with known sampling distributions.</p>
-<p>The package also includes two graphical user interfaces for interactive use (designed using <a href="https://shiny.rstudio.com/" class="external-link">Shiny</a>), both of which are also available as web apps hosted through <a href="https://www.shinyapps.io/" class="external-link">shinyapps.io</a>:</p>
+<p>The <code>SingleCaseES</code> package provides R functions for
+calculating basic, within-case effect size indices for single-case
+designs, including several non-overlap measures and parametric effect
+size measures, and for estimating the gradual effects model <span class="citation">(<a href="#ref-Swan2018gradual" role="doc-biblioref">Swan &amp; Pustejovsky, 2018</a>)</span>. Standard
+errors and confidence intervals are provided for the subset of effect
+sizes indices with known sampling distributions.</p>
+<p>The package also includes two graphical user interfaces for
+interactive use (designed using <a href="https://shiny.rstudio.com/" class="external-link">Shiny</a>), both of which are also
+available as web apps hosted through <a href="https://www.shinyapps.io/" class="external-link">shinyapps.io</a>:</p>
 <ul>
 <li>
-<code><a href="../reference/SCD_effect_sizes.html">SCD_effect_sizes()</a></code> opens an interactive calculator for the basic non-overlap indices and parametric effect sizes. It is also available at <a href="https://jepusto.shinyapps.io/SCD-effect-sizes" class="external-link uri">https://jepusto.shinyapps.io/SCD-effect-sizes</a>
+<code><a href="../reference/SCD_effect_sizes.html">SCD_effect_sizes()</a></code> opens an interactive calculator for
+the basic non-overlap indices and parametric effect sizes. It is also
+available at <a href="https://jepusto.shinyapps.io/SCD-effect-sizes" class="external-link uri">https://jepusto.shinyapps.io/SCD-effect-sizes</a>
 </li>
 <li>
-<code><a href="../reference/shine_gem_scd.html">shine_gem_scd()</a></code> opens an interactive calculator for the gradual effects model. It is also available at <a href="https://jepusto.shinyapps.io/gem-scd" class="external-link uri">https://jepusto.shinyapps.io/gem-scd</a>
+<code><a href="../reference/shine_gem_scd.html">shine_gem_scd()</a></code> opens an interactive calculator for the
+gradual effects model. It is also available at <a href="https://jepusto.shinyapps.io/gem-scd" class="external-link uri">https://jepusto.shinyapps.io/gem-scd</a>
 </li>
 </ul>
-<p>In this vignette, we introduce the package’s primary functions for carrying out effect size calculations. We demonstrate how to use the functions for calculating an effect size from a single data series, how to use the <code><a href="../reference/calc_ES.html">calc_ES()</a></code> function for calculating multiple effect sizes from a single data series, and how to use <code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code> for calculating one or multiple effect sizes from multiple data series.</p>
+<p>In this vignette, we introduce the package’s primary functions for
+carrying out effect size calculations. We demonstrate how to use the
+functions for calculating an effect size from a single data series, how
+to use the <code><a href="../reference/calc_ES.html">calc_ES()</a></code> function for calculating multiple
+effect sizes from a single data series, and how to use
+<code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code> for calculating one or multiple effect
+sizes from multiple data series.</p>
 <p>To start, be sure to load the package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jepusto.github.io/SingleCaseES/">SingleCaseES</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="individual-effect-size-functions">Individual effect size functions<a class="anchor" aria-label="anchor" href="#individual-effect-size-functions"></a>
 </h2>
-<p>The <code>SingleCaseES</code> package includes functions for calculating the major non-overlap measures that have been proposed for use with single-case designs, as well as several parametric effect size measures. The following non-overlap measures are available (function names are listed in parentheses):</p>
+<p>The <code>SingleCaseES</code> package includes functions for
+calculating the major non-overlap measures that have been proposed for
+use with single-case designs, as well as several parametric effect size
+measures. The following non-overlap measures are available (function
+names are listed in parentheses):</p>
 <ul>
 <li>Percentage of non-overlapping data (<code>PND</code>)</li>
 <li>Percentage of all non-overlapping data (<code>PAND</code>)</li>
@@ -128,61 +150,91 @@
 <li>Non-overlap of all pairs (<code>NAP</code>)</li>
 <li>Tau non-overlap (<code>Tau</code>)</li>
 <li>Baseline-corrected Tau (<code>Tau_BC</code>)</li>
-<li>Tau-U, which includes baseline trend adjustment (<code>Tau_U</code>)</li>
+<li>Tau-U, which includes baseline trend adjustment
+(<code>Tau_U</code>)</li>
 </ul>
 <p>The following parametric effect sizes are available:</p>
 <ul>
 <li>Within-case standardized mean difference (<code>SMD</code>)</li>
-<li>The increasing and decreasing versions of the log response ratio (<code>LRRi</code> and <code>LRRd</code>)</li>
+<li>The increasing and decreasing versions of the log response ratio
+(<code>LRRi</code> and <code>LRRd</code>)</li>
 <li>Log odds ratio (<code>LOR</code>)</li>
 <li>Log ratio of medians (<code>LRM</code>)</li>
 </ul>
-<p>All of the functions for calculating individual effect sizes follow the same syntax. For demonstration purposes, let’s take a look at the syntax for <code><a href="../reference/NAP.html">NAP()</a></code>, which calculates the non-overlap of all pairs <span class="citation">(<a href="#ref-parker2009improved" role="doc-biblioref">Parker &amp; Vannest, 2009</a>)</span>:</p>
+<p>All of the functions for calculating individual effect sizes follow
+the same syntax. For demonstration purposes, let’s take a look at the
+syntax for <code><a href="../reference/NAP.html">NAP()</a></code>, which calculates the non-overlap of all
+pairs <span class="citation">(<a href="#ref-parker2009improved" role="doc-biblioref">Parker &amp; Vannest, 2009</a>)</span>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html" class="external-link">args</a></span><span class="op">(</span><span class="va">NAP</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (A_data, B_data, condition, outcome, baseline_phase = NULL, </span></span>
 <span><span class="co">#&gt;     intervention_phase = NULL, improvement = "increase", SE = "unbiased", </span></span>
 <span><span class="co">#&gt;     confidence = 0.95, trunc_const = FALSE) </span></span>
 <span><span class="co">#&gt; NULL</span></span></code></pre></div>
-<p>We will first demonstrate two methods for inputting data from a single SCD series, then explain the further arguments of the function.</p>
+<p>We will first demonstrate two methods for inputting data from a
+single SCD series, then explain the further arguments of the
+function.</p>
 <div class="section level3">
 <h3 id="inputting-data">Inputting data<a class="anchor" aria-label="anchor" href="#inputting-data"></a>
 </h3>
-<p>There are two formats in which data can be provided to the functions: the <code>A_data</code> and <code>B_data</code> inputs, or the <code>condition</code> and <code>outcome</code> inputs. Both formats can be used for any of the non-overlap or parametric measures.</p>
+<p>There are two formats in which data can be provided to the functions:
+the <code>A_data</code> and <code>B_data</code> inputs, or the
+<code>condition</code> and <code>outcome</code> inputs. Both formats can
+be used for any of the non-overlap or parametric measures.</p>
 <div class="section level4">
 <h4 id="using-the-a_data-b_data-inputs">Using the <code>A_data</code>, <code>B_data</code> inputs<a class="anchor" aria-label="anchor" href="#using-the-a_data-b_data-inputs"></a>
 </h4>
-<p>The first input format involves providing separate vectors for the data from each phase, where A corresponds to the baseline phase and B corresponds to the treatment phase.</p>
-<p>Here are some hypothetical data from the A and B phases of a single-case data series:</p>
+<p>The first input format involves providing separate vectors for the
+data from each phase, where A corresponds to the baseline phase and B
+corresponds to the treatment phase.</p>
+<p>Here are some hypothetical data from the A and B phases of a
+single-case data series:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
 <span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span></code></pre></div>
-<p>We can feed these data into the <code>NAP</code> function as follows:</p>
+<p>We can feed these data into the <code>NAP</code> function as
+follows:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/NAP.html">NAP</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES       Est         SE  CI_lower  CI_upper</span></span>
 <span><span class="co">#&gt; 1 NAP 0.9166667 0.06900656 0.5973406 0.9860176</span></span></code></pre></div>
-<p>The result reports the NAP effect size estimate for these hypothetical data, along with a standard error and a 95% confidence interval.</p>
+<p>The result reports the NAP effect size estimate for these
+hypothetical data, along with a standard error and a 95% confidence
+interval.</p>
 </div>
 <div class="section level4">
 <h4 id="using-the-condition-outcome-inputs">Using the <code>condition</code>, <code>outcome</code> inputs<a class="anchor" aria-label="anchor" href="#using-the-condition-outcome-inputs"></a>
 </h4>
-<p>The second input format involves providing a single vector containing <em>all</em> of the outcome data from the series, along with a vector that describes the phase of each observation in the data. For example, the hypothetical data above contains 6 baseline phase observations and 7 treatment phase observations. Therefore, the <code>condition</code> input should consist of six entries of <code>'A'</code> followed by seven entries of <code>'B'</code>:</p>
+<p>The second input format involves providing a single vector containing
+<em>all</em> of the outcome data from the series, along with a vector
+that describes the phase of each observation in the data. For example,
+the hypothetical data above contains 6 baseline phase observations and 7
+treatment phase observations. Therefore, the <code>condition</code>
+input should consist of six entries of <code>'A'</code> followed by
+seven entries of <code>'B'</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="fl">6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="fl">7</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">phase</span></span>
 <span><span class="co">#&gt;  [1] "A" "A" "A" "A" "A" "A" "B" "B" "B" "B" "B" "B" "B"</span></span></code></pre></div>
-<p>This format also requires providing a single vector containing all of the outcome data from the series. Here is the hypothetical data from above, reformatted to follow this structure:</p>
+<p>This format also requires providing a single vector containing all of
+the outcome data from the series. Here is the hypothetical data from
+above, reformatted to follow this structure:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outcome_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span>
 <span><span class="va">outcome_dat</span></span>
 <span><span class="co">#&gt;  [1] 20 20 26 25 22 23 28 25 24 27 30 30 29</span></span></code></pre></div>
-<p>We can feed these data into the <code>NAP</code> function as follows:</p>
+<p>We can feed these data into the <code>NAP</code> function as
+follows:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/NAP.html">NAP</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="va">phase</span>, outcome <span class="op">=</span> <span class="va">outcome_dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES       Est         SE  CI_lower  CI_upper</span></span>
 <span><span class="co">#&gt; 1 NAP 0.9166667 0.06900656 0.5973406 0.9860176</span></span></code></pre></div>
-<p>It’s important to note a few further distinctions that can be made when using the <code>condition</code> and <code>outcome</code> inputs. If the vector provided to <code>condition</code> has more than two values, the effect size function will assume that the first value of <code>condition</code> is the baseline phase and the second unique value of <code>condition</code> is the intervention phase.</p>
+<p>It’s important to note a few further distinctions that can be made
+when using the <code>condition</code> and <code>outcome</code> inputs.
+If the vector provided to <code>condition</code> has more than two
+values, the effect size function will assume that the first value of
+<code>condition</code> is the baseline phase and the second unique value
+of <code>condition</code> is the intervention phase.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phase2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"C"</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NAP.html">NAP</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="va">phase2</span>, outcome <span class="op">=</span> <span class="va">outcome_dat</span><span class="op">)</span></span>
@@ -191,14 +243,21 @@
 <span><span class="co">#&gt; intervention phase.</span></span>
 <span><span class="co">#&gt;    ES  Est    SE  CI_lower  CI_upper</span></span>
 <span><span class="co">#&gt; 1 NAP 0.78 0.155 0.4115567 0.9423658</span></span></code></pre></div>
-<p>In some single-case data series, the initial observation might not be in the baseline phase. For example, an SCD with four cases might use a cross-over treatment reversal design, where two of the cases follow an ABAB design and the other two cases follow a BABA design. To handle this situation, we will need to specify the baseline phase using the <code>baseline_phase</code> argument:</p>
+<p>In some single-case data series, the initial observation might not be
+in the baseline phase. For example, an SCD with four cases might use a
+cross-over treatment reversal design, where two of the cases follow an
+ABAB design and the other two cases follow a BABA design. To handle this
+situation, we will need to specify the baseline phase using the
+<code>baseline_phase</code> argument:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phase_rev</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="fl">7</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcome_rev</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">B</span>, <span class="va">A</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/NAP.html">NAP</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="va">phase_rev</span>, outcome <span class="op">=</span> <span class="va">outcome_rev</span>, baseline_phase <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES       Est         SE  CI_lower  CI_upper</span></span>
 <span><span class="co">#&gt; 1 NAP 0.9166667 0.06900656 0.5973406 0.9860176</span></span></code></pre></div>
-<p>In data series that include more than two unique phases, it is also possible to specify which one should be used as the intervention phase using the <code>intervention_phase</code> argument:</p>
+<p>In data series that include more than two unique phases, it is also
+possible to specify which one should be used as the intervention phase
+using the <code>intervention_phase</code> argument:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/NAP.html">NAP</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="va">phase2</span>, outcome <span class="op">=</span> <span class="va">outcome_dat</span>, </span>
 <span>    baseline_phase <span class="op">=</span> <span class="st">"A"</span>, intervention_phase <span class="op">=</span> <span class="st">"C"</span><span class="op">)</span></span>
@@ -214,17 +273,31 @@
 <div class="section level3">
 <h3 id="direction-of-improvement">Direction of improvement<a class="anchor" aria-label="anchor" href="#direction-of-improvement"></a>
 </h3>
-<p>All of the effect size functions in <code>SingleCaseES</code> are defined based on some assumption about the direction of therapeutic improvement in the outcome (e.g., improvement would correspond to <em>increases</em> in on-task behavior but to <em>decreases</em> in aggressive behavior). For all of the effect size functions, it is important to specify the direction of therapeutic improvement for the data series by providing a value for the <code>improvement</code> argument, either “increase” or “decrease”:</p>
+<p>All of the effect size functions in <code>SingleCaseES</code> are
+defined based on some assumption about the direction of therapeutic
+improvement in the outcome (e.g., improvement would correspond to
+<em>increases</em> in on-task behavior but to <em>decreases</em> in
+aggressive behavior). For all of the effect size functions, it is
+important to specify the direction of therapeutic improvement for the
+data series by providing a value for the <code>improvement</code>
+argument, either “increase” or “decrease”:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/NAP.html">NAP</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, improvement <span class="op">=</span> <span class="st">"decrease"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES        Est         SE   CI_lower  CI_upper</span></span>
 <span><span class="co">#&gt; 1 NAP 0.08333333 0.06900656 0.01398242 0.4026594</span></span></code></pre></div>
-<p>The <code><a href="../reference/NAP.html">NAP()</a></code> function and most of the other effect size functions default to assuming that increases in the outcome correspond to improvements.</p>
+<p>The <code><a href="../reference/NAP.html">NAP()</a></code> function and most of the other effect size
+functions default to assuming that increases in the outcome correspond
+to improvements.</p>
 </div>
 <div class="section level3">
 <h3 id="standard-error-and-confidence-intervals">Standard error and confidence intervals<a class="anchor" aria-label="anchor" href="#standard-error-and-confidence-intervals"></a>
 </h3>
-<p>The <code>NAP</code>, <code>Tau</code>, and <code>Tau_BC</code> functions provide several possible methods for calculating the standard error. By default, the exactly unbiased standard errors are used. However, the function can also produce standard errors using the Hanley-McNeil estimator, the standard error under the null hypothesis of no effect, or no standard errors at all:</p>
+<p>The <code>NAP</code>, <code>Tau</code>, and <code>Tau_BC</code>
+functions provide several possible methods for calculating the standard
+error. By default, the exactly unbiased standard errors are used.
+However, the function can also produce standard errors using the
+Hanley-McNeil estimator, the standard error under the null hypothesis of
+no effect, or no standard errors at all:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/NAP.html">NAP</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, SE <span class="op">=</span> <span class="st">"unbiased"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES       Est         SE  CI_lower  CI_upper</span></span>
@@ -241,7 +314,11 @@
 <span><span class="fu"><a href="../reference/NAP.html">NAP</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, SE <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES       Est</span></span>
 <span><span class="co">#&gt; 1 NAP 0.9166667</span></span></code></pre></div>
-<p>The functions also produce confidnece intervals for NAP, Tau, and Tau_BC. By default, a 95% CI is calculated. This can be adjusted by setting the <code>confidence</code> argument to a value between 0 and 1. To omit the confidence interval all together, set the value to <code>NULL</code>:</p>
+<p>The functions also produce confidnece intervals for NAP, Tau, and
+Tau_BC. By default, a 95% CI is calculated. This can be adjusted by
+setting the <code>confidence</code> argument to a value between 0 and 1.
+To omit the confidence interval all together, set the value to
+<code>NULL</code>:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/NAP.html">NAP</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES       Est         SE  CI_lower  CI_upper</span></span>
@@ -262,7 +339,19 @@
 <div class="section level3">
 <h3 id="other-non-overlap-indices">Other non-overlap indices<a class="anchor" aria-label="anchor" href="#other-non-overlap-indices"></a>
 </h3>
-<p>The <code>SingleCaseES</code> package includes functions for calculating several other non-overlap indices in addition to NAP. All of the functions accept data in either the <code>A_data</code>, <code>B_data</code> format or the <code>condition</code>, <code>outcome</code> format with optional baseline specification, and all of the functions include an argument to specify the direction of improvement. Like the function for NAP, the functions for Tau (<code>Tau</code>) and baseline-corrected Tau (<code>Tau_BC</code>) can produce unbiased standard errors, Hanley-McNeil standard errors, standard errors under the null hypothesis of no effect, or no standard errors at all. Only <code>NAP</code>, <code>Tau</code>, and <code>Tau_BC</code> return standard errors and confidence intervals. The remaining non-overlap measures return only a point estimate:</p>
+<p>The <code>SingleCaseES</code> package includes functions for
+calculating several other non-overlap indices in addition to NAP. All of
+the functions accept data in either the <code>A_data</code>,
+<code>B_data</code> format or the <code>condition</code>,
+<code>outcome</code> format with optional baseline specification, and
+all of the functions include an argument to specify the direction of
+improvement. Like the function for NAP, the functions for Tau
+(<code>Tau</code>) and baseline-corrected Tau (<code>Tau_BC</code>) can
+produce unbiased standard errors, Hanley-McNeil standard errors,
+standard errors under the null hypothesis of no effect, or no standard
+errors at all. Only <code>NAP</code>, <code>Tau</code>, and
+<code>Tau_BC</code> return standard errors and confidence intervals. The
+remaining non-overlap measures return only a point estimate:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Tau.html">Tau</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES       Est        SE  CI_lower  CI_upper</span></span>
@@ -289,7 +378,17 @@
 <div class="section level3">
 <h3 id="further-options-for-smd">Further options for <code>SMD()</code><a class="anchor" aria-label="anchor" href="#further-options-for-smd"></a>
 </h3>
-<p>The standardized mean difference parameter is defined as the difference between the mean level of the outcome in phase B and the mean level of the outcome in phase A, scaled by the within-case standard deviation of the outcome in phase A. As with all functions discussed so far, the <code><a href="../reference/SMD.html">SMD()</a></code> function accepts data in either the <code>A_data</code>, <code>B_data</code> format or the <code>condition</code>, <code>outcome</code> format with optional baseline phase specification. In addition, direction of improvement can be specified as discussed above, with “increase” being the default. Changing the direction of the improvement does not change the magnitude of the effect size, but does change its sign:</p>
+<p>The standardized mean difference parameter is defined as the
+difference between the mean level of the outcome in phase B and the mean
+level of the outcome in phase A, scaled by the within-case standard
+deviation of the outcome in phase A. As with all functions discussed so
+far, the <code><a href="../reference/SMD.html">SMD()</a></code> function accepts data in either the
+<code>A_data</code>, <code>B_data</code> format or the
+<code>condition</code>, <code>outcome</code> format with optional
+baseline phase specification. In addition, direction of improvement can
+be specified as discussed above, with “increase” being the default.
+Changing the direction of the improvement does not change the magnitude
+of the effect size, but does change its sign:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, improvement <span class="op">=</span> <span class="st">"increase"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper baseline_SD</span></span>
@@ -298,7 +397,11 @@
 <span><span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, improvement <span class="op">=</span> <span class="st">"decrease"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES       Est        SE  CI_lower   CI_upper baseline_SD</span></span>
 <span><span class="co">#&gt; 1 SMD -1.649932 0.6340935 -2.892732 -0.4071314    2.503331</span></span></code></pre></div>
-<p>The <code>std_dev</code> argument controls whether the effect size estimate is based on the standard deviation of the baseline phase alone (the default, <code>std_dev = "baseline"</code>), or based on the standard deviation after pooling across both phases (<code>std_dev = "pool"</code>):</p>
+<p>The <code>std_dev</code> argument controls whether the effect size
+estimate is based on the standard deviation of the baseline phase alone
+(the default, <code>std_dev = "baseline"</code>), or based on the
+standard deviation after pooling across both phases
+(<code>std_dev = "pool"</code>):</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, std_dev <span class="op">=</span> <span class="st">"baseline"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper baseline_SD</span></span>
@@ -306,30 +409,81 @@
 <span><span class="fu"><a href="../reference/SMD.html">SMD</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, std_dev <span class="op">=</span> <span class="st">"pool"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper pooled_SD</span></span>
 <span><span class="co">#&gt; 1 SMD 1.876247 0.6374216 0.6269241 3.125571  2.431752</span></span></code></pre></div>
-<p>By default the <code><a href="../reference/SMD.html">SMD()</a></code> function uses the Hedges’ g bias correction for small sample sizes. The bias correction can be turned off by specifying the argument <code>bias_correct = FALSE</code>.</p>
-<p>The <code><a href="../reference/SMD.html">SMD()</a></code> function also produces a 95% confidence interval by default. This can be adjusted by setting the <code>confidence</code> argument to a value between 0 and 1. To omit the confidence interval all together, set the argument to <code>confidence = NULL</code>.</p>
+<p>By default the <code><a href="../reference/SMD.html">SMD()</a></code> function uses the Hedges’ g bias
+correction for small sample sizes. The bias correction can be turned off
+by specifying the argument <code>bias_correct = FALSE</code>.</p>
+<p>The <code><a href="../reference/SMD.html">SMD()</a></code> function also produces a 95% confidence
+interval by default. This can be adjusted by setting the
+<code>confidence</code> argument to a value between 0 and 1. To omit the
+confidence interval all together, set the argument to
+<code>confidence = NULL</code>.</p>
 </div>
 <div class="section level3">
-<h3 id="further-options-for-log-response-ratios-lrri-and-lrrd">Further options for log response ratios (<code>LRRi()</code> and <code>LRRd()</code>)<a class="anchor" aria-label="anchor" href="#further-options-for-log-response-ratios-lrri-and-lrrd"></a>
+<h3 id="further-options-for-log-response-ratios-lrri-and-lrrd">Further options for log response ratios (<code>LRRi()</code> and
+<code>LRRd()</code>)<a class="anchor" aria-label="anchor" href="#further-options-for-log-response-ratios-lrri-and-lrrd"></a>
 </h3>
-<p>The response ratio parameter is the ratio of the mean level of the outcome during phase B to the mean level of the outcome during phase A. The log response ratio is the natural logarithm of the response ratio. This effect size is appropriate for outcomes measured on a ratio scale, such that zero corresponds to the true absence of the outcome.</p>
+<p>The response ratio parameter is the ratio of the mean level of the
+outcome during phase B to the mean level of the outcome during phase A.
+The log response ratio is the natural logarithm of the response ratio.
+This effect size is appropriate for outcomes measured on a ratio scale,
+such that zero corresponds to the true absence of the outcome.</p>
 <div class="section level4">
 <h4 id="direction-of-improvement-1">Direction of improvement<a class="anchor" aria-label="anchor" href="#direction-of-improvement-1"></a>
 </h4>
 <p>The package includes two versions of the LRR:</p>
 <ul>
-<li><p>LRR-increasing (<code><a href="../reference/LRR.html">LRRi()</a></code>) is defined so that positive values correspond to therapeutic improvements</p></li>
-<li><p>LRR-decreasing (<code><a href="../reference/LRR.html">LRRd()</a></code>) is defined so that negative values correspond to therapeutic improvements.</p></li>
+<li><p>LRR-increasing (<code><a href="../reference/LRR.html">LRRi()</a></code>) is defined so that positive
+values correspond to therapeutic improvements</p></li>
+<li><p>LRR-decreasing (<code><a href="../reference/LRR.html">LRRd()</a></code>) is defined so that negative
+values correspond to therapeutic improvements.</p></li>
 </ul>
-<p>If you are estimating an effect size for a single series, pick the version of LRR that corresponds to the therapeutic improvement expected for your dependent variable. Similarly, if you are estimating effect sizes for a set of SCD series with the same therapeutic direction, pick the version that corresponds to your intervention’s expected change.</p>
-<p>If you are estimating effect sizes for interventions where the direction of improvement depends upon the series or study, the choice between LRRi and LRRd is slightly more involved.</p>
-<p>For example, imagine we have ten studies to meta-analyze. For eight studies, the outcome are initiations of peer interaction, so therapeutic improvements correspond to increases in behavior. For the other two studies, the outcomes were episodes of verbal aggression towards peers, so the therapeutic direction was a decrease. In this context it would be sensible to pick the <code><a href="../reference/LRR.html">LRRi()</a></code> function, because most of the outcomes are positively valenced. For the final two studies, we would specify <code>improvement = "decrease"</code>, which would ensure that the sign and magnitude of the outcomes were consistent with the direction of therapeutic improvement (i.e. a larger log-ratio represents a larger change in the desired direction). Conversely, if most of the outcomes had a negative valence and only a few had a positive valence, then we would use <code><a href="../reference/LRR.html">LRRd()</a></code> and we would specify <code>improvement = "increase"</code> for the few series that had positive-valence outcomes.</p>
+<p>If you are estimating an effect size for a single series, pick the
+version of LRR that corresponds to the therapeutic improvement expected
+for your dependent variable. Similarly, if you are estimating effect
+sizes for a set of SCD series with the same therapeutic direction, pick
+the version that corresponds to your intervention’s expected change.</p>
+<p>If you are estimating effect sizes for interventions where the
+direction of improvement depends upon the series or study, the choice
+between LRRi and LRRd is slightly more involved.</p>
+<p>For example, imagine we have ten studies to meta-analyze. For eight
+studies, the outcome are initiations of peer interaction, so therapeutic
+improvements correspond to increases in behavior. For the other two
+studies, the outcomes were episodes of verbal aggression towards peers,
+so the therapeutic direction was a decrease. In this context it would be
+sensible to pick the <code><a href="../reference/LRR.html">LRRi()</a></code> function, because most of the
+outcomes are positively valenced. For the final two studies, we would
+specify <code>improvement = "decrease"</code>, which would ensure that
+the sign and magnitude of the outcomes were consistent with the
+direction of therapeutic improvement (i.e. a larger log-ratio represents
+a larger change in the desired direction). Conversely, if most of the
+outcomes had a negative valence and only a few had a positive valence,
+then we would use <code><a href="../reference/LRR.html">LRRd()</a></code> and we would specify
+<code>improvement = "increase"</code> for the few series that had
+positive-valence outcomes.</p>
 </div>
 <div class="section level4">
 <h4 id="outcome-scale">Outcome scale<a class="anchor" aria-label="anchor" href="#outcome-scale"></a>
 </h4>
-<p>LRR differs from other effect size indices for single-case designs in that calculating it involves some further information about how the outcome variable was measured. One important piece of information to know is the scale of the outcome measurements. For outcomes that are measured by frequency counting, the scale might be expressed as a raw count (<code>scale = "count"</code>) or as a standardized rate per minute (<code>scale = "rate"</code>). For outcomes that are measures of state behavior, where the main dimension of interest is the proportion of time that the behavior occurs, the scale might be expressed as a percentage (ranging from 0 to 100%; <code>scale = "percentage"</code>) or as a proportion (ranging from 0 to 1; <code>scale = "proportion"</code>). For outcomes that don’t fit into any of these categories, set <code>scale = "other"</code>.</p>
-<p>The scale of the outcome variable has two important implications for how log response ratios are estimated. First, outcomes measured as percentages or proportions need to be coded so that the direction of therapeutic improvement is consistent with the direction of the effect size. Consequently, changing the improvement direction will alter the <em>magnitude</em>, in addition to the sign, of the effect size <span class="citation">(see <a href="#ref-pustejovsky2018using" role="doc-biblioref">Pustejovsky, 2018, pp. 16–18</a> for further details)</span>. Here is an example:</p>
+<p>LRR differs from other effect size indices for single-case designs in
+that calculating it involves some further information about how the
+outcome variable was measured. One important piece of information to
+know is the scale of the outcome measurements. For outcomes that are
+measured by frequency counting, the scale might be expressed as a raw
+count (<code>scale = "count"</code>) or as a standardized rate per
+minute (<code>scale = "rate"</code>). For outcomes that are measures of
+state behavior, where the main dimension of interest is the proportion
+of time that the behavior occurs, the scale might be expressed as a
+percentage (ranging from 0 to 100%; <code>scale = "percentage"</code>)
+or as a proportion (ranging from 0 to 1;
+<code>scale = "proportion"</code>). For outcomes that don’t fit into any
+of these categories, set <code>scale = "other"</code>.</p>
+<p>The scale of the outcome variable has two important implications for
+how log response ratios are estimated. First, outcomes measured as
+percentages or proportions need to be coded so that the direction of
+therapeutic improvement is consistent with the direction of the effect
+size. Consequently, changing the improvement direction will alter the
+<em>magnitude</em>, in addition to the sign, of the effect size <span class="citation">(see <a href="#ref-pustejovsky2018using" role="doc-biblioref">Pustejovsky, 2018, pp. 16–18</a> for further
+details)</span>. Here is an example:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
 <span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
@@ -341,8 +495,13 @@
 <span><span class="fu"><a href="../reference/LRR.html">LRRi</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, improvement <span class="op">=</span> <span class="st">"decrease"</span>, scale <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     ES         Est         SE   CI_lower    CI_upper</span></span>
 <span><span class="co">#&gt; 1 LRRi -0.06553504 0.01810144 -0.1010132 -0.03005687</span></span></code></pre></div>
-<p>Assuming that improvements correspond to increases, the LRRi value is positive and equal to 0.2. Assuming that improvements correspond to decreases, the LRRi value is negative and smaller in magnitude, equal to -0.07.</p>
-<p>Note that if the outcome is a count (the default for both LRR functions) or rate, changing the improvement direction merely changes the sign of the effect size:</p>
+<p>Assuming that improvements correspond to increases, the LRRi value is
+positive and equal to 0.2. Assuming that improvements correspond to
+decreases, the LRRi value is negative and smaller in magnitude, equal to
+-0.07.</p>
+<p>Note that if the outcome is a count (the default for both LRR
+functions) or rate, changing the improvement direction merely changes
+the sign of the effect size:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
 <span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
@@ -353,7 +512,13 @@
 <span><span class="fu"><a href="../reference/LRR.html">LRRi</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, scale <span class="op">=</span> <span class="st">"count"</span>, improvement <span class="op">=</span> <span class="st">"decrease"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     ES        Est         SE   CI_lower    CI_upper</span></span>
 <span><span class="co">#&gt; 1 LRRi -0.1953962 0.05557723 -0.3043255 -0.08646679</span></span></code></pre></div>
-<p>The scale of the outcome has one further important implication. To account for the possibility of a sample mean of zero, the <code><a href="../reference/LRR.html">LRRd()</a></code> and <code><a href="../reference/LRR.html">LRRi()</a></code> functions use a truncated sample mean, where the truncation level is determined by the scale of the outcome and some further details of how the outcomes were measured. For rates, the truncated mean requires specifying the length of the observation session in minutes:</p>
+<p>The scale of the outcome has one further important implication. To
+account for the possibility of a sample mean of zero, the
+<code><a href="../reference/LRR.html">LRRd()</a></code> and <code><a href="../reference/LRR.html">LRRi()</a></code> functions use a truncated
+sample mean, where the truncation level is determined by the scale of
+the outcome and some further details of how the outcomes were measured.
+For rates, the truncated mean requires specifying the length of the
+observation session in minutes:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
@@ -363,8 +528,14 @@
 <span><span class="fu"><a href="../reference/LRR.html">LRRd</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, scale <span class="op">=</span> <span class="st">"rate"</span>, observation_length <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     ES      Est        SE CI_lower CI_upper</span></span>
 <span><span class="co">#&gt; 1 LRRd 8.672947 0.5010548 7.690897 9.654996</span></span></code></pre></div>
-<p>If no additional information is provided and there is a sample mean of 0, the function returns a value of <code>NaN</code>.</p>
-<p>For outcomes specified as percentages or proportions, the argument <code>intervals</code> must be supplied. For interval recording methods such as partial interval recording or momentary time sampling, provide the number of intervals. For continuous recording, set <code>intervals</code> equal to 60 times the length of the observation session in minutes:</p>
+<p>If no additional information is provided and there is a sample mean
+of 0, the function returns a value of <code>NaN</code>.</p>
+<p>For outcomes specified as percentages or proportions, the argument
+<code>intervals</code> must be supplied. For interval recording methods
+such as partial interval recording or momentary time sampling, provide
+the number of intervals. For continuous recording, set
+<code>intervals</code> equal to 60 times the length of the observation
+session in minutes:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/LRR.html">LRRd</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, scale <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     ES Est  SE CI_lower CI_upper</span></span>
@@ -372,19 +543,33 @@
 <span><span class="fu"><a href="../reference/LRR.html">LRRd</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, scale <span class="op">=</span> <span class="st">"percentage"</span>, intervals <span class="op">=</span> <span class="fl">180</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     ES      Est        SE CI_lower CI_upper</span></span>
 <span><span class="co">#&gt; 1 LRRd 5.859536 0.5010548 4.877487 6.841586</span></span></code></pre></div>
-<p>You can also specify your own value for the constant used to truncate the sample mean using the <code>D_const</code> argument. If a vector, the mean will be used.</p>
+<p>You can also specify your own value for the constant used to truncate
+the sample mean using the <code>D_const</code> argument. If a vector,
+the mean will be used.</p>
 </div>
 <div class="section level4">
 <h4 id="additional-arguments">Additional arguments<a class="anchor" aria-label="anchor" href="#additional-arguments"></a>
 </h4>
-<p>Both LRR functions return a effect size that has been bias-corrected for small sample sizes by default. To omit the bias correction, set <code>bias_correct = FALSE</code>. Finally, as with the non-overlap measures, the <code>confidence</code> argument can be used to change the default 95% confidence interval, or set to <code>NULL</code> to omit confidence interval calculations.</p>
+<p>Both LRR functions return a effect size that has been bias-corrected
+for small sample sizes by default. To omit the bias correction, set
+<code>bias_correct = FALSE</code>. Finally, as with the non-overlap
+measures, the <code>confidence</code> argument can be used to change the
+default 95% confidence interval, or set to <code>NULL</code> to omit
+confidence interval calculations.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="further-options-for-lor">Further options for <code>LOR()</code><a class="anchor" aria-label="anchor" href="#further-options-for-lor"></a>
 </h3>
-<p>The odds ratio parameter is the ratio of the odds that the outcome occurs during phase B to the odds that the outcome occurs during phase A. The log-odds ratio (LOR) is the natural logarithm of the odds ratio. This effect size is appropriate for outcomes measured on a percentage or proportion scale. The <code><a href="../reference/LOR.html">LOR()</a></code> function works almost identically to the <code><a href="../reference/LRR.html">LRRi()</a></code> and <code><a href="../reference/LRR.html">LRRd()</a></code> functions, but there are a few exceptions.</p>
-<p>The <code><a href="../reference/LOR.html">LOR()</a></code> function only works with outcomes that are on proportion or percentage scales:</p>
+<p>The odds ratio parameter is the ratio of the odds that the outcome
+occurs during phase B to the odds that the outcome occurs during phase
+A. The log-odds ratio (LOR) is the natural logarithm of the odds ratio.
+This effect size is appropriate for outcomes measured on a percentage or
+proportion scale. The <code><a href="../reference/LOR.html">LOR()</a></code> function works almost
+identically to the <code><a href="../reference/LRR.html">LRRi()</a></code> and <code><a href="../reference/LRR.html">LRRd()</a></code>
+functions, but there are a few exceptions.</p>
+<p>The <code><a href="../reference/LOR.html">LOR()</a></code> function only works with outcomes that are on
+proportion or percentage scales:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A_pct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">25</span>, <span class="fl">25</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span></span>
 <span><span class="va">B_pct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">25</span>, <span class="fl">25</span>, <span class="fl">25</span>, <span class="fl">35</span>, <span class="fl">30</span>, <span class="fl">25</span><span class="op">)</span></span>
@@ -405,7 +590,12 @@
 <span></span>
 <span><span class="fu"><a href="../reference/LOR.html">LOR</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A_pct</span>, B_data <span class="op">=</span> <span class="va">B_pct</span>, scale <span class="op">=</span> <span class="st">"proportion"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in calc_LOR(A_data = c(20, 20, 25, 25, 20, 25), B_data = c(30, 25, : Proportions must be between 0 and 1!</span></span></code></pre></div>
-<p>As with the LRR functions, <code><a href="../reference/LOR.html">LOR()</a></code> includes an argument to specify the direction of therapeutic improvement, with the default assumption being that a therapeutic improvement is an increase in the behavior. In contrast to LRRi and LRRd, changing the direction of therapeutic improvement only reverses the sign of the LOR, but does not change its absolute magnitude:</p>
+<p>As with the LRR functions, <code><a href="../reference/LOR.html">LOR()</a></code> includes an argument to
+specify the direction of therapeutic improvement, with the default
+assumption being that a therapeutic improvement is an increase in the
+behavior. In contrast to LRRi and LRRd, changing the direction of
+therapeutic improvement only reverses the sign of the LOR, but does not
+change its absolute magnitude:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/LOR.html">LOR</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A_pct</span>, B_data <span class="op">=</span> <span class="va">B_pct</span>,</span>
 <span>    scale <span class="op">=</span> <span class="st">"percentage"</span>, improvement <span class="op">=</span> <span class="st">"increase"</span><span class="op">)</span></span>
@@ -416,7 +606,11 @@
 <span>    scale <span class="op">=</span> <span class="st">"percentage"</span>, improvement <span class="op">=</span> <span class="st">"decrease"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES        Est         SE   CI_lower    CI_upper</span></span>
 <span><span class="co">#&gt; 1 LOR -0.2852854 0.09790282 -0.4771713 -0.09339935</span></span></code></pre></div>
-<p>Similar to the LRR functions, <code><a href="../reference/LOR.html">LOR()</a></code> will be calculated using truncated sample means for cases where phase means are close to the extremes of the scale. To use truncated means, the number of intervals per observation session must be specified using the <code>intervals</code> argument:</p>
+<p>Similar to the LRR functions, <code><a href="../reference/LOR.html">LOR()</a></code> will be calculated
+using truncated sample means for cases where phase means are close to
+the extremes of the scale. To use truncated means, the number of
+intervals per observation session must be specified using the
+<code>intervals</code> argument:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/LOR.html">LOR</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span>, B_data <span class="op">=</span> <span class="va">B_pct</span>,</span>
 <span>   scale <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span></span>
@@ -426,13 +620,27 @@
 <span>    scale <span class="op">=</span> <span class="st">"percentage"</span>, intervals <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES     Est       SE CI_lower CI_upper</span></span>
 <span><span class="co">#&gt; 1 LOR 3.60657 0.676328 2.280992 4.932149</span></span></code></pre></div>
-<p>For data measured using continuous recording, set the number of intervals equal to 60 times the length of the observation session in minutes. Just like the LRR functions, it is possible to specify your own truncation constant using the <code>D_const</code> argument. By default the <code><a href="../reference/LOR.html">LOR()</a></code> function uses a bias correction for small sample sizes, but this can be turned off by specifying the argument <code>bias_correct = FALSE</code>. The width of the confidence intervals is controlled via the <code>confidence</code> argument; set the argument to <code>confidence = NULL</code> to omit the confidence interval calculations.</p>
+<p>For data measured using continuous recording, set the number of
+intervals equal to 60 times the length of the observation session in
+minutes. Just like the LRR functions, it is possible to specify your own
+truncation constant using the <code>D_const</code> argument. By default
+the <code><a href="../reference/LOR.html">LOR()</a></code> function uses a bias correction for small sample
+sizes, but this can be turned off by specifying the argument
+<code>bias_correct = FALSE</code>. The width of the confidence intervals
+is controlled via the <code>confidence</code> argument; set the argument
+to <code>confidence = NULL</code> to omit the confidence interval
+calculations.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="calc_es">calc_ES()<a class="anchor" aria-label="anchor" href="#calc_es"></a>
 </h2>
-<p>The <code><a href="../reference/calc_ES.html">calc_ES()</a></code> function will calculate multiple effect sizes estimates for a single SCD series. Just as with the individual effect size functions, <code><a href="../reference/calc_ES.html">calc_ES()</a></code> accepts data in either the <code>A_data</code>, <code>B_data</code> format or the <code>condition</code>, <code>outcome</code> format. Here we use the <code>A_data</code>, <code>B_data</code> format:</p>
+<p>The <code><a href="../reference/calc_ES.html">calc_ES()</a></code> function will calculate multiple effect
+sizes estimates for a single SCD series. Just as with the individual
+effect size functions, <code><a href="../reference/calc_ES.html">calc_ES()</a></code> accepts data in either the
+<code>A_data</code>, <code>B_data</code> format or the
+<code>condition</code>, <code>outcome</code> format. Here we use the
+<code>A_data</code>, <code>B_data</code> format:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
 <span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
@@ -441,7 +649,8 @@
 <span><span class="co">#&gt; 1   NAP 0.9166667 0.06900656 0.5973406 0.9860176</span></span>
 <span><span class="co">#&gt; 2   PND 0.7142857         NA        NA        NA</span></span>
 <span><span class="co">#&gt; 3 Tau-U 0.7380952         NA        NA        NA</span></span></code></pre></div>
-<p>Here is the same calculation in the <code>condition</code>, <code>outcome</code> format:</p>
+<p>Here is the same calculation in the <code>condition</code>,
+<code>outcome</code> format:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span>
@@ -451,19 +660,27 @@
 <span><span class="co">#&gt; 1   NAP 0.9166667 0.06900656 0.5973406 0.9860176</span></span>
 <span><span class="co">#&gt; 2   PND 0.7142857         NA        NA        NA</span></span>
 <span><span class="co">#&gt; 3 Tau-U 0.7380952         NA        NA        NA</span></span></code></pre></div>
-<p>To specify which effect size to calculate, use the <code>ES</code> argument, which can include any of the following metrics: <code>"LRRd"</code>, <code>"LRRi"</code>, <code>"LOR"</code>, <code>"LRM"</code>, <code>"SMD"</code>, <code>"NAP"</code>, <code>"PND"</code>, <code>"PEM"</code>, <code>"PAND"</code>, <code>"IRD"</code>, <code>"Tau"</code>, <code>"Tau_BC"</code> or <code>"Tau-U"</code>.</p>
+<p>To specify which effect size to calculate, use the <code>ES</code>
+argument, which can include any of the following metrics:
+<code>"LRRd"</code>, <code>"LRRi"</code>, <code>"LOR"</code>,
+<code>"LRM"</code>, <code>"SMD"</code>, <code>"NAP"</code>,
+<code>"PND"</code>, <code>"PEM"</code>, <code>"PAND"</code>,
+<code>"IRD"</code>, <code>"Tau"</code>, <code>"Tau_BC"</code> or
+<code>"Tau-U"</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"SMD"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES      Est        SE  CI_lower CI_upper baseline_SD</span></span>
 <span><span class="co">#&gt; 1 SMD 1.649932 0.6340935 0.4071314 2.892732    2.503331</span></span></code></pre></div>
-<p>To calculate multiple effect size estimates, provide a list of effect sizes to the <code>ES</code> argument.</p>
+<p>To calculate multiple effect size estimates, provide a list of effect
+sizes to the <code>ES</code> argument.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NAP"</span>, <span class="st">"PND"</span>, <span class="st">"Tau-U"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      ES       Est         SE  CI_lower  CI_upper</span></span>
 <span><span class="co">#&gt; 1   NAP 0.9166667 0.06900656 0.5973406 0.9860176</span></span>
 <span><span class="co">#&gt; 2   PND 0.7142857         NA        NA        NA</span></span>
 <span><span class="co">#&gt; 3 Tau-U 0.7380952         NA        NA        NA</span></span></code></pre></div>
-<p>Setting <code>ES = "all"</code> will return all available effect sizes:</p>
+<p>Setting <code>ES = "all"</code> will return all available effect
+sizes:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        ES        Est         SE    CI_lower    CI_upper baseline_SD</span></span>
@@ -480,7 +697,8 @@
 <span><span class="co">#&gt; 11    Tau  0.8333333 0.13801311  0.19468122  0.97203517          NA</span></span>
 <span><span class="co">#&gt; 12  Tau-U  0.7380952         NA          NA          NA          NA</span></span>
 <span><span class="co">#&gt; 13 Tau-BC  0.2857143 0.35951593 -0.32607024  0.71806125          NA</span></span></code></pre></div>
-<p>Setting <code>ES = "NOM"</code> will return all of the non-overlap measures.</p>
+<p>Setting <code>ES = "NOM"</code> will return all of the non-overlap
+measures.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"NOM"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       ES       Est         SE   CI_lower  CI_upper</span></span>
@@ -492,7 +710,8 @@
 <span><span class="co">#&gt; 6    Tau 0.8333333 0.13801311  0.1946812 0.9720352</span></span>
 <span><span class="co">#&gt; 7  Tau-U 0.7380952         NA         NA        NA</span></span>
 <span><span class="co">#&gt; 8 Tau-BC 0.2857143 0.35951593 -0.3260702 0.7180613</span></span></code></pre></div>
-<p>Setting <code>ES = "parametric"</code> will return all of the parametric effect sizes:</p>
+<p>Setting <code>ES = "parametric"</code> will return all of the
+parametric effect sizes:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"parametric"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     ES        Est         SE    CI_lower    CI_upper baseline_SD</span></span>
@@ -501,7 +720,8 @@
 <span><span class="co">#&gt; 3  LOR  0.2609312 0.07356710  0.11674235  0.40512007          NA</span></span>
 <span><span class="co">#&gt; 4  SMD  1.6499319 0.63409351  0.40713144  2.89273232    2.503331</span></span>
 <span><span class="co">#&gt; 5  LRM  0.2186892 0.07641543  0.06891771  0.36846070          NA</span></span></code></pre></div>
-<p>If the <code>ES</code> argument is omitted, <code><a href="../reference/calc_ES.html">calc_ES()</a></code> will return LRRd, LRRi, SMD, and Tau by default.</p>
+<p>If the <code>ES</code> argument is omitted, <code><a href="../reference/calc_ES.html">calc_ES()</a></code>
+will return LRRd, LRRi, SMD, and Tau by default.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     ES        Est         SE    CI_lower    CI_upper baseline_SD</span></span>
@@ -512,7 +732,15 @@
 <div class="section level3">
 <h3 id="further-arguments">Further arguments<a class="anchor" aria-label="anchor" href="#further-arguments"></a>
 </h3>
-<p>All of the individual effect size functions have the further argument <code>improvement</code>, and several of them also have further optional arguments. Include these arguments in <code><a href="../reference/calc_ES.html">calc_ES()</a></code> in order to pass them on to the individual effect size calculation functions. Any additional arguments included in <code><a href="../reference/calc_ES.html">calc_ES()</a></code> will be used in the calculation of effect sizes for which they are relevant, but will be ignored if they are not relevant. For example, the direction of improvement can be changed from the default <code>increase</code> to <code>decrease</code>:</p>
+<p>All of the individual effect size functions have the further argument
+<code>improvement</code>, and several of them also have further optional
+arguments. Include these arguments in <code><a href="../reference/calc_ES.html">calc_ES()</a></code> in order to
+pass them on to the individual effect size calculation functions. Any
+additional arguments included in <code><a href="../reference/calc_ES.html">calc_ES()</a></code> will be used in
+the calculation of effect sizes for which they are relevant, but will be
+ignored if they are not relevant. For example, the direction of
+improvement can be changed from the default <code>increase</code> to
+<code>decrease</code>:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"NOM"</span>, improvement <span class="op">=</span> <span class="st">"decrease"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       ES         Est         SE    CI_lower   CI_upper</span></span>
@@ -524,7 +752,12 @@
 <span><span class="co">#&gt; 6    Tau -0.83333333 0.13801311 -0.97203517 -0.1946812</span></span>
 <span><span class="co">#&gt; 7  Tau-U -0.73809524         NA          NA         NA</span></span>
 <span><span class="co">#&gt; 8 Tau-BC -0.28571429 0.35951593 -0.71806125  0.3260702</span></span></code></pre></div>
-<p>It is also possible to change the method for calculating the standard error for the <code>NAP</code>, <code>Tau</code>, and <code>Tau_BC</code> functions, as well as the coverage of the confidence interval. For example, to omit the confidence interval calculations for NAP and Tau, we can include the argument <code>confidence = NULL</code>:</p>
+<p>It is also possible to change the method for calculating the standard
+error for the <code>NAP</code>, <code>Tau</code>, and
+<code>Tau_BC</code> functions, as well as the coverage of the confidence
+interval. For example, to omit the confidence interval calculations for
+NAP and Tau, we can include the argument
+<code>confidence = NULL</code>:</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="st">"NOM"</span>, improvement <span class="op">=</span> <span class="st">"decrease"</span>, confidence <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       ES         Est         SE</span></span>
@@ -536,12 +769,25 @@
 <span><span class="co">#&gt; 6    Tau -0.83333333 0.13801311</span></span>
 <span><span class="co">#&gt; 7  Tau-U -0.73809524         NA</span></span>
 <span><span class="co">#&gt; 8 Tau-BC -0.28571429 0.35951593</span></span></code></pre></div>
-<p>For <code><a href="../reference/SMD.html">SMD()</a></code> there are several other inputs such as <code>std_dev</code>, <code>bias_correct</code>, and <code>confidence</code> which control how the effect size estimate is calculated, the usage of the Hedges’ g bias correction for small sample sizes, and the coverage of the confidence interval. The log response ratio and log odds ratio functions also include arguments for the outcome scale on which the input scores are measured and optional entries for session lengths and intervals. All of these additional options are discussed in more depth in the first section of this vignette.</p>
+<p>For <code><a href="../reference/SMD.html">SMD()</a></code> there are several other inputs such as
+<code>std_dev</code>, <code>bias_correct</code>, and
+<code>confidence</code> which control how the effect size estimate is
+calculated, the usage of the Hedges’ g bias correction for small sample
+sizes, and the coverage of the confidence interval. The log response
+ratio and log odds ratio functions also include arguments for the
+outcome scale on which the input scores are measured and optional
+entries for session lengths and intervals. All of these additional
+options are discussed in more depth in the first section of this
+vignette.</p>
 </div>
 <div class="section level3">
 <h3 id="long-vs--wide-format">Long vs. wide format<a class="anchor" aria-label="anchor" href="#long-vs--wide-format"></a>
 </h3>
-<p>Finally, <code><a href="../reference/calc_ES.html">calc_ES()</a></code> includes an option to change the format of the output. The function defaults to <code>format = "long"</code>; setting <code>format = "wide"</code> will return all of the results as a single line, rather than one line per effect size:</p>
+<p>Finally, <code><a href="../reference/calc_ES.html">calc_ES()</a></code> includes an option to change the
+format of the output. The function defaults to
+<code>format = "long"</code>; setting <code>format = "wide"</code> will
+return all of the results as a single line, rather than one line per
+effect size:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calc_ES.html">calc_ES</a></span><span class="op">(</span>A_data <span class="op">=</span> <span class="va">A</span>, B_data <span class="op">=</span> <span class="va">B</span>, ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NAP"</span>,<span class="st">"PND"</span>,<span class="st">"SMD"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ES       Est         SE  CI_lower  CI_upper baseline_SD</span></span>
@@ -559,15 +805,33 @@
 <div class="section level2">
 <h2 id="batch_calc_es">batch_calc_ES()<a class="anchor" aria-label="anchor" href="#batch_calc_es"></a>
 </h2>
-<p>Most single-case studies include multiple cases, and many also include multiple dependent variables measured on each case. Thus, it will often be of interest to calculate effect size estimates for <em>multiple</em> data series from a study, or even from multiple studies. The <code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code> function does exactly this—calculating any of the previously detailed effect sizes for each of several data series. Its syntax is a bit more involved than the previous functions, and so we provide several examples here. In what follows, we will assume that you are already comfortable using the <code>es_calc()</code> function as well as the other individual effect size functions in the package.</p>
+<p>Most single-case studies include multiple cases, and many also
+include multiple dependent variables measured on each case. Thus, it
+will often be of interest to calculate effect size estimates for
+<em>multiple</em> data series from a study, or even from multiple
+studies. The <code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code> function does exactly
+this—calculating any of the previously detailed effect sizes for each of
+several data series. Its syntax is a bit more involved than the previous
+functions, and so we provide several examples here. In what follows, we
+will assume that you are already comfortable using the
+<code>es_calc()</code> function as well as the other individual effect
+size functions in the package.</p>
 <div class="section level3">
 <h3 id="data-organization">Data organization<a class="anchor" aria-label="anchor" href="#data-organization"></a>
 </h3>
-<p>Unlike with the other functions in the package, the input data for <code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code> must be organized in a data frame, with one line corresponding to each observation within a series, and columns corresponding to different variables (e.g. outcome, phase, session number). One or more variables must be included that uniquely identify every data series. Let’s look at two examples.</p>
+<p>Unlike with the other functions in the package, the input data for
+<code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code> must be organized in a data frame, with one
+line corresponding to each observation within a series, and columns
+corresponding to different variables (e.g. outcome, phase, session
+number). One or more variables must be included that uniquely identify
+every data series. Let’s look at two examples.</p>
 <div class="section level4">
 <h4 id="mckissick">McKissick<a class="anchor" aria-label="anchor" href="#mckissick"></a>
 </h4>
-<p>The <code>McKissick</code> dataset is data drawn from <span class="citation">McKissick, Hawkins, Lentz, Hailley, &amp; McGuire (<a href="#ref-McKissick2010randomizing" role="doc-biblioref">2010</a>)</span>, a single-case design study of a group contingency intervention. The study used a multiple baseline design across three classrooms. The outcome data are event counts of disruptive behaviors observed at the classroom level.</p>
+<p>The <code>McKissick</code> dataset is data drawn from <span class="citation">McKissick, Hawkins, Lentz, Hailley, &amp; McGuire (<a href="#ref-McKissick2010randomizing" role="doc-biblioref">2010</a>)</span>, a single-case design study of a
+group contingency intervention. The study used a multiple baseline
+design across three classrooms. The outcome data are event counts of
+disruptive behaviors observed at the classroom level.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">McKissick</span><span class="op">)</span></span></code></pre></div>
 <p>Here are the first few rows of the data:</p>
@@ -799,7 +1063,12 @@ count
 <div class="section level4">
 <h4 id="schmidt-2007">Schmidt (2007)<a class="anchor" aria-label="anchor" href="#schmidt-2007"></a>
 </h4>
-<p>The <code>Schmidt2007</code> dataset are data drawn from <span class="citation">Schmidt (<a href="#ref-Schmidt2007effects" role="doc-biblioref">2007</a>)</span>. This data set is somewhat more complicated. It has two outcomes for each participant, and the outcomes differ in directions of therapeutic improvement and measurement scale. The study used an ABAB design, replicated across three participants. Each series therefore has four phases: a baseline phase, a treatment phase, a return to baseline phase, and a second treatment phase.</p>
+<p>The <code>Schmidt2007</code> dataset are data drawn from <span class="citation">Schmidt (<a href="#ref-Schmidt2007effects" role="doc-biblioref">2007</a>)</span>. This data set is somewhat more
+complicated. It has two outcomes for each participant, and the outcomes
+differ in directions of therapeutic improvement and measurement scale.
+The study used an ABAB design, replicated across three participants.
+Each series therefore has four phases: a baseline phase, a treatment
+phase, a return to baseline phase, and a second treatment phase.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Schmidt2007</span><span class="op">)</span></span></code></pre></div>
 <p>Here are the first few rows of the data</p>
@@ -1161,28 +1430,40 @@ NA
 </tbody>
 </table>
 </div>
-<p>The Schmidt (2007) dataset contains many variables, but for now let’s focus on the following:</p>
+<p>The Schmidt (2007) dataset contains many variables, but for now let’s
+focus on the following:</p>
 <ul>
 <li>
-<code>Case_Pseudonym</code> uniquely identifies each of the three participants</li>
+<code>Case_Pseudonym</code> uniquely identifies each of the three
+participants</li>
 <li>
-<code>Behavior_type</code> specifies whether the outcome is disruptive behavior or on-task behavior</li>
+<code>Behavior_type</code> specifies whether the outcome is
+disruptive behavior or on-task behavior</li>
 <li>
-<code>Session_number</code> specifies the order of the sessions within each data series</li>
+<code>Session_number</code> specifies the order of the sessions
+within each data series</li>
 <li>
-<code>Outcome</code> contains the dependent variable measurements</li>
+<code>Outcome</code> contains the dependent variable
+measurements</li>
 <li>
-<code>Condition</code> specifies whether the outcome is in a baseline (“A”) condition or a treatment (“B”) condition</li>
+<code>Condition</code> specifies whether the outcome is in a
+baseline (“A”) condition or a treatment (“B”) condition</li>
 <li>
-<code>Phase_num</code> specifies whether the session is in the first or second pair of phases in the design</li>
+<code>Phase_num</code> specifies whether the session is in the first
+or second pair of phases in the design</li>
 <li>
-<code>Metric</code> specifies whether the dependent variable is percentage or count data</li>
+<code>Metric</code> specifies whether the dependent variable is
+percentage or count data</li>
 <li>
-<code>Session_length</code> specifies the length of the observation session</li>
+<code>Session_length</code> specifies the length of the observation
+session</li>
 <li>
-<code>direction</code> specifies the direction of therapeutic improvement</li>
+<code>direction</code> specifies the direction of therapeutic
+improvement</li>
 <li>
-<code>n_Intervals</code> specifies the number of intervals per session for the dependent variable measured using partial interval recording.</li>
+<code>n_Intervals</code> specifies the number of intervals per
+session for the dependent variable measured using partial interval
+recording.</li>
 </ul>
 </div>
 </div>
@@ -1199,20 +1480,59 @@ NA
 <span><span class="co">#&gt;     observation_length = NA, confidence = 0.95, format = "long", </span></span>
 <span><span class="co">#&gt;     warn = TRUE, ...) </span></span>
 <span><span class="co">#&gt; NULL</span></span></code></pre></div>
-<p>This function has a lot of arguments, but many of them are optional and only used for certain effect size metrics (these options are described in more detail in previous sections). For the moment, let’s focus on the first few arguments, which are all we need to get going.</p>
+<p>This function has a lot of arguments, but many of them are optional
+and only used for certain effect size metrics (these options are
+described in more detail in previous sections). For the moment, let’s
+focus on the first few arguments, which are all we need to get
+going.</p>
 <ul>
-<li><p>The argument <code>dat</code> should be a dataframe containing all of the observations for all of the data series of interest.</p></li>
-<li><p>The <code>grouping</code> argument should specify the set of variables that uniquely identify each series. For a single study consisting of several series, like the McKissick dataset, this might simply be a variable name that identifies the participant pseudonym. Specify using bare variable names (i.e., without quotes).</p></li>
-<li><p>The <code>condition</code> argument should be the variable that identifies the treatment condition for each observation in the series. Specify using a bare variable name. The values for the baseline and treatment phases should be uniform across all of the series within a dataset. That is, if some series are coded as “0” for baseline and “1” for treatment, whereas other series had “A” as baseline and “B” as treatment, you will first need to clean you data and standardize the coding.</p></li>
-<li><p>The <code>outcome</code> argument should be the variable that contains the outcomes of interest. Specify using a bare variable name.</p></li>
-<li><p>The <code>ES</code> argument allows you to specify which effect sizes to calculate. By default, the batch calculator generates estimates of LRRd, LRRi, SMD, and Tau. However, you’re probably going to want to specify your own effect sizes. Just as in <code>calc_ES</code>, specify your desired effect sizes as a character vector, with the individual options of <code>"LRRd"</code>, <code>"LRRi"</code>, <code>"LOR"</code>, <code>"LRM"</code>, <code>"SMD"</code>, <code>"NAP"</code>, <code>"PND"</code>, <code>"PEM"</code>, <code>"PAND"</code>, <code>"IRD"</code>, <code>"Tau"</code>, <code>"Tau_BC"</code> or <code>"Tau-U"</code>, in addition to <code>"all"</code> for all effect sizes, <code>"NOM"</code> for all non-overlap measures, and <code>"parametric"</code> for all parametric effect sizes.</p></li>
+<li><p>The argument <code>dat</code> should be a dataframe containing
+all of the observations for all of the data series of interest.</p></li>
+<li><p>The <code>grouping</code> argument should specify the set of
+variables that uniquely identify each series. For a single study
+consisting of several series, like the McKissick dataset, this might
+simply be a variable name that identifies the participant pseudonym.
+Specify using bare variable names (i.e., without quotes).</p></li>
+<li><p>The <code>condition</code> argument should be the variable that
+identifies the treatment condition for each observation in the series.
+Specify using a bare variable name. The values for the baseline and
+treatment phases should be uniform across all of the series within a
+dataset. That is, if some series are coded as “0” for baseline and “1”
+for treatment, whereas other series had “A” as baseline and “B” as
+treatment, you will first need to clean you data and standardize the
+coding.</p></li>
+<li><p>The <code>outcome</code> argument should be the variable that
+contains the outcomes of interest. Specify using a bare variable
+name.</p></li>
+<li><p>The <code>ES</code> argument allows you to specify which effect
+sizes to calculate. By default, the batch calculator generates estimates
+of LRRd, LRRi, SMD, and Tau. However, you’re probably going to want to
+specify your own effect sizes. Just as in <code>calc_ES</code>, specify
+your desired effect sizes as a character vector, with the individual
+options of <code>"LRRd"</code>, <code>"LRRi"</code>, <code>"LOR"</code>,
+<code>"LRM"</code>, <code>"SMD"</code>, <code>"NAP"</code>,
+<code>"PND"</code>, <code>"PEM"</code>, <code>"PAND"</code>,
+<code>"IRD"</code>, <code>"Tau"</code>, <code>"Tau_BC"</code> or
+<code>"Tau-U"</code>, in addition to <code>"all"</code> for all effect
+sizes, <code>"NOM"</code> for all non-overlap measures, and
+<code>"parametric"</code> for all parametric effect sizes.</p></li>
 </ul>
-<p>All of the remaining arguments are truly optional, and we’ll introduce them as we go along.</p>
+<p>All of the remaining arguments are truly optional, and we’ll
+introduce them as we go along.</p>
 </div>
 <div class="section level3">
 <h3 id="using-grouping-variables">Using grouping variables<a class="anchor" aria-label="anchor" href="#using-grouping-variables"></a>
 </h3>
-<p>Let’s try applying the function to the McKissick data. Remember that these data contains an identifier for each case (<code>Case_pseudonym</code>), a variable (<code>Condition</code>) identifying the baseline (“A”) and treatment (“B”) phases, and an outcome variable containing the values of the outcomes. The outcomes are disruptive behaviors, so a decrease in the behavior corresponds to therapeutic improvement. Just as with the <code><a href="../reference/calc_ES.html">calc_ES()</a></code> function, we’ll need to specify the direction of therapeutic improvement using the <code>improvement</code> argument. In this example, we will calculate estimates of NAP and PND, to keep things simple:</p>
+<p>Let’s try applying the function to the McKissick data. Remember that
+these data contains an identifier for each case
+(<code>Case_pseudonym</code>), a variable (<code>Condition</code>)
+identifying the baseline (“A”) and treatment (“B”) phases, and an
+outcome variable containing the values of the outcomes. The outcomes are
+disruptive behaviors, so a decrease in the behavior corresponds to
+therapeutic improvement. Just as with the <code><a href="../reference/calc_ES.html">calc_ES()</a></code>
+function, we’ll need to specify the direction of therapeutic improvement
+using the <code>improvement</code> argument. In this example, we will
+calculate estimates of NAP and PND, to keep things simple:</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mckissick_ES</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">McKissick</span>,</span>
 <span>              grouping <span class="op">=</span> <span class="va">Case_pseudonym</span>, </span>
@@ -1220,7 +1540,8 @@ NA
 <span>              outcome <span class="op">=</span> <span class="va">Outcome</span>, </span>
 <span>              improvement <span class="op">=</span> <span class="st">"decrease"</span>,</span>
 <span>              ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NAP"</span>, <span class="st">"PND"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-Note that all of the inputs related to variable names are bare (i.e., no quotes). Let’s take a look at a table of the output.
+Note that all of the inputs related to variable names are bare (i.e., no
+quotes). Let’s take a look at a table of the output.
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -1365,9 +1686,33 @@ NA
 </tr>
 </tbody>
 </table>
-<p>The output will always start with one or more columns corresponding to each unique combination of values from the <code>grouping</code> argument, followed by a column describing the effect size reported in each row. The column called <code>Est</code> contains the effect size estimates. If <em>any</em> of the requested effect sizes have standard errors and confidence intervals, there will also be columns corresponding to the standard error and the upper and lower limit. Here, PND has <code>NA</code> for each of those, because it does not have a known standard error or confidence interval.</p>
-<p>Now let’s look at an example using the Schmidt data. Remember that these data contain a pseudonym that uniquely identifies each of the three participants (<code>Case_Pseudonym</code>) as well as a variable that specifies whether the outcome is disruptive behavior or on-task behavior (<code>Behavior_type</code>). Furthermore, these data come from a treatment reversal design with two pairs of AB phases for each combination of case and behavior type. Each pair of AB phases is labeled in the variable <code>Phase_num</code>. We’re going to want an effect size for each combination of pseudonym, behavior, and phase pair. The data also have an outcome variable (<code>Outcome</code>) and a variable identifying whether it was in the baseline (“A”) or treatment (“B”) phase (<code>Condition</code>). Finally, the the two different behavior types have different direction therapeutic improvement, so there is a variable called <code>direction</code> that specifies <code>"increase"</code> for on-task behavior or <code>"decrease"</code> for disruptive behavior.</p>
-<p>Here’s an example of how to calculate NAP and LRRi for these data:</p>
+<p>The output will always start with one or more columns corresponding
+to each unique combination of values from the <code>grouping</code>
+argument, followed by a column describing the effect size reported in
+each row. The column called <code>Est</code> contains the effect size
+estimates. If <em>any</em> of the requested effect sizes have standard
+errors and confidence intervals, there will also be columns
+corresponding to the standard error and the upper and lower limit. Here,
+PND has <code>NA</code> for each of those, because it does not have a
+known standard error or confidence interval.</p>
+<p>Now let’s look at an example using the Schmidt data. Remember that
+these data contain a pseudonym that uniquely identifies each of the
+three participants (<code>Case_Pseudonym</code>) as well as a variable
+that specifies whether the outcome is disruptive behavior or on-task
+behavior (<code>Behavior_type</code>). Furthermore, these data come from
+a treatment reversal design with two pairs of AB phases for each
+combination of case and behavior type. Each pair of AB phases is labeled
+in the variable <code>Phase_num</code>. We’re going to want an effect
+size for each combination of pseudonym, behavior, and phase pair. The
+data also have an outcome variable (<code>Outcome</code>) and a variable
+identifying whether it was in the baseline (“A”) or treatment (“B”)
+phase (<code>Condition</code>). Finally, the the two different behavior
+types have different direction therapeutic improvement, so there is a
+variable called <code>direction</code> that specifies
+<code>"increase"</code> for on-task behavior or <code>"decrease"</code>
+for disruptive behavior.</p>
+<p>Here’s an example of how to calculate NAP and LRRi for these
+data:</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">schmidt_ES</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span></span>
 <span>  dat <span class="op">=</span> <span class="va">Schmidt2007</span>,</span>
@@ -1377,7 +1722,14 @@ NA
 <span>  improvement <span class="op">=</span> <span class="va">direction</span>,</span>
 <span>  ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NAP"</span>, <span class="st">"LRRi"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>The syntax is similar to the example with the McKissick dataset, except for two things. Here, we’ve provided a vector of variable names for <code>grouping</code> that identify each series for which we want an effect size. Instead of providing a uniform direction of improvement to the <code>improvement</code> variable, we’ve provided a variable name, <code>direction</code>, which will account for the fact that the two behavior types have different directions of therapeutic improvement. Here is a table of the output:</p>
+<p>The syntax is similar to the example with the McKissick dataset,
+except for two things. Here, we’ve provided a vector of variable names
+for <code>grouping</code> that identify each series for which we want an
+effect size. Instead of providing a uniform direction of improvement to
+the <code>improvement</code> variable, we’ve provided a variable name,
+<code>direction</code>, which will account for the fact that the two
+behavior types have different directions of therapeutic improvement.
+Here is a table of the output:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:800px; overflow-x: scroll; width:100%; ">
 <table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
@@ -2034,13 +2386,31 @@ LRRi
 </tbody>
 </table>
 </div>
-<p>The first three columns are the unique values from the variables supplied to <code>grouping</code>, followed by the effect size information.</p>
+<p>The first three columns are the unique values from the variables
+supplied to <code>grouping</code>, followed by the effect size
+information.</p>
 </div>
 <div class="section level3">
 <h3 id="aggregating-across-replications">Aggregating across replications<a class="anchor" aria-label="anchor" href="#aggregating-across-replications"></a>
 </h3>
-<p>The Schmidt study used an ABAB design, and as a consequence we end up with not one but <em>two</em> effect size estimates for each case and each outcome. Under some circumstances, it may make sense to aggregate—or average together—the effect size estimates from the first and second AB pairs for each case. Doing so simplifies the structure of the resulting effect size dataset, so that there is just one effect size estimate per case per outcome. The <code>batch_calc_ES</code> function includes an optional argument called <code>aggregate</code> that allows you to aggregate effect size estimates across a grouping variable. To use it, specify the name of one or more variables across which to aggregate. These variables will then be treated as grouping variables for purposes of effect size calculation (just like those specified in the <code>grouping</code> argument), but the results will then be aggregated over the unique values of the variables.</p>
-<p>Here’s an example of how to use <code>aggregate</code> with the Schmidt dataset (for simplicity, we will calculate only the NAP effect size). Rather than specifying <code>Phase_num</code> as a grouping variable, we specify it as an <code>aggregate</code> variable:</p>
+<p>The Schmidt study used an ABAB design, and as a consequence we end up
+with not one but <em>two</em> effect size estimates for each case and
+each outcome. Under some circumstances, it may make sense to
+aggregate—or average together—the effect size estimates from the first
+and second AB pairs for each case. Doing so simplifies the structure of
+the resulting effect size dataset, so that there is just one effect size
+estimate per case per outcome. The <code>batch_calc_ES</code> function
+includes an optional argument called <code>aggregate</code> that allows
+you to aggregate effect size estimates across a grouping variable. To
+use it, specify the name of one or more variables across which to
+aggregate. These variables will then be treated as grouping variables
+for purposes of effect size calculation (just like those specified in
+the <code>grouping</code> argument), but the results will then be
+aggregated over the unique values of the variables.</p>
+<p>Here’s an example of how to use <code>aggregate</code> with the
+Schmidt dataset (for simplicity, we will calculate only the NAP effect
+size). Rather than specifying <code>Phase_num</code> as a grouping
+variable, we specify it as an <code>aggregate</code> variable:</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">schmidt_ES_agg</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span></span>
@@ -2052,7 +2422,9 @@ LRRi
 <span>    improvement <span class="op">=</span> <span class="va">direction</span>,</span>
 <span>    ES <span class="op">=</span> <span class="st">"NAP"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-The resulting data frame has just one effect size estimate per case per outcome because the estimates for each unique <code>phase_num</code> have been averaged together:
+The resulting data frame has just one effect size estimate per case per
+outcome because the estimates for each unique <code>phase_num</code>
+have been averaged together:
 <table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
@@ -2221,19 +2593,37 @@ NAP
 <p>The package allows for several different weighting schemes:</p>
 <ul>
 <li>
-<code>"equal"</code> (the default) or <code>"Equal"</code>: Equal weighting takes the simple arithmetic average of the effect size estimates.</li>
+<code>"equal"</code> (the default) or <code>"Equal"</code>: Equal
+weighting takes the simple arithmetic average of the effect size
+estimates.</li>
 <li>
-<code>"1/V"</code>: Inverse variance weighting takes a weighted average of the effect size estimates with weights that are inversely proportional to the sampling variances of the estimates (i.e., the square of the standard error). This weighting scheme is the most efficient approach if the components being averaged together are all estimating the same underlying parameter. However, inverse variance weighting will not work for effect size estimates that do not have a known standard error, such as PND or PAND.</li>
+<code>"1/V"</code>: Inverse variance weighting takes a weighted
+average of the effect size estimates with weights that are inversely
+proportional to the sampling variances of the estimates (i.e., the
+square of the standard error). This weighting scheme is the most
+efficient approach if the components being averaged together are all
+estimating the same underlying parameter. However, inverse variance
+weighting will not work for effect size estimates that do not have a
+known standard error, such as PND or PAND.</li>
 <li>
-<code>"nA"</code> or <code>"n_A"</code>: uses the number of baseline phase observations as the weights for aggregating.</li>
+<code>"nA"</code> or <code>"n_A"</code>: uses the number of baseline
+phase observations as the weights for aggregating.</li>
 <li>
-<code>"nB"</code> or <code>"n_B"</code>: uses the number of treatment phase observations as the weights for aggregating.</li>
+<code>"nB"</code> or <code>"n_B"</code>: uses the number of
+treatment phase observations as the weights for aggregating.</li>
 <li>
-<code>"nAnB"</code>, <code>"nA*nB"</code>, <code>"nA * nB"</code>, <code>"n_A*n_B"</code>, or <code>"n_A * n_B"</code>: uses the product of the number of baseline and treatment phases as the weights for aggregating.</li>
+<code>"nAnB"</code>, <code>"nA*nB"</code>, <code>"nA * nB"</code>,
+<code>"n_A*n_B"</code>, or <code>"n_A * n_B"</code>: uses the product of
+the number of baseline and treatment phases as the weights for
+aggregating.</li>
 <li>
-<code>"1/nA+1/nB"</code>, <code>"1/nA + 1/nB"</code>, <code>"1/n_A+1/n_B"</code>, or <code>"1/n_A + 1/n_B"</code>: uses the sum of the inverse number of baseline phases and the inverse number of treatment phases as the weights for aggregating.</li>
+<code>"1/nA+1/nB"</code>, <code>"1/nA + 1/nB"</code>,
+<code>"1/n_A+1/n_B"</code>, or <code>"1/n_A + 1/n_B"</code>: uses the
+sum of the inverse number of baseline phases and the inverse number of
+treatment phases as the weights for aggregating.</li>
 </ul>
-<p>Here is an example of using equal weighting for calculating aggregated effect sizes across pairs of AB phases:</p>
+<p>Here is an example of using equal weighting for calculating
+aggregated effect sizes across pairs of AB phases:</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">schmidt_ES_agg</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span></span>
@@ -2415,7 +2805,17 @@ NAP
 <div class="section level3">
 <h3 id="dealing-with-outcome-scales-">Dealing with outcome scales.<a class="anchor" aria-label="anchor" href="#dealing-with-outcome-scales-"></a>
 </h3>
-<p>By default, the batch calculator assumes the outcome scale is <code>"other"</code>. If using this default assumption, the log odd ratio and the log response ratio will not be calculated if a phase mean is equal to zero. Just as with <code><a href="../reference/calc_ES.html">calc_ES()</a></code>, you may need to specify the outcome scales as well as things like the length of the observation session or the number of intervals in each observation session in order to calculate parametric effect sizes. If these values are the same for all observations in the dataset, you can specify them as further arguments to <code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code>. Here is an example using the McKissick dataset, where we specify that all of the outcomes are measured as counts during 20-minute observation periods:</p>
+<p>By default, the batch calculator assumes the outcome scale is
+<code>"other"</code>. If using this default assumption, the log odd
+ratio and the log response ratio will not be calculated if a phase mean
+is equal to zero. Just as with <code><a href="../reference/calc_ES.html">calc_ES()</a></code>, you may need to
+specify the outcome scales as well as things like the length of the
+observation session or the number of intervals in each observation
+session in order to calculate parametric effect sizes. If these values
+are the same for all observations in the dataset, you can specify them
+as further arguments to <code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code>. Here is an example
+using the McKissick dataset, where we specify that all of the outcomes
+are measured as counts during 20-minute observation periods:</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mckissick_ES</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">McKissick</span>,</span>
 <span>              grouping <span class="op">=</span> <span class="va">Case_pseudonym</span>, </span>
@@ -2433,7 +2833,8 @@ NAP
 <span></span>
 <span><span class="co">#&gt; Warning: LOR can only be calculated for proportions or percentages. It will</span></span>
 <span><span class="co">#&gt; return NAs for other outcome scales.</span></span></code></pre></div>
-Note that we get a warning about the log odds ratio. Let’s take a look at the output:
+Note that we get a warning about the log odds ratio. Let’s take a look
+at the output:
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -2806,8 +3207,25 @@ NA
 </tr>
 </tbody>
 </table>
-<p>Once again, we have a column specifying the case to which the effect sizes correspond, as well as a column specifying the effect size metric. The log odds ratio returns all <code>NA</code>s, because the log odds ratio can’t be estimate for count outcomes.</p>
-<p>Let’s suppose that we are interested in estimating effect sizes using data where the measurement scale—as well as perhaps measurement details like the observation length or the number of intervals—varies depending on the data series. The Schmidt data is one example of this. Remember that the Schmidt data has a variable specifying the measurement scale of the outcome (<code>Metric</code>) which is <code>"percentage"</code> for desirable behavior and <code>"count"</code> for disruptive behaviors. It also has a variable that specifies the length of the observation session (<code>Session_length</code>), and a variable that specifies the number of intervals per session for the dependent variable measured using partial interval recording (<code>n_Intervals</code>). The value of <code>Session_length</code> is <code>NA</code> for the percentage outcomes and the value of <code>n_Intervals</code> is <code>NA</code> for the count outcomes because those details are not relevant for those outcome measurement scales. Let’s try it out:</p>
+<p>Once again, we have a column specifying the case to which the effect
+sizes correspond, as well as a column specifying the effect size metric.
+The log odds ratio returns all <code>NA</code>s, because the log odds
+ratio can’t be estimate for count outcomes.</p>
+<p>Let’s suppose that we are interested in estimating effect sizes using
+data where the measurement scale—as well as perhaps measurement details
+like the observation length or the number of intervals—varies depending
+on the data series. The Schmidt data is one example of this. Remember
+that the Schmidt data has a variable specifying the measurement scale of
+the outcome (<code>Metric</code>) which is <code>"percentage"</code> for
+desirable behavior and <code>"count"</code> for disruptive behaviors. It
+also has a variable that specifies the length of the observation session
+(<code>Session_length</code>), and a variable that specifies the number
+of intervals per session for the dependent variable measured using
+partial interval recording (<code>n_Intervals</code>). The value of
+<code>Session_length</code> is <code>NA</code> for the percentage
+outcomes and the value of <code>n_Intervals</code> is <code>NA</code>
+for the count outcomes because those details are not relevant for those
+outcome measurement scales. Let’s try it out:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">schmidt_ES</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">Schmidt2007</span>,</span>
 <span>              grouping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Case_pseudonym</span>, <span class="va">Behavior_type</span>, <span class="va">Phase_num</span><span class="op">)</span>, </span>
@@ -2835,7 +3253,12 @@ NA
 <span></span>
 <span><span class="co">#&gt; Warning: LOR can only be calculated for proportions or percentages. It will</span></span>
 <span><span class="co">#&gt; return NAs for other outcome scales.</span></span></code></pre></div>
-<p>Unlike the previous example, where we specified a uniform value for the <code>scale</code> and <code>observation_length</code>, we now have to specify variable names for <code>scale</code>, <code>observation_length</code>, and the number of <code>intervals</code>. Note that we get some warnings again about the LOR effect size. Let’s take a look at the output:</p>
+<p>Unlike the previous example, where we specified a uniform value for
+the <code>scale</code> and <code>observation_length</code>, we now have
+to specify variable names for <code>scale</code>,
+<code>observation_length</code>, and the number of
+<code>intervals</code>. Note that we get some warnings again about the
+LOR effect size. Let’s take a look at the output:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:800px; overflow-x: scroll; width:100%; ">
 <table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
@@ -4611,7 +5034,10 @@ NA
 </tbody>
 </table>
 </div>
-<p>In this case, LOR is all <code>NA</code> for the outcomes that are disruptive behaviors because those are counts and therefore the LOR isn’t an appropriate effect size. However, for the percentage of on task behavior, the LOR <em>was</em> estimated.</p>
+<p>In this case, LOR is all <code>NA</code> for the outcomes that are
+disruptive behaviors because those are counts and therefore the LOR
+isn’t an appropriate effect size. However, for the percentage of on task
+behavior, the LOR <em>was</em> estimated.</p>
 </div>
 <div class="section level3">
 <h3 id="further-arguments-1">Further arguments<a class="anchor" aria-label="anchor" href="#further-arguments-1"></a>
@@ -4631,7 +5057,11 @@ NA
 <span>    ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NAP"</span>, <span class="st">"PND"</span><span class="op">)</span>,</span>
 <span>    format <span class="op">=</span> <span class="st">"wide"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>The default argument for the batch calculator is <code>format = "long"</code>, but if you want each case to be on a single line, specifying <code>format = "wide"</code> will provide the output that way, just like <code><a href="../reference/calc_ES.html">calc_ES()</a></code>. Here’s the output:</p>
+<p>The default argument for the batch calculator is
+<code>format = "long"</code>, but if you want each case to be on a
+single line, specifying <code>format = "wide"</code> will provide the
+output that way, just like <code><a href="../reference/calc_ES.html">calc_ES()</a></code>. Here’s the
+output:</p>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -4716,12 +5146,23 @@ Period 3
 </tr>
 </tbody>
 </table>
-<p>In this case there are columns for NAP, NAP’s standard error, and the upper and lower bounds of the confidence interval. PND only has a column for the estimate, but remember that the values for SE and upper and lower CI were all <code>NA</code> in the long format. Columns that would have all <code>NA</code> values are removed when specifying <code>format = "wide"</code>.</p>
+<p>In this case there are columns for NAP, NAP’s standard error, and the
+upper and lower bounds of the confidence interval. PND only has a column
+for the estimate, but remember that the values for SE and upper and
+lower CI were all <code>NA</code> in the long format. Columns that would
+have all <code>NA</code> values are removed when specifying
+<code>format = "wide"</code>.</p>
 </div>
 <div class="section level4">
 <h4 id="suppressing-warnings">Suppressing warnings<a class="anchor" aria-label="anchor" href="#suppressing-warnings"></a>
 </h4>
-<p>Remember how, when we asked for the LOR for counts, the calculator gave us a bunch of warning messages? If you’re asking for the LOR, and some of your outcomes are in a scale other than percentage or proportion, you can specify the argument <code>warn = FALSE</code> (by default it is set to <code>TRUE</code>) if you want to suppress the warning messages. You will still get NA for any series with an inappropriate outcome scale.</p>
+<p>Remember how, when we asked for the LOR for counts, the calculator
+gave us a bunch of warning messages? If you’re asking for the LOR, and
+some of your outcomes are in a scale other than percentage or
+proportion, you can specify the argument <code>warn = FALSE</code> (by
+default it is set to <code>TRUE</code>) if you want to suppress the
+warning messages. You will still get NA for any series with an
+inappropriate outcome scale.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">McKissick</span>,</span>
 <span>              grouping <span class="op">=</span> <span class="va">Case_pseudonym</span>, </span>
@@ -4745,7 +5186,11 @@ Period 3
 <div class="section level4">
 <h4 id="arguments-to-individual-effect-size-functions">Arguments to individual effect size functions<a class="anchor" aria-label="anchor" href="#arguments-to-individual-effect-size-functions"></a>
 </h4>
-<p>The <code>...</code> argument allows you to specify arguments particular to an individual function such as <code>std_dev</code> for the <code><a href="../reference/SMD.html">SMD()</a></code> function. For instance, compare the results of calculating a pooled SMD versus the default, baseline phase only SMD:</p>
+<p>The <code>...</code> argument allows you to specify arguments
+particular to an individual function such as <code>std_dev</code> for
+the <code><a href="../reference/SMD.html">SMD()</a></code> function. For instance, compare the results of
+calculating a pooled SMD versus the default, baseline phase only
+SMD:</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">McKissick</span>, </span>
 <span>              grouping <span class="op">=</span> <span class="va">Case_pseudonym</span>, </span>
@@ -4773,7 +5218,10 @@ Period 3
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Period 1       SMD    2.58 0.853   0.909      4.25      2.74</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Period 2       SMD    1.12 0.588  -<span style="color: #BB0000;">0.034</span><span style="color: #BB0000; text-decoration: underline;">5</span>     2.27      6.97</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Period 3       SMD    2.34 0.727   0.920      3.77      2.95</span></span></code></pre></div>
-<p>Arguments common to several functions will be used when calculating any of the effect sizes for which they are relevant. For example, the <code>bias_correct</code> argument applies to all of the parametric effect sizes:</p>
+<p>Arguments common to several functions will be used when calculating
+any of the effect sizes for which they are relevant. For example, the
+<code>bias_correct</code> argument applies to all of the parametric
+effect sizes:</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">McKissick</span>, </span>
 <span>              grouping <span class="op">=</span> <span class="va">Case_pseudonym</span>, </span>
@@ -4803,22 +5251,42 @@ Period 3
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Period 3       LOR   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>            <span style="color: #BB0000;">NA</span>   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Period 3       SMD    3.19   1.25    0.751    5.64          2.33</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Period 3       LRM    0.910  0.589  -<span style="color: #BB0000;">0.244</span>    2.06         <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
-<p>The <code>bias_correct</code> argument cannot be specified differently for different effect size functions. If you want to obtain bias-corrected values for the LRRd effect size but not for the SMD effect size, you would need to call <code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code> separately for the two different effect sizes.</p>
+<p>The <code>bias_correct</code> argument cannot be specified
+differently for different effect size functions. If you want to obtain
+bias-corrected values for the LRRd effect size but not for the SMD
+effect size, you would need to call <code><a href="../reference/batch_calc_ES.html">batch_calc_ES()</a></code>
+separately for the two different effect sizes.</p>
 </div>
 <div class="section level4">
 <h4 id="order-of-observations">Order of observations<a class="anchor" aria-label="anchor" href="#order-of-observations"></a>
 </h4>
-<p>The <code>session_number</code> argument orders the data within each series by the specified variable. This argument is only important if baseline-corrected Tau or Tau-U is being calculated. For these effect sizes, the ordering of the baseline phase is important because they involve adjustments for trend in the baseline phase. This argument is irrelevant for all of the other effect sizes.</p>
+<p>The <code>session_number</code> argument orders the data within each
+series by the specified variable. This argument is only important if
+baseline-corrected Tau or Tau-U is being calculated. For these effect
+sizes, the ordering of the baseline phase is important because they
+involve adjustments for trend in the baseline phase. This argument is
+irrelevant for all of the other effect sizes.</p>
 </div>
 <div class="section level4">
 <h4 id="specifying-a-baseline-phase">Specifying a baseline phase<a class="anchor" aria-label="anchor" href="#specifying-a-baseline-phase"></a>
 </h4>
-<p>The <code>baseline_phase</code> argument works the same was as in the <code><a href="../reference/calc_ES.html">calc_ES()</a></code> function. If nothing is specified, the first phase in each series will be treated as the baseline phase. However, if the baseline phase is not always the first phase in each series, such as an SCD with four cases that use a cross-over treatment reversal design, where two of the cases follow an ABAB design and the other two cases follow a BABA design, you will need to specify the <code>baseline_phase</code> in the same way as in the <code><a href="../reference/calc_ES.html">calc_ES()</a></code> function.</p>
+<p>The <code>baseline_phase</code> argument works the same was as in the
+<code><a href="../reference/calc_ES.html">calc_ES()</a></code> function. If nothing is specified, the first
+phase in each series will be treated as the baseline phase. However, if
+the baseline phase is not always the first phase in each series, such as
+an SCD with four cases that use a cross-over treatment reversal design,
+where two of the cases follow an ABAB design and the other two cases
+follow a BABA design, you will need to specify the
+<code>baseline_phase</code> in the same way as in the
+<code><a href="../reference/calc_ES.html">calc_ES()</a></code> function.</p>
 </div>
 <div class="section level4">
 <h4 id="confidence-levels">Confidence levels<a class="anchor" aria-label="anchor" href="#confidence-levels"></a>
 </h4>
-<p>The <code>confidence</code> argument controls the confidence intervals in the same way as all the other functions. To skip calculating confidence intervals, specify <code>confidence = NULL</code>:</p>
+<p>The <code>confidence</code> argument controls the confidence
+intervals in the same way as all the other functions. To skip
+calculating confidence intervals, specify
+<code>confidence = NULL</code>:</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/batch_calc_ES.html">batch_calc_ES</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">McKissick</span>, </span>
 <span>              grouping <span class="op">=</span> <span class="va">Case_pseudonym</span>, </span>
@@ -4856,25 +5324,42 @@ Period 3
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-McKissick2010randomizing" class="csl-entry">
-McKissick, C., Hawkins, R. O., Lentz, F. E., Hailley, J., &amp; McGuire, S. (2010). <span class="nocase">Randomizing multiple contingency components to decrease disruptive behaviors and increase student engagement in an urban second-grade classroom</span>. <em>Psychology in the Schools</em>, <em>47</em>(9), 944–959. <a href="https://doi.org/10.1002/pits.20516" class="external-link">https://doi.org/10.1002/pits.20516</a>
+McKissick, C., Hawkins, R. O., Lentz, F. E., Hailley, J., &amp; McGuire,
+S. (2010). <span class="nocase">Randomizing multiple contingency
+components to decrease disruptive behaviors and increase student
+engagement in an urban second-grade classroom</span>. <em>Psychology in
+the Schools</em>, <em>47</em>(9), 944–959. <a href="https://doi.org/10.1002/pits.20516" class="external-link">https://doi.org/10.1002/pits.20516</a>
 </div>
 <div id="ref-parker2009improved" class="csl-entry">
-Parker, R. I., &amp; Vannest, K. (2009). An improved effect size for single-case research: Nonoverlap of all pairs. <em>Behavior Therapy</em>, <em>40</em>(4), 357–367.
+Parker, R. I., &amp; Vannest, K. (2009). An improved effect size for
+single-case research: Nonoverlap of all pairs. <em>Behavior
+Therapy</em>, <em>40</em>(4), 357–367.
 </div>
 <div id="ref-pustejovsky2015measurement" class="csl-entry">
-Pustejovsky, J. E. (2015). Measurement-comparable effect sizes for single-case studies of free-operant behavior. <em>Psychological Methods</em>, <em>20</em>(3), 342–359.
+Pustejovsky, J. E. (2015). Measurement-comparable effect sizes for
+single-case studies of free-operant behavior. <em>Psychological
+Methods</em>, <em>20</em>(3), 342–359.
 </div>
 <div id="ref-pustejovsky2018using" class="csl-entry">
-Pustejovsky, J. E. (2018). Using response ratios for meta-analyzing single-case designs with behavioral outcomes. <em>Journal of School Psychology</em>, <em>68</em>, 99–112.
+Pustejovsky, J. E. (2018). Using response ratios for meta-analyzing
+single-case designs with behavioral outcomes. <em>Journal of School
+Psychology</em>, <em>68</em>, 99–112.
 </div>
 <div id="ref-Schmidt2007effects" class="csl-entry">
-Schmidt, A. C. (2007). <em><span class="nocase">The effects of a group contingency on group and individual behavior in an urban first-grade classroom</span></em> (Doctoral dissertation). University of Kansas.
+Schmidt, A. C. (2007). <em><span class="nocase">The effects of a group
+contingency on group and individual behavior in an urban first-grade
+classroom</span></em> (Doctoral dissertation). University of Kansas.
 </div>
 <div id="ref-scruggs1987quantitative" class="csl-entry">
-Scruggs, T. E., Mastropieri, M. A., &amp; Casto, G. (1987). The quantitative synthesis of single-subject research: Methodology and validation. <em>Remedial and Special Education</em>, <em>8</em>(2), 24–33.
+Scruggs, T. E., Mastropieri, M. A., &amp; Casto, G. (1987). The
+quantitative synthesis of single-subject research: Methodology and
+validation. <em>Remedial and Special Education</em>, <em>8</em>(2),
+24–33.
 </div>
 <div id="ref-Swan2018gradual" class="csl-entry">
-Swan, D. M., &amp; Pustejovsky, J. E. (2018). <span class="nocase">A Gradual Effects Model for Single-Case Designs</span>. <em>Multivariate Behavioral Research</em>. <a href="https://doi.org/10.1080/00273171.2018.1466681" class="external-link">https://doi.org/10.1080/00273171.2018.1466681</a>
+Swan, D. M., &amp; Pustejovsky, J. E. (2018). <span class="nocase">A
+Gradual Effects Model for Single-Case Designs</span>. <em>Multivariate
+Behavioral Research</em>. <a href="https://doi.org/10.1080/00273171.2018.1466681" class="external-link">https://doi.org/10.1080/00273171.2018.1466681</a>
 </div>
 </div>
 </div>
@@ -4897,7 +5382,7 @@ Swan, D. M., &amp; Pustejovsky, J. E. (2018). <span class="nocase">A Gradual Eff
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

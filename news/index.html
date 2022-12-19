@@ -67,11 +67,13 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.1.9999" id="singlecasees-0619999">SingleCaseES 0.6.1.9999<a class="anchor" aria-label="anchor" href="#singlecasees-0619999"></a></h2>
-<ul><li>Fixed a bug in the SCD_effect_sizes app (multiple-series calculator), which led to incorrect R syntax when <code>phase_pair_calculated</code> is included as a grouping variable.</li></ul></div>
+<ul><li>Fixed a bug in the SCD_effect_sizes app (multiple-series calculator), which led to incorrect R syntax when <code>phase_pair_calculated</code> is included as a grouping variable.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.1" id="singlecasees-061">SingleCaseES 0.6.1<small>2022-07-06</small><a class="anchor" aria-label="anchor" href="#singlecasees-061"></a></h2>
 <ul><li>Revised in-app documentation for the SCD_effect_sizes web app. Added links to video demonstrations.</li>
-<li>Changes to the SCD_effect_sizes shiny app<ul><li>The multiple series calculator gains an option for changing the number of digits displayed in the output.</li>
+<li>Changes to the SCD_effect_sizes shiny app
+<ul><li>The multiple series calculator gains an option for changing the number of digits displayed in the output.</li>
 <li>Fixed a bug in the SCD_effect_sizes app (multiple-series calculator) plotting facilities, which caused an error if the phase variable was numeric.</li>
 <li>Fixed a bug in the multiple-series calculator so that <code>bintervals</code>, <code>bobslength</code>, and <code>blrrfloor</code> are used for calculating LOR and LRR effect sizes.</li>
 <li>Added an option to calculate phase pair numbers in the multiple-series calculator for uploaded data sets.</li>
@@ -80,18 +82,21 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.0" id="singlecasees-060">SingleCaseES 0.6.0<small>2022-06-03</small><a class="anchor" aria-label="anchor" href="#singlecasees-060"></a></h2>
-<ul><li>Changes to batch_calc_ES()<ul><li>batch_calc_ES() now provides several additional options for weights to use when aggregating effect sizes, including weighting by nA (the number of baseline phase observations), nB (the number of treatment phase observations), nA * nB, or 1 / nA + 1 / nB.</li>
+<ul><li>Changes to batch_calc_ES()
+<ul><li>batch_calc_ES() now provides several additional options for weights to use when aggregating effect sizes, including weighting by nA (the number of baseline phase observations), nB (the number of treatment phase observations), nA * nB, or 1 / nA + 1 / nB.</li>
 <li>For aggregating effect sizes, batch_calc_ES() now defaults to equal-weighting (rather than inverse-variance weighting)</li>
 <li>For aggregating effect sizes, batch_calc_ES() now provides more informative error messages for effect sizes that do not have standard errors (and therefore cannot be aggregated with inverse-variance weights).</li>
 <li>Corrected a cosmetic bug in a warning message of batch_calc_ES() when scale argument is specified as a variable and ES includes “LOR”.</li>
 </ul></li>
-<li>Changes to functions for specific effect sizes<ul><li>Added intervention_phase argument to NAP(), SMD(), and other user-facing effect size calculation functions.</li>
+<li>Changes to functions for specific effect sizes
+<ul><li>Added intervention_phase argument to NAP(), SMD(), and other user-facing effect size calculation functions.</li>
 <li>The SMD() function now reports the SD (baseline SD or pooled SD) used in the denominator of the standardized mean difference.</li>
 <li>The SMD() function now returns a warning instead of an error when the standard deviation is zero.</li>
 <li>Added option for Kendall’s rank correlation in the Tau_BC() function.</li>
 <li>Added warn argument to Tau_BC() function, to control printing of messages regarding baseline trend test.</li>
 </ul></li>
-<li>Changes to the SCD_effect_sizes shiny app<ul><li>The batch entry calculator now includes an interface for visualizing data series.</li>
+<li>Changes to the SCD_effect_sizes shiny app
+<ul><li>The batch entry calculator now includes an interface for visualizing data series.</li>
 <li>The batch entry calculator now includes an interface for taking a subset of observations.</li>
 <li>Miscellaneous aesthetic and layout fixes.</li>
 <li>Added unit tests of shiny app results.</li>
@@ -100,10 +105,12 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0" id="singlecasees-050">SingleCaseES 0.5.0<small>2021-09-30</small><a class="anchor" aria-label="anchor" href="#singlecasees-050"></a></h2>
 <ul><li>batch_calc_ES() gains an argument aggregate, for post-processing effect size estimates by averaging across the levels of a variable.</li>
-<li>Added functions for calculating two new effect sizes:<ul><li>log ratio of medians</li>
+<li>Added functions for calculating two new effect sizes:
+<ul><li>log ratio of medians</li>
 <li>baseline-corrected Tau</li>
 </ul></li>
-<li>Updates to SCD_effect_sizes() shiny app.<ul><li>Added aggregate feature.</li>
+<li>Updates to SCD_effect_sizes() shiny app.
+<ul><li>Added aggregate feature.</li>
 <li>Added log ratio of medians and baseline-corrected Tau effect size measures.</li>
 <li>Allowed use of .xlsx files.</li>
 <li>R code for replicating the batch calculation.</li>
@@ -118,7 +125,8 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.3" id="singlecasees-043">SingleCaseES 0.4.3<small>2019-08-29</small><a class="anchor" aria-label="anchor" href="#singlecasees-043"></a></h2>
 <ul><li>Updated internal functions for compatibility with tidyr 1.0.0.</li>
-<li>Tweaks for SCD_effect_sizes() shiny app.<ul><li>Corrected bug in the single-series calculator that ignored direction of improvement for parametric effect sizes.</li>
+<li>Tweaks for SCD_effect_sizes() shiny app.
+<ul><li>Corrected bug in the single-series calculator that ignored direction of improvement for parametric effect sizes.</li>
 <li>Fixed bug in the batch calculator phase-selection drop-down menus.</li>
 <li>Corrected bug in the batch calculator so that confidence intervals other than 95% could be calculated.</li>
 <li>Added a black-box warning any time PND is calculated.</li>
@@ -129,7 +137,8 @@
 <h2 class="page-header" data-toc-text="0.4.2" id="singlecasees-042">SingleCaseES 0.4.2<small>2019-06-14</small><a class="anchor" aria-label="anchor" href="#singlecasees-042"></a></h2>
 <ul><li>Added check for purrrlyr package when loading gem_scd calculator.</li>
 <li>Corrected bug in degrees of freedom for within-case standardized mean difference with baseline SD.</li>
-<li>Tweaks for SCD_effect_sizes() shiny app.<ul><li>Improved UI for batch calculation mode.</li>
+<li>Tweaks for SCD_effect_sizes() shiny app.
+<ul><li>Improved UI for batch calculation mode.</li>
 <li>Added the option to select a treatment phase for batch calculation mode.</li>
 <li>Allowed for choice between baseline SD and pooled SD for the within-case standardized mean difference. Previously, the option was available but not actually used for calculation.</li>
 </ul></li>
@@ -153,10 +162,12 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3" id="singlecasees-03">SingleCaseES 0.3<a class="anchor" aria-label="anchor" href="#singlecasees-03"></a></h2>
-<ul><li>Fixed definitions of PAND and IRD to handle cases of complete overlap (i.e., where all of the data from a phase must be removed to achieve non-overlap).</li></ul></div>
+<ul><li>Fixed definitions of PAND and IRD to handle cases of complete overlap (i.e., where all of the data from a phase must be removed to achieve non-overlap).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2" id="singlecasees-02">SingleCaseES 0.2<a class="anchor" aria-label="anchor" href="#singlecasees-02"></a></h2>
-<ul><li>Initial release.</li></ul></div>
+<ul><li>Initial release.</li>
+</ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -171,7 +182,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
