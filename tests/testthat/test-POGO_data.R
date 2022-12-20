@@ -3,6 +3,8 @@ library(tidyr)
 
 test_that("POGO calculation agrees with article for Crozier 2005", {
   
+  data("Crozier2005")
+  
   Crozier2005_res <- data.frame(Phase_Shift = c("A1 to B1", "B1 to A2", "A2 to B2"), 
                                 Article_ES = c(79.1, 64.2, 97.92))
   
@@ -39,6 +41,8 @@ test_that("POGO calculation agrees with article for Crozier 2005", {
 })
 
 test_that("POGO calculation agrees with article for English1997", {
+  
+  data("English1997")
 
   English1997_res <- data.frame(case = c("Sue", "Don", "Jake", "Pete"),
                                 Article_ES = c(79.1, 69, 35.8, 108.2))
@@ -57,6 +61,8 @@ test_that("POGO calculation agrees with article for English1997", {
 })
 
 test_that("POGO calculation agrees with article for Facon 2008", {
+  
+  data("Facon2008")
 
   Facon2008_res <- data.frame(Phase_Shift = c("A to B", "B to C", "C to D", "D to E", "E to F", "F to G", "G to H", "H to I"),
                               Article_ES = c(4.6, 12.4, 23.3, 43.5, 62.1, 77.9, 87.4, 106.2))
@@ -133,6 +139,8 @@ test_that("POGO calculation agrees with article for Facon 2008", {
 })
 
 test_that("POGO calculation agrees with article for Olszewski 2017", {
+  
+  data("Olszewski2017")
 
   Olszewski2017_res <- data.frame(behavior = c("Blends", "Segmenting", "First Part ID", "First Sound ID"),
                                   Article_ES = c(23.0, 85.3, 100, 26))
@@ -180,6 +188,8 @@ test_that("POGO calculation agrees with article for Olszewski 2017", {
 })
 
 test_that("POGO calculation agrees with article for Spencer 2012", {
+  
+  data("Spencer2012")
 
   Spencer2012_res <- data.frame(Observation = c("Child A1", "Child A2", "Child A3", "Child B1", "Child B2", "Child B3", "Child C1", "Child C2", "Child C3"),
                                     Article_ES = c(33.333, 50, 46.875, 58.826, 44.444, 14.711, 72.222, 36.111, 27.778))
@@ -205,6 +215,8 @@ test_that("POGO calculation agrees with article for Spencer 2012", {
 })
 
 test_that("POGO calculation agrees with article for Kelley 2015", {
+  
+  data("Kelley2015")
   
   Kelley2015_res <- data.frame(observation = c("240408", "240412", "240413", "240903", "240913", "240915", "241201", "241204", "241211"),
                                Article_ES = c(33.33333333, 32.25850156, 100, 25.71449796, 50.00029412, 46.87516602, 58.62083234, 5.714555101, 83.33333333),
@@ -233,6 +245,8 @@ test_that("POGO calculation agrees with article for Kelley 2015", {
 })
 
 test_that("POGO calculation agrees with article for Peters 2020", {
+  
+  data("Peters2020")
 
   Peters2020_res <- data.frame(Observation = c("Child F1", "Child F2", "Child F3", "Child F4", "Child F5", "Child F6", "Child F7", "Child F8", "Child F9", 
                                                "Child J1", "Child J2", "Child J3", "Child J4", "Child J5", "Child J6", "Child J7", "Child J8"),
@@ -261,6 +275,8 @@ test_that("POGO calculation agrees with article for Peters 2020", {
 })
 
 test_that("POGO calculation agrees with article for Dennis 2021", {
+  
+  data("Dennis2021")
 
   Dennis2021_res <- data.frame(Participant = c(1,2,3,4,5,6,1,2,3,4,5,6),
                            Condition = c(rep("App", 6), rep("TCH", 6)),

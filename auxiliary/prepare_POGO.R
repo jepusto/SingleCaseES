@@ -9,10 +9,11 @@ Crozier2005 <- read_excel("auxiliary/Figure1.xlsx") %>%
   rename(session = `...1`,
          score = `Series 1`) %>%
   mutate(phase = c(rep("A1", 6), rep("B1", 6), rep("A2", 6), rep("B2", 6))) %>%
-  select(session, phase, score)
+  select(session, phase, score) %>%
+  as.data.frame()
 
 str(Crozier2005)
-save(Crozier2005, file = "data/Crozier2005.Rdata", compress = TRUE, version = 2)
+save(Crozier2005, file = "data/Crozier2005.RData", compress = TRUE, version = 2)
 
 #--------------------
 # Olszewski
@@ -46,7 +47,8 @@ olszewski_2017_firstsoundid <- read_excel("auxiliary/Figure2d.xlsx") %>%
          phase = c(rep("A", 13), rep("B", 5)))
 
 Olszewski2017 <- rbind(olszewski_2017_blends, olszewski_2017_segmenting, olszewski_2017_firstpartid, olszewski_2017_firstsoundid) %>%
-  select(behavior, session, phase, score)
+  select(behavior, session, phase, score)%>%
+  as.data.frame()
 
 str(Olszewski2017)
 save(Olszewski2017, file = "data/Olszewski2017.RData", compress = TRUE, version = 2)
@@ -88,10 +90,11 @@ english_1997_4 <- read_excel("auxiliary/Figure3d.xlsx") %>%
          phase = c(rep("A", 10), rep("B", 8)))
 
 English1997 <- rbind(english_1997_1, english_1997_2, english_1997_3, english_1997_4) %>%
-  select(case, session, phase, score)
+  select(case, session, phase, score)%>%
+  as.data.frame()
 
 str(English1997)
-save(English1997, file = "data/English1997.Rdata", compress = TRUE, version = 2)
+save(English1997, file = "data/English1997.RData", compress = TRUE, version = 2)
 
 #--------------------
 # Facon
@@ -150,19 +153,21 @@ Facon2008 <- Facon2008 %>%
          criterion = ifelse(phase == "F", F, criterion),
          criterion = ifelse(phase == "G", G, criterion),
          criterion = ifelse(phase == "H", H, criterion),
-         criterion = ifelse(phase == "I", I, criterion))
+         criterion = ifelse(phase == "I", I, criterion)) %>%
+  as.data.frame()
 
 str(Facon2008)
-save(Facon2008, file = "data/Facon2008.Rdata", compress = TRUE, version = 2)
+save(Facon2008, file = "data/Facon2008.RData", compress = TRUE, version = 2)
 
 #--------------------
 # Spencer
 #--------------------
 
-Spencer2012 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 5)
+Spencer2012 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 5) %>%
+  as.data.frame()
 
 str(Spencer2012)
-save(Spencer2012, file = "data/Spencer2012.Rdata", compress = TRUE, version = 2)
+save(Spencer2012, file = "data/Spencer2012.RData", compress = TRUE, version = 2)
 
 #--------------------
 # Kelley
@@ -189,28 +194,31 @@ control <- Kelley2015 %>%
   mutate(condition = "control")
 
 Kelley2015 <- rbind(treatment, control) %>%
-  select(condition, observation, unit, pre, post)
+  select(condition, observation, unit, pre, post) %>%
+  as.data.frame()
 
 str(Kelley2015)
-save(Kelley2015, file = "data/Kelley2015.Rdata", compress = TRUE, version = 2)
+save(Kelley2015, file = "data/Kelley2015.RData", compress = TRUE, version = 2)
 
 #--------------------
 # Peters
 #--------------------
 
-Peters2020 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 12)
+Peters2020 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 12) %>%
+  as.data.frame()
 
 str(Peters2020)
-save(Peters2020, file = "data/Peters2020.Rdata", compress = TRUE, version = 2)
+save(Peters2020, file = "data/Peters2020.RData", compress = TRUE, version = 2)
 
 #--------------------
 # Dennis
 #--------------------
 
-Dennis2021 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 15)
+Dennis2021 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 15) %>%
+  as.data.frame()
 
 str(Dennis2021)
-save(Dennis2021, file = "data/Dennis2021.Rdata", compress = TRUE, version = 2)
+save(Dennis2021, file = "data/Dennis2021.RData", compress = TRUE, version = 2)
 
 
 
