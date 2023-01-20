@@ -218,6 +218,7 @@ NULL
 #'   \item \code{session}. Within-series session-number
 #'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
 #'   \item \code{score}. Value for the outcome. 
+#'   \item \code{Include}. Value for inclusion in POGO calculation (0 if included in article, 1 if not included)
 #' }
 #' 
 #' @docType data

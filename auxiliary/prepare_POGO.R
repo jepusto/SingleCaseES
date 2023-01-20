@@ -48,7 +48,12 @@ olszewski_2017_firstsoundid <- read_excel("auxiliary/Figure2d.xlsx") %>%
 
 Olszewski2017 <- rbind(olszewski_2017_blends, olszewski_2017_segmenting, olszewski_2017_firstpartid, olszewski_2017_firstsoundid) %>%
   select(behavior, session, phase, score)%>%
-  as.data.frame()
+  as.data.frame() %>%
+  mutate(Include = 0,
+         Include = ifelse(behavior == "Segmenting" & session %in% c(1:8,14:18), 1, 0),
+         Include = ifelse(behavior == "First Part ID" & session %in% c(1:11,14:18), 1, Include),
+         Include = ifelse(behavior == "Blends", 1, Include),
+         Include = ifelse(behavior == "First Sound ID", 1, Include))
 
 str(Olszewski2017)
 save(Olszewski2017, file = "data/Olszewski2017.RData", compress = TRUE, version = 2)
