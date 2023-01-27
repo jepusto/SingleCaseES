@@ -256,6 +256,10 @@ test_that("Batch calculator is correct", {
   Wright_app <- 
     check_batch(app, example_dat = "Wright2012", ES = all_names, Kendall = FALSE, goal = 0) %>% 
     select(-baseline_SD)
+  
+  Olszewski_app <- 
+    check_batch(app, example_dat = "Olszewski2017", ES = all_names, Kendall = FALSE, goal = 20) %>%
+    select(-baseline_SD)
 
   # Package
   data(McKissick)
@@ -331,10 +335,34 @@ test_that("Batch calculator is correct", {
     mutate(across(Est:CI_upper, ~ round(., 4L))) %>% 
     mutate(Participant = as.character(Participant)) %>% 
     select(-baseline_SD)
+  
+  data("Olszewski2017")
+  Olszewski_pkg <-
+    batch_calc_ES(dat = Olszewski2017,
+                  condition = "phase",
+                  outcome = "score",
+                  grouping = "behavior",
+                  phase_vals = c("A", "B"),
+                  direction = "increase",
+                  session_num = "session",
+                  scale = "count",
+                  intervals = NA,
+                  observation_length = NA,
+                  ES = all_names,
+                  std_dev = "baseline",
+                  confidence = 0.95,
+                  goal = 20,
+                  Kendall = FALSE,
+                  pretest_trend = FALSE,
+                  format = "long",
+                  warn = FALSE) %>%
+    select(-baseline_SD) %>%
+    mutate(across(Est:CI_upper, ~ round(., 4L)))
 
   expect_equal(McKissick_pkg, McKissick_app, check.attributes = FALSE)
   expect_equal(Schmidt_pkg, Schmidt_app, check.attributes = FALSE)
   expect_equal(Wright_pkg, Wright_app, check.attributes = FALSE)
+  expect_equal(Olszewski_pkg, Olszewski_app, check.attributes = FALSE)
   
   
   # Kendall == TRUE
@@ -342,6 +370,7 @@ test_that("Batch calculator is correct", {
   McKissick_app_Kendall <- check_batch(app, "McKissick", ES = "Tau_BC", Kendall = TRUE)
   Schmidt_app_Kendall <- check_batch(app, "Schmidt2007", ES = "Tau_BC", Kendall = TRUE)
   Wright_app_Kendall <- check_batch(app, "Wright2012", ES = "Tau_BC", Kendall = TRUE)
+  Olszewski_app_Kendall <- check_batch(app, "Olszewski2017", ES = "Tau_BC", Kendall = TRUE)
   
   # Package
   McKissick_pkg_Kendall <-
@@ -410,9 +439,30 @@ test_that("Batch calculator is correct", {
     mutate(across(Est:CI_upper, ~ round(., 4L))) %>% 
     mutate(Participant = as.character(Participant))
   
+  Olszewski_pkg_Kendall <-
+    batch_calc_ES(dat = Olszewski2017,
+                  condition = "phase",
+                  outcome = "score",
+                  grouping = "behavior",
+                  phase_vals = c("A", "B"),
+                  direction = "increase",
+                  session_num = "session",
+                  scale = "count",
+                  intervals = NA,
+                  observation_length = NA,
+                  ES = "Tau-BC",
+                  confidence = 0.95,
+                  goal = 20,
+                  Kendall = TRUE,
+                  pretest_trend = FALSE,
+                  format = "long",
+                  warn = FALSE) %>%
+    mutate(across(Est:CI_upper, ~ round(., 4L)))
+  
   expect_equal(McKissick_pkg_Kendall, McKissick_app_Kendall, check.attributes = FALSE)
   expect_equal(Schmidt_pkg_Kendall, Schmidt_app_Kendall, check.attributes = FALSE)
   expect_equal(Wright_pkg_Kendall, Wright_app_Kendall, check.attributes = FALSE)
+  expect_equal(Olszewski_pkg_Kendall, Olszewski_app_Kendall, check.attributes = FALSE)
 
 })
 
