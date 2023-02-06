@@ -449,7 +449,7 @@ shinyServer(function(input, output, session) {
     
     var_names <- names(datClean())
     
-    if (input$dat_type == "dat") {  
+    if (input$dat_type %in% c("dat","xlsx")) {  
       
       list(
         selectInput("bgoalLevel", "Set the goal level for PoGO.",
