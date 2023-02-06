@@ -452,7 +452,6 @@ test_that("Batch calculator is correct", {
                   observation_length = NA,
                   ES = "Tau-BC",
                   confidence = 0.95,
-                  goal = 20,
                   Kendall = TRUE,
                   pretest_trend = FALSE,
                   format = "long",

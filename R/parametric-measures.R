@@ -561,7 +561,7 @@ calc_SMD <- function(A_data, B_data,
   
   J <- if (bias_correct) 1  - 3 / (4 * df - 1) else 1
   
-  if (is.na(s_sq) | s_sq == 0) warning("There is no variation in the outcome! The SMD is not an appropriate ES for these data.")
+  if (warn && (is.na(s_sq) | s_sq == 0)) warning("There is no variation in the outcome! The SMD is not an appropriate ES for these data.")
   
   d <- J * diff(dat$M) / sqrt(s_sq) 
   
