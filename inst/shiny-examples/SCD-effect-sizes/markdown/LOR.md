@@ -1,11 +1,9 @@
 #### Parameter definition
 
 The log-odds ratio is an effect size index that quantifies the change from phase A to phase B in terms of proportionate change in the odds that a behavior is occurring. It is only appropriate for use with outcomes on a percentage or proportion scale. The LOR parameter is defined as
-
 $$
 \psi = \ln\left(\frac{\mu_B/(1-\mu_B)}{\mu_A/(1-\mu_A)}\right),
 $$
-
 where $\mu_A$ and $\mu_B$ denote the mean levels, as measured in proportions, in phases A and B respectively, and $\ln()$ is the natural logarithm function. The log odds ratio ranges from $-\infty$ to $\infty$, with a value of zero corresponding to no change in mean levels.
 
 #### Estimation
@@ -23,25 +21,19 @@ $$
 where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes (Pustejovsky, 2018).
 
 The LOR is then estimated as
-
 $$
 LOR = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) - \frac{\tilde{s}_B^2(2 \tilde{y}_B - 1)}{2 n_B (\tilde{y}_B)^2(1-\tilde{y}_B)^2} - \ln\left(\tilde{y}_A\right) + \ln\left(1-\tilde{y}_A\right) + \frac{\tilde{s}_A^2(2 \tilde{y}_A - 1)}{2 n_A (\tilde{y}_A)^2(1-\tilde{y}_A)^2}.
 $$
-
 This estimator uses a small-sample correction to reduce bias when one or both phases include only a small number of observations.
 
 Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for $LOR$ is given by
-
 $$
 SE_{LOR} = \sqrt{\frac{\tilde{s}^2_A}{n_A \tilde{y}_A^2 (1 - \tilde{y}_A)^2} + \frac{\tilde{s}^2_B}{n_B \tilde{y}_B^2 (1 - \tilde{y}_B)^2}}.
 $$
-
 Under the same assumption, an approximate confidence interval for $\psi$ is
-
 $$
 [LOR - z_{\alpha / 2} \times SE_{LOR},\quad LOR + z_{\alpha / 2} \times SE_{LOR}],
 $$
-
 where $z_{\alpha / 2}$ is the $1 - \alpha / 2$ critical value from a standard normal distribution. 
 
 #### Primary reference
