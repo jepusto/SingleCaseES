@@ -225,7 +225,7 @@ NULL
 #' @keywords datasets
 #' @format A data frame with 72 rows and 4 variables
 #' @name Olszewski2017
-#' @source Olszewski, A., Soto, X., & Goldstein, H. (2017). Modeling alphabet skills as instructive feedback within a phonological awareness intervention. American Journal of Speech-Language Pathology, 26(3), 769–790. 
+#' @source Olszewski, A., Soto, X., & Goldstein, H. (2017). Modeling alphabet skills as instructive feedback within a phonological awareness intervention. American Journal of Speech-Language Pathology, 26(3), 769–790. doi:10.1044/2017_AJSLP-16-0042
 NULL
 
 #' @title English, et al. (1997)
@@ -263,7 +263,7 @@ NULL
 #' @keywords datasets
 #' @format A data frame with 49 rows and 4 variables
 #' @name Facon2008
-#' @source Facon, B., Sahiri, S., & Riviѐre, V. (2008). A controlled single-case treatment of severe long-term selective mutism in a child with mental retardation. Behavior Therapy, 39, 313–321. 
+#' @source Facon, B., Sahiri, S., & Riviѐre, V. (2008). A controlled single-case treatment of severe long-term selective mutism in a child with mental retardation. Behavior Therapy, 39, 313–321
 NULL
 
 #' @title Spencer et al. (2012)
@@ -285,7 +285,7 @@ NULL
 #' @name Spencer2012
 #' @source Spencer, E., Goldstein, H., Sherman, A., Noe, S., Tabbah, R., Ziolkowski, R., & Schneider, N. (2012). 
 #' Effects of an automated vocabulary and comprehension intervention: An early efficacy study. Journal of Early Intervention, 
-#' 34, 195-221. https://doi.org/10.1177/1053815112471990
+#' 34, 195-221. doi:10.1177/1053815112471990
 NULL
 
 #' @title Kelley et al. (2015)
@@ -305,7 +305,7 @@ NULL
 #' @keywords datasets
 #' @format A data frame with 54 rows and 5 variables
 #' @name Kelley2015
-#' @source Kelley, E. S., Goldstein, H., Spencer, T., & Sherman, A. (2015). Effects of automated Tier 2 storybook intervention on vocabulary and comprehension learning in preschool children with limited oral language skills. Early Childhood Research Quarterly, 31, 47–61. https://doi.org/10.1016/j.ecresq.2014.12.004
+#' @source Kelley, E. S., Goldstein, H., Spencer, T., & Sherman, A. (2015). Effects of automated Tier 2 storybook intervention on vocabulary and comprehension learning in preschool children with limited oral language skills. Early Childhood Research Quarterly, 31, 47–61. doi:10.1016/j.ecresq.2014.12.004
 NULL
 
 #' @title Peters-Sanders et al. (2020)
@@ -324,7 +324,7 @@ NULL
 #' @keywords datasets
 #' @format A data frame with 153 rows and 4 variables
 #' @name Peters2020
-#' @source Peters-Sanders, L., Kelley, E., Haring, C., Madsen, K., Soto, X., Seven, Y., Hull, K., & Goldstein, H. (2020). Moving forward four words at a time: Effects of a supplemental preschool vocabulary. Language, Speech, and Hearing Services in Schools, 51, 165-175. https://doi.org/10.1044/2019_LSHSS-19-00029
+#' @source Peters-Sanders, L., Kelley, E., Haring, C., Madsen, K., Soto, X., Seven, Y., Hull, K., & Goldstein, H. (2020). Moving forward four words at a time: Effects of a supplemental preschool vocabulary. Language, Speech, and Hearing Services in Schools, 51, 165-175. doi:10.1044/2019_LSHSS-19-00029
 NULL
 
 #' @title Dennis & Whalon, (2021)
@@ -344,6 +344,6 @@ NULL
 #' @keywords datasets
 #' @format A data frame with 90 rows and 5 variables
 #' @name Dennis2021
-#' @source Dennis, L. R., & Whalon, K. J. (2021). Effects of teacher-versus application-delivered instruction on the expressive vocabulary of at-risk preschool children. Remedial and Special Education, 42(4), 195-206. https://doi.org/10.1177/0741932519900991
+#' @source Dennis, L. R., & Whalon, K. J. (2021). Effects of teacher-versus application-delivered instruction on the expressive vocabulary of at-risk preschool children. Remedial and Special Education, 42(4), 195-206. doi:10.1177/0741932519900991
 NULL
 

@@ -10,7 +10,7 @@ A data frame with 81 rows and 4 variables
 \source{
 Spencer, E., Goldstein, H., Sherman, A., Noe, S., Tabbah, R., Ziolkowski, R., & Schneider, N. (2012). 
 Effects of an automated vocabulary and comprehension intervention: An early efficacy study. Journal of Early Intervention, 
-34, 195-221. https://doi.org/10.1177/1053815112471990
+34, 195-221. doi:10.1177/1053815112471990
 }
 \description{
 Data from a repeated acquisition single-case experimental design 

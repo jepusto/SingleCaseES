@@ -8,7 +8,7 @@
 A data frame with 153 rows and 4 variables
 }
 \source{
-Peters-Sanders, L., Kelley, E., Haring, C., Madsen, K., Soto, X., Seven, Y., Hull, K., & Goldstein, H. (2020). Moving forward four words at a time: Effects of a supplemental preschool vocabulary. Language, Speech, and Hearing Services in Schools, 51, 165-175. https://doi.org/10.1044/2019_LSHSS-19-00029
+Peters-Sanders, L., Kelley, E., Haring, C., Madsen, K., Soto, X., Seven, Y., Hull, K., & Goldstein, H. (2020). Moving forward four words at a time: Effects of a supplemental preschool vocabulary. Language, Speech, and Hearing Services in Schools, 51, 165-175. doi:10.1044/2019_LSHSS-19-00029
 }
 \description{
 Data from a Repeated acquisition single-case experimental design evaluating vocabulary knowledge using an expressive definition task.

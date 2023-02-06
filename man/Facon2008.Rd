@@ -8,7 +8,7 @@
 A data frame with 49 rows and 4 variables
 }
 \source{
-Facon, B., Sahiri, S., & Riviѐre, V. (2008). A controlled single-case treatment of severe long-term selective mutism in a child with mental retardation. Behavior Therapy, 39, 313–321.
+Facon, B., Sahiri, S., & Riviѐre, V. (2008). A controlled single-case treatment of severe long-term selective mutism in a child with mental retardation. Behavior Therapy, 39, 313–321
 }
 \description{
 Data from a changing criterion design conducted by Facon, et al. (2008), which evaluated two operant learning procedures, shaping and fading, for treating selective mutism. The dependent variable, average speech loudness in dB, was measured during 15-minute observation sessions.

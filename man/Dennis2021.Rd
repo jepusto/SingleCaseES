@@ -8,7 +8,7 @@
 A data frame with 90 rows and 5 variables
 }
 \source{
-Dennis, L. R., & Whalon, K. J. (2021). Effects of teacher-versus application-delivered instruction on the expressive vocabulary of at-risk preschool children. Remedial and Special Education, 42(4), 195-206. https://doi.org/10.1177/0741932519900991
+Dennis, L. R., & Whalon, K. J. (2021). Effects of teacher-versus application-delivered instruction on the expressive vocabulary of at-risk preschool children. Remedial and Special Education, 42(4), 195-206. doi:10.1177/0741932519900991
 }
 \description{
 Data from a Repeated acquisition single-case experimental design evaluating vocabulary knowledge using an expressive definition task.
