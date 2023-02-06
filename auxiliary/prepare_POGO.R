@@ -150,15 +150,7 @@ I <- as.numeric(Facon2008 %>%
                   summarise(mean(score)))
 
 Facon2008 <- Facon2008 %>%
-  mutate(criterion = ifelse(phase == "A", A, 0),
-         criterion = ifelse(phase == "B", B, criterion),
-         criterion = ifelse(phase == "C", C, criterion),
-         criterion = ifelse(phase == "D", D, criterion),
-         criterion = ifelse(phase == "E", E, criterion),
-         criterion = ifelse(phase == "F", F, criterion),
-         criterion = ifelse(phase == "G", G, criterion),
-         criterion = ifelse(phase == "H", H, criterion),
-         criterion = ifelse(phase == "I", I, criterion)) %>%
+  mutate(criterion = recode(phase, "A" = NA_real_, "B" = B, "C" = C, "D" = D, "E" = E, "F" = F, "G" = G, "H" = H, "I" = I)) %>%
   as.data.frame()
 
 str(Facon2008)
