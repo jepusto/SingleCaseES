@@ -4,11 +4,11 @@ if (getRversion() >= "2.15.1") utils::globalVariables(c("n", "ES", "Est", "SE", 
 # get ES names
 get_ES_names <- function(ES) {
   ES_names <- if (identical(ES, "all")) {
-    c("LRRd","LRRi","LOR","SMD","LRM","NAP","IRD","PAND","PND","PEM","Tau","Tau_U","Tau_BC")
+    c("LRRd","LRRi","LOR","SMD","LRM","NAP","IRD","PAND","PND","PEM","PoGO","Tau","Tau_U","Tau_BC")
   } else if (identical(ES, "NOM")) {
     c("NAP","IRD","PAND","PND","PEM","Tau","Tau_U", "Tau_BC")
   } else if (identical(ES, "parametric")) {
-    c("LRRd","LRRi","LOR","SMD", "LRM")
+    c("LRRd","LRRi","LOR","SMD", "LRM","PoGO")
   } else {
     ES
   }
@@ -73,11 +73,11 @@ convert_to_wide <- function(res, ES_names) {
 #' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
 #'   \code{"LRRi"}, \code{"LRM"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"},
-#'   \code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"},
-#'   \code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for all available
-#'   effect sizes. Set to \code{"parametric"} for all parametric effect sizes.
-#'   Set to \code{"NOM"} for all non-overlap measures. Defaults to calculating
-#'   the LRRd, LRRi, SMD, and Tau indices.
+#'   \code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"PoGO"},
+#'   \code{"Tau"}, \code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for
+#'   all available effect sizes. Set to \code{"parametric"} for all parametric
+#'   effect sizes. Set to \code{"NOM"} for all non-overlap measures. Defaults to
+#'   calculating the LRRd, LRRi, SMD, and Tau indices.
 #' @param improvement character string indicating direction of improvement.
 #'   Default is "increase".
 #' @param ... further arguments used for calculating some of the effect size
@@ -117,7 +117,7 @@ convert_to_wide <- function(res, ES_names) {
 #' @importFrom rlang exec
 #' @importFrom dplyr .data
 #' @importFrom dplyr vars
-#'
+#'   
 
 
 calc_ES <- function(A_data, B_data, 
@@ -223,11 +223,11 @@ calc_ES <- function(A_data, B_data,
 #' @param ES character string or character vector specifying which effect size
 #'   index or indices to calculate. Available effect sizes are \code{"LRRd"},
 #'   \code{"LRRi"}, \code{"LRM"}, \code{"LOR"}, \code{"SMD"}, \code{"NAP"},
-#'   \code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"Tau"},
-#'   \code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for all available
-#'   effect sizes. Set to \code{"parametric"} for all parametric effect sizes.
-#'   Set to \code{"NOM"} for all non-overlap measures. Defaults to calculating
-#'   the LRRd, LRRi, SMD, and Tau indices.
+#'   \code{"IRD"}, \code{"PND"}, \code{"PEM"}, \code{"PAND"}, \code{"PoGO"},
+#'   \code{"Tau"}, \code{"Tau-U"}, and \code{"Tau-BC"}. Set to \code{"all"} for
+#'   all available effect sizes. Set to \code{"parametric"} for all parametric
+#'   effect sizes. Set to \code{"NOM"} for all non-overlap measures. Defaults to
+#'   calculating the LRRd, LRRi, SMD, and Tau indices.
 #' @param improvement character string either indicating the direction of
 #'   uniform improvement ("increase" or "decrease") or the variable name of a
 #'   variable identifying the direction of improvement for each series. Default
@@ -253,6 +253,11 @@ calc_ES <- function(A_data, B_data,
 #'   observation. If a variable name, the mean observation session length within
 #'   each series will be used. Missing values will be ignored. Defaults to
 #'   \code{NA}.
+#' @param goal Used for the percent of goal obtained. Either a numeric common
+#'   goal level across all series in the dataset or a variable name containing
+#'   the goal level for each series. If a variable name, the mean goal level
+#'   within each series will be used. Missing values will be ignored. Defaults
+#'   to \code{NULL}.
 #' @param warn logical indicating whether warnings should be displayed. Default
 #'   is \code{TRUE}.
 #' @inheritParams calc_ES
@@ -319,6 +324,7 @@ batch_calc_ES <- function(dat,
                           scale = "other",
                           intervals = NA,
                           observation_length = NA,
+                          goal = NULL,
                           confidence = .95,
                           format = "long",
                           warn = TRUE,
@@ -388,6 +394,7 @@ batch_calc_ES <- function(dat,
   }
   
   intervals_quo <- rlang::enquo(intervals)
+  
   if (tryCatch(typeof(intervals) %in% c("double", "integer") || is.na(intervals), 
                warning = function(w) FALSE,
                error = function(e) FALSE)) {
@@ -416,6 +423,22 @@ batch_calc_ES <- function(dat,
   
   ES_names <- get_ES_names(ES)
   
+  if ("PoGO" %in% ES_names) {
+    
+    if (tryCatch(is.null(goal), error = function(e) FALSE)) {
+      stop("You must provide the goal level of the behavior to calculate the PoGO effect size.")
+    }
+    if (tryCatch(typeof(goal) %in% c("double", "integer"), 
+                 warning = function(w) FALSE,
+                 error = function(e) FALSE)) {
+      dat$goal <- goal
+      goal <- "goal"
+    } else {
+      goal <- tryCatch(tidyselect::vars_select(names(dat), !!rlang::enquo(goal)), 
+                       error = function(e) stop("The `goal` level is missing. Please either indicate a numerical common goal level or add a `goal` variable in the dataset."))
+    } 
+  }
+  
   if (!is.null(session_number)) dat <- dplyr::arrange(dat, !!rlang::sym(session_number))
   
   ES_ests_long <-
@@ -432,6 +455,7 @@ batch_calc_ES <- function(dat,
         scale =  .data[[scale]],
         intervals = .data[[intervals]],
         observation_length = .data[[observation_length]],
+        goal = if ("PoGO" %in% ES_names) .data[[goal]] else NULL,
         confidence = confidence,
         format = "long",
         ...,

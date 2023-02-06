@@ -20,7 +20,7 @@ test_that("calc_ES() works with single observation in baseline.", {
   
   expect_warning(calc_ES(A_data = A1, B_data = B3, 
                        improvement = "decrease", scale = "percentage",
-                       ES = "SMD", warn = FALSE))
+                       ES = "SMD"))
   
   expect_warning(calc_ES(A_data = A1, B_data = B3, 
                          improvement = "decrease", scale = "percentage",
@@ -81,11 +81,11 @@ test_that("calc_ES() works with single observation in each phase", {
   
   expect_warning(calc_ES(A_data = A1, B_data = B1, 
                        improvement = "decrease", scale = "percentage",
-                       ES = "SMD", warn = FALSE))
+                       ES = "SMD"))
   
   expect_warning(calc_ES(A_data = A1, B_data = B1, 
                          improvement = "decrease", scale = "percentage",
-                         ES = "SMD", std_dev = "pool", warn = FALSE))
+                         ES = "SMD", std_dev = "pool"))
   
   NAP_Tau <- calc_ES(A_data = A1, B_data = B1, 
                      improvement = "decrease", ES = c("NAP","Tau"),

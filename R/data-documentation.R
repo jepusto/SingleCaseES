@@ -185,3 +185,165 @@ NULL
 #' problem behavior in young children with autism. 
 #' \emph{Child Development Research}, 2012, 1-13. doi:10.1155/2012/357291
 NULL
+
+#' @title Crozier and Tincani (2015)
+#' 
+#' @description Data from an ABAB design that evaluated a social story intervention 
+#' on the disruptive behavior of a preschool child with autism. The dependent variable, 
+#' number of disruptions, was measured using frequency counting for a thirty minute observation
+#' session. The variables are as follows:
+#' 
+#' \itemize{
+#' \item \code{session}. Within-series session-number.
+#' \item \code{phase}. Lable for each unique phase (e.g., A1 is the first baseline phase, B2 is the second treatment phase).
+#' \item \code{score}. Value for the outcome.
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 24 rows and 3 variables
+#' @name Crozier2005
+#' @source Crozier, S., & Tincani, M. J. (2005). Using a modified social story to decrease disruptive behavior of a child with autism. 
+#' Focus on Autism and Other Developmental Disabilities, 20(3), 150-157.
+NULL
+
+#' @title Olszewski, et al. (2017)
+#' 
+#' @description Data from a multiple baseline design across behavior looking at four fluency measures (blends, segmenting, first part ID, first sound ID).
+#' The dependent variable is a score on a subtest, with a maximum score of 20.
+#' The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{behavior}. Outcome measure description (blends, segmenting, first part ID, or first sound ID)
+#'   \item \code{session}. Within-series session-number
+#'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
+#'   \item \code{score}. Value for the outcome. 
+#'   \item \code{Include}. Value for inclusion in POGO calculation (0 if included in article, 1 if not included)
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 72 rows and 4 variables
+#' @name Olszewski2017
+#' @source Olszewski, A., Soto, X., & Goldstein, H. (2017). Modeling alphabet skills as instructive feedback within a phonological awareness intervention. American Journal of Speech-Language Pathology, 26(3), 769–790. doi:10.1044/2017_AJSLP-16-0042
+NULL
+
+#' @title English, et al. (1997)
+#' 
+#' @description Data from a multiple baseline design across participants conducted by English, et al. (1997), which evaluated the effects of peer-training on interaction skills. This dependent variable, number of communicative acts directed by the participant to their peers, was measured using frequency counting for a 10-minute observation session. 
+#' The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{case}. Participant pseudonym given by author
+#'   \item \code{session}. Within-series session-number
+#'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
+#'   \item \code{score}. Value for the outcome. 
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 59 rows and 4 variables
+#' @name English1997
+#' @source English, K., Goldstein, H., Shafer, K., & Kaczmarek, L. (1997). Promoting interactions among preschoolers with and without disabilities: Effects of a buddy skills-training program. Exceptional Children, 63(2), 229–243. 
+NULL
+
+#' @title Facon, et al. (2008)
+#' 
+#' @description Data from a changing criterion design conducted by Facon, et al. (2008), which evaluated two operant learning procedures, shaping and fading, for treating selective mutism. The dependent variable, average speech loudness in dB, was measured during 15-minute observation sessions.
+#' The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{session}. Within-series session-number
+#'   \item \code{phase}. Label for each unique phase (A for baseline, each following for a change in criteria.
+#'   \item \code{score}. Value for the outcome. 
+#'   \item \code{criterion}. The fixed criterion value for each of the phases. The student moved to the next criterion when 80% of their utterances are equal or greater than the current criterion during at least 3 consecutive sessions. The first criterion was set at 43 dB with each following criterion equal to the mean score for the five best trials in the previous phase.
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 49 rows and 4 variables
+#' @name Facon2008
+#' @source Facon, B., Sahiri, S., & Riviѐre, V. (2008). A controlled single-case treatment of severe long-term selective mutism in a child with mental retardation. Behavior Therapy, 39, 313–321
+NULL
+
+#' @title Spencer et al. (2012)
+#' 
+#' @description Data from a repeated acquisition single-case experimental design 
+#' evaluating vocabulary knowledge using an expressive definition task.
+#' The variables are as follows:
+#' 
+#' \itemize{
+#' \item \code{Observation}. Participant number.
+#' \item \code{Book}. Book used for evaluation.
+#' \item \code{Pre}. Pre-intervention score on the expressive definition task.
+#' \item \code{Post}. Post-intervention score on the expressive definition task.
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 81 rows and 4 variables
+#' @name Spencer2012
+#' @source Spencer, E., Goldstein, H., Sherman, A., Noe, S., Tabbah, R., Ziolkowski, R., & Schneider, N. (2012). 
+#' Effects of an automated vocabulary and comprehension intervention: An early efficacy study. Journal of Early Intervention, 
+#' 34, 195-221. doi:10.1177/1053815112471990
+NULL
+
+#' @title Kelley et al. (2015)
+#' 
+#' @description Data from a randomized control trial with embedded repeated acquisition single- case experimental design evaluating vocabulary knowledge using an expressive definition task.
+#' The variables are as follows:
+#' 
+#' \itemize{
+#' \item \code{condition}. Indicates whether control or treatment group.
+#' \item \code{observation}. Identifier for participant
+#' \item \code{unit}. Classroom unit.
+#' \item \code{Pre}. Pre-intervention score on the expressive definition task. 
+#' \item \code{Post}. Post-intervention score on the expressive definition task. 
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 54 rows and 5 variables
+#' @name Kelley2015
+#' @source Kelley, E. S., Goldstein, H., Spencer, T., & Sherman, A. (2015). Effects of automated Tier 2 storybook intervention on vocabulary and comprehension learning in preschool children with limited oral language skills. Early Childhood Research Quarterly, 31, 47–61. doi:10.1016/j.ecresq.2014.12.004
+NULL
+
+#' @title Peters-Sanders et al. (2020)
+#' 
+#' @description Data from a Repeated acquisition single-case experimental design evaluating vocabulary knowledge using an expressive definition task.
+#' The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{observation}. Identifier for participant
+#'   \item \code{Book}.Book used for evaluation.
+#'   \item \code{Pre}. Pre-intervention score on the expressive definition task. 
+#'   \item \code{Post}. Post-intervention score on the expressive definition task. 
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 153 rows and 4 variables
+#' @name Peters2020
+#' @source Peters-Sanders, L., Kelley, E., Haring, C., Madsen, K., Soto, X., Seven, Y., Hull, K., & Goldstein, H. (2020). Moving forward four words at a time: Effects of a supplemental preschool vocabulary. Language, Speech, and Hearing Services in Schools, 51, 165-175. doi:10.1044/2019_LSHSS-19-00029
+NULL
+
+#' @title Dennis & Whalon, (2021)
+#' 
+#' @description Data from a Repeated acquisition single-case experimental design evaluating vocabulary knowledge using an expressive definition task.
+#' The variables are as follows:
+#' 
+#' \itemize{
+#'   \item \code{Participant}. Participant identifier.
+#'   \item \code{Condition}. Indicates condition, application (App) or teacher (TCH).
+#'   \item \code{Observation}. Within-series session-number
+#'   \item \code{Pre}. Pre-intervention score on the expressive definition task. 
+#'   \item \code{Post}. Post-intervention score on the expressive definition task. 
+#' }
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 90 rows and 5 variables
+#' @name Dennis2021
+#' @source Dennis, L. R., & Whalon, K. J. (2021). Effects of teacher-versus application-delivered instruction on the expressive vocabulary of at-risk preschool children. Remedial and Special Education, 42(4), 195-206. doi:10.1177/0741932519900991
+NULL
+

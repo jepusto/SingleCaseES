@@ -50,7 +50,7 @@ Suggests:
     janitor,
     rclipboard
 LazyData: TRUE
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Encoding: UTF-8
 Language: en-US
 VignetteBuilder: knitr, rmarkdown, cleanrmd

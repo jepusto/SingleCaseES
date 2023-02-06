@@ -130,13 +130,15 @@ test_that("Tau-BC is correct regarding pretest_trend argument.", {
 })
 
 
+
+
 test_that("Tau-BC works on an example.", {
   
   skip_on_cran()
   skip_if_not_installed("Kendall")
   library(Kendall)
   
-  source("http://ktarlow.com/stats/r/bctau.txt")
+  source("https://web.archive.org/web/20220927050017if_/https://ktarlow.com/stats/r/bctau.txt")
   
   A_data <- c(33, 25, 17, 25, 19, 21, 19, 14, 19, 17)
   B_data <- c(14, 15, 15, 9, 12, 7, 10, 6, 5, 2, 2, 3, 5, 4)
@@ -230,6 +232,9 @@ test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {
     select(-ES) %>%
     rename_with(.fn = ~ paste("Tau-BC", ., sep = "_"), .cols = -Case_pseudonym)
   
+  all_names <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U",
+                 "LOR", "LRRd", "LRRi", "LRM", "SMD")
+  
   res_D <- 
     batch_calc_ES(
       McKissick,
@@ -238,7 +243,7 @@ test_that("Tau-BC works within calc_ES() and batch_calc_ES().", {
       outcome = Outcome, 
       session_number = Session_number,
       improvement = "decrease",
-      ES = "all",
+      ES = all_names,
       warn = FALSE
     ) %>%
     dplyr::filter(ES == "Tau-BC") %>%

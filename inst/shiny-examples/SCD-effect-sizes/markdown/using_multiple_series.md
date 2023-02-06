@@ -102,7 +102,7 @@ Now select the “Estimate” tab. You will need to specify the following:
 
 3. __Confidence level__: For effect size indices that have known sampling variances, the calculator will report approximate confidence intervals. Specify your preferred coverage level for the confidence interval. The default is 95% confidence intervals. 
 
-4 __Digits:__ The number of digits reported for the effect size estimates (and confidence intervals if applicable). For instance, an NAP of 0.85456 will be rounded to 0.855 if you select 3 digits, or to 0.85 if you select 2 digits. 
+4. __Digits:__ The number of digits reported for the effect size estimates (and confidence intervals if applicable). For instance, an NAP of 0.85456 will be rounded to 0.855 if you select 3 digits, or to 0.85 if you select 2 digits. 
 
 5. __Long or wide format?__ This option is only relevant if you select more than one effect size index. If you select long, each effect size estimate (and any accompanying standard errors and confidence interval) will appear in a separate row. If you select wide, each effect size will appear in a separate column, with a single line per data series. 
 
@@ -134,9 +134,17 @@ Now select the “Estimate” tab. You will need to specify the following:
     
     8.4 __Floor for the log-response or log-odds ratio__: Here you are able to specify your own truncation constant instead of using the constant calculated based on the information in previous fields. 
 
-9. After you have selected one or more effect sizes, the “Estimate” button will appear. Click “Estimate” to view the calculated effect sizes and associated information. 
+9. If using the __PoGO__ effect size, further information on the goal level of the behavior is needed. For example, for your own data,
+    
+    9.1 __Set the goal level for PoGO__: For the PoGO effect size index, an option will appear allowing you to select whether to use a "common goal" level or set "different goals across series". 
+    
+    9.1.1 If choosing a common goal, then you need to provide a numerical value for the common goal in the numeric box that appears.
+    
+    9.1.2 If choosing to set different goals across series, then select the variable name in the drop-down box that appears.
 
-10. Click “Download results” to download the effect size estimates as a .csv file
+10. After you have selected one or more effect sizes, the “Estimate” button will appear. Click “Estimate” to view the calculated effect sizes and associated information. 
+
+11. Click “Download results” to download the effect size estimates as a .csv file
 
 ## Syntax for R
 

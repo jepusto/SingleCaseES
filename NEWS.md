@@ -1,6 +1,10 @@
 # SingleCaseES 0.6.1.9999
 
 * Fixed a bug in the SCD_effect_sizes app (multiple-series calculator), which led to incorrect R syntax when `phase_pair_calculated` is included as a grouping variable.
+* Added functions for calculating one new effect size: 
+    * percent of goal obtained
+* Updates to SCD_effect_sizes() shiny app.
+    * Added percent of goal obtained effect size measure.
 
 # SingleCaseES 0.6.1
 

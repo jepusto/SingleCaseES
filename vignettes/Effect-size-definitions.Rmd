@@ -611,4 +611,34 @@ $$
 $$
 where $z_{\alpha/2}$ is $1 - \alpha/2$ critical value from a standard normal distribution.
 
+## PoGO
+
+@ferron2020indexing proposed a percent of goal obtained (PoGO) effect size metric for use in single-case designs. Let $\gamma$ denote the goal level of behavior, which must be specified by the analyst or researcher. Percent of goal obtained quantifies the change in the mean level of behavior relative to the goal. The PoGO parameter $\theta$ is defined as:
+$$
+\theta = \frac{\mu_B - \mu_A}{\gamma - \mu_A} \times 100\%.
+$$
+
+### Estimation
+
+Approaches for estimation of PoGO depend on one's assumption about the stability of the observations in phases A and B. Under the assumption that the observations are temporally stable, a natural estimator of PoGO is
+$$
+PoGO = \frac{\bar{y}_B - \bar{y}_A}{\gamma - \bar{y}_A} \times 100\%.
+$$
+
+### Standard errors
+
+@patrona2022effects proposed a method for calculating a standard error for the PoGO estimator under the assumptions that the observations within each phase are mutually independent. The standard error uses an approximation for the standard error of two independent, normally distributed random variables due to @dunlap1986confidence. It is calculated as
+$$
+SE_{PoGO} = \frac{1}{\gamma - \bar{y}_A} \sqrt{\frac{s_A^2}{n_A} + \frac{s_B^2}{n_B} + \left(\frac{\bar{y}_B - \bar{y}_A}{\gamma - \bar{y}_A}\right)^2 \frac{s_A^2}{n_A}}.
+$$
+@patrona2022effects also provided a more general approximation, which can be applied when PoGO is estimated using regressions that control for time trends or auto-correlation. However, these methods are not implemented in `SingleCaseES`.
+
+### Confidence intervals
+
+An approximate confidence interval for $PoGO$ is given by 
+$$
+[PoGO - z_{\alpha / 2} \times SE_{PoGO},\quad PoGO + z_{\alpha / 2} \times SE_{PoGO}],
+$$
+where $z_{\alpha / 2}$ is the $1 - \alpha / 2$ critical value from a standard normal distribution [@patrona2022effects]. 
+ 
 # References

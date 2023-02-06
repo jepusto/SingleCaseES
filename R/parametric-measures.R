@@ -561,7 +561,7 @@ calc_SMD <- function(A_data, B_data,
   
   J <- if (bias_correct) 1  - 3 / (4 * df - 1) else 1
   
-  if (is.na(s_sq) | s_sq == 0) warning("There is no variation in the outcome! The SMD is not an appropriate ES for these data.")
+  if (warn && (is.na(s_sq) | s_sq == 0)) warning("There is no variation in the outcome! The SMD is not an appropriate ES for these data.")
   
   d <- J * diff(dat$M) / sqrt(s_sq) 
   
@@ -688,6 +688,98 @@ calc_LRM <- function(A_data, B_data,
   
   if (!is.null(confidence)) {
     CI <- LRM + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE_LRM
+    res$CI_lower <- CI[1]
+    res$CI_upper <- CI[2] 
+    
+  }
+  
+  res
+  
+}
+
+#' @title Percent of Goal Obtained
+#'
+#' @description Calculates the percent of goal obtained effect size index
+#'
+#' @inheritParams calc_ES
+#' @param goal a numerical value indicating the goal level of behavior.
+#'
+#' @details The percent of goal obtained (PoGO) effect size parameter is defined
+#'   as the ratio of the difference in the mean level of behavior during phase B
+#'   versus during phase A to the difference between the goal level of behavior
+#'   and the mean level of behavior during phase A, multiplied by 100.
+#'
+#'   The standard error of PoGO is calculated based on Dunlap and Silver's
+#'   (1986) approximation for the standard error of a ratio. The confidence
+#'   interval for LRR is based on a large-sample (z) approximation.
+#'
+#' @references Dunlap, W. P., & Silver, N. C. (1986). Confidence intervals and
+#'   standard error for ratios of normal variables. \emph{Behavior Research
+#'   Methods, Instruments, & Computers, 18}, 469-471. doi:\doi{10.3758/BF03201412}
+#'
+#'   Ferron, J., Goldstein, H., Olszewski, A., & Rohrer, L. (2020). Indexing
+#'   effects in single-case experimental designs by estimating the percent of
+#'   goal obtained. \emph{Evidence-Based Communication Assessment and
+#'   Intervention, 14}(1-2), 6-27. doi:\doi{10.1080/17489539.2020.1732024}
+#'
+#'   Patrona, E., Ferron, J., Olszewski, A., Kelley, E., & Goldstein, H. (2022).
+#'   Effects of explicit vocabulary interventions for preschoolers: An
+#'   exploratory application of the percent of goal obtained (PoGO) effect size
+#'   metric. \emph{Journal of Speech, Language, and Hearing Research},
+#'   forthcoming.
+#'
+#' @return A data frame containing the estimate, standard error, and confidence
+#'   interval.
+#'
+#' @examples
+#' A <- c(20, 20, 26, 25, 22, 23)
+#' B <- c(28, 25, 24, 27, 30, 30, 29)
+#' PoGO(A_data = A, B_data = B, goal = 30)
+#'
+#' @export
+#' 
+
+
+PoGO <- function(A_data, B_data, condition, outcome, goal,
+                 baseline_phase = NULL,
+                 intervention_phase = NULL,
+                 improvement = "increase",
+                 confidence = .95) {
+  
+  if (missing(goal) | is.null(goal)) stop("You must provide the goal level of the behavior to calculate the PoGO effect size.")
+  
+  calc_ES(A_data = A_data, B_data = B_data, 
+          condition = condition, outcome = outcome, goal = goal,  
+          baseline_phase = baseline_phase,
+          intervention_phase = intervention_phase,
+          ES = "PoGO", improvement = improvement, confidence = confidence)
+}
+
+
+calc_PoGO <- function(A_data, B_data, goal,
+                      improvement = "increase",
+                      confidence = .95, warn = TRUE, ...) {
+  
+  if (missing(goal) | is.null(goal)) stop("You must provide the goal level of the behavior to calculate the PoGO effect size.")
+  if (length(goal) > 1L) goal <- mean(goal, na.rm = TRUE)
+  
+  stats_AB <- summary_stats(A_data = A_data, B_data = B_data, warn = warn)
+  alpha_hat <- stats_AB$M[1]
+  beta_hat <- stats_AB$M[2]
+  V_A <- stats_AB$V[1]
+  V_B <- stats_AB$V[2]
+  n_A <- stats_AB$n[1]
+  n_B <- stats_AB$n[2]
+  PoGO <- 100 * (beta_hat - alpha_hat) / (goal - alpha_hat)
+  
+  var_PoGO <- (V_A / n_A + V_B / n_B + (PoGO / 100)^2 * V_A / n_A) / (goal - alpha_hat)^2
+  SE_PoGO <- 100 * sqrt(var_PoGO)
+  
+  res <- data.frame(ES = "PoGO", Est = PoGO, 
+                    SE = SE_PoGO, stringsAsFactors = FALSE)
+  
+  if (!is.null(confidence)) {
+    CI <- PoGO + c(-1, 1) * qnorm(1 - (1 - confidence) / 2) * SE_PoGO 
     res$CI_lower <- CI[1]
     res$CI_upper <- CI[2] 
     

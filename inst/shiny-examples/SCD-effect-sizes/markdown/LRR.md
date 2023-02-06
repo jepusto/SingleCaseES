@@ -36,37 +36,32 @@ $$
 \tilde{y}_A = \text{max} \left\{ \bar{y}_A, \frac{1}{2 D m}\right\} \qquad \text{and} \qquad \tilde{y}_B = \text{max} \left\{ \bar{y}_B, \frac{1}{2 D n}\right\},
 $$
 and 
-$$\\tilde{s}_A^2 = \text{max} \left\{ s_A^2, \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \frac{1}{D^2 n^3}\right\},
+$$
+\tilde{s}_A^2 = \text{max} \left\{ s_A^2, \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \frac{1}{D^2 n^3}\right\},
 $$
 where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes (Pustejovsky, 2018).
 
 The LRR is then estimated as
-
 $$
 R = \ln\left(\tilde{y}_B\right) + \frac{\tilde{s}_B^2}{2 n \tilde{y}_B^2} - \ln\left(\tilde{y}_A\right) - \frac{\tilde{s}_A^2}{2 m \tilde{y}_A^2}.
 $$
-
 This estimator uses a small-sample correction to reduce bias when the one or both phases include only a small number of observations. 
 
 Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for $R$ is given by
-
 $$
 SE_R = \sqrt{\frac{\tilde{s}_A^2}{m \tilde{y}_A^2} + \frac{\tilde{s}_B^2}{n \tilde{y}_B^2}}.
 $$
-
 Under the same assumption, an approximate confidence interval for $\psi$ is 
-
 $$
 [R - z_{\alpha / 2} \times SE_R,\quad R + z_{\alpha / 2} \times SE_R],
 $$
-
 where $z_{\alpha / 2}$ is the $1 - \alpha / 2$ critical value from a standard normal distribution. 
 
 #### Percentage change
 
 If desired, LRR estimates and confidence intervals can be translated into the more readily interpretable metric percentage change using the formula
 $$
-\text{% Change} = 100\% \times \left[\exp(R) - 1 \right].
+\text{% Change} = 100\% \times \left[\exp\left(R\right) - 1 \right].
 $$
 
 #### Primary references

@@ -36,6 +36,7 @@ The available **parametric effect sizes** are:
 -   Log response ratio (decreasing and increasing)
 -   Log odds ratio
 -   Log ratio of medians
+-   Percent of goal obtained
 -   The gradual effects model, which can be used to estimate log
     response ratios or log odds ratios in the presence of time trends
     during treatment and return-to-baseline phases.
