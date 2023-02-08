@@ -443,27 +443,50 @@ batch_calc_ES <- function(dat,
   if (!is.null(session_number)) dat <- dplyr::arrange(dat, !!rlang::sym(session_number))
   
   ES_ests_long <-
-    dat %>%
-    dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) %>%
-    dplyr::reframe(
-      calc_ES(
-        condition = .data[[condition]],
-        outcome = .data[[outcome]],
-        baseline_phase = baseline_phase,
-        intervention_phase = intervention_phase,
-        ES = ES_names,
-        improvement = .data[[improvement]],
-        scale =  .data[[scale]],
-        intervals = .data[[intervals]],
-        observation_length = .data[[observation_length]],
-        goal = if ("PoGO" %in% ES_names) .data[[goal]] else NULL,
-        confidence = confidence,
-        format = "long",
-        ...,
-        warn = warn
+    if (utils::packageVersion("dplyr") >= '1.1.0') {
+      dat %>%
+      dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) %>%
+      dplyr::reframe(
+        calc_ES(
+          condition = .data[[condition]],
+          outcome = .data[[outcome]],
+          baseline_phase = baseline_phase,
+          intervention_phase = intervention_phase,
+          ES = ES_names,
+          improvement = .data[[improvement]],
+          scale =  .data[[scale]],
+          intervals = .data[[intervals]],
+          observation_length = .data[[observation_length]],
+          goal = if ("PoGO" %in% ES_names) .data[[goal]] else NULL,
+          confidence = confidence,
+          format = "long",
+          ...,
+          warn = warn
+        )
+      ) 
+    } else {
+      dat %>%
+      dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) %>%
+      dplyr::summarise(
+        calc_ES(
+          condition = .data[[condition]],
+          outcome = .data[[outcome]],
+          baseline_phase = baseline_phase,
+          intervention_phase = intervention_phase,
+          ES = ES_names,
+          improvement = .data[[improvement]],
+          scale =  .data[[scale]],
+          intervals = .data[[intervals]],
+          observation_length = .data[[observation_length]],
+          goal = if ("PoGO" %in% ES_names) .data[[goal]] else NULL,
+          confidence = confidence,
+          format = "long",
+          ...,
+          warn = warn
+        ),
+        .groups = "drop"
       )
-    ) %>%
-    dplyr::ungroup()
+    }
   
   ES_long_names <- names(ES_ests_long)
   
