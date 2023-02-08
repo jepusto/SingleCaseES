@@ -296,24 +296,25 @@ calc_ES <- function(A_data, B_data,
 #'               format = "wide")
 #'
 #' # Aggregate across phase-pairs
-#' batch_calc_ES(dat = Schmidt2007,
-#'               grouping = c(Behavior_type, Case_pseudonym),
-#'               aggregate = Phase_num,
-#'               weighting = "1/V",
-#'               condition = Condition,
-#'               outcome = Outcome,
-#'               ES = c("LRRi", "LRRd", "SMD", "Tau"),
-#'               improvement = direction,
-#'               scale = "count",
-#'               bias_correct = TRUE,
-#'               confidence = NULL,
-#'               format = "long")
+#'batch_calc_ES(dat = Schmidt2007,
+#'            grouping = c(Behavior_type, Case_pseudonym),
+#'            aggregate = Phase_num,
+#'            weighting = "1/V",
+#'            condition = Condition,
+#'            outcome = Outcome,
+#'            ES = c("LRRi", "LRRd", "SMD", "Tau"),
+#'            improvement = direction,
+#'            scale = "count",
+#'            bias_correct = TRUE,
+#'            confidence = NULL,
+#'            format = "long")
 #' 
 
 
 batch_calc_ES <- function(dat, 
                           grouping, 
-                          condition, outcome,
+                          condition, 
+                          outcome,
                           aggregate = NULL,
                           weighting = "equal",
                           session_number = NULL,
@@ -444,7 +445,7 @@ batch_calc_ES <- function(dat,
   ES_ests_long <-
     dat %>%
     dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) %>%
-    dplyr::summarise(
+    dplyr::reframe(
       calc_ES(
         condition = .data[[condition]],
         outcome = .data[[outcome]],
