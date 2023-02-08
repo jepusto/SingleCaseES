@@ -10,23 +10,25 @@ ES_long <-
   calc_ES(
     A_data = A_data, B_data = B_data, ES = "all", 
     scale = "percentage", improvement = "decrease",
+    goal = 10,
     confidence = .90
   ) %>%
-  arrange(ES)
+  arrange(ES) 
 
 test_that("Long format works properly.", {
 
   expect_identical(names(ES_long), c("ES","Est","SE","CI_lower","CI_upper", "baseline_SD"))
   expect_true(all(is.na(with(ES_long, SE[ES %in% c("IRD","PAND","PND","PEM","Tau-U")]))))
-  expect_true(all(!is.na(with(ES_long, SE[ES %in% c("LRRd","LRRi","LOR","SMD","NAP","Tau", "Tau-BC")]))))
-  expect_identical(ES_long$ES, sort(c("LRRd","LRRi","LOR","SMD","LRM","NAP","IRD","PAND","PND","PEM","Tau","Tau-U","Tau-BC")))
+  expect_true(all(!is.na(with(ES_long, SE[ES %in% c("LRRd","LRRi","LOR","SMD","NAP","Tau", "Tau-BC", "PoGO")]))))
+  expect_identical(ES_long$ES, sort(c("LRRd","LRRi","LOR","SMD","LRM","NAP","IRD","PAND","PND","PEM","Tau","Tau-U","Tau-BC", "PoGO")))
 
 })
 
 test_that("Wide format works for ES = 'all' when confidence is specified", {
   
   ES_wide <- calc_ES(A_data = A_data, B_data = B_data, ES = "all",
-                     scale = "percentage", improvement = "decrease", 
+                     scale = "percentage", improvement = "decrease",
+                     goal = 10,
                      confidence = .90, format = "wide")
   
   ES_to_long <- 
@@ -43,6 +45,7 @@ test_that("Wide format works for ES = 'all', when confidence is NULL", {
   
   ES_wide <- calc_ES(A_data = A_data, B_data = B_data, ES = "all",
                      scale = "percentage", improvement = "decrease", 
+                     goal = 10,
                      confidence = NULL, format = "wide")
   
   ES_to_long <- 
@@ -62,13 +65,15 @@ test_that("Wide format works for ES = 'parametric', when confidence is specified
     calc_ES(
       A_data = A_data, B_data = B_data, ES = "all", 
       scale = "percentage", improvement = "decrease",
+      goal = 10,
       std_dev = "pooled", confidence = .90
     ) %>%
     arrange(ES) %>% 
-    dplyr::filter(ES %in% c("LOR","LRRd","LRRi","SMD","LRM"))
+    dplyr::filter(ES %in% c("LOR","LRRd","LRRi","SMD","LRM","PoGO"))
   
   ES_wide <- calc_ES(A_data = A_data, B_data = B_data, ES = "parametric",
                      scale = "percentage", improvement = "decrease", 
+                     goal = 10,
                      std_dev = "pooled", confidence = .90, format = "wide")
   
   ES_to_long <- 
@@ -85,6 +90,7 @@ test_that("Wide format works for ES = 'parametric', when confidence is NULL", {
   
   ES_wide <- calc_ES(A_data = A_data, B_data = B_data, ES = "parametric",
                      scale = "percentage", improvement = "decrease", 
+                     goal = 10,
                      confidence = NULL, format = "wide")
   
   ES_to_long <- 
@@ -94,7 +100,7 @@ test_that("Wide format works for ES = 'parametric', when confidence is NULL", {
     spread(q, v, fill = NA) %>%
     select(ES, Est, SE)
   
-  parametric_long <- ES_long %>% dplyr::filter(ES %in% c("LOR","LRRd","LRRi","SMD","LRM"))
+  parametric_long <- ES_long %>% dplyr::filter(ES %in% c("LOR","LRRd","LRRi","SMD","LRM", "PoGO"))
   
   expect_identical(parametric_long$ES, ES_to_long$ES)
   expect_identical(parametric_long$Est, ES_to_long$Est)

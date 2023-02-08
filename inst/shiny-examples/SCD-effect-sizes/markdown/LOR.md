@@ -1,7 +1,6 @@
 #### Parameter definition
 
 The log-odds ratio is an effect size index that quantifies the change from phase A to phase B in terms of proportionate change in the odds that a behavior is occurring. It is only appropriate for use with outcomes on a percentage or proportion scale. The LOR parameter is defined as
-
 $$
 \psi = \ln\left(\frac{\mu_B/(1-\mu_B)}{\mu_A/(1-\mu_A)}\right),
 $$
@@ -16,30 +15,25 @@ $$
 \tilde{y}_A = \text{max} \left\{ \bar{y}_A, \frac{1}{2 D m}\right\} \qquad \text{and} \qquad \tilde{y}_B = \text{max} \left\{ \bar{y}_B, \frac{1}{2 D n}\right\},
 $$
 and 
-$$\\tilde{s}_A^2 = \text{max} \left\{ s_A^2, \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \frac{1}{D^2 n^3}\right\},
+$$
+\tilde{s}_A^2 = \text{max} \left\{ s_A^2, \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \frac{1}{D^2 n^3}\right\},
 $$
 where $D$ is a constant that depends on the scale and recording procedure used to measure the outcomes (Pustejovsky, 2018).
 
 The LOR is then estimated as
-
 $$
 LOR = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) - \frac{\tilde{s}_B^2(2 \tilde{y}_B - 1)}{2 n_B (\tilde{y}_B)^2(1-\tilde{y}_B)^2} - \ln\left(\tilde{y}_A\right) + \ln\left(1-\tilde{y}_A\right) + \frac{\tilde{s}_A^2(2 \tilde{y}_A - 1)}{2 n_A (\tilde{y}_A)^2(1-\tilde{y}_A)^2}.
 $$
-
 This estimator uses a small-sample correction to reduce bias when one or both phases include only a small number of observations.
 
 Under the assumption that the outcomes in each phase are mutually independent, an approximate standard error for $LOR$ is given by
-
 $$
 SE_{LOR} = \sqrt{\frac{\tilde{s}^2_A}{n_A \tilde{y}_A^2 (1 - \tilde{y}_A)^2} + \frac{\tilde{s}^2_B}{n_B \tilde{y}_B^2 (1 - \tilde{y}_B)^2}}.
 $$
-
 Under the same assumption, an approximate confidence interval for $\psi$ is
-
 $$
 [LOR - z_{\alpha / 2} \times SE_{LOR},\quad LOR + z_{\alpha / 2} \times SE_{LOR}],
 $$
-
 where $z_{\alpha / 2}$ is the $1 - \alpha / 2$ critical value from a standard normal distribution. 
 
 #### Primary reference

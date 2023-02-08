@@ -7,7 +7,8 @@
 
 example_list <- c("McKissick et al. (2010)" = "McKissick", 
                   "Schmidt (2007)" = "Schmidt2007",
-                  "Wright & McCathren (2012)" = "Wright2012")
+                  "Wright & McCathren (2012)" = "Wright2012",
+                  "Olszewski et al. (2017)" = "Olszewski2017")
 
 exampleMapping <- list(
   Schmidt2007 = list(condition = "Condition",
@@ -39,6 +40,16 @@ exampleMapping <- list(
                    session_num = "Session",
                    scale = "count",
                    intervals = NA,
-                   observation_length = NA)
+                   observation_length = NA),
+  Olszewski2017 = list(condition = "phase",
+                       outcome = "score",
+                       cluster_vars = "behavior",
+                       phase_vals = c("A", "B"),
+                       direction = "increase",
+                       session_num = "session",
+                       scale = "count",
+                       intervals = NA,
+                       observation_length = NA)
   
 )
+

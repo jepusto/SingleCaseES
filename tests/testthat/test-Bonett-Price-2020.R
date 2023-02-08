@@ -138,6 +138,7 @@ test_that("LRM works within calc_ES() and batch_calc_ES().", {
       session_number = Session_number,
       improvement = "decrease",
       ES = "all",
+      goal = 10,
       warn = FALSE
     ) %>%
     dplyr::filter(ES == "LRM") %>%
@@ -153,6 +154,7 @@ test_that("LRM works within calc_ES() and batch_calc_ES().", {
       session_number = Session_number,
       improvement = "decrease",
       ES = "parametric",
+      goal = 10,
       warn = FALSE
     ) %>%
     dplyr::filter(ES == "LRM") %>%

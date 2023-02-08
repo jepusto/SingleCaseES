@@ -48,6 +48,7 @@ reference:
       - LRRi
       - LOR
       - LRM
+      - PoGO
       - SMD
   - title: "Estimating the gradual effects model"
     desc: "Function for estimating the gradual effects model for single-case designs"
