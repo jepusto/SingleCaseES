@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SingleCaseES</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.0</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@ details</h1>
                         <h4 data-toc-skip class="author">James E.
 Pustejovsky, Daniel M. Swan, and Man Chen</h4>
             
-            <h4 data-toc-skip class="date">2022-12-19</h4>
+            <h4 data-toc-skip class="date">2023-02-08</h4>
       
       
       <div class="hidden name"><code>Effect-size-definitions.Rmd</code></div>
@@ -969,6 +969,59 @@ SE_{LRM}\right],
 standard normal distribution.</p>
 </div>
 </div>
+<div class="section level3">
+<h3 id="pogo">PoGO<a class="anchor" aria-label="anchor" href="#pogo"></a>
+</h3>
+<p><span class="citation">Ferron, Goldstein, Olszewski, &amp; Rohrer (<a href="#ref-ferron2020indexing" role="doc-biblioref">2020</a>)</span>
+proposed a percent of goal obtained (PoGO) effect size metric for use in
+single-case designs. Let <span class="math inline">\(\gamma\)</span>
+denote the goal level of behavior, which must be specified by the
+analyst or researcher. Percent of goal obtained quantifies the change in
+the mean level of behavior relative to the goal. The PoGO parameter
+<span class="math inline">\(\theta\)</span> is defined as: <span class="math display">\[
+\theta = \frac{\mu_B - \mu_A}{\gamma - \mu_A} \times 100\%.
+\]</span></p>
+<div class="section level4">
+<h4 id="estimation-11">Estimation<a class="anchor" aria-label="anchor" href="#estimation-11"></a>
+</h4>
+<p>Approaches for estimation of PoGO depend on one’s assumption about
+the stability of the observations in phases A and B. Under the
+assumption that the observations are temporally stable, a natural
+estimator of PoGO is <span class="math display">\[
+PoGO = \frac{\bar{y}_B - \bar{y}_A}{\gamma - \bar{y}_A} \times 100\%.
+\]</span></p>
+</div>
+<div class="section level4">
+<h4 id="standard-errors-5">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-5"></a>
+</h4>
+<p><span class="citation">Patrona, Ferron, Olszewski, Kelley, &amp;
+Goldstein (<a href="#ref-patrona2022effects" role="doc-biblioref">2022</a>)</span> proposed a method for calculating
+a standard error for the PoGO estimator under the assumptions that the
+observations within each phase are mutually independent. The standard
+error uses an approximation for the standard error of two independent,
+normally distributed random variables due to <span class="citation">Dunlap &amp; Silver (<a href="#ref-dunlap1986confidence" role="doc-biblioref">1986</a>)</span>.
+It is calculated as <span class="math display">\[
+SE_{PoGO} = \frac{1}{\gamma - \bar{y}_A} \sqrt{\frac{s_A^2}{n_A} +
+\frac{s_B^2}{n_B} + \left(\frac{\bar{y}_B - \bar{y}_A}{\gamma -
+\bar{y}_A}\right)^2 \frac{s_A^2}{n_A}}.
+\]</span> <span class="citation">Patrona et al. (<a href="#ref-patrona2022effects" role="doc-biblioref">2022</a>)</span>
+also provided a more general approximation, which can be applied when
+PoGO is estimated using regressions that control for time trends or
+auto-correlation. However, these methods are not implemented in
+<code>SingleCaseES</code>.</p>
+</div>
+<div class="section level4">
+<h4 id="confidence-intervals-5">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-5"></a>
+</h4>
+<p>An approximate confidence interval for <span class="math inline">\(PoGO\)</span> is given by <span class="math display">\[
+[PoGO - z_{\alpha / 2} \times SE_{PoGO},\quad PoGO + z_{\alpha / 2}
+\times SE_{PoGO}],
+\]</span> where <span class="math inline">\(z_{\alpha / 2}\)</span> is
+the <span class="math inline">\(1 - \alpha / 2\)</span> critical value
+from a standard normal distribution <span class="citation">(<a href="#ref-patrona2022effects" role="doc-biblioref">Patrona et al.,
+2022</a>)</span>.</p>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -1000,6 +1053,17 @@ linear functions of medians in within-subjects and mixed designs.
 Busk, P. L., &amp; Serlin, R. C. (1992). Meta-analysis for single-case
 research. In <em>Single-case research design and analysis (psychology
 revivals)</em> (pp. 199–224). Routledge.
+</div>
+<div id="ref-dunlap1986confidence" class="csl-entry">
+Dunlap, W. P., &amp; Silver, N. C. (1986). Confidence intervals and
+standard errors for ratios of normal variables. <em>Behavior Research
+Methods, Instruments, &amp; Computers</em>, <em>18</em>(5), 469–471. <a href="https://doi.org/10.3758/BF03201412" class="external-link">https://doi.org/10.3758/BF03201412</a>
+</div>
+<div id="ref-ferron2020indexing" class="csl-entry">
+Ferron, J., Goldstein, H., Olszewski, A., &amp; Rohrer, L. (2020).
+Indexing effects in single-case experimental designs by estimating the
+percent of goal obtained. <em>Evidence-Based Communication Assessment
+and Intervention</em>, <em>14</em>(1), 6–27. <a href="https://doi.org/10.1080/17489539.2020.1732024" class="external-link">https://doi.org/10.1080/17489539.2020.1732024</a>
 </div>
 <div id="ref-gingerich1984meta" class="csl-entry">
 Gingerich, W. J. (1984). Meta-analysis of applied time-series data.
@@ -1060,6 +1124,13 @@ single-case research: A review of nine nonoverlap techniques.
 Parker, R. I., Vannest, K. J., Davis, J. L., &amp; Sauber, S. B. (2011).
 Combining nonoverlap and trend for single-case research: Tau-u.
 <em>Behavior Therapy</em>, <em>42</em>(2), 284–299.
+</div>
+<div id="ref-patrona2022effects" class="csl-entry">
+Patrona, E., Ferron, J., Olszewski, A., Kelley, E., &amp; Goldstein, H.
+(2022). <a href=""><span class="nocase">Effects of explicit vocabulary
+interventions for preschoolers: An exploratory application of the <span class="nocase">Percent of Goal Obtained (PoGO)</span> effect size
+metric</span></a>. <em>Journal of Speech, Language, and Hearing
+Research</em>.
 </div>
 <div id="ref-pustejovsky2015measurement" class="csl-entry">
 Pustejovsky, J. E. (2015). Measurement-comparable effect sizes for
