@@ -62,9 +62,17 @@ reference:
   - title: "Example Datasets"
     desc: "Example datasets from single-case designs"
     contents:
+        - Crozier2005
+        - Dennis2021
+        - English1997
+        - Facon2008
+        - Kelley2015
         - McKissick
+        - Olszewski2017
+        - Peters2020
         - Schmidt2007
         - Schmidt2012
         - Shogren
+        - Spencer2012
         - Thorne
         - Wright2012
