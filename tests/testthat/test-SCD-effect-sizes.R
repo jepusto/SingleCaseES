@@ -845,7 +845,7 @@ test_that("The multiple series calculator works for PoGO.", {
   data <- read.csv("../testdata/CSES FINAL dataset.csv") %>%
     janitor::clean_names(case = "parsed")
 
-  xlsx_data <- read_excel("../testdata/CSES FINAL dataset.xlsx") %>%
+  xlsx_data <- readxl::read_excel("../testdata/CSES FINAL dataset.xlsx") %>%
     janitor::clean_names(case = "parsed")
   
   out_pkg_csv <-
