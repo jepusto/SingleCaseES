@@ -783,3 +783,87 @@ test_that("The bintervals and bobslength options work in the app.", {
   expect_equal(out_app_2, out_pkg_2, check.attributes = FALSE)
   
 })
+
+
+check_PoGO <- function(file) {
+  
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  data_path <- file.path("..", "testdata", file)
+  
+  app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
+  
+  if (str_detect(file, "csv")) {
+    app$setInputs(dat_type = "dat", wait_ = FALSE, values_ = FALSE)
+    app$uploadFile(dat = data_path)
+  } else if (str_detect(file, "xlsx")) {
+    app$setInputs(dat_type = "xlsx", wait_ = FALSE, values_ = FALSE)
+    app$uploadFile(xlsx = data_path)
+  }
+  
+  app$setInputs(BatchEntryTabs = "Variables")
+  app$setInputs(calcPhasePair = TRUE)
+  app$setInputs(b_clusters = c("Study_ID", "Study_Case_ID"))
+  app$setInputs(b_aggregate = "phase_pair_calculated")
+  app$setInputs(b_phase = "Condition")
+  app$setInputs(session_number = "Session_number")
+  app$setInputs(b_out = "Outcome")
+  app$setInputs(BatchEntryTabs = "Plot")
+  app$setInputs(BatchEntryTabs = "Estimate")
+  app$setInputs(bESpar = c("PoGO"))
+  app$setInputs(bgoalLevel = c("goals"))
+  app$setInputs(bgoalvar = c("Goal_Level"))
+  app$setInputs(bdigits = 4)
+  app$setInputs(batchest = "click")
+  
+  Sys.sleep(2)
+  
+  output_app <- app$getValue(name = "batchTable")
+  
+  output_app_table <-
+    read_html(output_app) %>% 
+    html_table(fill = TRUE) %>%
+    as.data.frame() %>%
+    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
+    mutate(across(Est:CI_upper, as.numeric))
+  
+  return(output_app_table)
+  
+}
+
+test_that("The multiple series calculator works for PoGO.", {
+  
+  skip_on_cran()
+  
+  out_app_csv <- check_PoGO(file = "CSES FINAL dataset.csv")
+  out_app_xlsx <- check_PoGO(file = "CSES FINAL dataset.xlsx")
+  
+  data <- read.csv("../testdata/CSES FINAL dataset.csv")
+  data <- 
+    data %>% 
+    mutate(StudyID = as.character(StudyID)) %>% 
+    group_by(StudyID, Study_CaseID) %>% 
+    mutate(phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)) %>% 
+    ungroup()
+  
+  out_pkg <-
+    batch_calc_ES(dat = data,
+                  grouping = c(StudyID, Study_CaseID),
+                  condition = Condition,
+                  outcome = Outcome,
+                  session_number = Session_number,
+                  baseline_phase = "A",
+                  intervention_phase = "B",
+                  ES = c("PoGO"),
+                  improvement = "increase",
+                  pct_change = FALSE,
+                  scale = Procedure,
+                  goal = Goal_Level,
+                  format = "long"
+    ) %>%
+    mutate(across(Est:CI_upper, ~ round(., 4L))) 
+  
+  expect_equal(out_app_csv, out_pkg, check.attributes = FALSE)
+  expect_equal(out_app_xlsx, out_pkg, check.attributes = FALSE)
+  
+})
+

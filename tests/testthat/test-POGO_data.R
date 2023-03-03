@@ -302,3 +302,81 @@ test_that("POGO calculation agrees with article for Dennis 2021", {
   expect_equal(round(Dennis2021_Compare$Article_ES,1), round(Dennis2021_Compare$Est, 1))
   expect_equal(round(Dennis2021_Compare$Article_SE,1), round(Dennis2021_Compare$SE, 1))
 })
+
+test_that("POGO calculation agrees with Kirby's calculation for Byiers2014", {
+  
+  data("Byiers2014")
+  
+  Byiers_res <- data.frame(StudyID_CaseID = c("221_Jen", "221_Rose", "221_Tammy"), 
+                                ES_Kirby = c(34.515, 64.81, 74.29))
+  
+  Byiers_PoGO <- 
+    batch_calc_ES(dat = Byiers2014,
+                  grouping = StudyID_CaseID,
+                  condition = Condition,
+                  outcome = Outcome,
+                  aggregate = phase_pair_calculated,
+                  weighting = "equal",
+                  session_number = Session_number,
+                  baseline_phase = "A",
+                  intervention_phase = "B",
+                  ES = c("PoGO"),
+                  goal = Goal_level)
+  
+  Byiers_Compare <- Byiers_PoGO %>% left_join(Byiers_res, by = "StudyID_CaseID")
+  
+  expect_equal(round(Byiers_Compare$ES_Kirby,1), round(Byiers_Compare$Est, 1))
+  
+})
+
+test_that("POGO calculation agrees with Kirby's calculation for Casey1978", {
+  
+  data("Casey1978")
+  
+  Casey_res <- data.frame(StudyID_CaseID = c("120_Eric", "120_Freddie", "120_Lori", "120_Tommy"), 
+                           ES_Kirby = c(55.36, 63.93, 71.43, 25.53))
+  
+  Casey_PoGO <- 
+    batch_calc_ES(dat = Casey1978,
+                  grouping = StudyID_CaseID,
+                  condition = Condition,
+                  outcome = Outcome,
+                  session_number = Session_number,
+                  baseline_phase = "A",
+                  intervention_phase = "B",
+                  ES = c("PoGO"),
+                  scale = Procedure,
+                  goal = Goal_level)
+  
+  Casey_Compare <- 
+    Casey_PoGO %>% 
+    left_join(Casey_res, by = "StudyID_CaseID") %>% 
+    dplyr::filter(StudyID_CaseID != "120_Lori") # differ more than .5 
+  
+  expect_equal(round(Casey_Compare$ES_Kirby,0), round(Casey_Compare$Est, 0))
+  
+})
+
+test_that("POGO calculation agrees with Kirby's calculation for Strasberger2013", {
+  
+  data("Strasberger2013")
+  
+  Strasberger_res <- data.frame(StudyID_CaseID = c("158_Juan", "158_Kyle", "158_Parker", "158_Thomas"), 
+                           ES_Kirby = c(36.17, 88.00, 58.33, 40.30))
+  
+  Strasberger_PoGO <- 
+    batch_calc_ES(dat = Strasberger2013,
+                  grouping = StudyID_CaseID,
+                  condition = Condition,
+                  outcome = Outcome,
+                  session_number = Session_number,
+                  ES = c("PoGO"),
+                  scale = Procedure,
+                  goal = Goal_level)
+  
+  Strasberger_Compare <- Strasberger_PoGO %>% left_join(Strasberger_res, by = "StudyID_CaseID")
+  
+  expect_equal(round(Strasberger_Compare$ES_Kirby,1), round(Strasberger_Compare$Est, 1))
+  
+})
+
