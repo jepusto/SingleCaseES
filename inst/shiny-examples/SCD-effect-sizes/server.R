@@ -625,7 +625,7 @@ shinyServer(function(input, output, session) {
     
     if ("PoGO" %in% input$bESpar) {
       
-      if (input$dat_type == "dat") {
+      if (input$dat_type %in% c("dat", "xlsx")) {
         if (input$bgoalLevel == "goals") goal_val <- as.symbol(input$bgoalvar) else goal_val <- input$bcomgoal
       } else {
         goal_val <- input$bcomgoal
@@ -814,7 +814,7 @@ shinyServer(function(input, output, session) {
     
     
     if ("PoGO" %in% input$bESpar) {
-      if (input$dat_type == "dat") {
+      if (input$dat_type %in% c("dat", "xlsx")) {
         goal_val <- switch(input$bgoalLevel,
                             "goals" = paste0(as.symbol(input$bgoalvar)),
                             "commonGoal" = input$bcomgoal,
