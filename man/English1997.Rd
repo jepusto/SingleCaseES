@@ -8,17 +8,24 @@
 A data frame with 59 rows and 4 variables
 }
 \source{
-English, K., Goldstein, H., Shafer, K., & Kaczmarek, L. (1997). Promoting interactions among preschoolers with and without disabilities: Effects of a buddy skills-training program. Exceptional Children, 63(2), 229–243.
+English, K., Goldstein, H., Shafer, K., & Kaczmarek, L. (1997).
+  Promoting interactions among preschoolers with and without disabilities:
+  Effects of a buddy skills-training program. Exceptional Children, 63(2),
+  229–243.
 }
 \description{
-Data from a multiple baseline design across participants conducted by English, et al. (1997), which evaluated the effects of peer-training on interaction skills. This dependent variable, number of communicative acts directed by the participant to their peers, was measured using frequency counting for a 10-minute observation session. 
-The variables are as follows:
+Data from a multiple baseline design across participants
+  conducted by English, et al. (1997), which evaluated the effects of
+  peer-training on interaction skills. This dependent variable, number of
+  communicative acts directed by the participant to their peers, was measured
+  using frequency counting for a 10-minute observation session. The variables
+  are as follows:
 
 \itemize{
   \item \code{case}. Participant pseudonym given by author
   \item \code{session}. Within-series session-number
   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
-  \item \code{score}. Value for the outcome. 
+  \item \code{score}. Value for the outcome.
 }
 }
 \keyword{datasets}

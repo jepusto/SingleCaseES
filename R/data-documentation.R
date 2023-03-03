@@ -208,43 +208,54 @@ NULL
 NULL
 
 #' @title Olszewski, et al. (2017)
-#' 
-#' @description Data from a multiple baseline design across behavior looking at four fluency measures (blends, segmenting, first part ID, first sound ID).
-#' The dependent variable is a score on a subtest, with a maximum score of 20.
-#' The variables are as follows:
-#' 
+#'
+#' @description Data from a multiple baseline design across behavior looking at
+#'   four fluency measures (blends, segmenting, first part ID, first sound ID).
+#'   The dependent variable is a score on a subtest, with a maximum score of 20.
+#'   The variables are as follows:
+#'
 #' \itemize{
 #'   \item \code{behavior}. Outcome measure description (blends, segmenting, first part ID, or first sound ID)
 #'   \item \code{session}. Within-series session-number
 #'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
-#'   \item \code{score}. Value for the outcome. 
+#'   \item \code{score}. Value for the outcome.
 #'   \item \code{Include}. Value for inclusion in POGO calculation (0 if included in article, 1 if not included)
 #' }
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 72 rows and 4 variables
 #' @name Olszewski2017
-#' @source Olszewski, A., Soto, X., & Goldstein, H. (2017). Modeling alphabet skills as instructive feedback within a phonological awareness intervention. American Journal of Speech-Language Pathology, 26(3), 769–790. doi:10.1044/2017_AJSLP-16-0042
+#' @source Olszewski, A., Soto, X., & Goldstein, H. (2017). Modeling alphabet
+#'   skills as instructive feedback within a phonological awareness
+#'   intervention. American Journal of Speech-Language Pathology, 26(3),
+#'   769–790. doi:10.1044/2017_AJSLP-16-0042
 NULL
 
 #' @title English, et al. (1997)
-#' 
-#' @description Data from a multiple baseline design across participants conducted by English, et al. (1997), which evaluated the effects of peer-training on interaction skills. This dependent variable, number of communicative acts directed by the participant to their peers, was measured using frequency counting for a 10-minute observation session. 
-#' The variables are as follows:
-#' 
+#'
+#' @description Data from a multiple baseline design across participants
+#'   conducted by English, et al. (1997), which evaluated the effects of
+#'   peer-training on interaction skills. This dependent variable, number of
+#'   communicative acts directed by the participant to their peers, was measured
+#'   using frequency counting for a 10-minute observation session. The variables
+#'   are as follows:
+#'
 #' \itemize{
 #'   \item \code{case}. Participant pseudonym given by author
 #'   \item \code{session}. Within-series session-number
 #'   \item \code{phase}. Label for each unique phase (A for baseline, B for treatment)
-#'   \item \code{score}. Value for the outcome. 
+#'   \item \code{score}. Value for the outcome.
 #' }
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 59 rows and 4 variables
 #' @name English1997
-#' @source English, K., Goldstein, H., Shafer, K., & Kaczmarek, L. (1997). Promoting interactions among preschoolers with and without disabilities: Effects of a buddy skills-training program. Exceptional Children, 63(2), 229–243. 
+#' @source English, K., Goldstein, H., Shafer, K., & Kaczmarek, L. (1997).
+#'   Promoting interactions among preschoolers with and without disabilities:
+#'   Effects of a buddy skills-training program. Exceptional Children, 63(2),
+#'   229–243.
 NULL
 
 #' @title Facon, et al. (2008)
@@ -289,61 +300,161 @@ NULL
 NULL
 
 #' @title Kelley et al. (2015)
-#' 
-#' @description Data from a randomized control trial with embedded repeated acquisition single- case experimental design evaluating vocabulary knowledge using an expressive definition task.
-#' The variables are as follows:
-#' 
+#'
+#' @description Data from a randomized control trial with embedded repeated
+#'   acquisition single- case experimental design evaluating vocabulary
+#'   knowledge using an expressive definition task. The variables are as
+#'   follows:
+#'
 #' \itemize{
 #' \item \code{condition}. Indicates whether control or treatment group.
 #' \item \code{observation}. Identifier for participant
 #' \item \code{unit}. Classroom unit.
-#' \item \code{Pre}. Pre-intervention score on the expressive definition task. 
-#' \item \code{Post}. Post-intervention score on the expressive definition task. 
+#' \item \code{Pre}. Pre-intervention score on the expressive definition task.
+#' \item \code{Post}. Post-intervention score on the expressive definition task.
 #' }
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 54 rows and 5 variables
 #' @name Kelley2015
-#' @source Kelley, E. S., Goldstein, H., Spencer, T., & Sherman, A. (2015). Effects of automated Tier 2 storybook intervention on vocabulary and comprehension learning in preschool children with limited oral language skills. Early Childhood Research Quarterly, 31, 47–61. doi:10.1016/j.ecresq.2014.12.004
+#' @source Kelley, E. S., Goldstein, H., Spencer, T., & Sherman, A. (2015).
+#'   Effects of automated Tier 2 storybook intervention on vocabulary and
+#'   comprehension learning in preschool children with limited oral language
+#'   skills. Early Childhood Research Quarterly, 31, 47–61.
+#'   doi:10.1016/j.ecresq.2014.12.004
 NULL
 
 #' @title Peters-Sanders et al. (2020)
-#' 
-#' @description Data from a Repeated acquisition single-case experimental design evaluating vocabulary knowledge using an expressive definition task.
-#' The variables are as follows:
-#' 
+#'
+#' @description Data from a Repeated acquisition single-case experimental design
+#'   evaluating vocabulary knowledge using an expressive definition task. The
+#'   variables are as follows:
+#'
 #' \itemize{
 #'   \item \code{observation}. Identifier for participant
 #'   \item \code{Book}.Book used for evaluation.
-#'   \item \code{Pre}. Pre-intervention score on the expressive definition task. 
-#'   \item \code{Post}. Post-intervention score on the expressive definition task. 
+#'   \item \code{Pre}. Pre-intervention score on the expressive definition task.
+#'   \item \code{Post}. Post-intervention score on the expressive definition task.
 #' }
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 153 rows and 4 variables
 #' @name Peters2020
-#' @source Peters-Sanders, L., Kelley, E., Haring, C., Madsen, K., Soto, X., Seven, Y., Hull, K., & Goldstein, H. (2020). Moving forward four words at a time: Effects of a supplemental preschool vocabulary. Language, Speech, and Hearing Services in Schools, 51, 165-175. doi:10.1044/2019_LSHSS-19-00029
+#' @source Peters-Sanders, L., Kelley, E., Haring, C., Madsen, K., Soto, X.,
+#'   Seven, Y., Hull, K., & Goldstein, H. (2020). Moving forward four words at a
+#'   time: Effects of a supplemental preschool vocabulary. Language, Speech, and
+#'   Hearing Services in Schools, 51, 165-175. doi:10.1044/2019_LSHSS-19-00029
 NULL
 
 #' @title Dennis & Whalon, (2021)
-#' 
-#' @description Data from a Repeated acquisition single-case experimental design evaluating vocabulary knowledge using an expressive definition task.
-#' The variables are as follows:
-#' 
+#'
+#' @description Data from a Repeated acquisition single-case experimental design
+#'   evaluating vocabulary knowledge using an expressive definition task. The
+#'   variables are as follows:
+#'
 #' \itemize{
 #'   \item \code{Participant}. Participant identifier.
 #'   \item \code{Condition}. Indicates condition, application (App) or teacher (TCH).
 #'   \item \code{Observation}. Within-series session-number
-#'   \item \code{Pre}. Pre-intervention score on the expressive definition task. 
-#'   \item \code{Post}. Post-intervention score on the expressive definition task. 
+#'   \item \code{Pre}. Pre-intervention score on the expressive definition task.
+#'   \item \code{Post}. Post-intervention score on the expressive definition task.
 #' }
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 90 rows and 5 variables
 #' @name Dennis2021
-#' @source Dennis, L. R., & Whalon, K. J. (2021). Effects of teacher-versus application-delivered instruction on the expressive vocabulary of at-risk preschool children. Remedial and Special Education, 42(4), 195-206. doi:10.1177/0741932519900991
+#' @source Dennis, L. R., & Whalon, K. J. (2021). Effects of teacher-versus
+#'   application-delivered instruction on the expressive vocabulary of at-risk
+#'   preschool children. Remedial and Special Education, 42(4), 195-206.
+#'   doi:10.1177/0741932519900991
 NULL
 
+#' @title Byiers et al., (2014)
+#'
+#' @description Data from an ABAB design that evaluated the effectiveness of
+#'   functional assessment and functional communication training on the Rett
+#'   syndrome (RTT) of three individuals with RTT novel communicative behaviors.
+#'   The dependent variable, novel communicative response, was measured using
+#'   frequency counting for a five minute observation session. The variables are
+#'   as follows:
+#'
+#' \itemize{
+#'   \item \code{StudyID}. Study identifier.
+#'   \item \code{StudyID_CaseID}. Participant identifier.
+#'   \item \code{Session_number}. Within-series session-number.
+#'   \item \code{Condition}. Indicates condition, (A for baseline, B for treatment).
+#'   \item \code{Outcome}. Value for the outcome.
+#'   \item \code{Session_length}. Length of the session.
+#'   \item \code{Procedure}. Scale of the outcome variable.
+#'   \item \code{Goal_level}. Indicates the goal level for each series.
+#'   \item \code{phase_pair_calculated}. Indicates the unique phase number of each
+#'   sequential occurrence of a phase for each participant of ABAB design.
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 54 rows and 9 variables
+#' @name Byiers2014
+#' @source Byiers, B. J., Dimian, A., & Symons, F. J. (2014). Functional
+#'   communication training in Rett syndrome: A preliminary study. \emph{American
+#'   Journal on Intellectual and Developmental Disabilities, 119}(4), 340-350.
+#'   doi:10.1352/1944-7558-119.4.340
+NULL
+
+#' @title Casey (1978)
+#'
+#' @description Data from a multiple baseline design across participant that
+#'   evaluated the effectiveness of use of manual signs with verbalizations in
+#'   improving appropriate communicative behavior and reducing undesirable
+#'   behavior. The variables are as follows:
+#'
+#' \itemize{
+#'   \item \code{StudyID}. Study identifier.
+#'   \item \code{StudyID_CaseID}. Participant identifier.
+#'   \item \code{Session_number}. Within-series session-number.
+#'   \item \code{Condition}. Indicates condition, (A for baseline, B for treatment).
+#'   \item \code{Outcome}. Value for the positive outcome.
+#'   \item \code{Session_length}. Length of the session.
+#'   \item \code{Procedure}. Scale of the outcome variable.
+#'   \item \code{Goal_level}. Indicates the goal level for each series.
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 100 rows and 8 variables
+#' @name Casey1978
+#' @source Casey, L. O. (1978). Development of communicative behavior in
+#'   autistic children: A parent program using manual signs. \emph{Journal of autism
+#'   and childhood schizophrenia, 8}(1), 45-59.
+NULL
+
+#' @title Strasberger & Ferreri (2013)
+#'
+#' @description Data from a multiple baseline design across participant that
+#'   evaluated the effectiveness of an iPod-based speech generating device and a
+#'   peer mediated intervention on improving sophisticated communication skills
+#'   of children with autism. The variables are as follows:
+#'
+#' \itemize{
+#'   \item \code{StudyID}. Study identifier.
+#'   \item \code{StudyID_CaseID}. Participant identifier.
+#'   \item \code{Session_number}. Within-series session-number.
+#'   \item \code{Condition}. Indicates condition, (A for baseline, B for treatment).
+#'   \item \code{Outcome}. Value for the positive outcome.
+#'   \item \code{Session_length}. Length of the session.
+#'   \item \code{Procedure}. Scale of the outcome variable.
+#'   \item \code{Goal_level}. Indicates the goal level for each series.
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 100 rows and 8 variables
+#' @name Strasberger2013
+#' @source Strasberger, S. K., & Ferreri, S. J. (2014). The effects of peer
+#'   assisted communication application training on the communicative and social
+#'   behaviors of children with autism. \emph{Journal of Developmental and Physical
+#'   Disabilities, 26}, 513-526. https://doi.org/10.1007/s10882-013-9358-9
+NULL
