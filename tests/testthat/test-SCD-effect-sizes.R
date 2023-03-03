@@ -834,36 +834,81 @@ test_that("The multiple series calculator works for PoGO.", {
   
   skip_on_cran()
   
-  out_app_csv <- check_PoGO(file = "CSES FINAL dataset.csv")
-  out_app_xlsx <- check_PoGO(file = "CSES FINAL dataset.xlsx")
+  out_app_csv <- 
+    check_PoGO(file = "CSES FINAL dataset.csv") %>%
+    mutate(Study_ID = as.character(Study_ID))
   
-  data <- read.csv("../testdata/CSES FINAL dataset.csv")
-  data <- 
+  out_app_xlsx <- 
+    check_PoGO(file = "CSES FINAL dataset.xlsx") %>%
+    mutate(Study_ID = as.character(Study_ID))
+  
+  data <- read.csv("../testdata/CSES FINAL dataset.csv") %>%
+    janitor::clean_names(case = "parsed")
+
+  xlsx_data <- read_excel("../testdata/CSES FINAL dataset.xlsx") %>%
+    janitor::clean_names(case = "parsed")
+  
+  out_pkg_csv <-
     data %>% 
-    mutate(StudyID = as.character(StudyID)) %>% 
-    group_by(StudyID, Study_CaseID) %>% 
-    mutate(phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)) %>% 
-    ungroup()
-  
-  out_pkg <-
-    batch_calc_ES(dat = data,
-                  grouping = c(StudyID, Study_CaseID),
-                  condition = Condition,
-                  outcome = Outcome,
-                  session_number = Session_number,
-                  baseline_phase = "A",
-                  intervention_phase = "B",
-                  ES = c("PoGO"),
-                  improvement = "increase",
-                  pct_change = FALSE,
-                  scale = Procedure,
-                  goal = Goal_Level,
-                  format = "long"
+    mutate(Study_ID = as.character(Study_ID)) %>% 
+    group_by(Study_ID, Study_Case_ID) %>% 
+    mutate(
+      phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)
+    ) %>% 
+    ungroup() %>%
+    batch_calc_ES(
+      grouping = c(Study_ID, Study_Case_ID),
+      condition = Condition,
+      outcome = Outcome,
+      aggregate = phase_pair_calculated,
+      session_number = Session_number,
+      baseline_phase = "A",
+      intervention_phase = "B",
+      ES = c("PoGO"),
+      improvement = "increase",
+      pct_change = FALSE,
+      scale = Procedure,
+      goal = Goal_Level,
+      format = "long"
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 4L))) 
+    mutate(
+      across(Est:CI_upper, ~ round(., 4L))
+    ) %>%
+    as.data.frame()
   
-  expect_equal(out_app_csv, out_pkg, check.attributes = FALSE)
-  expect_equal(out_app_xlsx, out_pkg, check.attributes = FALSE)
+  out_pkg_xlsx <-
+    xlsx_data %>% 
+    mutate(Study_ID = as.character(Study_ID)) %>% 
+    group_by(Study_ID, Study_Case_ID) %>% 
+    mutate(
+      phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)
+    ) %>% 
+    ungroup() %>%
+    batch_calc_ES(
+      grouping = c(Study_ID, Study_Case_ID),
+      condition = Condition,
+      outcome = Outcome,
+      aggregate = phase_pair_calculated,
+      session_number = Session_number,
+      baseline_phase = "A",
+      intervention_phase = "B",
+      ES = c("PoGO"),
+      improvement = "increase",
+      pct_change = FALSE,
+      scale = Procedure,
+      goal = Goal_Level,
+      format = "long"
+    ) %>%
+    mutate(
+      across(Est:CI_upper, ~ round(., 4L))
+    ) %>%
+    as.data.frame()
+
+  expect_equal(out_pkg_csv, out_pkg_xlsx, check.attributes = FALSE)
+  expect_equal(out_app_csv, out_app_xlsx, check.attributes = FALSE)
+  expect_equal(out_app_csv, out_pkg_csv, check.attributes = FALSE)
+  expect_equal(out_app_xlsx, out_pkg_xlsx, check.attributes = FALSE)
+  
   
 })
 
