@@ -217,5 +217,44 @@ Dennis2021 <- read_excel("auxiliary/PoGO Data_to send.xlsx", sheet = 15) %>%
 str(Dennis2021)
 save(Dennis2021, file = "data/Dennis2021.RData", compress = TRUE, version = 2)
 
+#--------------------
+# Byiers
+#--------------------
+Byiers2014 <- 
+  read_excel("auxiliary/CSES FINAL dataset.xlsx", sheet = 2) %>%
+  rename(Outcome = `Outcome (new combined outcome)`) %>% 
+  mutate(StudyID = as.character(StudyID)) %>% 
+  group_by(StudyID_CaseID) %>%
+  mutate(phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)) %>%
+  ungroup() %>% 
+  as.data.frame()
+
+str(Byiers2014)
+save(Byiers2014, file = "data/Byiers2014.RData", compress = TRUE, version = 2)
+
+#--------------------
+# Casey
+#--------------------
+Casey1978 <- 
+  read_excel("auxiliary/CSES FINAL dataset.xlsx", sheet = 3) %>%
+  as.data.frame() %>% 
+  rename(Outcome = Outcome1_PositiveBxProportion) %>% 
+  mutate(StudyID = as.character(StudyID))
+
+str(Casey1978)
+save(Casey1978, file = "data/Casey1978.RData", compress = TRUE, version = 2)
+
+
+#--------------------
+# Strasberger
+#--------------------
+Strasberger2014 <- 
+  read_excel("auxiliary/CSES FINAL dataset.xlsx", sheet = 4) %>%
+  as.data.frame() %>% 
+  mutate(StudyID = as.character(StudyID))
+
+str(Strasberger2014)
+save(Strasberger2014, file = "data/Strasberger2014.RData", compress = TRUE, version = 2)
+
 
 

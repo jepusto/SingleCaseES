@@ -162,16 +162,16 @@ batch_calc_ES(dat = Schmidt2007,
 
 # Aggregate across phase-pairs
 batch_calc_ES(dat = Schmidt2007,
-              grouping = c(Behavior_type, Case_pseudonym),
-              aggregate = Phase_num,
-              weighting = "1/V",
-              condition = Condition,
-              outcome = Outcome,
-              ES = c("LRRi", "LRRd", "SMD", "Tau"),
-              improvement = direction,
-              scale = "count",
-              bias_correct = TRUE,
-              confidence = NULL,
-              format = "long")
+           grouping = c(Behavior_type, Case_pseudonym),
+           aggregate = Phase_num,
+           weighting = "1/V",
+           condition = Condition,
+           outcome = Outcome,
+           ES = c("LRRi", "LRRd", "SMD", "Tau"),
+           improvement = direction,
+           scale = "count",
+           bias_correct = TRUE,
+           confidence = NULL,
+           format = "long")
 
 }

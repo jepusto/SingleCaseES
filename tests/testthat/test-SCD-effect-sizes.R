@@ -622,7 +622,7 @@ test_that("calcPhasePair works in the app.", {
     bimprovement = "series"
   )
   
-  app$setInputs(bseldir = "Direction")
+  app$setInputs(bseldir = "Direction", wait_=FALSE, values_=FALSE)
   
   app$setInputs(
     BatchEntryTabs = "Estimate",
@@ -783,3 +783,132 @@ test_that("The bintervals and bobslength options work in the app.", {
   expect_equal(out_app_2, out_pkg_2, check.attributes = FALSE)
   
 })
+
+
+check_PoGO <- function(file) {
+  
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  data_path <- file.path("..", "testdata", file)
+  
+  app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
+  
+  if (str_detect(file, "csv")) {
+    app$setInputs(dat_type = "dat", wait_ = FALSE, values_ = FALSE)
+    app$uploadFile(dat = data_path)
+  } else if (str_detect(file, "xlsx")) {
+    app$setInputs(dat_type = "xlsx", wait_ = FALSE, values_ = FALSE)
+    app$uploadFile(xlsx = data_path)
+  }
+  
+  app$setInputs(BatchEntryTabs = "Variables")
+  app$setInputs(calcPhasePair = TRUE)
+  app$setInputs(b_clusters = c("Study_ID", "Study_Case_ID"))
+  app$setInputs(b_aggregate = "phase_pair_calculated")
+  app$setInputs(b_phase = "Condition")
+  app$setInputs(session_number = "Session_number")
+  app$setInputs(b_out = "Outcome")
+  app$setInputs(BatchEntryTabs = "Plot")
+  app$setInputs(BatchEntryTabs = "Estimate")
+  app$setInputs(bESpar = c("PoGO"))
+  app$setInputs(bgoalLevel = c("goals"))
+  app$setInputs(bgoalvar = c("Goal_Level"))
+  app$setInputs(bdigits = 4)
+  app$setInputs(batchest = "click")
+  
+  Sys.sleep(2)
+  
+  output_app <- app$getValue(name = "batchTable")
+  
+  output_app_table <-
+    read_html(output_app) %>% 
+    html_table(fill = TRUE) %>%
+    as.data.frame() %>%
+    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
+    mutate(across(Est:CI_upper, as.numeric))
+  
+  return(output_app_table)
+  
+}
+
+test_that("The multiple series calculator works for PoGO.", {
+  
+  skip_on_cran()
+  
+  out_app_csv <- 
+    check_PoGO(file = "CSESdata.csv") %>%
+    mutate(Study_ID = as.character(Study_ID))
+  
+  out_app_xlsx <- 
+    check_PoGO(file = "CSESdata.xlsx") %>%
+    mutate(Study_ID = as.character(Study_ID))
+  
+  data <- read.csv("../testdata/CSESdata.csv") %>%
+    janitor::clean_names(case = "parsed")
+
+  xlsx_data <- readxl::read_excel("../testdata/CSESdata.xlsx") %>%
+    janitor::clean_names(case = "parsed")
+  
+  out_pkg_csv <-
+    data %>% 
+    mutate(Study_ID = as.character(Study_ID)) %>% 
+    group_by(Study_ID, Study_Case_ID) %>% 
+    mutate(
+      phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)
+    ) %>% 
+    ungroup() %>%
+    batch_calc_ES(
+      grouping = c(Study_ID, Study_Case_ID),
+      condition = Condition,
+      outcome = Outcome,
+      aggregate = phase_pair_calculated,
+      session_number = Session_number,
+      baseline_phase = "A",
+      intervention_phase = "B",
+      ES = c("PoGO"),
+      improvement = "increase",
+      pct_change = FALSE,
+      scale = Procedure,
+      goal = Goal_Level,
+      format = "long"
+    ) %>%
+    mutate(
+      across(Est:CI_upper, ~ round(., 4L))
+    ) %>%
+    as.data.frame()
+  
+  out_pkg_xlsx <-
+    xlsx_data %>% 
+    mutate(Study_ID = as.character(Study_ID)) %>% 
+    group_by(Study_ID, Study_Case_ID) %>% 
+    mutate(
+      phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)
+    ) %>% 
+    ungroup() %>%
+    batch_calc_ES(
+      grouping = c(Study_ID, Study_Case_ID),
+      condition = Condition,
+      outcome = Outcome,
+      aggregate = phase_pair_calculated,
+      session_number = Session_number,
+      baseline_phase = "A",
+      intervention_phase = "B",
+      ES = c("PoGO"),
+      improvement = "increase",
+      pct_change = FALSE,
+      scale = Procedure,
+      goal = Goal_Level,
+      format = "long"
+    ) %>%
+    mutate(
+      across(Est:CI_upper, ~ round(., 4L))
+    ) %>%
+    as.data.frame()
+
+  expect_equal(out_pkg_csv, out_pkg_xlsx, check.attributes = FALSE)
+  expect_equal(out_app_csv, out_app_xlsx, check.attributes = FALSE)
+  expect_equal(out_app_csv, out_pkg_csv, check.attributes = FALSE)
+  expect_equal(out_app_xlsx, out_pkg_xlsx, check.attributes = FALSE)
+  
+  
+})
+

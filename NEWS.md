@@ -1,3 +1,8 @@
+# SingleCaseES 0.7.1.9999
+
+* Fixed a bug in the SCD_effect_sizes app (multiple-series calculator) which led to an error when calculating `PoGO` from an uploaded .xlsx file.
+* Added several example datasets to the package.
+
 # SingleCaseES 0.7.0
 
 * Fixed a bug in the SCD_effect_sizes app (multiple-series calculator), which led to incorrect R syntax when `phase_pair_calculated` is included as a grouping variable.
