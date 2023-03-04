@@ -4,7 +4,7 @@ This is minor release that includes small bug-fixes for the built-in shiny app a
 
 ## Test environments
 
-* local Windows 10 Education, R 4.2.0
+* local Windows 10 Education, R 4.2.2
 * ubuntu 20.04.3 LTS (on Github), R devel, release, oldrelease
 * macOS-latest (on Github), R release
 * windows-latest (on Github), R release
@@ -15,8 +15,35 @@ This is minor release that includes small bug-fixes for the built-in shiny app a
 
 There were no ERRORs or WARNINGs. 
 
-There was 1 NOTE:
+There were 2 NOTEs:
 
+Possibly mis-spelled words in DESCRIPTION:
+  Pustejovsky (15:15)
+  indices (12:58, 18:3)
+  
+  The flagged words are spelled correctly.
+  
+Found the following (possibly) invalid URLs:
+  URL: https://doi.org/10.1002/pits.20516
+    From: inst/doc/Using-SingleCaseES.html
+    Status: 403
+    Message: Forbidden
+  URL: https://doi.org/10.1002/sim.2256
+    From: inst/doc/Effect-size-definitions.html
+    Status: 403
+    Message: Forbidden
+  URL: https://doi.org/10.1044/2022_JSLHR-22-00217
+    From: inst/doc/Effect-size-definitions.html
+    Status: 403
+    Message: Forbidden
+  URL: https://doi.org/10.1148/radiology.143.1.7063747
+    From: inst/doc/Effect-size-definitions.html
+    Status: 403
+    Message: Forbidden
+  URL: https://doi.org/10.2307/1165329
+    From: inst/doc/Effect-size-definitions.html
+    Status: 403
+    Message: Forbidden
   URL: https://www.jstor.org/stable/25049448
     From: man/NAP.Rd
     Status: 403
