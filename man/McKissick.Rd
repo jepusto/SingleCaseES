@@ -11,7 +11,7 @@ A data frame with 35 rows and 4 variables
 McKissick, C., Hawkins, R. O., Lentz, F. E., Hailley, J., & McGuire, S. (2010). 
 Randomizing multiple contingency components to decrease disruptive behaviors and increase 
 student engagement in an urban second-grade classroom. \emph{Psychology in the Schools, 47}(9), 
-944–959. https://doi.org/10.1002/pits.20516
+944-959. https://doi.org/10.1002/pits.20516
 }
 \description{
 Disruptive behavior data from a study by McKissick et al. (2010). All data were collected

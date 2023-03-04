@@ -11,7 +11,7 @@ A data frame with 59 rows and 4 variables
 English, K., Goldstein, H., Shafer, K., & Kaczmarek, L. (1997).
   Promoting interactions among preschoolers with and without disabilities:
   Effects of a buddy skills-training program. Exceptional Children, 63(2),
-  229–243.
+  229-243.
 }
 \description{
 Data from a multiple baseline design across participants

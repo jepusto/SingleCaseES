@@ -11,7 +11,7 @@ A data frame with 72 rows and 4 variables
 Olszewski, A., Soto, X., & Goldstein, H. (2017). Modeling alphabet
   skills as instructive feedback within a phonological awareness
   intervention. American Journal of Speech-Language Pathology, 26(3),
-  769–790. doi:10.1044/2017_AJSLP-16-0042
+  769-790. doi:10.1044/2017_AJSLP-16-0042
 }
 \description{
 Data from a multiple baseline design across behavior looking at

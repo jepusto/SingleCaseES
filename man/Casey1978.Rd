@@ -9,8 +9,8 @@ A data frame with 100 rows and 8 variables
 }
 \source{
 Casey, L. O. (1978). Development of communicative behavior in
-  autistic children: A parent program using manual signs. \emph{Journal of autism
-  and childhood schizophrenia, 8}(1), 45-59. https://doi.org/10.1007/BF01550277
+  autistic children: A parent program using manual signs. \emph{Journal of Autism
+  and Childhood Schizophrenia, 8}(1), 45-59. https://doi.org/10.1007/BF01550277
 }
 \description{
 Data from a multiple baseline design across participant that

@@ -39,7 +39,7 @@
 #'
 #' Mee, W. (1990). Confidence intervals for probabilities and tolerance regions
 #' based on a generalization of the Mann-Whitney statistic. \emph{Journal of the
-#' American Statistical Association, 85}(411), 793–800.
+#' American Statistical Association, 85}(411), 793-800.
 #' doi:\doi{10.1080/01621459.1990.10474942}
 #'
 #' Newcombe, R. G. (2006). Confidence intervals for an effect size measure based

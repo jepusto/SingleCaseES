@@ -10,7 +10,7 @@ A data frame with 634 rows and 15 variables
 \source{
 Shogren, K. A., Faggella-Luby, M. N., Bae, S. J., & Wehmeyer, M. L. (2004). 
 The effect of choice-making as an intervention for problem behavior. \emph{Journal 
-of Positive Behavior Interventions, 6}(4), 228–237.
+of Positive Behavior Interventions, 6}(4), 228-237.
 }
 \description{
 Data from a systematic review by Shogren et al. (2004) 
@@ -35,6 +35,6 @@ The variables are as follows:
 \references{
 Pustejovsky, J.E. (2015). Measurement-comparable effect 
 sizes for single-case studies of free-operant behavior. 
-\emph{Psychological Methods, 20}(3), 342–359.
+\emph{Psychological Methods, 20}(3), 342-359.
 }
 \keyword{datasets}

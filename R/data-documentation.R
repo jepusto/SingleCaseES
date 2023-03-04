@@ -67,7 +67,7 @@ NULL
 #' @source McKissick, C., Hawkins, R. O., Lentz, F. E., Hailley, J., & McGuire, S. (2010). 
 #' Randomizing multiple contingency components to decrease disruptive behaviors and increase 
 #' student engagement in an urban second-grade classroom. \emph{Psychology in the Schools, 47}(9), 
-#' 944–959. https://doi.org/10.1002/pits.20516
+#' 944-959. https://doi.org/10.1002/pits.20516
 NULL
 
 #' @title Shogren et al. (2004)
@@ -97,11 +97,11 @@ NULL
 #' @name Shogren
 #' @source Shogren, K. A., Faggella-Luby, M. N., Bae, S. J., & Wehmeyer, M. L. (2004). 
 #' The effect of choice-making as an intervention for problem behavior. \emph{Journal 
-#' of Positive Behavior Interventions, 6}(4), 228–237. 
+#' of Positive Behavior Interventions, 6}(4), 228-237. 
 #'
 #' @references Pustejovsky, J.E. (2015). Measurement-comparable effect 
 #' sizes for single-case studies of free-operant behavior. 
-#' \emph{Psychological Methods, 20}(3), 342–359.
+#' \emph{Psychological Methods, 20}(3), 342-359.
 #' 
 
 NULL
@@ -229,7 +229,7 @@ NULL
 #' @source Olszewski, A., Soto, X., & Goldstein, H. (2017). Modeling alphabet
 #'   skills as instructive feedback within a phonological awareness
 #'   intervention. American Journal of Speech-Language Pathology, 26(3),
-#'   769–790. doi:10.1044/2017_AJSLP-16-0042
+#'   769-790. doi:10.1044/2017_AJSLP-16-0042
 NULL
 
 #' @title English, et al. (1997)
@@ -255,26 +255,31 @@ NULL
 #' @source English, K., Goldstein, H., Shafer, K., & Kaczmarek, L. (1997).
 #'   Promoting interactions among preschoolers with and without disabilities:
 #'   Effects of a buddy skills-training program. Exceptional Children, 63(2),
-#'   229–243.
+#'   229-243.
 NULL
 
 #' @title Facon, et al. (2008)
-#' 
-#' @description Data from a changing criterion design conducted by Facon, et al. (2008), which evaluated two operant learning procedures, shaping and fading, for treating selective mutism. The dependent variable, average speech loudness in dB, was measured during 15-minute observation sessions.
-#' The variables are as follows:
-#' 
+#'
+#' @description Data from a changing criterion design conducted by Facon, et al.
+#'   (2008), which evaluated two operant learning procedures, shaping and
+#'   fading, for treating selective mutism. The dependent variable, average
+#'   speech loudness in dB, was measured during 15-minute observation sessions.
+#'   The variables are as follows:
+#'
 #' \itemize{
 #'   \item \code{session}. Within-series session-number
 #'   \item \code{phase}. Label for each unique phase (A for baseline, each following for a change in criteria.
-#'   \item \code{score}. Value for the outcome. 
+#'   \item \code{score}. Value for the outcome.
 #'   \item \code{criterion}. The fixed criterion value for each of the phases. The student moved to the next criterion when 80% of their utterances are equal or greater than the current criterion during at least 3 consecutive sessions. The first criterion was set at 43 dB with each following criterion equal to the mean score for the five best trials in the previous phase.
 #' }
-#' 
+#'
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 49 rows and 4 variables
 #' @name Facon2008
-#' @source Facon, B., Sahiri, S., & Riviѐre, V. (2008). A controlled single-case treatment of severe long-term selective mutism in a child with mental retardation. Behavior Therapy, 39, 313–321
+#' @source Facon, B., Sahiri, S., & Riviere, V. (2008). A controlled single-case
+#'   treatment of severe long-term selective mutism in a child with mental
+#'   retardation. Behavior Therapy, 39, 313-321
 NULL
 
 #' @title Spencer et al. (2012)
@@ -321,7 +326,7 @@ NULL
 #' @source Kelley, E. S., Goldstein, H., Spencer, T., & Sherman, A. (2015).
 #'   Effects of automated Tier 2 storybook intervention on vocabulary and
 #'   comprehension learning in preschool children with limited oral language
-#'   skills. Early Childhood Research Quarterly, 31, 47–61.
+#'   skills. Early Childhood Research Quarterly, 31, 47-61.
 #'   doi:10.1016/j.ecresq.2014.12.004
 NULL
 
@@ -433,8 +438,8 @@ NULL
 #' @format A data frame with 100 rows and 8 variables
 #' @name Casey1978
 #' @source Casey, L. O. (1978). Development of communicative behavior in
-#'   autistic children: A parent program using manual signs. \emph{Journal of autism
-#'   and childhood schizophrenia, 8}(1), 45-59. https://doi.org/10.1007/BF01550277
+#'   autistic children: A parent program using manual signs. \emph{Journal of Autism
+#'   and Childhood Schizophrenia, 8}(1), 45-59. https://doi.org/10.1007/BF01550277
 NULL
 
 #' @title Strasberger & Ferreri (2014)

@@ -8,16 +8,21 @@
 A data frame with 49 rows and 4 variables
 }
 \source{
-Facon, B., Sahiri, S., & Riviѐre, V. (2008). A controlled single-case treatment of severe long-term selective mutism in a child with mental retardation. Behavior Therapy, 39, 313–321
+Facon, B., Sahiri, S., & Riviere, V. (2008). A controlled single-case
+  treatment of severe long-term selective mutism in a child with mental
+  retardation. Behavior Therapy, 39, 313-321
 }
 \description{
-Data from a changing criterion design conducted by Facon, et al. (2008), which evaluated two operant learning procedures, shaping and fading, for treating selective mutism. The dependent variable, average speech loudness in dB, was measured during 15-minute observation sessions.
-The variables are as follows:
+Data from a changing criterion design conducted by Facon, et al.
+  (2008), which evaluated two operant learning procedures, shaping and
+  fading, for treating selective mutism. The dependent variable, average
+  speech loudness in dB, was measured during 15-minute observation sessions.
+  The variables are as follows:
 
 \itemize{
   \item \code{session}. Within-series session-number
   \item \code{phase}. Label for each unique phase (A for baseline, each following for a change in criteria.
-  \item \code{score}. Value for the outcome. 
+  \item \code{score}. Value for the outcome.
   \item \code{criterion}. The fixed criterion value for each of the phases. The student moved to the next criterion when 80% of their utterances are equal or greater than the current criterion during at least 3 consecutive sessions. The first criterion was set at 43 dB with each following criterion equal to the mean score for the five best trials in the previous phase.
 }
 }
