@@ -1,6 +1,6 @@
 ## Resubmission
 
-This is minor release that includes new features in the built-in shiny app and updates to the documentation and vignettes.
+This is minor release that includes new features in the built-in shiny app and additional example datasets.
 
 ## Test environments
 
@@ -80,4 +80,3 @@ We checked 1 reverse dependencies, comparing R CMD check results across CRAN and
 
  * We saw 0 new problems
  * We failed to check 0 packages
-

@@ -1,4 +1,4 @@
-# SingleCaseES 0.7.1.9999
+# SingleCaseES 0.7.1
 
 * Fixed a bug in the SCD_effect_sizes app (multiple-series calculator) which led to an error when calculating `PoGO` from an uploaded .xlsx file.
 * Added several example datasets to the package.

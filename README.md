@@ -74,13 +74,13 @@ Please cite this R package as follows:
 
 > Pustejovsky, J. E., Chen, M., Grekov, P., & Swan, D. M. (2023).
 > SingleCaseES: A calculator for single-case effect size indices
-> (Version 0.7.0) \[R package\].
+> (Version 0.7.1) \[R package\].
 > <https://jepusto.github.io/SingleCaseES/>
 
 Please cite the web applications as follows:
 
 > Pustejovsky, J. E., Chen, M., Grekov, P., & Swan, D. M. (2023).
-> Single-case effect size calculator (Version 0.7.0) \[Web
+> Single-case effect size calculator (Version 0.7.1) \[Web
 > application\]. <https://jepusto.shinyapps.io/SCD-effect-sizes>
 
 > Swan, D. M. & Pustejovsky, J. E. (2017). gem_scd: A web-based
