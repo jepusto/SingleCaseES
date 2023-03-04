@@ -164,7 +164,7 @@ NAP(A_data = A, B_data = B, SE = "null")
 NAP(A_data = A, B_data = B, SE = "none")
 ```
 
-The functions also produce confidnece intervals for NAP, Tau, and Tau_BC. By default, a 95% CI is calculated. This can be adjusted by setting the `confidence` argument to a value between 0 and 1. To omit the confidence interval all together, set the value to `NULL`:
+The functions also produce confidence intervals for NAP, Tau, and Tau_BC. By default, a 95% CI is calculated. This can be adjusted by setting the `confidence` argument to a value between 0 and 1. To omit the confidence interval all together, set the value to `NULL`:
 
 ```{r}
 NAP(A_data = A, B_data = B)

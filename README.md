@@ -57,7 +57,7 @@ are also available as web apps hosted through
 purposes***. For research purposes, please install the R package and run
 the GUI through RStudio.
 
-# Acknowledgement ![]()
+# Acknowledgment ![]()
 
 <img src="https://raw.githubusercontent.com/jepusto/SingleCaseES/main/images/IES_InstituteOfEducationSciences_RGB.svg" width="40%" align = "right" alt = "Institute of Education Sciences logo"/>
 
