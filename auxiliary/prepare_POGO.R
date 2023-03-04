@@ -222,12 +222,12 @@ save(Dennis2021, file = "data/Dennis2021.RData", compress = TRUE, version = 2)
 #--------------------
 Byiers2014 <- 
   read_excel("auxiliary/CSES FINAL dataset.xlsx", sheet = 2) %>%
-  as.data.frame() %>% 
   rename(Outcome = `Outcome (new combined outcome)`) %>% 
   mutate(StudyID = as.character(StudyID)) %>% 
   group_by(StudyID_CaseID) %>%
   mutate(phase_pair_calculated = calc_phase_pairs(Condition, session = Session_number)) %>%
-  ungroup()
+  ungroup() %>% 
+  as.data.frame()
 
 str(Byiers2014)
 save(Byiers2014, file = "data/Byiers2014.RData", compress = TRUE, version = 2)
@@ -248,13 +248,13 @@ save(Casey1978, file = "data/Casey1978.RData", compress = TRUE, version = 2)
 #--------------------
 # Strasberger
 #--------------------
-Strasberger2013 <- 
+Strasberger2014 <- 
   read_excel("auxiliary/CSES FINAL dataset.xlsx", sheet = 4) %>%
   as.data.frame() %>% 
   mutate(StudyID = as.character(StudyID))
 
-str(Strasberger2013)
-save(Strasberger2013, file = "data/Strasberger2013.RData", compress = TRUE, version = 2)
+str(Strasberger2014)
+save(Strasberger2014, file = "data/Strasberger2014.RData", compress = TRUE, version = 2)
 
 
 
