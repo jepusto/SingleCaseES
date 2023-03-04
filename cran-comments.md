@@ -1,6 +1,6 @@
 ## Resubmission
 
-This is minor release that includes new features in the built-in shiny app and additional example datasets.
+This is minor release that includes small bug-fixes for the built-in shiny app and additional example datasets.
 
 ## Test environments
 
@@ -17,56 +17,6 @@ There were no ERRORs or WARNINGs.
 
 There was 1 NOTE:
 
-Found the following (possibly) invalid URLs:
-  URL: https://doi.org/10.1002/pits.20516
-    From: inst/doc/Using-SingleCaseES.html
-    Status: 503
-    Message: Service Unavailable
-  URL: https://doi.org/10.1002/sim.2256
-    From: inst/doc/Effect-size-definitions.html
-    Status: 503
-    Message: Service Unavailable
-  URL: https://doi.org/10.1037/1082-989X.6.2.135
-    From: inst/doc/Effect-size-definitions.html
-    Status: 400
-    Message: Bad Request
-  URL: https://doi.org/10.1037/met0000019
-    From: man/LOR.Rd
-          man/LRR.Rd
-    Status: 400
-    Message: Bad Request
-  URL: https://doi.org/10.1177/001440290907500201
-    From: man/IRD.Rd
-    Status: 503
-    Message: Service Unavailable
-  URL: https://doi.org/10.1177/00224669070400040101
-    From: man/PAND.Rd
-    Status: 503
-    Message: Service Unavailable
-  URL: https://doi.org/10.1177/0145445504272974
-    From: man/PEM.Rd
-    Status: 503
-    Message: Service Unavailable
-  URL: https://doi.org/10.1177/0145445511399147
-    From: man/PAND.Rd
-    Status: 503
-    Message: Service Unavailable
-  URL: https://doi.org/10.1177/0145445516676750
-    From: man/Tau_BC.Rd
-    Status: 503
-    Message: Service Unavailable
-  URL: https://doi.org/10.1177/074193258700800206
-    From: man/PND.Rd
-    Status: 503
-    Message: Service Unavailable
-  URL: https://doi.org/10.2307/1165329
-    From: inst/doc/Effect-size-definitions.html
-    Status: 403
-    Message: Forbidden
-  URL: https://doi.org/10.3102/1076998620934125
-    From: man/LRM.Rd
-    Status: 503
-    Message: Service Unavailable
   URL: https://www.jstor.org/stable/25049448
     From: man/NAP.Rd
     Status: 403
