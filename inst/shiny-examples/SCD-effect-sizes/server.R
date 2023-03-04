@@ -339,7 +339,7 @@ shinyServer(function(input, output, session) {
     
     phase_choices <- if (!is.null(input$b_phase)) unique(datClean()[[input$b_phase]]) else c("A","B")
     
-    if (input$dat_type == "dat") {
+    if (input$dat_type == "dat" || input$dat_type == "xlsx") {
       selectInput("b_base", label = "Baseline phase value", choices = phase_choices)
     } else {
       curMap <- exampleMapping[[input$example]]
@@ -352,7 +352,7 @@ shinyServer(function(input, output, session) {
     phase_choices <- if (!is.null(input$b_phase)) unique(datClean()[[input$b_phase]]) else c("A","B")
     trt_choices <- setdiff(phase_choices, input$b_base)
     
-    if (input$dat_type == "dat") {
+    if (input$dat_type == "dat" || input$dat_type == "xlsx") {
       selectInput("b_treat", label = "Treatment phase value", choices = trt_choices)
     } else {
       curMap <- exampleMapping[[input$example]]
@@ -365,7 +365,7 @@ shinyServer(function(input, output, session) {
     
     var_names <- names(datClean())
     
-    if (input$dat_type == "dat") {
+    if (input$dat_type == "dat" || input$dat_type == "xlsx") {
       list(
         selectInput("session_number", label = "Session number", choices = var_names, selected = var_names[5]),
         selectInput("b_out", label = "Outcome", choices = var_names, selected = var_names[4]),
@@ -386,8 +386,8 @@ shinyServer(function(input, output, session) {
   output$improvementVar <- renderUI({
     var_names <- names(datClean())
     
-    if (input$dat_type == "dat") {
-      list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names))
+    if (input$dat_type == "dat" || input$dat_type == "xlsx") {
+      list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names, selected = var_names[5]))
     } else {
       curMap <- exampleMapping[[input$example]]
       list(selectInput("bseldir", label = "Select variable identifying improvement direction", choices = var_names, selected = curMap$direction_var))
@@ -407,7 +407,7 @@ shinyServer(function(input, output, session) {
     
     var_names <- names(datClean())
     
-    if (input$dat_type == "dat") {  
+    if (input$dat_type == "dat" || input$dat_type == "xlsx") {  
       
       list(
         selectInput("boutScale", label = "Outcome Scale",
@@ -449,7 +449,7 @@ shinyServer(function(input, output, session) {
     
     var_names <- names(datClean())
     
-    if (input$dat_type %in% c("dat","xlsx")) {  
+    if (input$dat_type == "dat" || input$dat_type == "xlsx") {  
       
       list(
         selectInput("bgoalLevel", "Set the goal level for PoGO.",
