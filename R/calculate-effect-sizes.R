@@ -42,8 +42,9 @@ convert_to_wide <- function(res, ES_names) {
   
   # re-order names
   long_names <- 
-    purrr::cross2(val_names, ES_names) %>%
-    purrr::map(.f = function(x) paste(rev(x), collapse = "_"))  %>%
+    tidyr::expand_grid(ES_names, val_names) %>%
+    dplyr::mutate(x = paste(ES_names, val_names, sep = "_")) %>%
+    dplyr::pull(x) %>%
     intersect(names(res)) %>%
     rlang::syms()
   
