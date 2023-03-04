@@ -377,16 +377,18 @@ NULL
 #' @description Data from an ABAB design that evaluated the effectiveness of
 #'   functional assessment and functional communication training on the Rett
 #'   syndrome (RTT) of three individuals with RTT novel communicative behaviors.
-#'   The dependent variable, novel communicative response, was measured using
-#'   frequency counting for a five minute observation session. The variables are
-#'   as follows:
+#'   The dependent variable, communicative behavior, was measured using
+#'   frequency counting for a five minute observation session. A single outcome
+#'   (percent of switch activated responses) was calculated with appropriate
+#'   responses per minute divided by inappropriate responses per minute,
+#'   multiplied by 100. The variables are as follows:
 #'
 #' \itemize{
 #'   \item \code{StudyID}. Study identifier.
 #'   \item \code{StudyID_CaseID}. Participant identifier.
 #'   \item \code{Session_number}. Within-series session-number.
 #'   \item \code{Condition}. Indicates condition, (A for baseline, B for treatment).
-#'   \item \code{Outcome}. Value for the outcome.
+#'   \item \code{Outcome}. Value for the percent of switch activated responses.
 #'   \item \code{Session_length}. Length of the session.
 #'   \item \code{Procedure}. Scale of the outcome variable.
 #'   \item \code{Goal_level}. Indicates the goal level for each series.
@@ -408,15 +410,19 @@ NULL
 #'
 #' @description Data from a multiple baseline design across participant that
 #'   evaluated the effectiveness of use of manual signs with verbalizations in
-#'   improving appropriate communicative behavior and reducing undesirable
-#'   behavior. The variables are as follows:
+#'   improving appropriate communicative behavior and reducing inappropriate
+#'   behavior. The study aimed to increase positive communicative behavior to 1
+#'   and reduce the proportion of intervals engaged in problem behavior to 0.
+#'   These two outcomes were combined to create the dependent variable:
+#'   proportion of communicative opportunities with a signed request. The
+#'   variables are as follows:
 #'
 #' \itemize{
 #'   \item \code{StudyID}. Study identifier.
 #'   \item \code{StudyID_CaseID}. Participant identifier.
 #'   \item \code{Session_number}. Within-series session-number.
 #'   \item \code{Condition}. Indicates condition, (A for baseline, B for treatment).
-#'   \item \code{Outcome}. Value for the positive outcome.
+#'   \item \code{Outcome}. Value for the outcome variable.
 #'   \item \code{Session_length}. Length of the session.
 #'   \item \code{Procedure}. Scale of the outcome variable.
 #'   \item \code{Goal_level}. Indicates the goal level for each series.
@@ -428,10 +434,10 @@ NULL
 #' @name Casey1978
 #' @source Casey, L. O. (1978). Development of communicative behavior in
 #'   autistic children: A parent program using manual signs. \emph{Journal of autism
-#'   and childhood schizophrenia, 8}(1), 45-59.
+#'   and childhood schizophrenia, 8}(1), 45-59. https://doi.org/10.1007/BF01550277
 NULL
 
-#' @title Strasberger & Ferreri (2013)
+#' @title Strasberger & Ferreri (2014)
 #'
 #' @description Data from a multiple baseline design across participant that
 #'   evaluated the effectiveness of an iPod-based speech generating device and a
@@ -442,8 +448,8 @@ NULL
 #'   \item \code{StudyID}. Study identifier.
 #'   \item \code{StudyID_CaseID}. Participant identifier.
 #'   \item \code{Session_number}. Within-series session-number.
-#'   \item \code{Condition}. Indicates condition, (A for baseline, B for treatment).
-#'   \item \code{Outcome}. Value for the positive outcome.
+#'   \item \code{Condition}. Indicates condition, (A for baseline, B for intervention).
+#'   \item \code{Outcome}. The number of independent 2-step mands.
 #'   \item \code{Session_length}. Length of the session.
 #'   \item \code{Procedure}. Scale of the outcome variable.
 #'   \item \code{Goal_level}. Indicates the goal level for each series.
@@ -451,8 +457,8 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @format A data frame with 100 rows and 8 variables
-#' @name Strasberger2013
+#' @format A data frame with 47 rows and 8 variables
+#' @name Strasberger2014
 #' @source Strasberger, S. K., & Ferreri, S. J. (2014). The effects of peer
 #'   assisted communication application training on the communicative and social
 #'   behaviors of children with autism. \emph{Journal of Developmental and Physical

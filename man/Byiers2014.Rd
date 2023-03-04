@@ -17,16 +17,18 @@ Byiers, B. J., Dimian, A., & Symons, F. J. (2014). Functional
 Data from an ABAB design that evaluated the effectiveness of
   functional assessment and functional communication training on the Rett
   syndrome (RTT) of three individuals with RTT novel communicative behaviors.
-  The dependent variable, novel communicative response, was measured using
-  frequency counting for a five minute observation session. The variables are
-  as follows:
+  The dependent variable, communicative behavior, was measured using
+  frequency counting for a five minute observation session. A single outcome
+  (percent of switch activated responses) was calculated with appropriate
+  responses per minute divided by inappropriate responses per minute,
+  multiplied by 100. The variables are as follows:
 
 \itemize{
   \item \code{StudyID}. Study identifier.
   \item \code{StudyID_CaseID}. Participant identifier.
   \item \code{Session_number}. Within-series session-number.
   \item \code{Condition}. Indicates condition, (A for baseline, B for treatment).
-  \item \code{Outcome}. Value for the outcome.
+  \item \code{Outcome}. Value for the percent of switch activated responses.
   \item \code{Session_length}. Length of the session.
   \item \code{Procedure}. Scale of the outcome variable.
   \item \code{Goal_level}. Indicates the goal level for each series.

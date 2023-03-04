@@ -10,20 +10,24 @@ A data frame with 100 rows and 8 variables
 \source{
 Casey, L. O. (1978). Development of communicative behavior in
   autistic children: A parent program using manual signs. \emph{Journal of autism
-  and childhood schizophrenia, 8}(1), 45-59.
+  and childhood schizophrenia, 8}(1), 45-59. https://doi.org/10.1007/BF01550277
 }
 \description{
 Data from a multiple baseline design across participant that
   evaluated the effectiveness of use of manual signs with verbalizations in
-  improving appropriate communicative behavior and reducing undesirable
-  behavior. The variables are as follows:
+  improving appropriate communicative behavior and reducing inappropriate
+  behavior. The study aimed to increase positive communicative behavior to 1
+  and reduce the proportion of intervals engaged in problem behavior to 0.
+  These two outcomes were combined to create the dependent variable:
+  proportion of communicative opportunities with a signed request. The
+  variables are as follows:
 
 \itemize{
   \item \code{StudyID}. Study identifier.
   \item \code{StudyID_CaseID}. Participant identifier.
   \item \code{Session_number}. Within-series session-number.
   \item \code{Condition}. Indicates condition, (A for baseline, B for treatment).
-  \item \code{Outcome}. Value for the positive outcome.
+  \item \code{Outcome}. Value for the outcome variable.
   \item \code{Session_length}. Length of the session.
   \item \code{Procedure}. Scale of the outcome variable.
   \item \code{Goal_level}. Indicates the goal level for each series.
