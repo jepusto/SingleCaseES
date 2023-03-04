@@ -359,13 +359,13 @@ test_that("POGO calculation agrees with Kirby's calculation for Casey1978", {
 
 test_that("POGO calculation agrees with Kirby's calculation for Strasberger2013", {
   
-  data("Strasberger2013")
+  data("Strasberger2014")
   
   Strasberger_res <- data.frame(StudyID_CaseID = c("158_Juan", "158_Kyle", "158_Parker", "158_Thomas"), 
                            ES_Kirby = c(36.17, 88.00, 58.33, 40.30))
   
   Strasberger_PoGO <- 
-    batch_calc_ES(dat = Strasberger2013,
+    batch_calc_ES(dat = Strasberger2014,
                   grouping = StudyID_CaseID,
                   condition = Condition,
                   outcome = Outcome,

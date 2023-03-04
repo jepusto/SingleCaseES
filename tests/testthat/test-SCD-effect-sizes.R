@@ -622,7 +622,7 @@ test_that("calcPhasePair works in the app.", {
     bimprovement = "series"
   )
   
-  app$setInputs(bseldir = "Direction")
+  app$setInputs(bseldir = "Direction", wait_=FALSE, values_=FALSE)
   
   app$setInputs(
     BatchEntryTabs = "Estimate",
@@ -835,17 +835,17 @@ test_that("The multiple series calculator works for PoGO.", {
   skip_on_cran()
   
   out_app_csv <- 
-    check_PoGO(file = "CSES FINAL dataset.csv") %>%
+    check_PoGO(file = "CSESdata.csv") %>%
     mutate(Study_ID = as.character(Study_ID))
   
   out_app_xlsx <- 
-    check_PoGO(file = "CSES FINAL dataset.xlsx") %>%
+    check_PoGO(file = "CSESdata.xlsx") %>%
     mutate(Study_ID = as.character(Study_ID))
   
-  data <- read.csv("../testdata/CSES FINAL dataset.csv") %>%
+  data <- read.csv("../testdata/CSESdata.csv") %>%
     janitor::clean_names(case = "parsed")
 
-  xlsx_data <- readxl::read_excel("../testdata/CSES FINAL dataset.xlsx") %>%
+  xlsx_data <- readxl::read_excel("../testdata/CSESdata.xlsx") %>%
     janitor::clean_names(case = "parsed")
   
   out_pkg_csv <-
