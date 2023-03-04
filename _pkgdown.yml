@@ -62,6 +62,8 @@ reference:
   - title: "Example Datasets"
     desc: "Example datasets from single-case designs"
     contents:
+        - Byiers2014
+        - Casey1978
         - Crozier2005
         - Dennis2021
         - English1997
@@ -74,5 +76,6 @@ reference:
         - Schmidt2012
         - Shogren
         - Spencer2012
+        - Strasberger2014
         - Thorne
         - Wright2012
