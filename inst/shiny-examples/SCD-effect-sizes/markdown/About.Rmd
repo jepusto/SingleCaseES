@@ -1,5 +1,6 @@
 ---
 output: md_document
+knit: (knitr::knit)
 ---
 
 # Single-case effect size calculator
@@ -25,4 +26,7 @@ The development of this application was supported in part by the Institute of Ed
 
 Please cite this software as follows:
 
-> Pustejovsky, J. E, Chen, M., Grekov, P., & Swan, D. M. (`r substr(packageDate("SingleCaseES"),1,4)`). Single-case effect size calculator (Version `r packageVersion("SingleCaseES")`) [Web application]. <https://jepusto.shinyapps.io/SCD-effect-sizes/>
+> Pustejovsky, J. E, Chen, M., Grekov, P., & Swan, D. M. (`r substr(packageDate("SingleCaseES"),1,4)`). 
+> Single-case effect size calculator (Version `r packageVersion("SingleCaseES")`) 
+> [Web application]. 
+> <https://jepusto.shinyapps.io/SCD-effect-sizes/>
