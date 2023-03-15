@@ -383,7 +383,7 @@ batch_calc_ES <- function(dat,
   
   if (tryCatch(is.character(scale), error = function(e) FALSE)) {
     scale <- tryCatch(
-      match.arg(scale, c("count", "rate", "proportion", "percentage", "other")),
+      match.arg(tolower(scale), c("count", "rate", "proportion", "percentage", "other")),
       error = function(e) stop(scale_msg)
     )
     dat$scale <- scale

@@ -26,7 +26,7 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
   
   if (!is.null(scale) && !is.na(scale)) {
     scale <- tryCatch(
-      match.arg(scale, c("count","rate","percentage","proportion","other")),
+      match.arg(tolower(scale), c("count","rate","percentage","proportion","other")),
       error = function(e) stop("`scale` argument must be one of 'count', 'rate', 'percentage', 'proportion', or 'other'.")
     )
   }
@@ -35,16 +35,16 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
   if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
   
   A <- is.null(scale) 
-  B <- (scale == "rate" & is.null(observation_length))
-  C <- (scale %in% c("percentage","proportion") & is.null(intervals))
+  B <- (tolower(scale) == "rate" & is.null(observation_length))
+  C <- (tolower(scale) %in% c("percentage","proportion") & is.null(intervals))
   if (A | B | C) return(Inf)
 
   if (is.null(observation_length)) observation_length <- NA
   if (is.null(intervals)) intervals <- NA
 
   D <- is.na(scale)
-  E <- (scale == "rate" & is.na(observation_length))
-  G <- (scale %in% c("percentage","proportion") & is.na(intervals))
+  E <- (tolower(scale) == "rate" & is.na(observation_length))
+  G <- (tolower(scale) %in% c("percentage","proportion") & is.na(intervals))
   if (D | E | G) return(Inf)
   
   switch(scale,
@@ -144,6 +144,8 @@ LOR <- function(A_data, B_data, condition, outcome,
 calc_LOR <- function(A_data, B_data, improvement = "increase", 
                       scale = "percentage", intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, confidence = .95, ..., warn = TRUE) {
+  
+  scale <- tolower(scale)
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
@@ -357,6 +359,8 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
                       intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, pct_change = FALSE,
                       confidence = .95, warn = TRUE, ...) {
+  
+  scale <- tolower(scale)
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
@@ -424,6 +428,8 @@ calc_LRRi <- function(A_data, B_data, improvement = "increase",
                       intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, pct_change = FALSE,
                       confidence = .95, warn = TRUE, ...) {
+  
+  scale <- tolower(scale)
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
