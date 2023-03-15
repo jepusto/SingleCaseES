@@ -24,9 +24,11 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
   
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
+  scale <- tolower(scale)
+  
   if (!is.null(scale) && !is.na(scale)) {
     scale <- tryCatch(
-      match.arg(tolower(scale), c("count","rate","percentage","proportion","other")),
+      match.arg(scale, c("count","rate","percentage","proportion","other")),
       error = function(e) stop("`scale` argument must be one of 'count', 'rate', 'percentage', 'proportion', or 'other'.")
     )
   }
@@ -35,16 +37,16 @@ trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = 
   if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
   
   A <- is.null(scale) 
-  B <- (tolower(scale) == "rate" & is.null(observation_length))
-  C <- (tolower(scale) %in% c("percentage","proportion") & is.null(intervals))
+  B <- (scale == "rate" & is.null(observation_length))
+  C <- (scale %in% c("percentage","proportion") & is.null(intervals))
   if (A | B | C) return(Inf)
 
   if (is.null(observation_length)) observation_length <- NA
   if (is.null(intervals)) intervals <- NA
 
   D <- is.na(scale)
-  E <- (tolower(scale) == "rate" & is.na(observation_length))
-  G <- (tolower(scale) %in% c("percentage","proportion") & is.na(intervals))
+  E <- (scale == "rate" & is.na(observation_length))
+  G <- (scale %in% c("percentage","proportion") & is.na(intervals))
   if (D | E | G) return(Inf)
   
   switch(scale,
@@ -145,9 +147,9 @@ calc_LOR <- function(A_data, B_data, improvement = "increase",
                       scale = "percentage", intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, confidence = .95, ..., warn = TRUE) {
   
-  scale <- tolower(scale)
-
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
+  
+  scale <- tolower(scale)
   
   if (!scale %in% c("proportion", "percentage")) {
     if (warn) warning("LOR can only be calculated for proportions or percentages. It will return NAs for other outcome scales.", call. = FALSE)
