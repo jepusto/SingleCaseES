@@ -495,7 +495,33 @@ shinyServer(function(input, output, session) {
   
   output$datview2 <- renderTable(datClean2())
   
+  # outcome scale types
+  
+  output$outcomeScale <- renderUI({
+    
+    req(input$boutScale)
+    
+    if (input$boutScale == "series") {
+      scales <- c("count", "rate", "proportion", "percentage", "other")
+      scale_type <- tolower(unique(datClean2()[[input$bscalevar]]))
+      wrong_scale_type <- setdiff(scale_type, scales)
+      
+      if (length(wrong_scale_type) > 0) {
+        warning <- paste0("The scale variable contains non-acceptable types: ", paste(wrong_scale_type, collapse = ","), 
+                          ". The acceptable scale types are: count, rate, proportion, percentage, or other.")
+        list(
+          strong(style="color:red", warning),
+          br("")
+        )
+      } else {
+        NULL
+      }
+    }
+    
+  })
+  
   # Plot
+  
   output$facetSelector <- renderUI({
     grouping_vars <- input$b_clusters
     aggregating_vars <- input$b_aggregate

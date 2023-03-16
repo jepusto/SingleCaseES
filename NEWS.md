@@ -1,5 +1,9 @@
 # SingleCaseES 0.7.1.9999
 
+* The package and SCD_effect_sizes app now accept uppercase outcome measurement scales for LRRi, LRRd, or LOR effect sizes.
+* batch_calc_ES() in the SCD_effect_sizes app now shows a warning message if a measurement scale is not acceptable for LRRi, LRRd, or LOR effect sizes.
+
+
 # SingleCaseES 0.7.1
 
 * Fixed a bug in the SCD_effect_sizes app (multiple-series calculator) which led to an error when calculating `PoGO` from an uploaded .xlsx file.

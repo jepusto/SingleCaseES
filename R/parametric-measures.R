@@ -16,20 +16,31 @@ summary_stats <- function(A_data, B_data, warn = TRUE) {
 }
 
 
+match_scale <- function(scale) {
+  if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
+  
+  
+  if (!is.null(scale) && !is.na(scale)) {
+    
+    scale <- tolower(scale)
+    
+    scale <- tryCatch(
+      match.arg(scale, c("count","rate","percentage","proportion","other")),
+      error = function(e) stop("`scale` argument must be one of 'count', 'rate', 'percentage', 'proportion', or 'other'.")
+    )
+  }
+  
+  return(scale)
+  
+}
+
 trunc_constant <- function(scale = NULL, observation_length = NULL, intervals = NULL) {
   
   #Allow for a vector of NAs from batch calculator
   if (all(is.na(observation_length))) observation_length <- NA
   if (all(is.na(intervals))) intervals <- NA
   
-  if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
-  
-  if (!is.null(scale) && !is.na(scale)) {
-    scale <- tryCatch(
-      match.arg(scale, c("count","rate","percentage","proportion","other")),
-      error = function(e) stop("`scale` argument must be one of 'count', 'rate', 'percentage', 'proportion', or 'other'.")
-    )
-  }
+  scale <- match_scale(scale)
   
   if (length(observation_length) > 1L) observation_length <- mean(observation_length, na.rm = TRUE)
   if (length(intervals) > 1L) intervals <- mean(intervals, na.rm = TRUE)
@@ -144,8 +155,10 @@ LOR <- function(A_data, B_data, condition, outcome,
 calc_LOR <- function(A_data, B_data, improvement = "increase", 
                       scale = "percentage", intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, confidence = .95, ..., warn = TRUE) {
-
+  
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
+  
+  scale <- match_scale(scale)
   
   if (!scale %in% c("proportion", "percentage")) {
     if (warn) warning("LOR can only be calculated for proportions or percentages. It will return NAs for other outcome scales.", call. = FALSE)
@@ -357,6 +370,8 @@ calc_LRRd <- function(A_data, B_data, improvement = "decrease",
                       intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, pct_change = FALSE,
                       confidence = .95, warn = TRUE, ...) {
+  
+  scale <- match_scale(scale)
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
@@ -424,6 +439,8 @@ calc_LRRi <- function(A_data, B_data, improvement = "increase",
                       intervals = NULL, D_const = NULL,
                       bias_correct = TRUE, pct_change = FALSE,
                       confidence = .95, warn = TRUE, ...) {
+  
+  scale <- match_scale(scale)
 
   if (length(scale) > 1L) scale <- names(sort(table(scale), decreasing = TRUE)[1])
   
