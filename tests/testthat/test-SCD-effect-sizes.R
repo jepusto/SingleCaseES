@@ -630,7 +630,7 @@ test_that("calcPhasePair works in the app.", {
     bESpar = Parametrics
   )
   
-  app$setInputs(boutScale = "series")
+  app$setInputs(boutScale = "series", wait_=FALSE, values_=FALSE)
   
   app$setInputs(
     bscalevar = "Metric",
@@ -912,3 +912,39 @@ test_that("The multiple series calculator works for PoGO.", {
   
 })
 
+
+test_that("The warning message is shown when an outcome measurement type is not acceptable.", {
+  
+  skip_on_cran()
+  
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  data_path <- file.path("..", "testdata/scale_issue.csv")
+  
+  app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
+  app$setInputs(dat_type = "dat", wait_ = FALSE, values_ = FALSE)
+  app$uploadFile(dat = data_path)
+  
+  app$setInputs(BatchEntryTabs = "Variables")
+  app$setInputs(calcPhasePair = TRUE)
+  app$setInputs(b_clusters = c("Study_ID", "Study_Case_ID"))
+  app$setInputs(b_aggregate = "phase_pair_calculated")
+  app$setInputs(b_phase = "Condition")
+  app$setInputs(session_number = "Session_number")
+  app$setInputs(b_out = "Outcome")
+  app$setInputs(BatchEntryTabs = "Plot")
+  app$setInputs(BatchEntryTabs = "Estimate")
+  app$setInputs(bESpar = c("LRRi"))
+  app$setInputs(boutScale = "series")
+  app$setInputs(bscalevar = "Procedure")
+  
+  Sys.sleep(2)
+  
+  warning_html <- app$getValue(name = "outcomeScale")
+  warning <- sub(".*>The", "The", warning_html)
+  warning <- sub("other.*", "other.", warning)
+  
+  expect_equal(warning,
+               "The scale variable contains non-acceptable types: blah. The acceptable scale types are: count, rate, proportion, percentage, or other.")
+  
+  
+})
