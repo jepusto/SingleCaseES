@@ -87,7 +87,7 @@ test_that("Scale variations are accepted for the measurement scale.", {
 test_that("Improvement direction variations are accepted for the outcome valence.", {
   
   data("Strasberger2014")
-  dat <- dat_A <- dat_B <- dat_C <- Strasberger2014
+  dat <- dat_A <- dat_B <- dat_C <- dat_D <- Strasberger2014
   N_sessions <- as.numeric(table(dat$StudyID_CaseID))
   
   ES_ests <- 
@@ -96,7 +96,7 @@ test_that("Improvement direction variations are accepted for the outcome valence
                   condition = Condition,
                   outcome = Outcome,
                   session_number = Session_number,
-                  ES = c("LRRi","LRRd", "PoGO"),
+                  ES = c("Tau","PND","LRRi","LRRd", "PoGO"),
                   improvement = "Increase",
                   scale = Procedure,
                   goal = Goal_level,
@@ -111,7 +111,7 @@ test_that("Improvement direction variations are accepted for the outcome valence
                   condition = Condition,
                   outcome = Outcome,
                   session_number = Session_number,
-                  ES = c("LRRi","LRRd", "PoGO"),
+                  ES = c("Tau","PND","LRRi","LRRd", "PoGO"),
                   improvement = Direction,
                   scale = Procedure,
                   goal = Goal_level,
@@ -119,17 +119,14 @@ test_that("Improvement direction variations are accepted for the outcome valence
   
   expect_equal(ES_ests, ES_ests_A)
   
-  dat_B$Direction <- c(rep("INCREASE", N_sessions[1]), 
-                       rep("incre", N_sessions[2]), 
-                       rep("Incre", N_sessions[3]),
-                       rep("Increase", N_sessions[4]))
+  dat_B$Direction <- rep(c("INCREASE","incre","Incre","Increase"), N_sessions)
   ES_ests_B <- 
     batch_calc_ES(dat = dat_B,
                   grouping = c(StudyID_CaseID),
                   condition = Condition,
                   outcome = Outcome,
                   session_number = Session_number,
-                  ES = c("LRRi","LRRd", "PoGO"),
+                  ES = c("Tau","PND","LRRi","LRRd", "PoGO"),
                   improvement = Direction,
                   scale = Procedure,
                   goal = Goal_level,
@@ -137,11 +134,8 @@ test_that("Improvement direction variations are accepted for the outcome valence
   
   expect_equal(ES_ests, ES_ests_B)
   
-  dat_C$Direction <- c(rep("INCREASE", N_sessions[1]), 
-                     rep("incrase", N_sessions[2]), 
-                     rep("direction", N_sessions[3]),
-                     rep("IncR", N_sessions[4]))
-  
+  dat_C$Direction <- rep(c("INCREASE","incrase","direction","IncR"), N_sessions)
+
   expect_error(
     batch_calc_ES(
       dat = dat_C,
@@ -149,12 +143,49 @@ test_that("Improvement direction variations are accepted for the outcome valence
       condition = Condition,
       outcome = Outcome,
       session_number = Session_number,
-      ES = c("LRRi","LRRd", "PoGO"),
+      ES = c("Tau","PND","LRRi","LRRd", "PoGO"),
       improvement = Direction,
       scale = Procedure,
       goal = Goal_level,
       format = "wide"
     )
   )
+  
+  dat_D$Direction <- rep(c("DECREASE","decre","Decre","DEcrease"), N_sessions)
+  
+  ES_ests_D <- 
+    batch_calc_ES(dat = dat_D,
+                  grouping = c(StudyID_CaseID),
+                  condition = Condition,
+                  outcome = Outcome,
+                  session_number = Session_number,
+                  ES = c("Tau","PND","LRRi","LRRd", "PoGO"),
+                  improvement = Direction,
+                  scale = Procedure,
+                  goal = Goal_level,
+                  format = "wide")
+  
+  expect_equal(ES_ests$Tau_Est, -ES_ests_D$Tau_Est)
+  expect_equal(ES_ests$Tau_SE, ES_ests_D$Tau_SE)
+  expect_equal(ES_ests$LRRi_Est, -ES_ests_D$LRRi_Est)
+  expect_equal(ES_ests$LRRi_SE, ES_ests_D$LRRi_SE)
+  expect_equal(ES_ests$LRRd_Est, -ES_ests_D$LRRd_Est)
+  expect_equal(ES_ests$LRRd_SE, ES_ests_D$LRRd_SE)
+  expect_equal(ES_ests$PoGO_Est, ES_ests_D$PoGO_Est)
+  expect_equal(ES_ests$PoGO_SE, ES_ests_D$PoGO_SE)
+  
+  ES_ests_E <- 
+    batch_calc_ES(dat = dat_D,
+                  grouping = c(StudyID_CaseID),
+                  condition = Condition,
+                  outcome = Outcome,
+                  session_number = Session_number,
+                  ES = c("Tau","PND","LRRi","LRRd", "PoGO"),
+                  improvement = "Dec",
+                  scale = Procedure,
+                  goal = Goal_level,
+                  format = "wide")
+  
+  expect_equal(ES_ests_D, ES_ests_E)
   
 })
