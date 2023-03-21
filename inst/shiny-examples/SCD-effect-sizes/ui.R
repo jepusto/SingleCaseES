@@ -195,7 +195,7 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                             tabPanel("Variables",
                                      sidebarLayout(
                                        sidebarPanel(
-                                         style = "max-height: 800px; overflow-y: auto",
+                                         style = "max-height: 1200px; overflow-y: auto",
                                          conditionalPanel(condition = "input.dat_type == 'dat' | input.dat_type == 'xlsx'",
                                                           checkboxInput("calcPhasePair", "Calculate phase pair numbers for ABAB designs.", value = FALSE)),
                                          uiOutput("clusterPhase"),
@@ -204,6 +204,8 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                          uiOutput("outOrderImp"),
                                          conditionalPanel(condition = "input.bimprovement == 'series'",
                                                           uiOutput("improvementVar")),
+                                         conditionalPanel(condition = "input.bimprovement == 'series'",
+                                                          uiOutput("improvementDir")),
                                          br(),
                                          br(),
                                          br()

@@ -918,7 +918,7 @@ test_that("The warning message is shown when an outcome measurement type is not 
   skip_on_cran()
   
   app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
-  data_path <- file.path("..", "testdata/scale_issue.csv")
+  data_path <- file.path("..", "testdata/warnings_issue.csv")
   
   app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
   app$setInputs(dat_type = "dat", wait_ = FALSE, values_ = FALSE)
@@ -945,6 +945,38 @@ test_that("The warning message is shown when an outcome measurement type is not 
   
   expect_equal(warning,
                "The scale variable contains non-acceptable types: blah. The acceptable scale types are: count, rate, proportion, percentage, or other.")
+  
+  
+})
+
+test_that("The warning message is shown when an improvement direction is not acceptable.", {
+  
+  skip_on_cran()
+  
+  app <- ShinyDriver$new(appDir, loadTimeout = 6e+05)
+  data_path <- file.path("..", "testdata/warnings_issue.csv")
+  
+  app$setInputs(SCD_es_calculator = "Multiple-Series Calculator")
+  app$setInputs(dat_type = "dat", wait_ = FALSE, values_ = FALSE)
+  app$uploadFile(dat = data_path)
+  
+  app$setInputs(BatchEntryTabs = "Variables")
+  app$setInputs(calcPhasePair = TRUE)
+  app$setInputs(b_clusters = c("Study_ID", "Study_Case_ID"))
+  app$setInputs(b_aggregate = "phase_pair_calculated")
+  app$setInputs(b_phase = "Condition")
+  app$setInputs(session_number = "Session_number")
+  app$setInputs(b_out = "Outcome")
+  app$setInputs(bimprovement = "series")
+  app$setInputs(bseldir = "Direction")
+  
+  
+  warning_html <- app$getValue(name = "improvementDir")
+  warning <- sub(".*>The", "The", warning_html)
+  warning <- sub("decrease.*", "decrease.", warning)
+  
+  expect_equal(warning,
+               "The improvement direction variable contains non-acceptable types: incrase, direction. The acceptable improvement directions are: increase or decrease.")
   
   
 })

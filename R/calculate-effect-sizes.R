@@ -163,6 +163,15 @@ calc_ES <- function(A_data, B_data,
   
   if (length(improvement) > 1L) improvement <- names(sort(table(improvement), decreasing = TRUE)[1])
   
+  if (!is.null(improvement) && !is.na(improvement)) {
+    improvement <- tolower(improvement)
+    
+    improvement <- tryCatch(
+      match.arg(improvement, c("increase", "decrease")),
+      error = function(e) stop("The `improvement` argument must be a variable name or a string specifying 'increase' or 'decrease'.")
+    ) 
+  }
+  
   A_data <- A_data[!is.na(A_data)]
   B_data <- B_data[!is.na(B_data)]
   
@@ -364,6 +373,7 @@ batch_calc_ES <- function(dat,
   improvement_quo <- rlang::enquo(improvement)
   
   if (tryCatch(is.character(improvement), error = function(e) FALSE)) {
+    improvement <- tolower(improvement)
     improvement <- tryCatch(
       match.arg(improvement, c("increase","decrease")),
       error = function(e) stop(improvement_msg)

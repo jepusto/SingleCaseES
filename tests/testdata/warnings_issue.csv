@@ -1,0 +1,202 @@
+StudyID,Study_CaseID,Session_number,Condition,Outcome,Goal_Level,Session_length,Procedure,Direction
+221,221_Jen,1,A,44.4,100,5 min,Blah,INCREASE
+221,221_Jen,2,A,0.02,100,5 min,Blah,INCREASE
+221,221_Jen,3,A,38.5,100,5 min,Blah,INCREASE
+221,221_Jen,4,A,11.5,100,5 min,Blah,INCREASE
+221,221_Jen,5,B,44.4,100,5 min,Blah,INCREASE
+221,221_Jen,6,B,20.6,100,5 min,Blah,INCREASE
+221,221_Jen,7,B,54.5,100,5 min,Blah,INCREASE
+221,221_Jen,8,B,58.4,100,5 min,Blah,INCREASE
+221,221_Jen,9,B,66.6,100,5 min,Blah,INCREASE
+221,221_Jen,10,A,46.8,100,5 min,Blah,INCREASE
+221,221_Jen,11,A,46.8,100,5 min,Blah,INCREASE
+221,221_Jen,12,A,20.7,100,5 min,Blah,INCREASE
+221,221_Jen,13,A,18.9,100,5 min,Blah,INCREASE
+221,221_Jen,14,B,47,100,5 min,Blah,INCREASE
+221,221_Jen,15,B,58.6,100,5 min,Blah,INCREASE
+221,221_Jen,16,B,54.8,100,5 min,Blah,INCREASE
+221,221_Jen,17,B,58.8,100,5 min,Blah,INCREASE
+221,221_Jen,18,B,67.1,100,5 min,Blah,INCREASE
+221,221_Tammy,1,A,16.8,100,5 min,Blah,INCREASE
+221,221_Tammy,2,A,41.3,100,5 min,Blah,INCREASE
+221,221_Tammy,3,A,1,100,5 min,Blah,INCREASE
+221,221_Tammy,4,B,51.2,100,5 min,Blah,INCREASE
+221,221_Tammy,5,B,67.4,100,5 min,Blah,INCREASE
+221,221_Tammy,6,B,99.3,100,5 min,Blah,INCREASE
+221,221_Tammy,7,B,64,100,5 min,Blah,INCREASE
+221,221_Tammy,8,B,99.1,100,5 min,Blah,INCREASE
+221,221_Tammy,9,B,99.8,100,5 min,Blah,INCREASE
+221,221_Tammy,10,A,99.3,100,5 min,Blah,INCREASE
+221,221_Tammy,11,A,45.3,100,5 min,Blah,INCREASE
+221,221_Tammy,12,A,84.5,100,5 min,Blah,INCREASE
+221,221_Tammy,13,A,65.5,100,5 min,Blah,INCREASE
+221,221_Tammy,14,A,26.1,100,5 min,Blah,INCREASE
+221,221_Tammy,15,A,24.4,100,5 min,Blah,INCREASE
+221,221_Tammy,16,B,92,100,5 min,Blah,INCREASE
+221,221_Tammy,17,B,100,100,5 min,Blah,INCREASE
+221,221_Tammy,18,B,74,100,5 min,Blah,INCREASE
+221,221_Rose,1,A,4.4,100,5 min,Blah,INCREASE
+221,221_Rose,2,A,4.9,100,5 min,Blah,INCREASE
+221,221_Rose,3,A,0,100,5 min,Blah,INCREASE
+221,221_Rose,4,B,49.5,100,5 min,Blah,INCREASE
+221,221_Rose,5,B,44.1,100,5 min,Blah,INCREASE
+221,221_Rose,6,B,54.9,100,5 min,Blah,INCREASE
+221,221_Rose,7,B,72.3,100,5 min,Blah,INCREASE
+221,221_Rose,8,B,100,100,5 min,Blah,INCREASE
+221,221_Rose,9,B,62.1,100,5 min,Blah,INCREASE
+221,221_Rose,10,B,71.4,100,5 min,Blah,INCREASE
+221,221_Rose,11,A,10.9,100,5 min,Blah,INCREASE
+221,221_Rose,12,A,0,100,5 min,Blah,INCREASE
+221,221_Rose,13,A,0,100,5 min,Blah,INCREASE
+221,221_Rose,14,B,60.1,100,5 min,Blah,INCREASE
+221,221_Rose,15,B,56.1,100,5 min,Blah,INCREASE
+221,221_Rose,16,B,75,100,5 min,Blah,INCREASE
+221,221_Rose,17,B,62,100,5 min,Blah,INCREASE
+221,221_Rose,18,B,82.2,100,5 min,Blah,INCREASE
+120,120_Eric,1,A,0.2,1,45,Proportion,incrase
+120,120_Eric,2,A,0.41,1,45,proportion,incrase
+120,120_Eric,3,A,0.29,1,45,proportion,incrase
+120,120_Eric,4,A,0.5,1,45,proportion,incrase
+120,120_Eric,5,A,0.62,1,45,proportion,incrase
+120,120_Eric,6,A,0.51,1,45,proportion,incrase
+120,120_Eric,7,A,0.28,1,45,proportion,incrase
+120,120_Eric,8,A,0.37,1,45,proportion,incrase
+120,120_Eric,9,A,0.64,1,45,proportion,incrase
+120,120_Eric,10,A,0.57,1,45,proportion,incrase
+120,120_Eric,11,B,0.58,1,45,proportion,incrase
+120,120_Eric,12,B,0.69,1,45,proportion,incrase
+120,120_Eric,13,B,0.61,1,45,proportion,incrase
+120,120_Eric,14,B,0.58,1,45,proportion,incrase
+120,120_Eric,15,B,0.65,1,45,proportion,incrase
+120,120_Eric,16,B,0.79,1,45,proportion,incrase
+120,120_Eric,17,B,0.59,1,45,proportion,incrase
+120,120_Eric,18,B,0.44,1,45,proportion,incrase
+120,120_Eric,19,B,0.68,1,45,proportion,incrase
+120,120_Eric,20,B,0.82,1,45,proportion,incrase
+120,120_Eric,21,B,0.97,1,45,proportion,incrase
+120,120_Eric,22,B,0.97,1,45,proportion,incrase
+120,120_Eric,23,B,0.94,1,45,proportion,incrase
+120,120_Eric,24,B,0.97,1,45,proportion,incrase
+120,120_Eric,25,B,0.96,1,45,proportion,incrase
+120,120_Freddie,1,A,0.31,1,45,proportion,incrase
+120,120_Freddie,2,A,0.3,1,45,proportion,incrase
+120,120_Freddie,3,A,0.21,1,45,proportion,incrase
+120,120_Freddie,4,A,0.46,1,45,proportion,incrase
+120,120_Freddie,5,A,0.37,1,45,proportion,incrase
+120,120_Freddie,6,A,0.44,1,45,proportion,incrase
+120,120_Freddie,7,A,0.38,1,45,proportion,incrase
+120,120_Freddie,8,A,0.34,1,45,proportion,incrase
+120,120_Freddie,9,A,0.38,1,45,proportion,incrase
+120,120_Freddie,10,A,0.69,1,45,proportion,incrase
+120,120_Freddie,11,B,0.71,1,45,proportion,incrase
+120,120_Freddie,12,B,0.68,1,45,proportion,incrase
+120,120_Freddie,13,B,0.72,1,45,proportion,incrase
+120,120_Freddie,14,B,0.7,1,45,proportion,incrase
+120,120_Freddie,15,B,0.57,1,45,proportion,incrase
+120,120_Freddie,16,B,0.72,1,45,proportion,incrase
+120,120_Freddie,17,B,0.64,1,45,proportion,incrase
+120,120_Freddie,18,B,0.6,1,45,proportion,incrase
+120,120_Freddie,19,B,0.67,1,45,proportion,incrase
+120,120_Freddie,20,B,0.87,1,45,proportion,incrase
+120,120_Freddie,21,B,0.98,1,45,proportion,incrase
+120,120_Freddie,22,B,0.93,1,45,proportion,incrase
+120,120_Freddie,23,B,0.96,1,45,proportion,incrase
+120,120_Freddie,24,B,0.98,1,45,proportion,incrase
+120,120_Freddie,25,B,0.98,1,45,proportion,incrase
+120,120_Lori,1,A,0.42,1,45,proportion,incrase
+120,120_Lori,2,A,0.26,1,45,proportion,incrase
+120,120_Lori,3,A,0.17,1,45,proportion,incrase
+120,120_Lori,4,A,0.23,1,45,proportion,incrase
+120,120_Lori,5,A,0.41,1,45,proportion,incrase
+120,120_Lori,6,A,0.42,1,45,proportion,incrase
+120,120_Lori,7,A,0.33,1,45,proportion,incrase
+120,120_Lori,8,A,0.35,1,45,proportion,incrase
+120,120_Lori,9,A,0.5,1,45,proportion,incrase
+120,120_Lori,10,A,0.71,1,45,proportion,incrase
+120,120_Lori,11,A,0.68,1,45,proportion,incrase
+120,120_Lori,12,A,0.37,1,45,proportion,incrase
+120,120_Lori,13,A,0.64,1,45,proportion,incrase
+120,120_Lori,14,A,0.56,1,45,proportion,incrase
+120,120_Lori,15,A,0.58,1,45,proportion,incrase
+120,120_Lori,16,B,0.85,1,45,proportion,incrase
+120,120_Lori,17,B,0.65,1,45,proportion,incrase
+120,120_Lori,18,B,0.62,1,45,proportion,incrase
+120,120_Lori,19,B,0.59,1,45,proportion,incrase
+120,120_Lori,20,B,0.84,1,45,proportion,incrase
+120,120_Lori,21,B,0.93,1,45,proportion,incrase
+120,120_Lori,22,B,0.98,1,45,proportion,incrase
+120,120_Lori,23,B,1,1,45,proportion,incrase
+120,120_Lori,24,B,0.97,1,45,proportion,incrase
+120,120_Lori,25,B,1,1,45,proportion,incrase
+120,120_Tommy,1,A,0.85,1,45,proportion,incrase
+120,120_Tommy,2,A,0.79,1,45,proportion,incrase
+120,120_Tommy,3,A,0.84,1,45,proportion,incrase
+120,120_Tommy,4,A,0.91,1,45,proportion,incrase
+120,120_Tommy,5,A,0.75,1,45,proportion,incrase
+120,120_Tommy,6,B,0.62,1,45,proportion,incrase
+120,120_Tommy,7,B,0.75,1,45,proportion,incrase
+120,120_Tommy,8,B,0.65,1,45,proportion,incrase
+120,120_Tommy,9,B,0.86,1,45,proportion,incrase
+120,120_Tommy,10,B,0.68,1,45,proportion,incrase
+120,120_Tommy,11,B,0.89,1,45,proportion,incrase
+120,120_Tommy,12,B,0.88,1,45,proportion,incrase
+120,120_Tommy,13,B,0.93,1,45,proportion,incrase
+120,120_Tommy,14,B,0.86,1,45,proportion,incrase
+120,120_Tommy,15,B,0.86,1,45,proportion,incrase
+120,120_Tommy,16,B,0.93,1,45,proportion,incrase
+120,120_Tommy,17,B,0.89,1,45,proportion,incrase
+120,120_Tommy,18,B,0.95,1,45,proportion,incrase
+120,120_Tommy,19,B,0.93,1,45,proportion,incrase
+120,120_Tommy,20,B,0.91,1,45,proportion,incrase
+120,120_Tommy,21,B,0.96,1,45,proportion,incrase
+120,120_Tommy,22,B,0.96,1,45,proportion,incrase
+120,120_Tommy,23,B,0.95,1,45,proportion,incrase
+120,120_Tommy,24,B,0.98,1,45,proportion,incrase
+120,120_Tommy,25,B,1,1,45,proportion,incrase
+158,158_Juan,1,A,1,10,,count,direction
+158,158_Juan,2,A,1,10,,count,direction
+158,158_Juan,3,A,0,10,,count,direction
+158,158_Juan,4,A,1,10,,count,direction
+158,158_Juan,5,A,1,10,,count,direction
+158,158_Juan,6,A,0,10,,count,direction
+158,158_Juan,7,A,1,10,,count,direction
+158,158_Juan,8,A,0,10,,count,direction
+158,158_Juan,9,A,0,10,,count,direction
+158,158_Juan,10,A,1,10,,count,direction
+158,158_Juan,11,B,4,10,,count,direction
+158,158_Juan,12,B,5,10,,count,direction
+158,158_Juan,13,B,2,10,,count,direction
+158,158_Juan,14,B,5,10,,count,direction
+158,158_Juan,15,B,4,10,,count,direction
+158,158_Kyle,1,A,1,10,,count,direction
+158,158_Kyle,2,A,1,10,,count,direction
+158,158_Kyle,3,A,3,10,,count,direction
+158,158_Kyle,4,A,1,10,,count,direction
+158,158_Kyle,5,A,2,10,,count,direction
+158,158_Kyle,6,A,2,10,,count,direction
+158,158_Kyle,7,B,7,10,,count,direction
+158,158_Kyle,8,B,10,10,,count,direction
+158,158_Kyle,9,B,10,10,,count,direction
+158,158_Parker,1,A,2,10,,count,direction
+158,158_Parker,2,A,2,10,,count,direction
+158,158_Parker,3,A,2,10,,count,direction
+158,158_Parker,4,B,2,10,,count,direction
+158,158_Parker,5,B,5,10,,count,direction
+158,158_Parker,6,B,6,10,,count,direction
+158,158_Parker,7,B,7,10,,count,direction
+158,158_Parker,8,B,10,10,,count,direction
+158,158_Parker,9,B,10,10,,count,direction
+158,158_Thomas,1,A,1,10,,count,direction
+158,158_Thomas,2,A,0,10,,count,direction
+158,158_Thomas,3,A,0,10,,count,direction
+158,158_Thomas,4,A,1,10,,count,direction
+158,158_Thomas,5,A,0,10,,count,direction
+158,158_Thomas,6,A,0,10,,count,direction
+158,158_Thomas,7,A,1,10,,count,direction
+158,158_Thomas,8,B,1,10,,count,direction
+158,158_Thomas,9,B,4,10,,count,direction
+158,158_Thomas,10,B,6,10,,count,direction
+158,158_Thomas,11,B,6,10,,count,direction
+158,158_Thomas,12,B,5,10,,count,direction
+158,158_Thomas,13,B,5,10,,count,direction
+158,158_Thomas,14,B,3,10,,count,direction
