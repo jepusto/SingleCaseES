@@ -495,7 +495,7 @@ shinyServer(function(input, output, session) {
   
   output$datview2 <- renderTable(datClean2())
   
-  # outcome scale types
+  # warning message for outcome scale types
   
   output$outcomeScale <- renderUI({
     
@@ -507,8 +507,34 @@ shinyServer(function(input, output, session) {
       wrong_scale_type <- setdiff(scale_type, scales)
       
       if (length(wrong_scale_type) > 0) {
-        warning <- paste0("The scale variable contains non-acceptable types: ", paste(wrong_scale_type, collapse = ","), 
+        warning <- paste0("The scale variable contains non-acceptable types: ", paste(wrong_scale_type, collapse = ", "), 
                           ". The acceptable scale types are: count, rate, proportion, percentage, or other.")
+        list(
+          strong(style="color:red", warning),
+          br("")
+        )
+      } else {
+        NULL
+      }
+    }
+    
+  })
+  
+  # warning message for improvement direction
+  
+  output$improvementDir <- renderUI({
+    
+    req(input$bimprovement)
+    req(input$bseldir)
+    
+    if (input$bimprovement == "series") {
+      valence_allowed <- c("increase", "decrease")
+      valence_input <- tolower(unique(datClean2()[[input$bseldir]]))
+      wrong_valence <- setdiff(valence_input, valence_allowed)
+      
+      if (length(wrong_valence) > 0) {
+        warning <- paste0("The improvement direction variable contains non-acceptable types: ", paste(wrong_valence, collapse = ", "), 
+                          ". The acceptable improvement directions are: increase or decrease.")
         list(
           strong(style="color:red", warning),
           br("")
