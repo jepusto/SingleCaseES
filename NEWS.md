@@ -4,7 +4,7 @@
 * The package and SCD_effect_sizes app now accept uppercase labels for the direction of improvement variable.
 * Updates to the multiple-series calculator in the SCD_effect_sizes app:
     * The app now shows a warning message if the improvement direction variable includes a category that is not acceptable.
-    * The now shows a warning message if a measurement scale is not acceptable for LRRi, LRRd, or LOR effect sizes.
+    * The app now shows a warning message if a measurement scale is not acceptable for LRRi, LRRd, or LOR effect sizes.
 
 
 # SingleCaseES 0.7.1
