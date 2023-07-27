@@ -2,6 +2,7 @@
 
 * The package and SCD_effect_sizes app now accept uppercase outcome measurement scales for LRRi, LRRd, or LOR effect sizes.
 * The package and SCD_effect_sizes app now accept uppercase labels for the direction of improvement variable.
+* Corrected a bug in the single-series calculator that required data to be between 0 and 100 for the PoGO effect size.
 * Updates to the multiple-series calculator in the SCD_effect_sizes app:
     * The app now shows a warning message if the improvement direction variable includes a category that is not acceptable.
     * The app now shows a warning message if a measurement scale is not acceptable for LRRi, LRRd, or LOR effect sizes.
