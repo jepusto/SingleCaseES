@@ -38,7 +38,7 @@ confidence intervals are provided for the subset of effect sizes indices with
 known sampling distributions. 
 
 The package also includes two graphical user interfaces for interactive use (designed using
-[Shiny](https://shiny.rstudio.com/)), both of which
+[Shiny](https://shiny.posit.co/)), both of which
 are also available as web apps hosted through
 [shinyapps.io](https://www.shinyapps.io/):
 

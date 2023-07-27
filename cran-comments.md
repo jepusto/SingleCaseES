@@ -1,6 +1,6 @@
 ## Resubmission
 
-This is minor release that includes small bug-fixes for the built-in shiny app and additional example datasets.
+This is minor release that includes small bug-fixes in package functions and in the built-in shiny app.
 
 ## Test environments
 
@@ -15,7 +15,7 @@ This is minor release that includes small bug-fixes for the built-in shiny app a
 
 There were no ERRORs or WARNINGs. 
 
-There were 2 NOTEs:
+There were 3 NOTEs:
 
 Possibly mis-spelled words in DESCRIPTION:
   Pustejovsky (15:15)
@@ -36,6 +36,15 @@ Found the following (possibly) invalid URLs:
     From: inst/doc/Effect-size-definitions.html
     Status: 403
     Message: Forbidden
+  URL: https://doi.org/10.1080/00273171.2018.1466681
+    From: inst/doc/Effect-size-definitions.html
+          inst/doc/Using-SingleCaseES.html
+    Status: 403
+    Message: Forbidden
+  URL: https://doi.org/10.1080/17489539.2020.1732024
+    From: inst/doc/Effect-size-definitions.html
+    Status: 403
+    Message: Forbidden
   URL: https://doi.org/10.1148/radiology.143.1.7063747
     From: inst/doc/Effect-size-definitions.html
     Status: 403
@@ -51,6 +60,14 @@ Found the following (possibly) invalid URLs:
     
   The flagged URLs are correct.
 
+Found the following (possibly) invalid DOIs:
+  DOI: 10.1080/00273171.2018.1466681
+    From: DESCRIPTION
+    Status: Forbidden
+    Message: 403
+    
+  The flagged DOI is correct.
+  
 ## revdepcheck results
 
 We checked 1 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.

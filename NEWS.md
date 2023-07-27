@@ -1,4 +1,4 @@
-# SingleCaseES 0.7.1.9999
+# SingleCaseES 0.7.2
 
 * The package and SCD_effect_sizes app now accept uppercase outcome measurement scales for LRRi, LRRd, or LOR effect sizes.
 * The package and SCD_effect_sizes app now accept uppercase labels for the direction of improvement variable.
