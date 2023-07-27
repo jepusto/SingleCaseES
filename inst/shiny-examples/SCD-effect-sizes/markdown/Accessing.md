@@ -43,6 +43,8 @@ To access the effect size calculator on your own computer, you will need to inst
         install.packages("ggplot2")
         install.packages("rclipboard")
         install.packages("Kendall")
+        install.packages("readxl")
+        install.packages("janitor")
         install.packages("SingleCaseES")
 
 5.  After all packages are installed, type the following commands in the console to start the calculator: 
