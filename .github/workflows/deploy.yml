@@ -1,0 +1,26 @@
+name: Deploy SingleCaseES Shiny App to Heroku
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy SingleCaseES Shiny app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build and push Docker to Heroku
+        uses: jepusto/SingleCaseES # @version?
+        with:
+          # This is the Heroku app name you already set up in dashboard
+          heroku_app_name: singlecasees
+          # app directory needs to be set relative to root of repo
+          appdir: "/inst/shiny-examples/SCD-effect-sizes"
+          # secrets need to be added to the GitHub repo settings
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "singlecasees" # Must be unique in Heroku
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          branch: "dev" # Not sure if this is necessary...
