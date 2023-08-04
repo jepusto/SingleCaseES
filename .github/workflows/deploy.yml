@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build and push Docker to Heroku
-        uses: jepusto/SingleCaseES@0.7.1 # @version?
+        uses: akhileshns/heroku-deploy@v3.12.14
         with:
           # This is the Heroku app name you already set up in dashboard
           heroku_app_name: scd-effect-sizes
