@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build and push Docker to Heroku
-        uses: jepusto/SingleCaseES@main # @version?
+        uses: jepusto/SingleCaseES@0.7.1 # @version?
         with:
           # This is the Heroku app name you already set up in dashboard
           heroku_app_name: scd-effect-sizes
@@ -22,5 +22,4 @@ jobs:
           # secrets need to be added to the GitHub repo settings
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          branch: "dev" # Not sure if this is necessary...
           
