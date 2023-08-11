@@ -30,10 +30,10 @@ ui <- navbarPage(title = "Single-case effect size calculator",
                                    textInput("B_dat", label = "Phase B", value = "")
                             ),
                             column(4,
-                                   checkboxInput("plot","Show graph", value = FALSE)
+                                   checkboxInput("toggleSinglePlot","Show graph", value = FALSE)
                             )
                           ),
-                          conditionalPanel(condition = "input.plot",
+                          conditionalPanel(condition = "input.toggleSinglePlot",
                             fluidRow(
                               column(12,
                                      plotOutput('SCDplot', height = "300px")
