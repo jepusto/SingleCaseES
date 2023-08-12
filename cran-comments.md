@@ -15,13 +15,12 @@ This is minor release that includes small bug-fixes in package functions and in 
 
 There were no ERRORs or WARNINGs. 
 
-There were 3 NOTEs:
+There were 2 NOTEs:
 
 Possibly mis-spelled words in DESCRIPTION:
   Pustejovsky (15:15)
-  indices (12:58, 18:3)
-  
-  The flagged words are spelled correctly.
+
+  The flagged word is spelled correctly.
   
 Found the following (possibly) invalid URLs:
   URL: https://doi.org/10.1002/pits.20516
@@ -60,14 +59,6 @@ Found the following (possibly) invalid URLs:
     
   The flagged URLs are correct.
 
-Found the following (possibly) invalid DOIs:
-  DOI: 10.1080/00273171.2018.1466681
-    From: DESCRIPTION
-    Status: Forbidden
-    Message: 403
-    
-  The flagged DOI is correct.
-  
 ## revdepcheck results
 
 We checked 1 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
