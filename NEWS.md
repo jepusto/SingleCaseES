@@ -1,3 +1,7 @@
+# SingleCaseES 0.7.2.9999
+
+* Corrected a bug in the single-series calculator that caused an error when showing the graphed data.
+
 # SingleCaseES 0.7.2
 
 * The package and SCD_effect_sizes app now accept uppercase outcome measurement scales for LRRi, LRRd, or LOR effect sizes.

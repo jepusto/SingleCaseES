@@ -43,7 +43,7 @@ shinyServer(function(input, output, session) {
   
   output$SCDplot <- renderPlot({
     
-    if (input$plot & dat()$compute) {
+    if (input$toggleSinglePlot & dat()$compute) {
       A_dat <- dat()$A
       B_dat <- dat()$B
       m <- length(A_dat)
