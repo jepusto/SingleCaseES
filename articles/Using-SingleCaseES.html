@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Basic effect sizes calculations using SingleCaseES • SingleCaseES</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -14,14 +14,13 @@
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Basic effect sizes calculations using SingleCaseES">
-<meta property="og:description" content="SingleCaseES">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -47,7 +46,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -67,7 +66,7 @@
 <li>
   <a href="https://github.com/jepusto/SingleCaseES/" class="external-link">
     <span class="fa fa-github"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -76,7 +75,7 @@
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
       </form>
-      
+
     </div>
 <!--/.nav-collapse -->
   </div>
@@ -84,7 +83,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><script src="Using-SingleCaseES_files/kePrint-0.0.1/kePrint.js"></script><link href="Using-SingleCaseES_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
@@ -95,9 +94,9 @@ SingleCaseES</h1>
                         <h4 data-toc-skip class="author">Daniel M. Swan,
 James E. Pustejovsky, and Paulina Grekov</h4>
             
-            <h4 data-toc-skip class="date">2023-08-16</h4>
+            <h4 data-toc-skip class="date">2024-09-04</h4>
       
-      
+
       <div class="hidden name"><code>Using-SingleCaseES.Rmd</code></div>
 
     </div>
@@ -107,9 +106,10 @@ James E. Pustejovsky, and Paulina Grekov</h4>
 <p>The <code>SingleCaseES</code> package provides R functions for
 calculating basic, within-case effect size indices for single-case
 designs, including several non-overlap measures and parametric effect
-size measures, and for estimating the gradual effects model <span class="citation">(<a href="#ref-Swan2018gradual" role="doc-biblioref">Swan &amp; Pustejovsky, 2018</a>)</span>. Standard
-errors and confidence intervals are provided for the subset of effect
-sizes indices with known sampling distributions.</p>
+size measures, and for estimating the gradual effects model <span class="citation">(<a href="#ref-Swan2018gradual">Swan &amp; Pustejovsky,
+2018</a>)</span>. Standard errors and confidence intervals are provided
+for the subset of effect sizes indices with known sampling
+distributions.</p>
 <p>The package also includes two graphical user interfaces for
 interactive use (designed using <a href="https://shiny.posit.co/" class="external-link">Shiny</a>), both of which are also
 available as web apps hosted through <a href="https://www.shinyapps.io/" class="external-link">shinyapps.io</a>:</p>
@@ -164,7 +164,8 @@ names are listed in parentheses):</p>
 <p>All of the functions for calculating individual effect sizes follow
 the same syntax. For demonstration purposes, let’s take a look at the
 syntax for <code><a href="../reference/NAP.html">NAP()</a></code>, which calculates the non-overlap of all
-pairs <span class="citation">(<a href="#ref-parker2009improved" role="doc-biblioref">Parker &amp; Vannest, 2009</a>)</span>:</p>
+pairs <span class="citation">(<a href="#ref-parker2009improved">Parker
+&amp; Vannest, 2009</a>)</span>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html" class="external-link">args</a></span><span class="op">(</span><span class="va">NAP</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (A_data, B_data, condition, outcome, baseline_phase = NULL, </span></span>
@@ -482,8 +483,8 @@ how log response ratios are estimated. First, outcomes measured as
 percentages or proportions need to be coded so that the direction of
 therapeutic improvement is consistent with the direction of the effect
 size. Consequently, changing the improvement direction will alter the
-<em>magnitude</em>, in addition to the sign, of the effect size <span class="citation">(see <a href="#ref-pustejovsky2018using" role="doc-biblioref">Pustejovsky, 2018, pp. 16–18</a> for further
-details)</span>. Here is an example:</p>
+<em>magnitude</em>, in addition to the sign, of the effect size <span class="citation">(see <a href="#ref-pustejovsky2018using">Pustejovsky,
+2018, pp. 16–18</a> for further details)</span>. Here is an example:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">26</span>, <span class="fl">25</span>, <span class="fl">22</span>, <span class="fl">23</span><span class="op">)</span></span>
 <span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">25</span>, <span class="fl">24</span>, <span class="fl">27</span>, <span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">29</span><span class="op">)</span></span>
@@ -819,234 +820,111 @@ every data series. Let’s look at two examples.</p>
 <div class="section level4">
 <h4 id="mckissick">McKissick<a class="anchor" aria-label="anchor" href="#mckissick"></a>
 </h4>
-<p>The <code>McKissick</code> dataset is data drawn from <span class="citation">McKissick, Hawkins, Lentz, Hailley, &amp; McGuire (<a href="#ref-McKissick2010randomizing" role="doc-biblioref">2010</a>)</span>, a single-case design study of a
-group contingency intervention. The study used a multiple baseline
-design across three classrooms. The outcome data are event counts of
-disruptive behaviors observed at the classroom level.</p>
+<p>The <code>McKissick</code> dataset is data drawn from <span class="citation">McKissick, Hawkins, Lentz, Hailley, &amp; McGuire (<a href="#ref-McKissick2010randomizing">2010</a>)</span>, a single-case
+design study of a group contingency intervention. The study used a
+multiple baseline design across three classrooms. The outcome data are
+event counts of disruptive behaviors observed at the classroom
+level.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">McKissick</span><span class="op">)</span></span></code></pre></div>
 <p>Here are the first few rows of the data:</p>
-<table class="table">
-<thead><tr>
-<th style="text-align:left;">
-Case_pseudonym
-</th>
-<th style="text-align:right;">
-Session_number
-</th>
-<th style="text-align:left;">
-Condition
-</th>
-<th style="text-align:right;">
-Outcome
-</th>
-<th style="text-align:right;">
-Session_length
-</th>
-<th style="text-align:left;">
-Procedure
-</th>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="20%">
+<col width="20%">
+<col width="13%">
+<col width="10%">
+<col width="20%">
+<col width="13%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Case_pseudonym</th>
+<th align="right">Session_number</th>
+<th align="left">Condition</th>
+<th align="right">Outcome</th>
+<th align="right">Session_length</th>
+<th align="left">Procedure</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-A
-</td>
-<td style="text-align:right;">
-13.62
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="odd">
+<td align="left">Period 1</td>
+<td align="right">1</td>
+<td align="left">A</td>
+<td align="right">13.62</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-A
-</td>
-<td style="text-align:right;">
-12.57
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="even">
+<td align="left">Period 1</td>
+<td align="right">2</td>
+<td align="left">A</td>
+<td align="right">12.57</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-A
-</td>
-<td style="text-align:right;">
-15.76
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="odd">
+<td align="left">Period 1</td>
+<td align="right">3</td>
+<td align="left">A</td>
+<td align="right">15.76</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-B
-</td>
-<td style="text-align:right;">
-5.97
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="even">
+<td align="left">Period 1</td>
+<td align="right">4</td>
+<td align="left">B</td>
+<td align="right">5.97</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:left;">
-B
-</td>
-<td style="text-align:right;">
-4.63
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="odd">
+<td align="left">Period 1</td>
+<td align="right">5</td>
+<td align="left">B</td>
+<td align="right">4.63</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:left;">
-B
-</td>
-<td style="text-align:right;">
-5.82
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="even">
+<td align="left">Period 1</td>
+<td align="right">6</td>
+<td align="left">B</td>
+<td align="right">5.82</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:left;">
-B
-</td>
-<td style="text-align:right;">
-3.72
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="odd">
+<td align="left">Period 1</td>
+<td align="right">7</td>
+<td align="left">B</td>
+<td align="right">3.72</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:left;">
-B
-</td>
-<td style="text-align:right;">
-8.07
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="even">
+<td align="left">Period 1</td>
+<td align="right">8</td>
+<td align="left">B</td>
+<td align="right">8.07</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-9
-</td>
-<td style="text-align:left;">
-B
-</td>
-<td style="text-align:right;">
-2.95
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="odd">
+<td align="left">Period 1</td>
+<td align="right">9</td>
+<td align="left">B</td>
+<td align="right">2.95</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-10
-</td>
-<td style="text-align:left;">
-B
-</td>
-<td style="text-align:right;">
-11.86
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:left;">
-count
-</td>
+<tr class="even">
+<td align="left">Period 1</td>
+<td align="right">10</td>
+<td align="left">B</td>
+<td align="right">11.86</td>
+<td align="right">20</td>
+<td align="left">count</td>
 </tr>
 </tbody>
 </table>
@@ -1054,12 +932,13 @@ count
 <div class="section level4">
 <h4 id="schmidt-2007">Schmidt (2007)<a class="anchor" aria-label="anchor" href="#schmidt-2007"></a>
 </h4>
-<p>The <code>Schmidt2007</code> dataset are data drawn from <span class="citation">Schmidt (<a href="#ref-Schmidt2007effects" role="doc-biblioref">2007</a>)</span>. This data set is somewhat more
-complicated. It has two outcomes for each participant, and the outcomes
-differ in directions of therapeutic improvement and measurement scale.
-The study used an ABAB design, replicated across three participants.
-Each series therefore has four phases: a baseline phase, a treatment
-phase, a return to baseline phase, and a second treatment phase.</p>
+<p>The <code>Schmidt2007</code> dataset are data drawn from <span class="citation">Schmidt (<a href="#ref-Schmidt2007effects">2007</a>)</span>. This data set is
+somewhat more complicated. It has two outcomes for each participant, and
+the outcomes differ in directions of therapeutic improvement and
+measurement scale. The study used an ABAB design, replicated across
+three participants. Each series therefore has four phases: a baseline
+phase, a treatment phase, a return to baseline phase, and a second
+treatment phase.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Schmidt2007</span><span class="op">)</span></span></code></pre></div>
 <p>Here are the first few rows of the data</p>
@@ -1531,149 +1410,65 @@ calculate estimates of NAP and PND, to keep things simple:</p>
 <span>              outcome <span class="op">=</span> <span class="va">Outcome</span>, </span>
 <span>              improvement <span class="op">=</span> <span class="st">"decrease"</span>,</span>
 <span>              ES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NAP"</span>, <span class="st">"PND"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-Note that all of the inputs related to variable names are bare (i.e., no
-quotes). Let’s take a look at a table of the output.
+<p>Note that all of the inputs related to variable names are bare (i.e.,
+no quotes). Let’s take a look at a table of the output.</p>
 <table class="table">
-<thead><tr>
-<th style="text-align:left;">
-Case_pseudonym
-</th>
-<th style="text-align:left;">
-ES
-</th>
-<th style="text-align:right;">
-Est
-</th>
-<th style="text-align:right;">
-SE
-</th>
-<th style="text-align:right;">
-CI_lower
-</th>
-<th style="text-align:right;">
-CI_upper
-</th>
+<thead><tr class="header">
+<th align="left">Case_pseudonym</th>
+<th align="left">ES</th>
+<th align="right">Est</th>
+<th align="right">SE</th>
+<th align="right">CI_lower</th>
+<th align="right">CI_upper</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:left;">
-NAP
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-0.0440101
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
+<tr class="odd">
+<td align="left">Period 1</td>
+<td align="left">NAP</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0440101</td>
+<td align="right">1.0000000</td>
+<td align="right">1.0000000</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:left;">
-PND
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
+<tr class="even">
+<td align="left">Period 1</td>
+<td align="left">PND</td>
+<td align="right">1.0000000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 2
-</td>
-<td style="text-align:left;">
-NAP
-</td>
-<td style="text-align:right;">
-0.7714286
-</td>
-<td style="text-align:right;">
-0.1538619
-</td>
-<td style="text-align:right;">
-0.4305321
-</td>
-<td style="text-align:right;">
-0.9322444
-</td>
+<tr class="odd">
+<td align="left">Period 2</td>
+<td align="left">NAP</td>
+<td align="right">0.7714286</td>
+<td align="right">0.1538619</td>
+<td align="right">0.4305321</td>
+<td align="right">0.9322444</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 2
-</td>
-<td style="text-align:left;">
-PND
-</td>
-<td style="text-align:right;">
-0.4285714
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
+<tr class="even">
+<td align="left">Period 2</td>
+<td align="left">PND</td>
+<td align="right">0.4285714</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 3
-</td>
-<td style="text-align:left;">
-NAP
-</td>
-<td style="text-align:right;">
-0.9166667
-</td>
-<td style="text-align:right;">
-0.0833333
-</td>
-<td style="text-align:right;">
-0.5676324
-</td>
-<td style="text-align:right;">
-0.9874545
-</td>
+<tr class="odd">
+<td align="left">Period 3</td>
+<td align="left">NAP</td>
+<td align="right">0.9166667</td>
+<td align="right">0.0833333</td>
+<td align="right">0.5676324</td>
+<td align="right">0.9874545</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 3
-</td>
-<td style="text-align:left;">
-PND
-</td>
-<td style="text-align:right;">
-0.7500000
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
+<tr class="even">
+<td align="left">Period 3</td>
+<td align="left">PND</td>
+<td align="right">0.7500000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
 </tbody>
 </table>
@@ -2817,149 +2612,65 @@ are measured as counts during 20-minute observation periods:</p>
 <span>              observation_length <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>              ES <span class="op">=</span> <span class="st">"parametric"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in batch_calc_ES(dat = McKissick, grouping = Case_pseudonym, condition = Condition, : You must provide the goal level of the behavior to calculate the PoGO effect size.</span></span></code></pre></div>
-Note that we get a warning about the log odds ratio. Let’s take a look
-at the output:
+<p>Note that we get a warning about the log odds ratio. Let’s take a
+look at the output:</p>
 <table class="table">
-<thead><tr>
-<th style="text-align:left;">
-Case_pseudonym
-</th>
-<th style="text-align:left;">
-ES
-</th>
-<th style="text-align:right;">
-Est
-</th>
-<th style="text-align:right;">
-SE
-</th>
-<th style="text-align:right;">
-CI_lower
-</th>
-<th style="text-align:right;">
-CI_upper
-</th>
+<thead><tr class="header">
+<th align="left">Case_pseudonym</th>
+<th align="left">ES</th>
+<th align="right">Est</th>
+<th align="right">SE</th>
+<th align="right">CI_lower</th>
+<th align="right">CI_upper</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:left;">
-NAP
-</td>
-<td style="text-align:right;">
-1.000
-</td>
-<td style="text-align:right;">
-0.044
-</td>
-<td style="text-align:right;">
-1.000
-</td>
-<td style="text-align:right;">
-1.000
-</td>
+<tr class="odd">
+<td align="left">Period 1</td>
+<td align="left">NAP</td>
+<td align="right">1.000</td>
+<td align="right">0.044</td>
+<td align="right">1.000</td>
+<td align="right">1.000</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:left;">
-PND
-</td>
-<td style="text-align:right;">
-1.000
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
+<tr class="even">
+<td align="left">Period 1</td>
+<td align="left">PND</td>
+<td align="right">1.000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 2
-</td>
-<td style="text-align:left;">
-NAP
-</td>
-<td style="text-align:right;">
-0.771
-</td>
-<td style="text-align:right;">
-0.154
-</td>
-<td style="text-align:right;">
-0.431
-</td>
-<td style="text-align:right;">
-0.932
-</td>
+<tr class="odd">
+<td align="left">Period 2</td>
+<td align="left">NAP</td>
+<td align="right">0.771</td>
+<td align="right">0.154</td>
+<td align="right">0.431</td>
+<td align="right">0.932</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 2
-</td>
-<td style="text-align:left;">
-PND
-</td>
-<td style="text-align:right;">
-0.429
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
+<tr class="even">
+<td align="left">Period 2</td>
+<td align="left">PND</td>
+<td align="right">0.429</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 3
-</td>
-<td style="text-align:left;">
-NAP
-</td>
-<td style="text-align:right;">
-0.917
-</td>
-<td style="text-align:right;">
-0.083
-</td>
-<td style="text-align:right;">
-0.568
-</td>
-<td style="text-align:right;">
-0.987
-</td>
+<tr class="odd">
+<td align="left">Period 3</td>
+<td align="left">NAP</td>
+<td align="right">0.917</td>
+<td align="right">0.083</td>
+<td align="right">0.568</td>
+<td align="right">0.987</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 3
-</td>
-<td style="text-align:left;">
-PND
-</td>
-<td style="text-align:right;">
-0.750
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
+<tr class="even">
+<td align="left">Period 3</td>
+<td align="left">PND</td>
+<td align="right">0.750</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
 </tbody>
 </table>
@@ -3684,86 +3395,46 @@ single line, specifying <code>format = "wide"</code> will provide the
 output that way, just like <code><a href="../reference/calc_ES.html">calc_ES()</a></code>. Here’s the
 output:</p>
 <table class="table">
-<thead><tr>
-<th style="text-align:left;">
-Case_pseudonym
-</th>
-<th style="text-align:right;">
-NAP_Est
-</th>
-<th style="text-align:right;">
-NAP_SE
-</th>
-<th style="text-align:right;">
-NAP_CI_lower
-</th>
-<th style="text-align:right;">
-NAP_CI_upper
-</th>
-<th style="text-align:right;">
-PND_Est
-</th>
+<colgroup>
+<col width="21%">
+<col width="14%">
+<col width="14%">
+<col width="18%">
+<col width="18%">
+<col width="14%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Case_pseudonym</th>
+<th align="right">NAP_Est</th>
+<th align="right">NAP_SE</th>
+<th align="right">NAP_CI_lower</th>
+<th align="right">NAP_CI_upper</th>
+<th align="right">PND_Est</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-Period 1
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-0.0440101
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
+<tr class="odd">
+<td align="left">Period 1</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0440101</td>
+<td align="right">1.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">1.0000000</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 2
-</td>
-<td style="text-align:right;">
-0.7714286
-</td>
-<td style="text-align:right;">
-0.1538619
-</td>
-<td style="text-align:right;">
-0.4305321
-</td>
-<td style="text-align:right;">
-0.9322444
-</td>
-<td style="text-align:right;">
-0.4285714
-</td>
+<tr class="even">
+<td align="left">Period 2</td>
+<td align="right">0.7714286</td>
+<td align="right">0.1538619</td>
+<td align="right">0.4305321</td>
+<td align="right">0.9322444</td>
+<td align="right">0.4285714</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Period 3
-</td>
-<td style="text-align:right;">
-0.9166667
-</td>
-<td style="text-align:right;">
-0.0833333
-</td>
-<td style="text-align:right;">
-0.5676324
-</td>
-<td style="text-align:right;">
-0.9874545
-</td>
-<td style="text-align:right;">
-0.7500000
-</td>
+<tr class="odd">
+<td align="left">Period 3</td>
+<td align="right">0.9166667</td>
+<td align="right">0.0833333</td>
+<td align="right">0.5676324</td>
+<td align="right">0.9874545</td>
+<td align="right">0.7500000</td>
 </tr>
 </tbody>
 </table>
@@ -3909,7 +3580,7 @@ calculating confidence intervals, specify
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0" line-spacing="2">
 <div id="ref-McKissick2010randomizing" class="csl-entry">
 McKissick, C., Hawkins, R. O., Lentz, F. E., Hailley, J., &amp; McGuire,
 S. (2010). <span class="nocase">Randomizing multiple contingency
@@ -3954,9 +3625,7 @@ Behavioral Research</em>. <a href="https://doi.org/10.1080/00273171.2018.1466681
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -3969,17 +3638,17 @@ Behavioral Research</em>. <a href="https://doi.org/10.1080/00273171.2018.1466681
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '',
     indexName: 'SingleCaseES',
     inputSelector: 'input#search-input.form-control',

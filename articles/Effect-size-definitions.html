@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Effect size definitions and mathematical details • SingleCaseES</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -14,14 +14,13 @@
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Effect size definitions and mathematical details">
-<meta property="og:description" content="SingleCaseES">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -47,7 +46,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -67,7 +66,7 @@
 <li>
   <a href="https://github.com/jepusto/SingleCaseES/" class="external-link">
     <span class="fa fa-github"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -76,7 +75,7 @@
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
       </form>
-      
+
     </div>
 <!--/.nav-collapse -->
   </div>
@@ -84,7 +83,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
@@ -94,9 +93,9 @@ details</h1>
                         <h4 data-toc-skip class="author">James E.
 Pustejovsky, Daniel M. Swan, and Man Chen</h4>
             
-            <h4 data-toc-skip class="date">2023-08-16</h4>
+            <h4 data-toc-skip class="date">2024-09-04</h4>
       
-      
+
       <div class="hidden name"><code>Effect-size-definitions.Rmd</code></div>
 
     </div>
@@ -106,40 +105,68 @@ Pustejovsky, Daniel M. Swan, and Man Chen</h4>
 <p>The SingleCaseES package provides R functions for calculating basic,
 within-case effect size indices for single-case designs, including
 several non-overlap measures and parametric effect size measures, and
-for estimating the gradual effects model developed by <span class="citation">Swan &amp; Pustejovsky (<a href="#ref-Swan2018gradual" role="doc-biblioref">2018</a>)</span>. Estimation procedures for
+for estimating the gradual effects model developed by <span class="citation">Swan &amp; Pustejovsky (<a href="#ref-Swan2018gradual">2018</a>)</span>. Estimation procedures for
 standard errors and confidence intervals are provided for the subset of
 effect sizes indices with known sampling distributions. This vignette
 covers the mathematical definitions of the basic non-overlap and
 parametric effect size measures, along with some details about how they
-are estimated. <span class="citation">Parker, Vannest, &amp; Davis (<a href="#ref-parker2011effect" role="doc-biblioref">2011</a>)</span>
-provides a review of the non-overlap measures, including worked examples
-of the calculations. <span class="citation">Pustejovsky (<a href="#ref-pustejovsky2018procedural" role="doc-biblioref">2019</a>)</span> provides a critical review of
-non-overlap measures and parametric effect sizes. However, neither of
-these reviews include details about standard error calculations.</p>
+are estimated. <span class="citation">Parker, Vannest, &amp; Davis (<a href="#ref-parker2011effect">2011</a>)</span> provides a review of the
+non-overlap measures, including worked examples of the calculations.
+<span class="citation">Pustejovsky (<a href="#ref-pustejovsky2018procedural">2019</a>)</span> provides a
+critical review of non-overlap measures and parametric effect sizes.
+However, neither of these reviews include details about standard error
+calculations.</p>
 <div class="section level2">
 <h2 id="notation">Notation<a class="anchor" aria-label="anchor" href="#notation"></a>
 </h2>
 <p>All of the within-case effect size measures are defined in terms of a
 comparison of observations between two phases (call them phase A and
-phase B) within a single-case design. Let <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> denote the number of observations in
-phase A and phase B, respectively. Let <span class="math inline">\(y^A_1,...,y^A_m\)</span> denote the observations
-from phase A and <span class="math inline">\(y^B_1,...,y^B_n\)</span>
+phase B) within a single-case design. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+denote the number of observations in phase A and phase B, respectively.
+Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mn>1</mn><mi>A</mi></msubsup><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msubsup><mi>y</mi><mi>m</mi><mi>A</mi></msubsup></mrow><annotation encoding="application/x-tex">y^A_1,...,y^A_m</annotation></semantics></math>
+denote the observations from phase A and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mn>1</mn><mi>B</mi></msubsup><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msubsup><mi>y</mi><mi>n</mi><mi>B</mi></msubsup></mrow><annotation encoding="application/x-tex">y^B_1,...,y^B_n</annotation></semantics></math>
 denote the observations from phase B.</p>
 <p>The non-overlap effect size measures are all defined in terms of
 ordinal comparisons between data points from phase A and data points
 from phase B. It will therefore be helpful to have notation for the data
-points from each phase, sorted in rank order. Thus, let <span class="math inline">\(y^A_{(1)},y^A_{(2)},...,y^A_{(m)}\)</span> denote
-the values of the baseline phase data, sorted in increasing order, and
-let <span class="math inline">\(y^B_{(1)},y^B_{(2)},...,y^B_{(n)}\)</span> denote
-the values of the sorted treatment phase data.</p>
+points from each phase, sorted in rank order. Thus, let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>,</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup></mrow><annotation encoding="application/x-tex">y^A_{(1)},y^A_{(2)},...,y^A_{(m)}</annotation></semantics></math>
+denote the values of the baseline phase data, sorted in increasing
+order, and let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo>,</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup></mrow><annotation encoding="application/x-tex">y^B_{(1)},y^B_{(2)},...,y^B_{(n)}</annotation></semantics></math>
+denote the values of the sorted treatment phase data.</p>
 <p>The parametric effect size measures are all defined under a simple
 model for the data-generating process, in which observations in phase A
-are sampled from a distribution with constant mean <span class="math inline">\(\mu_A\)</span> and standard deviation <span class="math inline">\(\sigma_A\)</span>, while observations in phase B
-are sampled from a distribution with constant mean <span class="math inline">\(\mu_B\)</span> and standard deviation <span class="math inline">\(\sigma_B\)</span>. Let <span class="math inline">\(\bar{y}_A\)</span> and <span class="math inline">\(\bar{y}_B\)</span> denote the sample means for
-phase A and phase B, respectively. Let <span class="math inline">\(s_A\)</span> and <span class="math inline">\(s_B\)</span> denote the sample standard deviations
-for phase A and phase B, respectively. Let <span class="math inline">\(z_{\alpha / 2}\)</span> denote the <span class="math inline">\(1 - \alpha / 2\)</span> critical value from a
-standard normal distribution. Finally, we use <span class="math inline">\(\ln()\)</span> to denote the natural logarithm
-function.</p>
+are sampled from a distribution with constant mean
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>A</mi></msub><annotation encoding="application/x-tex">\mu_A</annotation></semantics></math>
+and standard deviation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>A</mi></msub><annotation encoding="application/x-tex">\sigma_A</annotation></semantics></math>,
+while observations in phase B are sampled from a distribution with
+constant mean
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\mu_B</annotation></semantics></math>
+and standard deviation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\sigma_B</annotation></semantics></math>.
+Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub><annotation encoding="application/x-tex">\bar{y}_A</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>B</mi></msub><annotation encoding="application/x-tex">\bar{y}_B</annotation></semantics></math>
+denote the sample means for phase A and phase B, respectively. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mi>A</mi></msub><annotation encoding="application/x-tex">s_A</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mi>B</mi></msub><annotation encoding="application/x-tex">s_B</annotation></semantics></math>
+denote the sample standard deviations for phase A and phase B,
+respectively. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><annotation encoding="application/x-tex">z_{\alpha / 2}</annotation></semantics></math>
+denote the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">1 - \alpha / 2</annotation></semantics></math>
+critical value from a standard normal distribution. Finally, we use
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\ln()</annotation></semantics></math>
+to denote the natural logarithm function.</p>
 </div>
 <div class="section level2">
 <h2 id="non-overlap-measures">Non-overlap measures<a class="anchor" aria-label="anchor" href="#non-overlap-measures"></a>
@@ -147,146 +174,164 @@ function.</p>
 <div class="section level3">
 <h3 id="nap">NAP<a class="anchor" aria-label="anchor" href="#nap"></a>
 </h3>
-<p><span class="citation">Parker &amp; Vannest (<a href="#ref-parker2009improved" role="doc-biblioref">2009</a>)</span>
-proposed non-overlap of all pairs (NAP) as an effect size index for use
-in single-case research. NAP is defined in terms of all pair-wise
-comparisons between the data points in two different phases for a given
-case (i.e., a treatment phase versus a baseline phase). For an outcome
-that is desirable to increase, NAP is the proportion of all such
-pair-wise comparisons where the treatment phase observation exceeds the
-baseline phase observation, with pairs that are exactly tied getting a
-weight of 1/2. NAP is exactly equivalent to the modified Common Language
-Effect Size <span class="citation">(<a href="#ref-Vargha2000critique" role="doc-biblioref">Vargha &amp; Delaney, 2000</a>)</span> and has been
-proposed as an effect size index in other contexts too <span class="citation">(e.g., <a href="#ref-Acion2006probabilistic" role="doc-biblioref">Acion, Peterson, Temple, &amp; Arndt,
+<p><span class="citation">Parker &amp; Vannest (<a href="#ref-parker2009improved">2009</a>)</span> proposed non-overlap of
+all pairs (NAP) as an effect size index for use in single-case research.
+NAP is defined in terms of all pair-wise comparisons between the data
+points in two different phases for a given case (i.e., a treatment phase
+versus a baseline phase). For an outcome that is desirable to increase,
+NAP is the proportion of all such pair-wise comparisons where the
+treatment phase observation exceeds the baseline phase observation, with
+pairs that are exactly tied getting a weight of 1/2. NAP is exactly
+equivalent to the modified Common Language Effect Size <span class="citation">(<a href="#ref-Vargha2000critique">Vargha &amp;
+Delaney, 2000</a>)</span> and has been proposed as an effect size index
+in other contexts too <span class="citation">(e.g., <a href="#ref-Acion2006probabilistic">Acion, Peterson, Temple, &amp; Arndt,
 2006</a>)</span>.</p>
 <p>NAP can be interpreted as an estimate of the probability that a
 randomly selected observation from the B phase improves upon a randomly
 selected observation from the A phase. For an outcome where increase is
 desirable, the effect size parameter is</p>
-<p><span class="math display">\[\theta = \text{Pr}(Y^B &gt; Y^A) + 0.5
-\times \text{Pr}(Y^B = Y^A).\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>Y</mi><mi>B</mi></msup><mo>&gt;</mo><msup><mi>Y</mi><mi>A</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0.5</mn><mo>×</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>Y</mi><mi>B</mi></msup><mo>=</mo><msup><mi>Y</mi><mi>A</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\theta = \text{Pr}(Y^B &gt; Y^A) + 0.5 \times \text{Pr}(Y^B = Y^A).</annotation></semantics></math></p>
 <p>For an outcome where decrease is desirable, the effect size parameter
 is</p>
-<p><span class="math display">\[\theta = \text{Pr}(Y^B &lt; Y^A) + 0.5
-\times \text{Pr}(Y^B = Y^A).\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>Y</mi><mi>B</mi></msup><mo>&lt;</mo><msup><mi>Y</mi><mi>A</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0.5</mn><mo>×</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>Y</mi><mi>B</mi></msup><mo>=</mo><msup><mi>Y</mi><mi>A</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\theta = \text{Pr}(Y^B &lt; Y^A) + 0.5 \times \text{Pr}(Y^B = Y^A).</annotation></semantics></math></p>
 <div class="section level4">
 <h4 id="estimation">Estimation<a class="anchor" aria-label="anchor" href="#estimation"></a>
 </h4>
 <p>For an outcome where increase is desirable, calculate</p>
-<p><span class="math display">\[q_{ij} = I(y^B_j &gt; y^A_i) + 0.5
-I(y^B_j = y^A_i)\]</span> for <span class="math inline">\(i =
-1,...,m\)</span> and <span class="math inline">\(j = 1,...,n\)</span>.
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0.5</mn><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>=</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">q_{ij} = I(y^B_j &gt; y^A_i) + 0.5 I(y^B_j = y^A_i)</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">i = 1,...,m</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">j = 1,...,n</annotation></semantics></math>.
 For an outcome where decrease is desirable, one would instead use</p>
-<p><span class="math display">\[q_{ij} = I(y^B_j &lt; y^A_i) + 0.5
-I(y^B_j = y^A_i).\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>q</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0.5</mn><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>=</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">q_{ij} = I(y^B_j &lt; y^A_i) + 0.5 I(y^B_j = y^A_i).</annotation></semantics></math></p>
 <p>The NAP effect size index is then calculated as</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">NAP</mtext><mo>=</mo><mfrac><mn>1</mn><mrow><mi>m</mi><mi>n</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>q</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \text{NAP} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n q_{ij}.
-\]</span></p>
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="standard-errors">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors"></a>
 </h4>
 <p>The SingleCaseES package provides several different methods for
 estimating the standard error of NAP. The default method is calculated
-based on the exactly unbiased variance estimator described by <span class="citation">Sen (<a href="#ref-sen1967note" role="doc-biblioref">1967</a>; cf. <a href="#ref-mee1990confidence" role="doc-biblioref">Mee, 1990</a>)</span>, which assumes that the
-observations are mutually independent and are identically distributed
-within each phase. Let</p>
-<p><span class="math display">\[
+based on the exactly unbiased variance estimator described by <span class="citation">Sen (<a href="#ref-sen1967note">1967</a>; cf. <a href="#ref-mee1990confidence">Mee, 1990</a>)</span>, which assumes that
+the observations are mutually independent and are identically
+distributed within each phase. Let</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>Q</mi><mn>1</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mfrac><mn>1</mn><mrow><mi>m</mi><msup><mi>n</mi><mn>2</mn></msup></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><msup><mrow><mo stretchy="true" form="prefix">[</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>q</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mtext mathvariant="normal">NAP</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mn>2</mn></msup><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>Q</mi><mn>2</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>m</mi><mn>2</mn></msup><mi>n</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo stretchy="true" form="prefix">[</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>q</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mtext mathvariant="normal">NAP</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mn>2</mn></msup><mo>,</mo><mspace width="2.0em"></mspace><mtext mathvariant="normal">and</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>Q</mi><mn>3</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mfrac><mn>1</mn><mrow><mi>m</mi><mi>n</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>q</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mtext mathvariant="normal">NAP</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
-Q_1 &amp;= \frac{1}{m n^2} \sum_{i=1}^m \left[\sum_{j=1}^n \left(q_{ij}
-- \text{NAP}\right)\right]^2, \\
-Q_2 &amp;= \frac{1}{m^2 n} \sum_{j=1}^n \left[\sum_{i=1}^m \left(q_{ij}
-- \text{NAP}\right)\right]^2, \qquad \text{and} \\
-Q_3 &amp;= \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n \left(q_{ij} -
-\text{NAP}\right)^2.
+Q_1 &amp;= \frac{1}{m n^2} \sum_{i=1}^m \left[\sum_{j=1}^n \left(q_{ij} - \text{NAP}\right)\right]^2, \\
+Q_2 &amp;= \frac{1}{m^2 n} \sum_{j=1}^n \left[\sum_{i=1}^m \left(q_{ij} - \text{NAP}\right)\right]^2, \qquad \text{and} \\
+Q_3 &amp;= \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n \left(q_{ij} - \text{NAP}\right)^2.
 \end{aligned}
-\]</span></p>
+</annotation></semantics></math></p>
 <p>The SE is then calculated as</p>
-<p><span class="math display">\[
-SE_{\text{unbiased}} = \sqrt{\frac{\text{NAP}(1 - \text{NAP}) + n Q_1 +
-m Q_2 - 2 Q_3}{(m - 1)(n - 1)}}.
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mtext mathvariant="normal">unbiased</mtext></msub><mo>=</mo><msqrt><mfrac><mrow><mtext mathvariant="normal">NAP</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mtext mathvariant="normal">NAP</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>n</mi><msub><mi>Q</mi><mn>1</mn></msub><mo>+</mo><mi>m</mi><msub><mi>Q</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn><msub><mi>Q</mi><mn>3</mn></msub></mrow><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
+SE_{\text{unbiased}} = \sqrt{\frac{\text{NAP}(1 - \text{NAP}) + n Q_1 + m Q_2 - 2 Q_3}{(m - 1)(n - 1)}}.
+</annotation></semantics></math></p>
 <p>Another method for estimating a standard error was introduced by
-<span class="citation">Hanley &amp; McNeil (<a href="#ref-Hanley1982meaning" role="doc-biblioref">1982</a>)</span>.
-This standard error is calculated as</p>
-<p><span class="math display">\[
-SE_{\text{Hanley}} = \sqrt{\frac{1}{mn}\left(\text{NAP}(1 - \text{NAP})
-+ (n - 1)Q_1 + (m - 1)Q_2\right)},
-\]</span></p>
-<p>with <span class="math inline">\(Q_1\)</span> and <span class="math inline">\(Q_2\)</span> defined as above. This standard error
-is based on the same assumptions as the unbiased SE.</p>
-<p>A limitation of <span class="math inline">\(SE_{unbiased}\)</span>
-and <span class="math inline">\(SE_{Hanley}\)</span> is that they will
-be equal to zero when there is complete non-overlap (i.e., when <span class="math inline">\(\text{NAP}\)</span> is equal to zero or equal to
-one). In order to ensure a strictly positive standard error for NAP, the
-SingleCaseES package calculates <span class="math inline">\(SE_{unbiased}\)</span> and <span class="math inline">\(SE_{Hanley}\)</span> using a truncation of NAP.
-Specifically, the formulas are evaluated using</p>
-<p><span class="math display">\[
-\widetilde{\text{NAP}} = \text{max}\left\{\frac{1}{2 mn}, \
-\text{min}\left\{\frac{2mn - 1}{2mn}, \ \text{NAP} \right\} \right\}
-\]</span> in place of <span class="math inline">\(\text{NAP}\)</span>.</p>
+<span class="citation">Hanley &amp; McNeil (<a href="#ref-Hanley1982meaning">1982</a>)</span>. This standard error is
+calculated as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mtext mathvariant="normal">Hanley</mtext></msub><mo>=</mo><msqrt><mrow><mfrac><mn>1</mn><mrow><mi>m</mi><mi>n</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">NAP</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mtext mathvariant="normal">NAP</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>Q</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msqrt><mo>,</mo></mrow><annotation encoding="application/x-tex">
+SE_{\text{Hanley}} = \sqrt{\frac{1}{mn}\left(\text{NAP}(1 - \text{NAP}) + (n - 1)Q_1 + (m - 1)Q_2\right)},
+</annotation></semantics></math></p>
+<p>with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Q</mi><mn>1</mn></msub><annotation encoding="application/x-tex">Q_1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Q</mi><mn>2</mn></msub><annotation encoding="application/x-tex">Q_2</annotation></semantics></math>
+defined as above. This standard error is based on the same assumptions
+as the unbiased SE.</p>
+<p>A limitation of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mrow><mi>u</mi><mi>n</mi><mi>b</mi><mi>i</mi><mi>a</mi><mi>s</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">SE_{unbiased}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mrow><mi>H</mi><mi>a</mi><mi>n</mi><mi>l</mi><mi>e</mi><mi>y</mi></mrow></msub></mrow><annotation encoding="application/x-tex">SE_{Hanley}</annotation></semantics></math>
+is that they will be equal to zero when there is complete non-overlap
+(i.e., when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtext mathvariant="normal">NAP</mtext><annotation encoding="application/x-tex">\text{NAP}</annotation></semantics></math>
+is equal to zero or equal to one). In order to ensure a strictly
+positive standard error for NAP, the SingleCaseES package calculates
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mrow><mi>u</mi><mi>n</mi><mi>b</mi><mi>i</mi><mi>a</mi><mi>s</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">SE_{unbiased}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mrow><mi>H</mi><mi>a</mi><mi>n</mi><mi>l</mi><mi>e</mi><mi>y</mi></mrow></msub></mrow><annotation encoding="application/x-tex">SE_{Hanley}</annotation></semantics></math>
+using a truncation of NAP. Specifically, the formulas are evaluated
+using</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mtext mathvariant="normal">NAP</mtext><mo accent="true">̃</mo></mover><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>m</mi><mi>n</mi></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mtext mathvariant="normal">min</mtext><mrow><mo stretchy="true" form="prefix">{</mo><mfrac><mrow><mn>2</mn><mi>m</mi><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mrow><mn>2</mn><mi>m</mi><mi>n</mi></mrow></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mtext mathvariant="normal">NAP</mtext><mo stretchy="true" form="postfix">}</mo></mrow><mo stretchy="true" form="postfix">}</mo></mrow></mrow><annotation encoding="application/x-tex">
+\widetilde{\text{NAP}} = \text{max}\left\{\frac{1}{2 mn}, \ \text{min}\left\{\frac{2mn - 1}{2mn}, \ \text{NAP} \right\} \right\}
+</annotation></semantics></math> in place of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtext mathvariant="normal">NAP</mtext><annotation encoding="application/x-tex">\text{NAP}</annotation></semantics></math>.</p>
 <p>A final method for estimating a standard error is to work under the
 null hypothesis that there is no effect—i.e., that the data points from
 each phase are sampled from the same distribution. Under the null
-hypothesis, the sampling variance of <span class="math inline">\(\text{NAP}\)</span> depends only on the number of
-observations in each phase:</p>
-<p><span class="math display">\[
+hypothesis, the sampling variance of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtext mathvariant="normal">NAP</mtext><annotation encoding="application/x-tex">\text{NAP}</annotation></semantics></math>
+depends only on the number of observations in each phase:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mtext mathvariant="normal">null</mtext></msub><mo>=</mo><msqrt><mfrac><mrow><mi>m</mi><mo>+</mo><mi>n</mi><mo>+</mo><mn>1</mn></mrow><mrow><mn>12</mn><mi>m</mi><mi>n</mi></mrow></mfrac></msqrt></mrow><annotation encoding="application/x-tex">
 SE_{\text{null}} = \sqrt{\frac{m + n + 1}{12 m n}}
-\]</span> <span class="citation">(cf. <a href="#ref-Grissom2001review" role="doc-biblioref">Grissom &amp; Kim, 2001, p. 141</a>)</span>. If
-null hypothesis is not true—that is, if the observations in phase B are
-drawn from a different distribution than the observations in phase
-A—then this standard error will tend to be too large.</p>
+</annotation></semantics></math><span class="citation">(cf. <a href="#ref-Grissom2001review">Grissom &amp; Kim, 2001, p.
+141</a>)</span>. If null hypothesis is not true—that is, if the
+observations in phase B are drawn from a different distribution than the
+observations in phase A—then this standard error will tend to be too
+large.</p>
 </div>
 <div class="section level4">
 <h4 id="confidence-interval">Confidence interval<a class="anchor" aria-label="anchor" href="#confidence-interval"></a>
 </h4>
-<p>A confidence interval for <span class="math inline">\(\theta\)</span>
-can be calculated using a method proposed by Newcombe [<span class="citation">Newcombe (<a href="#ref-newcombe2006confidence" role="doc-biblioref">2006</a>)</span>; Method 5], which assumes that the
-observations are mutually independent and are identically distributed
-within each phase. Using a confidence level of <span class="math inline">\(100\% \times (1 - \alpha)\)</span>, the endpoints
-of the confidence interval are defined as the values of <span class="math inline">\(\theta\)</span> that satisfy the equality</p>
-<p><span class="math display">\[
-(\text{NAP} - \theta)^2 = \frac{z^2_{\alpha / 2} h \theta (1 -
-\theta)}{mn}\left[\frac{1}{h} + \frac{1 - \theta}{2 - \theta} +
-\frac{\theta}{1 + \theta}\right],
-\]</span></p>
-<p>where <span class="math inline">\(h = (m + n) / 2 - 1\)</span> and
-<span class="math inline">\(z_{\alpha / 2}\)</span> is <span class="math inline">\(1 - \alpha / 2\)</span> critical value from a
-standard normal distribution. This equation is a fourth-degree
-polynomial in <span class="math inline">\(\theta\)</span>, solved using
-a numerical root-finding algorithm.</p>
+<p>A confidence interval for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+can be calculated using a method proposed by Newcombe [<span class="citation">Newcombe (<a href="#ref-newcombe2006confidence">2006</a>)</span>; Method 5], which
+assumes that the observations are mutually independent and are
+identically distributed within each phase. Using a confidence level of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn><mi>%</mi><mo>×</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">100\% \times (1 - \alpha)</annotation></semantics></math>,
+the endpoints of the confidence interval are defined as the values of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+that satisfy the equality</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">NAP</mtext><mo>−</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mrow><msubsup><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow><mn>2</mn></msubsup><mi>h</mi><mi>θ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>m</mi><mi>n</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mn>1</mn><mi>h</mi></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>θ</mi></mrow><mrow><mn>2</mn><mo>−</mo><mi>θ</mi></mrow></mfrac><mo>+</mo><mfrac><mi>θ</mi><mrow><mn>1</mn><mo>+</mo><mi>θ</mi></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+(\text{NAP} - \theta)^2 = \frac{z^2_{\alpha / 2} h \theta (1 - \theta)}{mn}\left[\frac{1}{h} + \frac{1 - \theta}{2 - \theta} + \frac{\theta}{1 + \theta}\right],
+</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mn>2</mn><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">h = (m + n) / 2 - 1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><annotation encoding="application/x-tex">z_{\alpha / 2}</annotation></semantics></math>
+is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">1 - \alpha / 2</annotation></semantics></math>
+critical value from a standard normal distribution. This equation is a
+fourth-degree polynomial in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>,
+solved using a numerical root-finding algorithm.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="pnd">PND<a class="anchor" aria-label="anchor" href="#pnd"></a>
 </h3>
-<p><span class="citation">Scruggs, Mastropieri, &amp; Casto (<a href="#ref-scruggs1987quantitative" role="doc-biblioref">1987</a>)</span> proposed the percentage of
-non-overlapping data (PND) as an effect size index for single-case
-designs. For an outcome where increase is desirable, PND is defined as
-the proportion of observations in the B phase that exceed the highest
-observation from the A phase. For an outcome where decrease is
+<p><span class="citation">Scruggs, Mastropieri, &amp; Casto (<a href="#ref-scruggs1987quantitative">1987</a>)</span> proposed the
+percentage of non-overlapping data (PND) as an effect size index for
+single-case designs. For an outcome where increase is desirable, PND is
+defined as the proportion of observations in the B phase that exceed the
+highest observation from the A phase. For an outcome where decrease is
 desirable, PND is the proportion of observations in the B phase that are
 less than the lowest observation from the A phase.</p>
 <p>This effect size does not have a stable parameter definition because
 the magnitude of the maximum (or minimum) value from phase A depends on
-the number of observations in the phase <span class="citation">(<a href="#ref-allison1994make" role="doc-biblioref">Allison &amp; Gorman,
-1994</a>; <a href="#ref-pustejovsky2018procedural" role="doc-biblioref">Pustejovsky, 2019</a>)</span>.</p>
+the number of observations in the phase <span class="citation">(<a href="#ref-allison1994make">Allison &amp; Gorman, 1994</a>; <a href="#ref-pustejovsky2018procedural">Pustejovsky, 2019</a>)</span>.</p>
 <div class="section level4">
 <h4 id="estimation-1">Estimation<a class="anchor" aria-label="anchor" href="#estimation-1"></a>
 </h4>
 <p>For an outcome where increase is desirable,</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">PND</mtext><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \text{PND} = \frac{1}{n} \sum_{j=1}^n I(y^B_j &gt; y^A_{(m)}),
-\]</span></p>
-<p>where <span class="math inline">\(y^A_{(m)}\)</span> is the maximum
-value of <span class="math inline">\(y^A_1,...,y^A_m\)</span>. For an
-outcome where decrease is desirable,</p>
-<p><span class="math display">\[
+</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><annotation encoding="application/x-tex">y^A_{(m)}</annotation></semantics></math>
+is the maximum value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mn>1</mn><mi>A</mi></msubsup><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msubsup><mi>y</mi><mi>m</mi><mi>A</mi></msubsup></mrow><annotation encoding="application/x-tex">y^A_1,...,y^A_m</annotation></semantics></math>.
+For an outcome where decrease is desirable,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">PND</mtext><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \text{PND} = \frac{1}{n} \sum_{j=1}^n I(y^B_j &lt; y^A_{(1)}),
-\]</span></p>
-<p>where <span class="math inline">\(y^A_{(1)}\)</span> is the minimum
-value of <span class="math inline">\(y^A_1,...,y^A_m\)</span>.</p>
+</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><annotation encoding="application/x-tex">y^A_{(1)}</annotation></semantics></math>
+is the minimum value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mn>1</mn><mi>A</mi></msubsup><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msubsup><mi>y</mi><mi>m</mi><mi>A</mi></msubsup></mrow><annotation encoding="application/x-tex">y^A_1,...,y^A_m</annotation></semantics></math>.</p>
 <p>The sampling distribution of PND has not been described, and so
 standard errors and confidence intervals are not available.</p>
 </div>
@@ -294,38 +339,36 @@ standard errors and confidence intervals are not available.</p>
 <div class="section level3">
 <h3 id="pem">PEM<a class="anchor" aria-label="anchor" href="#pem"></a>
 </h3>
-<p><span class="citation">Ma (<a href="#ref-ma2006alternative" role="doc-biblioref">2006</a>)</span> proposed the percent exceeding the
-median, defined as the proportion of observations in phase B that
-improve upon the median of phase A. <span class="citation">Ma (<a href="#ref-ma2006alternative" role="doc-biblioref">2006</a>)</span> did
-not specify an effect size parameter corresponding to this index.
-However, it would be reasonable to define the parameter as the
-probability that a randomly selected observation from the B phase
-represents an improvement over the median of the distribution of A phase
-outcomes. Let <span class="math inline">\(\eta_A\)</span> denote the
-median of the distribution of outcomes in phase A. For an outcome where
-increase is desirable, the PEM parameter would then be</p>
-<p><span class="math display">\[
-\xi = \text{Pr}\left(Y_B &gt; \eta_A\right) + 0.5 \times
-\text{Pr}\left(Y_B = \eta_A\right).
-\]</span> For an outcome where decrease is desirable, it would be <span class="math display">\[
-\xi = \text{Pr}\left(Y_B &lt; \eta_A\right) + 0.5 \times
-\text{Pr}\left(Y_B = \eta_A\right).
-\]</span></p>
+<p><span class="citation">Ma (<a href="#ref-ma2006alternative">2006</a>)</span> proposed the percent
+exceeding the median, defined as the proportion of observations in phase
+B that improve upon the median of phase A. <span class="citation">Ma (<a href="#ref-ma2006alternative">2006</a>)</span> did not specify an effect
+size parameter corresponding to this index. However, it would be
+reasonable to define the parameter as the probability that a randomly
+selected observation from the B phase represents an improvement over the
+median of the distribution of A phase outcomes. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>η</mi><mi>A</mi></msub><annotation encoding="application/x-tex">\eta_A</annotation></semantics></math>
+denote the median of the distribution of outcomes in phase A. For an
+outcome where increase is desirable, the PEM parameter would then be</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo>=</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Y</mi><mi>B</mi></msub><mo>&gt;</mo><msub><mi>η</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0.5</mn><mo>×</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Y</mi><mi>B</mi></msub><mo>=</mo><msub><mi>η</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\xi = \text{Pr}\left(Y_B &gt; \eta_A\right) + 0.5 \times \text{Pr}\left(Y_B = \eta_A\right).
+</annotation></semantics></math> For an outcome where decrease is
+desirable, it would be
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo>=</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Y</mi><mi>B</mi></msub><mo>&lt;</mo><msub><mi>η</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0.5</mn><mo>×</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Y</mi><mi>B</mi></msub><mo>=</mo><msub><mi>η</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\xi = \text{Pr}\left(Y_B &lt; \eta_A\right) + 0.5 \times \text{Pr}\left(Y_B = \eta_A\right).
+</annotation></semantics></math></p>
 <div class="section level4">
 <h4 id="estimation-2">Estimation<a class="anchor" aria-label="anchor" href="#estimation-2"></a>
 </h4>
 <p>For an outcome where increase is desirable,</p>
-<p><span class="math display">\[
-\text{PEM} = \frac{1}{n}\sum_{j=1}^n \left[ I(y^B_j &gt; m_A) + 0.5
-\times I(y^B_j = m_A) \right],
-\]</span></p>
-<p>where <span class="math inline">\(m_A =
-\text{median}(y^A_1,...,y^A_m)\)</span>. For an outcome where decrease
-is desirable,</p>
-<p><span class="math display">\[
-\text{PEM} = \frac{1}{n}\sum_{j=1}^n \left[ I(y^B_j &lt; y^A_{(1)}) +
-0.5 \times I(y^B_j = m_A) \right].
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">PEM</mtext><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="true" form="prefix">[</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&gt;</mo><msub><mi>m</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0.5</mn><mo>×</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>=</mo><msub><mi>m</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\text{PEM} = \frac{1}{n}\sum_{j=1}^n \left[ I(y^B_j &gt; m_A) + 0.5 \times I(y^B_j = m_A) \right],
+</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mi>A</mi></msub><mo>=</mo><mtext mathvariant="normal">median</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mn>1</mn><mi>A</mi></msubsup><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msubsup><mi>y</mi><mi>m</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">m_A = \text{median}(y^A_1,...,y^A_m)</annotation></semantics></math>.
+For an outcome where decrease is desirable,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">PEM</mtext><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="true" form="prefix">[</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0.5</mn><mo>×</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>=</mo><msub><mi>m</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\text{PEM} = \frac{1}{n}\sum_{j=1}^n \left[ I(y^B_j &lt; y^A_{(1)}) + 0.5 \times I(y^B_j = m_A) \right].
+</annotation></semantics></math></p>
 <p>The sampling distribution of PEM has not been described, and so
 standard errors and confidence intervals are not available.</p>
 </div>
@@ -333,38 +376,41 @@ standard errors and confidence intervals are not available.</p>
 <div class="section level3">
 <h3 id="pand">PAND<a class="anchor" aria-label="anchor" href="#pand"></a>
 </h3>
-<p>For an outcome where increase (decrease) is desirable, <span class="citation">Parker, Vannest, &amp; Davis (<a href="#ref-parker2011effect" role="doc-biblioref">2011</a>)</span>
-defined PAND as the proportion of observations remaining after removing
-the fewest possible number of observations from either phase so that the
-highest remaining point from the baseline phase is less than the lowest
-remaining point from the treatment phase (lowest remaining point from
-the baseline phase is larger than the highest remaining point from the
-treatment phase).</p>
+<p>For an outcome where increase (decrease) is desirable, <span class="citation">Parker, Vannest, &amp; Davis (<a href="#ref-parker2011effect">2011</a>)</span> defined PAND as the
+proportion of observations remaining after removing the fewest possible
+number of observations from either phase so that the highest remaining
+point from the baseline phase is less than the lowest remaining point
+from the treatment phase (lowest remaining point from the baseline phase
+is larger than the highest remaining point from the treatment
+phase).</p>
 <p>This effect size does not have a stable parameter definition because
-its magnitude depends on the number of observations in each phase <span class="citation">(<a href="#ref-pustejovsky2018procedural" role="doc-biblioref">Pustejovsky, 2019</a>)</span>.</p>
+its magnitude depends on the number of observations in each phase <span class="citation">(<a href="#ref-pustejovsky2018procedural">Pustejovsky,
+2019</a>)</span>.</p>
 <div class="section level4">
 <h4 id="estimation-3">Estimation<a class="anchor" aria-label="anchor" href="#estimation-3"></a>
 </h4>
 <p>For an outcome where increase is desirable, PAND is calculated as</p>
-<p><span class="math display">\[
-\text{PAND} = \frac{1}{m + n} \max \left\{\left(i + j\right)
-I\left(y^A_{(i)} &lt; y^B_{(n + 1 - j)}\right)\right\},
-\]</span></p>
-<p>where <span class="math inline">\(y^A_{(0)} = - \infty\)</span>,
-<span class="math inline">\(y^B_{(n + 1)} = \infty\)</span>, and the
-maximum is taken over the values <span class="math inline">\(0 \leq i
-\leq m\)</span> and <span class="math inline">\(0 \leq j \leq
-n\)</span>. For an outcome where decrease is desirable, PAND is
-calculated as</p>
-<p><span class="math display">\[
-\text{PAND} = \frac{1}{m + n} \max \left\{\left(i + j\right)
-I\left(y^A_{(m + 1 - i)} &gt; y^B_{(j)}\right)\right\},
-\]</span></p>
-<p>where <span class="math inline">\(y^A_{(m + 1)} = \infty\)</span>,
-<span class="math inline">\(y^B_{(0)} = -\infty\)</span>, and the
-maximum is taken over the values <span class="math inline">\(0 \leq i
-\leq m\)</span> and <span class="math inline">\(0 \leq j \leq
-n\)</span>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">PAND</mtext><mo>=</mo><mfrac><mn>1</mn><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></mfrac><mo>max</mo><mrow><mo stretchy="true" form="prefix">{</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo>+</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>−</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">}</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\text{PAND} = \frac{1}{m + n} \max \left\{\left(i + j\right) I\left(y^A_{(i)} &lt; y^B_{(n + 1 - j)}\right)\right\},
+</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>=</mo><mo>−</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">y^A_{(0)} = - \infty</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo>=</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">y^B_{(n + 1)} = \infty</annotation></semantics></math>,
+and the maximum is taken over the values
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">0 \leq i \leq m</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>j</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">0 \leq j \leq n</annotation></semantics></math>.
+For an outcome where decrease is desirable, PAND is calculated as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">PAND</mtext><mo>=</mo><mfrac><mn>1</mn><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></mfrac><mo>max</mo><mrow><mo stretchy="true" form="prefix">{</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo>+</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>−</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">}</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\text{PAND} = \frac{1}{m + n} \max \left\{\left(i + j\right) I\left(y^A_{(m + 1 - i)} &gt; y^B_{(j)}\right)\right\},
+</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>=</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">y^A_{(m + 1)} = \infty</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo>=</mo><mo>−</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">y^B_{(0)} = -\infty</annotation></semantics></math>,
+and the maximum is taken over the values
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">0 \leq i \leq m</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>j</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">0 \leq j \leq n</annotation></semantics></math>.</p>
 <p>The sampling distribution of PAND has not been described, and so
 standard errors and confidence intervals are not available.</p>
 </div>
@@ -373,83 +419,90 @@ standard errors and confidence intervals are not available.</p>
 <h3 id="ird">IRD<a class="anchor" aria-label="anchor" href="#ird"></a>
 </h3>
 <p>The robust improvement rate difference is defined as the robust phi
-coefficient corresponding to a certain <span class="math inline">\(2
-\times 2\)</span> table that is a function of the degree of overlap
-between the observations each phase <span class="citation">(<a href="#ref-parker2011effect" role="doc-biblioref">Parker, Vannest, &amp;
-Davis, 2011</a>)</span>. This effect size does not have a stable
-parameter definition because its magnitude depends on the number of
-observations in each phase <span class="citation">(<a href="#ref-pustejovsky2018procedural" role="doc-biblioref">Pustejovsky,
-2019</a>)</span>.</p>
+coefficient corresponding to a certain
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2 \times 2</annotation></semantics></math>
+table that is a function of the degree of overlap between the
+observations each phase <span class="citation">(<a href="#ref-parker2011effect">Parker, Vannest, &amp; Davis,
+2011</a>)</span>. This effect size does not have a stable parameter
+definition because its magnitude depends on the number of observations
+in each phase <span class="citation">(<a href="#ref-pustejovsky2018procedural">Pustejovsky, 2019</a>)</span>.</p>
 <div class="section level4">
 <h4 id="estimation-4">Estimation<a class="anchor" aria-label="anchor" href="#estimation-4"></a>
 </h4>
-<p>For notational convenience, let <span class="math inline">\(y^A_{(0)}
-= y^B_{(0)} = -\infty\)</span> and <span class="math inline">\(y^A_{(m +
-1)} = y^B_{(n + 1)} = \infty\)</span>. For an outcome where increase is
-desirable, let <span class="math inline">\(\tilde{i}\)</span> and <span class="math inline">\(\tilde{j}\)</span> denote the values that maximize
-the quantity</p>
-<p><span class="math display">\[
+<p>For notational convenience, let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>=</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo>=</mo><mo>−</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">y^A_{(0)} = y^B_{(0)} = -\infty</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>=</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo>=</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">y^A_{(m + 1)} = y^B_{(n + 1)} = \infty</annotation></semantics></math>.
+For an outcome where increase is desirable, let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>i</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde{i}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>j</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde{j}</annotation></semantics></math>
+denote the values that maximize the quantity</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo>+</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>−</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \left(i + j\right) I\left(y^A_{(i)} &lt; y^B_{(n + 1 - j)}\right)
-\]</span> for <span class="math inline">\(0 \leq i \leq m\)</span> and
-<span class="math inline">\(0 \leq j \leq n\)</span>. For an outcome
-where decrease is desirable, let <span class="math inline">\(\tilde{i}\)</span> and <span class="math inline">\(\tilde{j}\)</span> instead denote the values that
-maximize the quantity</p>
-<p><span class="math display">\[
+</annotation></semantics></math> for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">0 \leq i \leq m</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>j</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">0 \leq j \leq n</annotation></semantics></math>.
+For an outcome where decrease is desirable, let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>i</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde{i}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>j</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde{j}</annotation></semantics></math>
+instead denote the values that maximize the quantity</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo>+</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>−</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \left(i + j\right) I\left(y^A_{(m + 1 - i)} &gt; y^B_{(j)}\right).
-\]</span></p>
-<p>Now calculate the <span class="math inline">\(2 \times 2\)</span>
+</annotation></semantics></math></p>
+<p>Now calculate the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2 \times 2</annotation></semantics></math>
 table</p>
-<p><span class="math display">\[
+<p><span class="math display">$$
 \begin{array}{|c|c|} \hline
 m - \tilde{i} &amp; \tilde{j} \\ \hline
 \tilde{i} &amp; n - \tilde{j} \\ \hline
 \end{array}
-\]</span></p>
-<p><span class="citation">Parker, Vannest, &amp; Brown (<a href="#ref-parker2009improvement" role="doc-biblioref">2009</a>)</span>
-proposed the <em>non-robust</em> improvement rate difference, which is
-equivalent to the phi coefficient from this table. <span class="citation">Parker, Vannest, &amp; Davis (<a href="#ref-parker2011effect" role="doc-biblioref">2011</a>)</span>
+$$</span></p>
+<p><span class="citation">Parker, Vannest, &amp; Brown (<a href="#ref-parker2009improvement">2009</a>)</span> proposed the
+<em>non-robust</em> improvement rate difference, which is equivalent to
+the phi coefficient from this table. <span class="citation">Parker,
+Vannest, &amp; Davis (<a href="#ref-parker2011effect">2011</a>)</span>
 proposed to instead use the <em>robust</em> phi coefficient, which
 involves modifying the table so that the row- and column-margins are
 equal. Robust IRD is thus equal to</p>
-<p><span class="math display">\[
-\text{IRD} = \frac{n - m - \tilde{i} - \tilde{j}}{2 n} - \frac{m + n -
-\tilde{i} - \tilde{j}}{2 m}.
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">IRD</mtext><mo>=</mo><mfrac><mrow><mi>n</mi><mo>−</mo><mi>m</mi><mo>−</mo><mover><mi>i</mi><mo accent="true">̃</mo></mover><mo>−</mo><mover><mi>j</mi><mo accent="true">̃</mo></mover></mrow><mrow><mn>2</mn><mi>n</mi></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>m</mi><mo>+</mo><mi>n</mi><mo>−</mo><mover><mi>i</mi><mo accent="true">̃</mo></mover><mo>−</mo><mover><mi>j</mi><mo accent="true">̃</mo></mover></mrow><mrow><mn>2</mn><mi>m</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\text{IRD} = \frac{n - m - \tilde{i} - \tilde{j}}{2 n} - \frac{m + n - \tilde{i} - \tilde{j}}{2 m}.
+</annotation></semantics></math></p>
 <p>Robust IRD is algebraically related to PAND as</p>
-<p><span class="math display">\[
-\text{IRD} = 1 - \frac{(m + n)^2}{2mn}\left(1 - \text{PAND}\right).
-\]</span> Just as with PAND, the sampling distribution of robust IRD has
-not been described, and so standard errors and confidence intervals are
-not available.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">IRD</mtext><mo>=</mo><mn>1</mn><mo>−</mo><mfrac><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mrow><mn>2</mn><mi>m</mi><mi>n</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mtext mathvariant="normal">PAND</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\text{IRD} = 1 - \frac{(m + n)^2}{2mn}\left(1 - \text{PAND}\right). 
+</annotation></semantics></math> Just as with PAND, the sampling
+distribution of robust IRD has not been described, and so standard
+errors and confidence intervals are not available.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="tau">Tau<a class="anchor" aria-label="anchor" href="#tau"></a>
 </h3>
-<p>Tau is one of several effect sizes proposed by <span class="citation">Parker, Vannest, Davis, &amp; Sauber (<a href="#ref-parker2011combining" role="doc-biblioref">2011</a>)</span>
-and known collectively as “Tau-U.” The basic estimator Tau does not make
-any adjustments for time trends. For an outcome where increase is
-desirable, the effect size parameter is</p>
-<p><span class="math display">\[\tau = \text{Pr}(Y^B &gt; Y^A) -
-\text{Pr}(Y^B &lt; Y^A)\]</span></p>
+<p>Tau is one of several effect sizes proposed by <span class="citation">Parker, Vannest, Davis, &amp; Sauber (<a href="#ref-parker2011combining">2011</a>)</span> and known collectively
+as “Tau-U.” The basic estimator Tau does not make any adjustments for
+time trends. For an outcome where increase is desirable, the effect size
+parameter is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>=</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>Y</mi><mi>B</mi></msup><mo>&gt;</mo><msup><mi>Y</mi><mi>A</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>Y</mi><mi>B</mi></msup><mo>&lt;</mo><msup><mi>Y</mi><mi>A</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\tau = \text{Pr}(Y^B &gt; Y^A) - \text{Pr}(Y^B &lt; Y^A)</annotation></semantics></math></p>
 <p>(for an outcome where decrease is desirable, the effect size
 parameter would have the opposite sign). This parameter is a simple
-linear transformation of the NAP parameter <span class="math inline">\(\theta\)</span>:</p>
-<p><span class="math display">\[\tau = 2 \theta - 1.\]</span></p>
+linear transformation of the NAP parameter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>=</mo><mn>2</mn><mi>θ</mi><mo>−</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">\tau = 2 \theta - 1.</annotation></semantics></math></p>
 <div class="section level4">
 <h4 id="estimation-5">Estimation<a class="anchor" aria-label="anchor" href="#estimation-5"></a>
 </h4>
 <p>For an outcome where increase is desirable, calculate</p>
-<p><span class="math display">\[w_{ij} = I(y^B_j &gt; y^A_i) - I(y^B_j
-&lt; y^A_i)\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">w_{ij} = I(y^B_j &gt; y^A_i) - I(y^B_j &lt; y^A_i)</annotation></semantics></math></p>
 <p>For an outcome where decrease is desirable, one would instead use</p>
-<p><span class="math display">\[w_{ij} = I(y^B_j &lt; y^A_i) - I(y^B_j
-&gt; y^A_i).\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">w_{ij} = I(y^B_j &lt; y^A_i) - I(y^B_j &gt; y^A_i).</annotation></semantics></math></p>
 <p>The Tau effect size index is then calculated as</p>
-<p><span class="math display">\[
-\text{Tau} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w_{ij} = 2 \times
-\text{NAP} - 1.
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Tau</mtext><mo>=</mo><mfrac><mn>1</mn><mrow><mi>m</mi><mi>n</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>2</mn><mo>×</mo><mtext mathvariant="normal">NAP</mtext><mo>−</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\text{Tau} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w_{ij} = 2 \times \text{NAP} - 1.
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="standard-errors-1">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-1"></a>
@@ -458,55 +511,63 @@ linear transformation of the NAP parameter <span class="math inline">\(\theta\)<
 transformations of the corresponding SEs and CIs for NAP. All of the
 methods assume that the observations are mutually independent and are
 identically distributed within each phase.</p>
-<p>Standard errors for Tau are calculated as <span class="math inline">\(SE_{\text{Tau}} = 2 SE_{\text{NAP}}\)</span>,
-where <span class="math inline">\(SE_{\text{NAP}}\)</span> is the
-standard error for NAP calculated based on one of the available methods
-(unbiased, Hanley, or null).</p>
+<p>Standard errors for Tau are calculated as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mtext mathvariant="normal">Tau</mtext></msub><mo>=</mo><mn>2</mn><mi>S</mi><msub><mi>E</mi><mtext mathvariant="normal">NAP</mtext></msub></mrow><annotation encoding="application/x-tex">SE_{\text{Tau}} = 2 SE_{\text{NAP}}</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mtext mathvariant="normal">NAP</mtext></msub></mrow><annotation encoding="application/x-tex">SE_{\text{NAP}}</annotation></semantics></math>
+is the standard error for NAP calculated based on one of the available
+methods (unbiased, Hanley, or null).</p>
 </div>
 <div class="section level4">
 <h4 id="confidence-intervals">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals"></a>
 </h4>
-<p>The CI for <span class="math inline">\(\tau\)</span> is calculated
-as</p>
-<p><span class="math display">\[
+<p>The CI for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>
+is calculated as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>L</mi><mi>τ</mi></msub><mo>,</mo><msub><mi>U</mi><mi>τ</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mn>2</mn><msub><mi>L</mi><mi>θ</mi></msub><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn><msub><mi>U</mi><mi>θ</mi></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
 [L_{\tau}, U_{\tau}] = [2 L_{\theta} - 1, 2 U_{\theta} - 1],
-\]</span></p>
-<p>where <span class="math inline">\(L_{\theta}\)</span> and <span class="math inline">\(U_{\theta}\)</span> are the lower and upper bounds
-of the CI for <span class="math inline">\(\theta\)</span>, calculated
-using a method proposed by <span class="citation">Newcombe (<a href="#ref-newcombe2006confidence" role="doc-biblioref">2006</a>)</span>.</p>
+</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>θ</mi></msub><annotation encoding="application/x-tex">L_{\theta}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>U</mi><mi>θ</mi></msub><annotation encoding="application/x-tex">U_{\theta}</annotation></semantics></math>
+are the lower and upper bounds of the CI for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>,
+calculated using a method proposed by <span class="citation">Newcombe
+(<a href="#ref-newcombe2006confidence">2006</a>)</span>.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="tau-u">Tau-U<a class="anchor" aria-label="anchor" href="#tau-u"></a>
 </h3>
-<p>Tau-U is one of several effect sizes proposed by <span class="citation">Parker, Vannest, Davis, &amp; Sauber (<a href="#ref-parker2011combining" role="doc-biblioref">2011</a>)</span>.
-The Tau-U variant is similar to Tau, but includes an adjustment term
-that is a function of the baseline time trend. For an outcome where
-increase is desirable, the index is calculated as Kendall’s <span class="math inline">\(S\)</span> statistic for the comparison between
-the phase B data and the phase A data, plus Kendall’s <span class="math inline">\(S\)</span> statistic for the A phase observations,
-scaled by the product of the number of observations in each phase.</p>
+<p>Tau-U is one of several effect sizes proposed by <span class="citation">Parker, Vannest, Davis, &amp; Sauber (<a href="#ref-parker2011combining">2011</a>)</span>. The Tau-U variant is
+similar to Tau, but includes an adjustment term that is a function of
+the baseline time trend. For an outcome where increase is desirable, the
+index is calculated as Kendall’s
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+statistic for the comparison between the phase B data and the phase A
+data, plus Kendall’s
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+statistic for the A phase observations, scaled by the product of the
+number of observations in each phase.</p>
 <p>This effect size does not have a stable parameter definition and its
-feasible range depends on the number of observations in each phase <span class="citation">(<a href="#ref-tarlow2017improved" role="doc-biblioref">Tarlow, 2017</a>)</span>.</p>
+feasible range depends on the number of observations in each phase <span class="citation">(<a href="#ref-tarlow2017improved">Tarlow,
+2017</a>)</span>.</p>
 <div class="section level4">
 <h4 id="estimation-6">Estimation<a class="anchor" aria-label="anchor" href="#estimation-6"></a>
 </h4>
 <p>For an outcome where increase is desirable, calculate</p>
-<p><span class="math display">\[w^{AB}_{ij} = I(y^B_j &gt; y^A_i) -
-I(y^B_j &lt; y^A_i)\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mi>A</mi><mi>B</mi></mrow></msubsup><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">w^{AB}_{ij} = I(y^B_j &gt; y^A_i) - I(y^B_j &lt; y^A_i)</annotation></semantics></math></p>
 <p>and</p>
-<p><span class="math display">\[w^{AA}_{ij} = I(y^A_j &gt; y^A_i) -
-I(y^A_j &lt; y^A_i)\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mi>A</mi><mi>A</mi></mrow></msubsup><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>A</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>A</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">w^{AA}_{ij} = I(y^A_j &gt; y^A_i) - I(y^A_j &lt; y^A_i)</annotation></semantics></math></p>
 <p>For an outcome where decrease is desirable, one would instead use</p>
-<p><span class="math display">\[w^{AB}_{ij} = I(y^B_j &lt; y^A_i) -
-I(y^B_j &gt; y^A_i)\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mi>A</mi><mi>B</mi></mrow></msubsup><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">w^{AB}_{ij} = I(y^B_j &lt; y^A_i) - I(y^B_j &gt; y^A_i)</annotation></semantics></math></p>
 <p>and</p>
-<p><span class="math display">\[w^{AA}_{ij} = I(y^A_j &lt; y^A_i) -
-I(y^A_j &gt; y^A_i).\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mi>A</mi><mi>A</mi></mrow></msubsup><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>A</mi></msubsup><mo>&lt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mi>A</mi></msubsup><mo>&gt;</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">w^{AA}_{ij} = I(y^A_j &lt; y^A_i) - I(y^A_j &gt; y^A_i).</annotation></semantics></math></p>
 <p>The Tau-U effect size index is then calculated as</p>
-<p><span class="math display">\[
-\text{Tau-U} = \frac{1}{m n} \left(\sum_{i=1}^m \sum_{j=1}^n w^{AB}_{ij}
-- \sum_{i=1}^{m - 1} \sum_{j=i + 1}^m w^{AA}_{ij}\right).
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Tau-U</mtext><mo>=</mo><mfrac><mn>1</mn><mrow><mi>m</mi><mi>n</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mi>A</mi><mi>B</mi></mrow></msubsup><mo>−</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mi>m</mi></munderover><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mi>A</mi><mi>A</mi></mrow></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\text{Tau-U} = \frac{1}{m n} \left(\sum_{i=1}^m \sum_{j=1}^n w^{AB}_{ij} - \sum_{i=1}^{m - 1} \sum_{j=i + 1}^m w^{AA}_{ij}\right). 
+</annotation></semantics></math></p>
 <p>The sampling distribution of Tau-U has not been described, and so
 standard errors and confidence intervals are not available.</p>
 </div>
@@ -514,12 +575,12 @@ standard errors and confidence intervals are not available.</p>
 <div class="section level3">
 <h3 id="tau-bc">Tau-BC<a class="anchor" aria-label="anchor" href="#tau-bc"></a>
 </h3>
-<p><span class="citation">Tarlow (<a href="#ref-tarlow2017improved" role="doc-biblioref">2017</a>)</span> proposed to modify the Tau effect
-size index by first adjusting the observations for a linear trend in the
-A phase. The index can be calculated with or without conducting a
-pre-test for significance of the A phase time trend. We provide two
-approaches to calculate Tau no matter whether the baseline trend is
-significant or not. The first approach is using Kendall’s rank
+<p><span class="citation">Tarlow (<a href="#ref-tarlow2017improved">2017</a>)</span> proposed to modify the
+Tau effect size index by first adjusting the observations for a linear
+trend in the A phase. The index can be calculated with or without
+conducting a pre-test for significance of the A phase time trend. We
+provide two approaches to calculate Tau no matter whether the baseline
+trend is significant or not. The first approach is using Kendall’s rank
 correlation (with adjustment for ties), as used in Tarlow (2017). The
 second one is using Tau (non-overlap) index (without adjustment for
 ties).</p>
@@ -540,126 +601,168 @@ correlation or Tau (non-overlap) index.</p>
 <p>The formal definition of Tau-BC require positing a model for the time
 trend in the data series. Thus, suppose that the outcomes can be
 expressed in terms of a linear time trend and an error term:</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mi>α</mi><mo>+</mo><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msubsup><mi>ϵ</mi><mi>i</mi><mi>A</mi></msubsup><mo>,</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">for</mtext><mspace width="1.0em"></mspace><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>m</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mi>α</mi><mo>+</mo><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msubsup><mi>ϵ</mi><mi>j</mi><mi>B</mi></msubsup><mspace width="1.0em"></mspace><mtext mathvariant="normal">for</mtext><mspace width="1.0em"></mspace><mi>j</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>n</mi><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
-y_i^A &amp;= \alpha + \beta (i) + \epsilon_i^A, \quad \text{for} \quad i
-= 1,...,m \\
-y_j^B &amp;= \alpha + \beta (m + j) + \epsilon_j^B \quad \text{for}
-\quad j = 1,...,n.
+y_i^A &amp;= \alpha + \beta (i) + \epsilon_i^A, \quad \text{for} \quad i = 1,...,m \\
+y_j^B &amp;= \alpha + \beta (m + j) + \epsilon_j^B \quad \text{for} \quad j = 1,...,n.
 \end{aligned}
-\]</span> Within each phase, assume that the error terms are independent
-and share a common distribution. The Tau-BC parameter can then be
-defined as the Tau parameter for the distribution of the error terms,
-or</p>
-<p><span class="math display">\[
-\tau_{BC} = \text{Pr}(\epsilon^B &gt; \epsilon^A) - \text{Pr}(\epsilon^B
-&lt; \epsilon^A).
-\]</span> An equivalent definition in terms of the outcome distributions
-is</p>
-<p><span class="math display">\[
-\tau_{BC} = \text{Pr}\left[Y_j^B - \beta (m + j - i) &gt; Y_i^A \right]
-- \text{Pr}\left[Y_j^B - \beta (m + j - i) &lt; Y_i^A\right]
-\]</span> for <span class="math inline">\(i=1,...,m\)</span> and <span class="math inline">\(j = 1,...,n\)</span>.</p>
+</annotation></semantics></math> Within each phase, assume that the
+error terms are independent and share a common distribution. The Tau-BC
+parameter can then be defined as the Tau parameter for the distribution
+of the error terms, or</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mrow><mi>B</mi><mi>C</mi></mrow></msub><mo>=</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>ϵ</mi><mi>B</mi></msup><mo>&gt;</mo><msup><mi>ϵ</mi><mi>A</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>ϵ</mi><mi>B</mi></msup><mo>&lt;</mo><msup><mi>ϵ</mi><mi>A</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\tau_{BC} = \text{Pr}(\epsilon^B &gt; \epsilon^A) - \text{Pr}(\epsilon^B &lt; \epsilon^A).
+</annotation></semantics></math> An equivalent definition in terms of
+the outcome distributions is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mrow><mi>B</mi><mi>C</mi></mrow></msub><mo>=</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">[</mo><msubsup><mi>Y</mi><mi>j</mi><mi>B</mi></msubsup><mo>−</mo><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>j</mi><mo>−</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&gt;</mo><msubsup><mi>Y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">]</mo></mrow><mo>−</mo><mtext mathvariant="normal">Pr</mtext><mrow><mo stretchy="true" form="prefix">[</mo><msubsup><mi>Y</mi><mi>j</mi><mi>B</mi></msubsup><mo>−</mo><mi>β</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>j</mi><mo>−</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><msubsup><mi>Y</mi><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+\tau_{BC} = \text{Pr}\left[Y_j^B - \beta (m + j - i) &gt; Y_i^A \right] - \text{Pr}\left[Y_j^B - \beta (m + j - i) &lt; Y_i^A\right]
+</annotation></semantics></math> for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">i=1,...,m</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">j = 1,...,n</annotation></semantics></math>.</p>
 <div class="section level4">
 <h4 id="estimation-7">Estimation<a class="anchor" aria-label="anchor" href="#estimation-7"></a>
 </h4>
-<p>Estimation of <span class="math inline">\(\tau_{BC}\)</span> entails
-correcting the data series for the baseline slope <span class="math inline">\(\beta\)</span>. If using the baseline trend
-pre-test, the null hypothesis of <span class="math inline">\(H_0: \beta
-= 0\)</span> is first tested using Kendall’s rank correlation. If the
-test is not significant, then set <span class="math inline">\(\hat\beta
-= 0\)</span> and <span class="math inline">\(\hat\alpha = 0\)</span>. If
-the test is significant or if the pre-test for baseline time trend is
+<p>Estimation of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mrow><mi>B</mi><mi>C</mi></mrow></msub><annotation encoding="application/x-tex">\tau_{BC}</annotation></semantics></math>
+entails correcting the data series for the baseline slope
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>.
+If using the baseline trend pre-test, the null hypothesis of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mi>β</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0: \beta = 0</annotation></semantics></math>
+is first tested using Kendall’s rank correlation. If the test is not
+significant, then set
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>β</mi><mo accent="true">̂</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat\beta = 0</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>α</mi><mo accent="true">̂</mo></mover><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\hat\alpha = 0</annotation></semantics></math>.
+If the test is significant or if the pre-test for baseline time trend is
 not used, then the slope is estimated by Theil-Sen regression.
 Specifically, we calculate the slope between every pair of observations
-in the A phase: <span class="math display">\[
+in the A phase:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mrow><mi>h</mi><mi>i</mi></mrow></msub><mo>=</mo><mfrac><mrow><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo>−</mo><msubsup><mi>y</mi><mi>h</mi><mi>A</mi></msubsup></mrow><mrow><mi>i</mi><mo>−</mo><mi>h</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 s_{hi} = \frac{y_i^A - y_h^A}{i - h}
-\]</span> for <span class="math inline">\(i = 1,...,m - 1\)</span> and
-<span class="math inline">\(h = i+1,...,m\)</span>. The overall slope
-estimate is taken to be the median over all <span class="math inline">\(m(m - 1) / 2\)</span> slope pairs:</p>
-<p><span class="math display">\[
+</annotation></semantics></math> for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>m</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i = 1,...,m - 1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">h = i+1,...,m</annotation></semantics></math>.
+The overall slope estimate is taken to be the median over all
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">m(m - 1) / 2</annotation></semantics></math>
+slope pairs:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>β</mi><mo accent="true">̂</mo></mover><mo>=</mo><mtext mathvariant="normal">median</mtext><mrow><mo stretchy="true" form="prefix">{</mo><msub><mi>s</mi><mn>12</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>s</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>m</mi></mrow></msub><mo stretchy="true" form="postfix">}</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \hat\beta = \text{median}\left\{s_{12},...,s_{(m-1)m}\right\}.
-\]</span> The intercept term is estimated by taking the median
-observation in the A phase after correcting for the estimated linear
-time trend:</p>
-<p><span class="math display">\[
-\hat\alpha = \text{median}\left\{y_1^A - \hat\beta \times 1, \ y_2^A -
-\hat\beta \times 2, ..., \ y_m^A - \hat\beta \times m\right\}.
-\]</span> However, the intercept estimate is irrelevant for purposes of
-estimating Tau-BC because the Tau estimator is a function of ranks and
-is invariant to a linear shift of the data series.</p>
-<p>After estimating the phase A time trend, <span class="math inline">\(\tau_{BC}\)</span> is estimated by de-trending the
-full data series and calculating Kendall’s rank correlation or Tau
-(non-overlap) on the de-trended observations. Specifically, set <span class="math inline">\(\hat\epsilon_i^A = y_i^A - \hat\beta (i) -
-\hat\alpha\)</span> for <span class="math inline">\(i = 1,...,m\)</span>
-and <span class="math inline">\(\hat\epsilon_j^B = y_j^B - \hat\beta (m
-+ j) - \hat\alpha\)</span>. For an outcome where increase is desirable,
-calculate <span class="math display">\[w^\epsilon_{ij} =
-I\left(\hat\epsilon^B_j &gt; \hat\epsilon^A_i\right) -
-I\left(\hat\epsilon^B_j &lt; \hat\epsilon^A_i\right)\]</span></p>
-<p>or, for an outcome where decrease is desirable, calculate <span class="math display">\[w^\epsilon_{ij} = I\left(\hat\epsilon^B_j &lt;
-\hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j &gt;
-\hat\epsilon^A_i\right).\]</span></p>
-<p>Tau-BC (non-overlap) is then estimated by <span class="math display">\[
-\text{Tau}_{BC} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n
-w^\epsilon_{ij}.
-\]</span></p>
+</annotation></semantics></math> The intercept term is estimated by
+taking the median observation in the A phase after correcting for the
+estimated linear time trend:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>α</mi><mo accent="true">̂</mo></mover><mo>=</mo><mtext mathvariant="normal">median</mtext><mrow><mo stretchy="true" form="prefix">{</mo><msubsup><mi>y</mi><mn>1</mn><mi>A</mi></msubsup><mo>−</mo><mover><mi>β</mi><mo accent="true">̂</mo></mover><mo>×</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><msubsup><mi>y</mi><mn>2</mn><mi>A</mi></msubsup><mo>−</mo><mover><mi>β</mi><mo accent="true">̂</mo></mover><mo>×</mo><mn>2</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mspace width="0.222em"></mspace><msubsup><mi>y</mi><mi>m</mi><mi>A</mi></msubsup><mo>−</mo><mover><mi>β</mi><mo accent="true">̂</mo></mover><mo>×</mo><mi>m</mi><mo stretchy="true" form="postfix">}</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\hat\alpha = \text{median}\left\{y_1^A - \hat\beta \times 1, \ y_2^A - \hat\beta \times 2, ..., \ y_m^A - \hat\beta \times m\right\}.
+</annotation></semantics></math> However, the intercept estimate is
+irrelevant for purposes of estimating Tau-BC because the Tau estimator
+is a function of ranks and is invariant to a linear shift of the data
+series.</p>
+<p>After estimating the phase A time trend,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mrow><mi>B</mi><mi>C</mi></mrow></msub><annotation encoding="application/x-tex">\tau_{BC}</annotation></semantics></math>
+is estimated by de-trending the full data series and calculating
+Kendall’s rank correlation or Tau (non-overlap) on the de-trended
+observations. Specifically, set
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>i</mi><mi>A</mi></msubsup><mo>=</mo><msubsup><mi>y</mi><mi>i</mi><mi>A</mi></msubsup><mo>−</mo><mover><mi>β</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mover><mi>α</mi><mo accent="true">̂</mo></mover></mrow><annotation encoding="application/x-tex">\hat\epsilon_i^A = y_i^A - \hat\beta (i) - \hat\alpha</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">i = 1,...,m</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>j</mi><mi>B</mi></msubsup><mo>=</mo><msubsup><mi>y</mi><mi>j</mi><mi>B</mi></msubsup><mo>−</mo><mover><mi>β</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mover><mi>α</mi><mo accent="true">̂</mo></mover></mrow><annotation encoding="application/x-tex">\hat\epsilon_j^B = y_j^B - \hat\beta (m + j) - \hat\alpha</annotation></semantics></math>.
+For an outcome where increase is desirable, calculate
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>ϵ</mi></msubsup><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>j</mi><mi>B</mi></msubsup><mo>&gt;</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>j</mi><mi>B</mi></msubsup><mo>&lt;</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">w^\epsilon_{ij} = I\left(\hat\epsilon^B_j &gt; \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j &lt; \hat\epsilon^A_i\right)</annotation></semantics></math></p>
+<p>or, for an outcome where decrease is desirable, calculate
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>ϵ</mi></msubsup><mo>=</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>j</mi><mi>B</mi></msubsup><mo>&lt;</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>j</mi><mi>B</mi></msubsup><mo>&gt;</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>i</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">w^\epsilon_{ij} = I\left(\hat\epsilon^B_j &lt; \hat\epsilon^A_i\right) - I\left(\hat\epsilon^B_j &gt; \hat\epsilon^A_i\right).</annotation></semantics></math></p>
+<p>Tau-BC (non-overlap) is then estimated by
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mi>m</mi><mi>n</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>ϵ</mi></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\text{Tau}_{BC} = \frac{1}{m n} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij}.
+</annotation></semantics></math></p>
 <p>If calculated with Kendall’s rank correlation, Tau-BC is estimated as
-the rank correlation between <span class="math inline">\(\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m,
-\hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}\)</span> and a dummy
-coded variable <span class="math inline">\(\left\{0_1,\dots,0_m,
-1_1,\dots,1_n \right\}\)</span>, with an adjustment for ties <span class="citation">(<a href="#ref-kendall1970rank" role="doc-biblioref">Kendall, 1970, p. 35</a>)</span>. Specifically,</p>
-<p><span class="math display">\[
-\text{Tau}_{BC}^* = \frac{1}{D} \sum_{i=1}^m \sum_{j=1}^n
-w^\epsilon_{ij},
-\]</span> where</p>
-<p><span class="math display">\[
+the rank correlation between
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mn>1</mn><mi>A</mi></msubsup><mo>,</mo><mi>…</mi><mo>,</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>m</mi><mi>A</mi></msubsup><mo>,</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mn>1</mn><mi>B</mi></msubsup><mo>,</mo><mi>…</mi><mo>,</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>n</mi><mi>B</mi></msubsup><mo stretchy="true" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}</annotation></semantics></math>
+and a dummy coded variable
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><msub><mn>0</mn><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mn>0</mn><mi>m</mi></msub><mo>,</mo><msub><mn>1</mn><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mn>1</mn><mi>n</mi></msub><mo stretchy="true" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\left\{0_1,\dots,0_m, 1_1,\dots,1_n \right\}</annotation></semantics></math>,
+with an adjustment for ties <span class="citation">(<a href="#ref-kendall1970rank">Kendall, 1970, p. 35</a>)</span>.
+Specifically,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow><mo>*</mo></msubsup><mo>=</mo><mfrac><mn>1</mn><mi>D</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mi>ϵ</mi></msubsup><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\text{Tau}_{BC}^* = \frac{1}{D} \sum_{i=1}^m \sum_{j=1}^n w^\epsilon_{ij},
+</annotation></semantics></math> where</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><msqrt><mrow><mi>m</mi><mo>×</mo><mi>n</mi><mo>×</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mn>2</mn></mfrac><mo>−</mo><mi>U</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msqrt></mrow><annotation encoding="application/x-tex">
 D = \sqrt{m \times n \times \left(\frac{(m+n)(m+n-1)}{2}-U\right)}
-\]</span> and <span class="math inline">\(U\)</span> is the number of
-ties between all possible pairs of observations (including pairs within
-phase A, pairs within phase B, and pairs of one phase A and one phase B
-data point). <span class="math inline">\(U\)</span> can be computed
-as</p>
-<p><span class="math display">\[
-U = \sum_{i=1}^{m - 1} \sum_{j = i+1}^m I\left(\hat\epsilon^A_i =
-\hat\epsilon^A_j\right) + \sum_{i=1}^{n - 1} \sum_{j = i+1}^n
-I\left(\hat\epsilon^B_i = \hat\epsilon^B_j\right) + \sum_{i=1}^m
-\sum_{j=1}^n I\left(\hat\epsilon^A_i = \hat\epsilon^B_j\right).
-\]</span></p>
+</annotation></semantics></math> and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+is the number of ties between all possible pairs of observations
+(including pairs within phase A, pairs within phase B, and pairs of one
+phase A and one phase B data point).
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+can be computed as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mi>m</mi></munderover><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>i</mi><mi>A</mi></msubsup><mo>=</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>j</mi><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>i</mi><mi>B</mi></msubsup><mo>=</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>j</mi><mi>B</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>i</mi><mi>A</mi></msubsup><mo>=</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>j</mi><mi>B</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+U = \sum_{i=1}^{m - 1} \sum_{j = i+1}^m I\left(\hat\epsilon^A_i = \hat\epsilon^A_j\right) + \sum_{i=1}^{n - 1} \sum_{j = i+1}^n I\left(\hat\epsilon^B_i = \hat\epsilon^B_j\right) + \sum_{i=1}^m \sum_{j=1}^n I\left(\hat\epsilon^A_i = \hat\epsilon^B_j\right).
+</annotation></semantics></math></p>
 <p>We prefer and recommend to use the Tau-AB form, which divides by
-<span class="math inline">\(m \times n\)</span> rather than by <span class="math inline">\(D\)</span>, because it leads to a simpler
-interpretation. Furthermore, using <span class="math inline">\(D\)</span> means that <span class="math inline">\(\text{Tau}_{BC}^*\)</span> may be sensitive to
-variation in phase lengths. To see this sensitivity, consider a scenario
-where there are no tied values and so every value <span class="math inline">\(\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m,
-\hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}\)</span> is unique.
-In this case, <span class="math inline">\(U = 0\)</span> and <span class="math display">\[
-D = \sqrt{\frac{1}{2} m n (m + n)(m + n - 1)} = m n \sqrt{1 + \frac{m -
-1}{2n} + \frac{n - 1}{2m}}.
-\]</span> Thus, the denominator will always be larger than <span class="math inline">\(m n\)</span>, meaning that <span class="math inline">\(\text{Tau}_{BC}^*\)</span> will always be smaller
-than <span class="math inline">\(\text{Tau}_{BC}\)</span>. Further, the
-largest and smallest possible values of <span class="math inline">\(\text{Tau}_{BC}^*\)</span> will be <span class="math inline">\(\pm m n / D\)</span>, or about <span class="math inline">\(1 / \sqrt{2}\)</span> when <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> are close to equal. In contrast, the
-largest and smallest possible values of <span class="math inline">\(\text{Tau}_{BC}\)</span> are always -1 and 1,
-respectively.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m \times n</annotation></semantics></math>
+rather than by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>,
+because it leads to a simpler interpretation. Furthermore, using
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>
+means that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow><mo>*</mo></msubsup><annotation encoding="application/x-tex">\text{Tau}_{BC}^*</annotation></semantics></math>
+may be sensitive to variation in phase lengths. To see this sensitivity,
+consider a scenario where there are no tied values and so every value
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mn>1</mn><mi>A</mi></msubsup><mo>,</mo><mi>…</mi><mo>,</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>m</mi><mi>A</mi></msubsup><mo>,</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mn>1</mn><mi>B</mi></msubsup><mo>,</mo><mi>…</mi><mo>,</mo><msubsup><mover><mi>ϵ</mi><mo accent="true">̂</mo></mover><mi>n</mi><mi>B</mi></msubsup><mo stretchy="true" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\left\{\hat\epsilon^A_1, \dots, \hat\epsilon^A_m, \hat\epsilon^B_1, \dots, \hat\epsilon^B_n \right\}</annotation></semantics></math>
+is unique. In this case,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">U = 0</annotation></semantics></math>
+and
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><msqrt><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>m</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msqrt><mo>=</mo><mi>m</mi><mi>n</mi><msqrt><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow><mrow><mn>2</mn><mi>n</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mrow><mn>2</mn><mi>m</mi></mrow></mfrac></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
+D = \sqrt{\frac{1}{2} m n (m + n)(m + n - 1)} = m n \sqrt{1 + \frac{m - 1}{2n} + \frac{n - 1}{2m}}.
+</annotation></semantics></math> Thus, the denominator will always be
+larger than
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">m n</annotation></semantics></math>,
+meaning that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow><mo>*</mo></msubsup><annotation encoding="application/x-tex">\text{Tau}_{BC}^*</annotation></semantics></math>
+will always be smaller than
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow></msub><annotation encoding="application/x-tex">\text{Tau}_{BC}</annotation></semantics></math>.
+Further, the largest and smallest possible values of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow><mo>*</mo></msubsup><annotation encoding="application/x-tex">\text{Tau}_{BC}^*</annotation></semantics></math>
+will be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>±</mo><mi>m</mi><mi>n</mi><mi>/</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">\pm m n / D</annotation></semantics></math>,
+or about
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><msqrt><mn>2</mn></msqrt></mrow><annotation encoding="application/x-tex">1 / \sqrt{2}</annotation></semantics></math>
+when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+are close to equal. In contrast, the largest and smallest possible
+values of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow></msub><annotation encoding="application/x-tex">\text{Tau}_{BC}</annotation></semantics></math>
+are always -1 and 1, respectively.</p>
 </div>
 <div class="section level4">
 <h4 id="standard-errors-and-confidence-intervals">Standard errors and confidence intervals<a class="anchor" aria-label="anchor" href="#standard-errors-and-confidence-intervals"></a>
 </h4>
-<p>The exact sampling distribution of <span class="math inline">\(\text{Tau}_{BC}^*\)</span> (Kendall, adjusted for
-ties) has not been described. <span class="citation">Tarlow (<a href="#ref-tarlow2017improved" role="doc-biblioref">2017</a>)</span>
-proposed to approximate its sampling variance using <span class="math display">\[
+<p>The exact sampling distribution of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow><mo>*</mo></msubsup><annotation encoding="application/x-tex">\text{Tau}_{BC}^*</annotation></semantics></math>
+(Kendall, adjusted for ties) has not been described. <span class="citation">Tarlow (<a href="#ref-tarlow2017improved">2017</a>)</span> proposed to approximate
+its sampling variance using
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mrow><mi>K</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>a</mi><mi>l</mi><mi>l</mi></mrow></msub><mo>=</mo><msqrt><mfrac><mrow><mn>2</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msubsup><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></mfrac></msqrt><mo>,</mo></mrow><annotation encoding="application/x-tex">
 SE_{Kendall} = \sqrt{\frac{2 (1 - \text{Tau}_{BC}^2)}{m + n}},
-\]</span> arguing that this would generally be conservative (in the
-sense of over-estimating the true sampling error). When Tau-BC is
-calculated using Kendall’s rank correlation, the SingleCaseES package
-reports a standard error based on this approximation.</p>
+</annotation></semantics></math> arguing that this would generally be
+conservative (in the sense of over-estimating the true sampling error).
+When Tau-BC is calculated using Kendall’s rank correlation, the
+SingleCaseES package reports a standard error based on this
+approximation.</p>
 <p>When calculated without adjustment for ties, the SingleCaseES package
-takes a different approach for estimating the standard error for <span class="math inline">\(\text{Tau}_{BC}\)</span> (non-overlap), reporting
-approximate standard errors and confidence intervals for <span class="math inline">\(\text{Tau}_{BC}\)</span> based on the methods
-described above for <span class="math inline">\(\text{Tau}\)</span>
+takes a different approach for estimating the standard error for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow></msub><annotation encoding="application/x-tex">\text{Tau}_{BC}</annotation></semantics></math>
+(non-overlap), reporting approximate standard errors and confidence
+intervals for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">Tau</mtext><mrow><mi>B</mi><mi>C</mi></mrow></msub><annotation encoding="application/x-tex">\text{Tau}_{BC}</annotation></semantics></math>
+based on the methods described above for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtext mathvariant="normal">Tau</mtext><annotation encoding="application/x-tex">\text{Tau}</annotation></semantics></math>
 (non-overlap, without baseline trend correction). An important
 limitation of this approach is that it does not account for the
 uncertainty introduced by estimating the phase A time trend (i.e., the
-uncertainty in <span class="math inline">\(\hat\beta\)</span>).</p>
+uncertainty in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>β</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat\beta</annotation></semantics></math>).</p>
 </div>
 </div>
 </div>
@@ -669,154 +772,158 @@ uncertainty in <span class="math inline">\(\hat\beta\)</span>).</p>
 <div class="section level3">
 <h3 id="smd">SMD<a class="anchor" aria-label="anchor" href="#smd"></a>
 </h3>
-<p><span class="citation">Gingerich (<a href="#ref-gingerich1984meta" role="doc-biblioref">1984</a>)</span> and <span class="citation">Busk
-&amp; Serlin (<a href="#ref-serlin2015meta" role="doc-biblioref">1992</a>)</span> proposed a within-case
+<p><span class="citation">Gingerich (<a href="#ref-gingerich1984meta">1984</a>)</span> and <span class="citation">Busk &amp; Serlin (<a href="#ref-serlin2015meta">1992</a>)</span> proposed a within-case
 standardized mean difference for use in single-case designs (within-case
 because it is based on the data for a single individual, rather than
-across individuals). The standardized mean difference parameter <span class="math inline">\(\delta\)</span> is defined as the difference in
-means between phase B and phase A, scaled by the standard deviation of
-the phase A outcome distribution:</p>
-<p><span class="math display">\[
+across individuals). The standardized mean difference parameter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>
+is defined as the difference in means between phase B and phase A,
+scaled by the standard deviation of the phase A outcome
+distribution:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><mfrac><mrow><msub><mi>μ</mi><mi>B</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>A</mi></msub></mrow><msub><mi>σ</mi><mi>A</mi></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \delta = \frac{\mu_B - \mu_A}{\sigma_A}.
-\]</span></p>
-<p>Note that <span class="math inline">\(\sigma_A\)</span> represents
-<em>within-individual</em> variability only. In contrast, the SMD
-applied to a between-groups design involves scaling by a measure of
+</annotation></semantics></math></p>
+<p>Note that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>A</mi></msub><annotation encoding="application/x-tex">\sigma_A</annotation></semantics></math>
+represents <em>within-individual</em> variability only. In contrast, the
+SMD applied to a between-groups design involves scaling by a measure of
 between- and within-individual variability. Thus, the scale of the
 within-case SMD is <em>not</em> comparable to the scale of the SMD from
 a between-groups design.</p>
-<p>The SMD <span class="math inline">\(\delta\)</span> can be estimated
-under the assumption that the observations are mutually independent and
-have constant variance within each phase. There are two ways that the
-SMD, depending on whether it is reasonable to assume that the standard
-deviation of the outcome is constant across phases (i.e., <span class="math inline">\(\sigma_A = \sigma_B\)</span>).</p>
+<p>The SMD
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>
+can be estimated under the assumption that the observations are mutually
+independent and have constant variance within each phase. There are two
+ways that the SMD, depending on whether it is reasonable to assume that
+the standard deviation of the outcome is constant across phases (i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mi>A</mi></msub><mo>=</mo><msub><mi>σ</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\sigma_A = \sigma_B</annotation></semantics></math>).</p>
 <div class="section level4">
 <h4 id="baseline-sd">Baseline SD<a class="anchor" aria-label="anchor" href="#baseline-sd"></a>
 </h4>
-<p><span class="citation">Gingerich (<a href="#ref-gingerich1984meta" role="doc-biblioref">1984</a>)</span> and <span class="citation">Busk
-&amp; Serlin (<a href="#ref-serlin2015meta" role="doc-biblioref">1992</a>)</span> originally suggested scaling by
-the SD from phase A only, due to the possibility of non-constant
+<p><span class="citation">Gingerich (<a href="#ref-gingerich1984meta">1984</a>)</span> and <span class="citation">Busk &amp; Serlin (<a href="#ref-serlin2015meta">1992</a>)</span> originally suggested scaling
+by the SD from phase A only, due to the possibility of non-constant
 variance across phases. Without assuming constant SDs, an estimate of
 the standardized mean difference is</p>
-<p><span class="math display">\[
-d_A = \left(1 - \frac{3}{4m - 5}\right) \frac{\bar{y}_B -
-\bar{y}_A}{s_A}.
-\]</span></p>
-<p>The term in parentheses is a small-sample bias correction term <span class="citation">(cf. <a href="#ref-hedges1981distribution" role="doc-biblioref">Hedges, 1981</a>; <a href="#ref-pustejovsky2018procedural" role="doc-biblioref">Pustejovsky,
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>A</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>3</mn><mrow><mn>4</mn><mi>m</mi><mo>−</mo><mn>5</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mfrac><mrow><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>B</mi></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub></mrow><msub><mi>s</mi><mi>A</mi></msub></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+d_A = \left(1 - \frac{3}{4m - 5}\right) \frac{\bar{y}_B - \bar{y}_A}{s_A}.
+</annotation></semantics></math></p>
+<p>The term in parentheses is a small-sample bias correction term <span class="citation">(cf. <a href="#ref-hedges1981distribution">Hedges,
+1981</a>; <a href="#ref-pustejovsky2018procedural">Pustejovsky,
 2019</a>)</span>. The standard error of this estimate is calculated
 as</p>
-<p><span class="math display">\[
-SE_{d_A} = \left(1 - \frac{3}{4m - 5}\right)\sqrt{\frac{1}{m} +
-\frac{s_B^2}{n s_A^2} + \frac{d_A^2}{2(m - 1)}}.
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><msub><mi>d</mi><mi>A</mi></msub></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>3</mn><mrow><mn>4</mn><mi>m</mi><mo>−</mo><mn>5</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msqrt><mrow><mfrac><mn>1</mn><mi>m</mi></mfrac><mo>+</mo><mfrac><msubsup><mi>s</mi><mi>B</mi><mn>2</mn></msubsup><mrow><mi>n</mi><msubsup><mi>s</mi><mi>A</mi><mn>2</mn></msubsup></mrow></mfrac><mo>+</mo><mfrac><msubsup><mi>d</mi><mi>A</mi><mn>2</mn></msubsup><mrow><mn>2</mn><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
+SE_{d_A} = \left(1 - \frac{3}{4m - 5}\right)\sqrt{\frac{1}{m} + \frac{s_B^2}{n s_A^2} + \frac{d_A^2}{2(m - 1)}}.
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="pooled-sd">Pooled SD<a class="anchor" aria-label="anchor" href="#pooled-sd"></a>
 </h4>
 <p>If it is reasonable to assume that the SDs are constant across
 phases, then one can use the pooled sample SD, defined as</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>p</mi></msub><mo>=</mo><msqrt><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mi>s</mi><mi>A</mi><mn>2</mn></msubsup><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mi>s</mi><mi>B</mi><mn>2</mn></msubsup></mrow><mrow><mi>m</mi><mo>+</mo><mi>n</mi><mo>−</mo><mn>2</mn></mrow></mfrac></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
 s_p = \sqrt{\frac{(m - 1)s_A^2 + (n - 1) s_B^2}{m + n - 2}}.
-\]</span></p>
+</annotation></semantics></math></p>
 <p>The SMD can then be estimated as</p>
-<p><span class="math display">\[
-d_p = \left(1 - \frac{3}{4(m + n) - 9}\right) \frac{\bar{y}_B -
-\bar{y}_A}{s_p},
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>p</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>3</mn><mrow><mn>4</mn><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>9</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mfrac><mrow><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>B</mi></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub></mrow><msub><mi>s</mi><mi>p</mi></msub></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">
+d_p = \left(1 - \frac{3}{4(m + n) - 9}\right) \frac{\bar{y}_B - \bar{y}_A}{s_p},
+</annotation></semantics></math></p>
 <p>with approximate standard error</p>
-<p><span class="math display">\[
-SE_{d_A} = \left(1 - \frac{3}{4(m + n) - 9}\right)\sqrt{\frac{1}{m} +
-\frac{1}{n} + \frac{d_p^2}{2(m + n - 2)}}.
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><msub><mi>d</mi><mi>A</mi></msub></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>3</mn><mrow><mn>4</mn><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>9</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msqrt><mrow><mfrac><mn>1</mn><mi>m</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo>+</mo><mfrac><msubsup><mi>d</mi><mi>p</mi><mn>2</mn></msubsup><mrow><mn>2</mn><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
+SE_{d_A} = \left(1 - \frac{3}{4(m + n) - 9}\right)\sqrt{\frac{1}{m} + \frac{1}{n} + \frac{d_p^2}{2(m + n - 2)}}.
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="confidence-intervals-1">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-1"></a>
 </h4>
 <p>Whether the estimator is based on the baseline or pooled standard
-deviation, an approximate confidence interval for <span class="math inline">\(\delta\)</span> is given by</p>
-<p><span class="math display">\[
+deviation, an approximate confidence interval for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>
+is given by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>d</mi><mo>−</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mi>d</mi></msub><mo>,</mo><mspace width="1.0em"></mspace><mi>d</mi><mo>+</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mi>d</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
 [d - z_{\alpha/2} \times SE_d,\quad d + z_{\alpha/2} \times SE_d].
-\]</span></p>
+</annotation></semantics></math></p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="lrr">LRR<a class="anchor" aria-label="anchor" href="#lrr"></a>
 </h3>
 <p>The log-response ratio (LRR) is an effect size index that quantifies
-the change from phase A to phase B in proportionate terms. <span class="citation">Pustejovsky (<a href="#ref-pustejovsky2015measurement" role="doc-biblioref">2015</a>)</span> proposed to use it as an effect
-size index for single-case designs <span class="citation">(see also <a href="#ref-pustejovsky2018using" role="doc-biblioref">Pustejovsky,
-2018</a>)</span>. The LRR is appropriate for use with outcomes on a
-ratio scale—that is, where zero indicates the total absence of the
-outcome. The LRR parameter is defined as</p>
-<p><span class="math display">\[
+the change from phase A to phase B in proportionate terms. <span class="citation">Pustejovsky (<a href="#ref-pustejovsky2015measurement">2015</a>)</span> proposed to use
+it as an effect size index for single-case designs <span class="citation">(see also <a href="#ref-pustejovsky2018using">Pustejovsky, 2018</a>)</span>. The LRR
+is appropriate for use with outcomes on a ratio scale—that is, where
+zero indicates the total absence of the outcome. The LRR parameter is
+defined as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>B</mi></msub><mi>/</mi><msub><mi>μ</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \psi = \ln\left(\mu_B / \mu_A\right),
-\]</span></p>
+</annotation></semantics></math></p>
 <p>The logarithm is used so that the range of the index is less
 restricted.</p>
 <div class="section level4">
 <h4 id="lrr-decreasing-and-lrr-increasing">LRR-decreasing and LRR-increasing<a class="anchor" aria-label="anchor" href="#lrr-decreasing-and-lrr-increasing"></a>
 </h4>
-<p>There are two variants of the LRR <span class="citation">(<a href="#ref-pustejovsky2018using" role="doc-biblioref">Pustejovsky,
-2018</a>)</span>, corresponding to whether therapeutic improvements
-correspond to negative values of the index (LRR-decreasing or LRRd) or
-positive values of the index (LRR-increasing or LRRi). For outcomes
-measured as frequency counts or rates, LRRd and LRRi are identical in
-magnitude but have opposite sign. However, for outcomes measured as
-proportions (ranging from 0 to 1) or percentages (ranging from 0% to
-100%), LRRd and LRRi will differ in both sign and magnitude because the
-outcomes are first transformed to be consistent with the selected
-direction of therapeutic improvement.</p>
+<p>There are two variants of the LRR <span class="citation">(<a href="#ref-pustejovsky2018using">Pustejovsky, 2018</a>)</span>,
+corresponding to whether therapeutic improvements correspond to negative
+values of the index (LRR-decreasing or LRRd) or positive values of the
+index (LRR-increasing or LRRi). For outcomes measured as frequency
+counts or rates, LRRd and LRRi are identical in magnitude but have
+opposite sign. However, for outcomes measured as proportions (ranging
+from 0 to 1) or percentages (ranging from 0% to 100%), LRRd and LRRi
+will differ in both sign and magnitude because the outcomes are first
+transformed to be consistent with the selected direction of therapeutic
+improvement.</p>
 </div>
 <div class="section level4">
 <h4 id="estimation-8">Estimation<a class="anchor" aria-label="anchor" href="#estimation-8"></a>
 </h4>
 <p>To account for the possibility that the sample means may be equal to
 zero, even if the mean levels are strictly greater than zero, the LRR is
-calculated using <em>truncated</em> sample means, given by <span class="math display">\[
-\tilde{y}_A = \text{max} \left\{ \bar{y}_A, \ \frac{1}{2 D m}\right\}
-\qquad \text{and} \qquad \tilde{y}_B = \text{max} \left\{ \bar{y}_B, \
-\frac{1}{2 D n}\right\},
-\]</span> where <span class="math inline">\(D\)</span> is a constant
-that depends on the scale and recording procedure used to measure the
-outcomes <span class="citation">(<a href="#ref-pustejovsky2018using" role="doc-biblioref">Pustejovsky, 2018</a>)</span>. To ensure that the
-standard error of LRR is strictly positive, it is calculated using
-truncated sample variances, given by <span class="math display">\[
-\tilde{s}_A^2 = \text{max}\left\{s_A^2, \ \frac{1}{D^2 m^3}\right\}
-\qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \
-\frac{1}{D^2 n^3}\right\}.
-\]</span></p>
+calculated using <em>truncated</em> sample means, given by
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub><mo>,</mo><mspace width="0.222em"></mspace><mfrac><mn>1</mn><mrow><mn>2</mn><mi>D</mi><mi>m</mi></mrow></mfrac><mo stretchy="true" form="postfix">}</mo></mrow><mspace width="2.0em"></mspace><mtext mathvariant="normal">and</mtext><mspace width="2.0em"></mspace><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>B</mi></msub><mo>,</mo><mspace width="0.222em"></mspace><mfrac><mn>1</mn><mrow><mn>2</mn><mi>D</mi><mi>n</mi></mrow></mfrac><mo stretchy="true" form="postfix">}</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\tilde{y}_A = \text{max} \left\{ \bar{y}_A, \ \frac{1}{2 D m}\right\} \qquad \text{and} \qquad \tilde{y}_B = \text{max} \left\{ \bar{y}_B, \ \frac{1}{2 D n}\right\},
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>
+is a constant that depends on the scale and recording procedure used to
+measure the outcomes <span class="citation">(<a href="#ref-pustejovsky2018using">Pustejovsky, 2018</a>)</span>. To
+ensure that the standard error of LRR is strictly positive, it is
+calculated using truncated sample variances, given by
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>A</mi><mn>2</mn></msubsup><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><msubsup><mi>s</mi><mi>A</mi><mn>2</mn></msubsup><mo>,</mo><mspace width="0.222em"></mspace><mfrac><mn>1</mn><mrow><msup><mi>D</mi><mn>2</mn></msup><msup><mi>m</mi><mn>3</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">}</mo></mrow><mspace width="2.0em"></mspace><mtext mathvariant="normal">and</mtext><mspace width="2.0em"></mspace><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>B</mi><mn>2</mn></msubsup><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><msubsup><mi>s</mi><mi>B</mi><mn>2</mn></msubsup><mo>,</mo><mspace width="0.222em"></mspace><mfrac><mn>1</mn><mrow><msup><mi>D</mi><mn>2</mn></msup><msup><mi>n</mi><mn>3</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">}</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\tilde{s}_A^2 = \text{max}\left\{s_A^2, \ \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \ \frac{1}{D^2 n^3}\right\}.
+</annotation></semantics></math></p>
 <p>A basic estimator of the LRR is then given by</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
 R_1 = \ln\left(\tilde{y}_B\right) - \ln\left(\tilde{y}_A\right).
-\]</span></p>
-<p>However, <span class="math inline">\(R_1\)</span> will be biased when
-one or both phases include only a small number of observations. A
-bias-corrected estimator is given by</p>
-<p><span class="math display">\[
-R_2 = \ln\left(\tilde{y}_B\right) + \frac{\tilde{s}_B^2}{2 n
-\tilde{y}_B^2} - \ln\left(\tilde{y}_A\right) - \frac{\tilde{s}_A^2}{2 m
-\tilde{y}_A^2}.
-\]</span> The bias-corrected estimator is the default option in
-SingleCaseES.</p>
+</annotation></semantics></math></p>
+<p>However,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>1</mn></msub><annotation encoding="application/x-tex">R_1</annotation></semantics></math>
+will be biased when one or both phases include only a small number of
+observations. A bias-corrected estimator is given by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mfrac><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>B</mi><mn>2</mn></msubsup><mrow><mn>2</mn><mi>n</mi><msubsup><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi><mn>2</mn></msubsup></mrow></mfrac><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mfrac><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>A</mi><mn>2</mn></msubsup><mrow><mn>2</mn><mi>m</mi><msubsup><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi><mn>2</mn></msubsup></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+R_2 = \ln\left(\tilde{y}_B\right) + \frac{\tilde{s}_B^2}{2 n \tilde{y}_B^2} - \ln\left(\tilde{y}_A\right) - \frac{\tilde{s}_A^2}{2 m \tilde{y}_A^2}.
+</annotation></semantics></math> The bias-corrected estimator is the
+default option in SingleCaseES.</p>
 </div>
 <div class="section level4">
 <h4 id="standard-errors-2">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-2"></a>
 </h4>
 <p>Under the assumption that the outcomes in each phase are mutually
-independent, an approximate standard error for <span class="math inline">\(R_1\)</span> or <span class="math inline">\(R_2\)</span> is given by</p>
-<p><span class="math display">\[
-SE_R = \sqrt{\frac{\tilde{s}_A^2}{m \tilde{y}_A^2} +
-\frac{\tilde{s}_B^2}{n \tilde{y}_B^2}}.
-\]</span></p>
+independent, an approximate standard error for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>1</mn></msub><annotation encoding="application/x-tex">R_1</annotation></semantics></math>
+or
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>2</mn></msub><annotation encoding="application/x-tex">R_2</annotation></semantics></math>
+is given by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mi>R</mi></msub><mo>=</mo><msqrt><mrow><mfrac><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>A</mi><mn>2</mn></msubsup><mrow><mi>m</mi><msubsup><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi><mn>2</mn></msubsup></mrow></mfrac><mo>+</mo><mfrac><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>B</mi><mn>2</mn></msubsup><mrow><mi>n</mi><msubsup><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi><mn>2</mn></msubsup></mrow></mfrac></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
+SE_R = \sqrt{\frac{\tilde{s}_A^2}{m \tilde{y}_A^2} + \frac{\tilde{s}_B^2}{n \tilde{y}_B^2}}.
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="confidence-intervals-2">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-2"></a>
 </h4>
 <p>Under the same assumptions, an approximate confidence interval for
-<span class="math inline">\(\psi\)</span> is</p>
-<p><span class="math display">\[
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ψ</mi><annotation encoding="application/x-tex">\psi</annotation></semantics></math>
+is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>R</mi><mo>−</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mi>R</mi></msub><mo>,</mo><mspace width="1.0em"></mspace><mi>R</mi><mo>+</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mi>R</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
 [R - z_{\alpha / 2} \times SE_R,\quad R + z_{\alpha / 2} \times SE_R].
-\]</span></p>
+</annotation></semantics></math></p>
 </div>
 </div>
 <div class="section level3">
@@ -824,15 +931,18 @@ SE_R = \sqrt{\frac{\tilde{s}_A^2}{m \tilde{y}_A^2} +
 </h3>
 <p>The log-odds ratio is an effect size index that quantifies the change
 from phase A to phase B in terms of proportionate change in the odds
-that a behavior is occurring <span class="citation">(<a href="#ref-pustejovsky2015measurement" role="doc-biblioref">Pustejovsky,
-2015</a>)</span>. It is appropriate for use with outcomes on a
-percentage or proportion scale. The LOR parameter is defined as</p>
-<p><span class="math display">\[
+that a behavior is occurring <span class="citation">(<a href="#ref-pustejovsky2015measurement">Pustejovsky, 2015</a>)</span>. It
+is appropriate for use with outcomes on a percentage or proportion
+scale. The LOR parameter is defined as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ψ</mi><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mi>μ</mi><mi>B</mi></msub><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>μ</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><msub><mi>μ</mi><mi>A</mi></msub><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>μ</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \psi = \ln\left(\frac{\mu_B/(1-\mu_B)}{\mu_A/(1-\mu_A)}\right),
-\]</span></p>
+</annotation></semantics></math></p>
 <p>where the outcomes are measured in proportions. The log odds ratio
-ranges from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span>, with a value of zero
-corresponding to no change in mean levels.</p>
+ranges from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">-\infty</annotation></semantics></math>
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>∞</mi><annotation encoding="application/x-tex">\infty</annotation></semantics></math>,
+with a value of zero corresponding to no change in mean levels.</p>
 <div class="section level4">
 <h4 id="estimation-9">Estimation<a class="anchor" aria-label="anchor" href="#estimation-9"></a>
 </h4>
@@ -840,90 +950,93 @@ corresponding to no change in mean levels.</p>
 zero or one, even if the mean levels are strictly between zero and one,
 the LOR is calculated using <em>truncated</em> sample means, given
 by</p>
-<p><span class="math display">\[
-\tilde{y}_A = \text{max} \left\{ \text{min}\left[\bar{y}_A, 1 -
-\frac{1}{2 D m}\right], \frac{1}{2 D m}\right\}
-\]</span> and</p>
-<p><span class="math display">\[
-\tilde{y}_B = \text{max} \left\{ \text{min}\left[\bar{y}_B, 1 -
-\frac{1}{2 D n}\right], \frac{1}{2 D n}\right\},
-\]</span></p>
-<p>where <span class="math inline">\(D\)</span> is a constant that
-depends on the scale and recording procedure used to measure the
-outcomes <span class="citation">(<a href="#ref-pustejovsky2018using" role="doc-biblioref">Pustejovsky, 2018</a>)</span>.To ensure that the
-corresponding standard error is strictly positive, it is calculated
-using truncated sample variances, given by</p>
-<p><span class="math display">\[
-\tilde{s}_A^2 = \text{max}\left\{s_A^2, \ \frac{1}{D^2 m^3}\right\}
-\qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \
-\frac{1}{D^2 n^3}\right\}.
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><mtext mathvariant="normal">min</mtext><mrow><mo stretchy="true" form="prefix">[</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub><mo>,</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>D</mi><mi>m</mi></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>D</mi><mi>m</mi></mrow></mfrac><mo stretchy="true" form="postfix">}</mo></mrow></mrow><annotation encoding="application/x-tex">
+\tilde{y}_A = \text{max} \left\{ \text{min}\left[\bar{y}_A, 1 - \frac{1}{2 D m}\right], \frac{1}{2 D m}\right\}
+</annotation></semantics></math> and</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><mtext mathvariant="normal">min</mtext><mrow><mo stretchy="true" form="prefix">[</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>B</mi></msub><mo>,</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>D</mi><mi>n</mi></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>D</mi><mi>n</mi></mrow></mfrac><mo stretchy="true" form="postfix">}</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\tilde{y}_B = \text{max} \left\{ \text{min}\left[\bar{y}_B, 1 - \frac{1}{2 D n}\right], \frac{1}{2 D n}\right\},
+</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>
+is a constant that depends on the scale and recording procedure used to
+measure the outcomes <span class="citation">(<a href="#ref-pustejovsky2018using">Pustejovsky, 2018</a>)</span>.To ensure
+that the corresponding standard error is strictly positive, it is
+calculated using truncated sample variances, given by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>A</mi><mn>2</mn></msubsup><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><msubsup><mi>s</mi><mi>A</mi><mn>2</mn></msubsup><mo>,</mo><mspace width="0.222em"></mspace><mfrac><mn>1</mn><mrow><msup><mi>D</mi><mn>2</mn></msup><msup><mi>m</mi><mn>3</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">}</mo></mrow><mspace width="2.0em"></mspace><mtext mathvariant="normal">and</mtext><mspace width="2.0em"></mspace><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>B</mi><mn>2</mn></msubsup><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><msubsup><mi>s</mi><mi>B</mi><mn>2</mn></msubsup><mo>,</mo><mspace width="0.222em"></mspace><mfrac><mn>1</mn><mrow><msup><mi>D</mi><mn>2</mn></msup><msup><mi>n</mi><mn>3</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">}</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\tilde{s}_A^2 = \text{max}\left\{s_A^2, \ \frac{1}{D^2 m^3}\right\} \qquad \text{and} \qquad \tilde{s}_B^2 = \text{max} \left\{ s_B^2, \ \frac{1}{D^2 n^3}\right\}.
+</annotation></semantics></math></p>
 <p>A basic estimator of the LOR is given by</p>
-<p><span class="math display">\[
-LOR_1 = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) -
-\ln\left(\tilde{y}_A\right) + \ln\left(1-\tilde{y}_A\right).
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>O</mi><msub><mi>R</mi><mn>1</mn></msub><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+LOR_1 = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) - \ln\left(\tilde{y}_A\right) + \ln\left(1-\tilde{y}_A\right).
+</annotation></semantics></math></p>
 <p>However, like the LRR, this estimator will be biased when the one or
 both phases include only a small number of observations. A
 bias-corrected estimator of the LOR is given by</p>
-<p><span class="math display">\[
-LOR_2 = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) -
-\frac{\tilde{s}_B^2(2 \tilde{y}_B - 1)}{2 n_B
-(\tilde{y}_B)^2(1-\tilde{y}_B)^2} - \ln\left(\tilde{y}_A\right) +
-\ln\left(1-\tilde{y}_A\right) + \frac{\tilde{s}_A^2(2 \tilde{y}_A -
-1)}{2 n_A (\tilde{y}_A)^2(1-\tilde{y}_A)^2}.
-\]</span> This estimator uses a small-sample correction to reduce bias
-when one or both phases include only a small number of observations.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>O</mi><msub><mi>R</mi><mn>2</mn></msub><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mfrac><mrow><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>B</mi><mn>2</mn></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>2</mn><msub><mi>n</mi><mi>B</mi></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow></mfrac><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mfrac><mrow><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>A</mi><mn>2</mn></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>2</mn><msub><mi>n</mi><mi>A</mi></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+LOR_2 = \ln\left(\tilde{y}_B\right) - \ln\left(1-\tilde{y}_B\right) - \frac{\tilde{s}_B^2(2 \tilde{y}_B - 1)}{2 n_B (\tilde{y}_B)^2(1-\tilde{y}_B)^2} - \ln\left(\tilde{y}_A\right) + \ln\left(1-\tilde{y}_A\right) + \frac{\tilde{s}_A^2(2 \tilde{y}_A - 1)}{2 n_A (\tilde{y}_A)^2(1-\tilde{y}_A)^2}.
+</annotation></semantics></math> This estimator uses a small-sample
+correction to reduce bias when one or both phases include only a small
+number of observations.</p>
 </div>
 <div class="section level4">
 <h4 id="standard-errors-3">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-3"></a>
 </h4>
 <p>Under the assumption that the outcomes in each phase are mutually
-independent, an approximate standard error for <span class="math inline">\(LOR\)</span> is given by</p>
-<p><span class="math display">\[
-SE_{LOR} = \sqrt{\frac{\tilde{s}^2_A}{n_A \tilde{y}_A^2 (1 -
-\tilde{y}_A)^2} + \frac{\tilde{s}^2_B}{n_B \tilde{y}_B^2 (1 -
-\tilde{y}_B)^2}}.
-\]</span></p>
+independent, an approximate standard error for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>O</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">LOR</annotation></semantics></math>
+is given by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mrow><mi>L</mi><mi>O</mi><mi>R</mi></mrow></msub><mo>=</mo><msqrt><mrow><mfrac><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>A</mi><mn>2</mn></msubsup><mrow><msub><mi>n</mi><mi>A</mi></msub><msubsup><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi><mn>2</mn></msubsup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mfrac><msubsup><mover><mi>s</mi><mo accent="true">̃</mo></mover><mi>B</mi><mn>2</mn></msubsup><mrow><msub><mi>n</mi><mi>B</mi></msub><msubsup><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi><mn>2</mn></msubsup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̃</mo></mover><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow></mfrac></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
+SE_{LOR} = \sqrt{\frac{\tilde{s}^2_A}{n_A \tilde{y}_A^2 (1 - \tilde{y}_A)^2} + \frac{\tilde{s}^2_B}{n_B \tilde{y}_B^2 (1 - \tilde{y}_B)^2}}.
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="confidence-intervals-3">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-3"></a>
 </h4>
 <p>Under the same assumption, an approximate confidence interval for
-<span class="math inline">\(\psi\)</span> is</p>
-<p><span class="math display">\[
-[LOR - z_{\alpha / 2} \times SE_{LOR},\quad LOR + z_{\alpha / 2} \times
-SE_{LOR}],
-\]</span></p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ψ</mi><annotation encoding="application/x-tex">\psi</annotation></semantics></math>
+is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>L</mi><mi>O</mi><mi>R</mi><mo>−</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mrow><mi>L</mi><mi>O</mi><mi>R</mi></mrow></msub><mo>,</mo><mspace width="1.0em"></mspace><mi>L</mi><mi>O</mi><mi>R</mi><mo>+</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mrow><mi>L</mi><mi>O</mi><mi>R</mi></mrow></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+[LOR - z_{\alpha / 2} \times SE_{LOR},\quad LOR + z_{\alpha / 2} \times SE_{LOR}],
+</annotation></semantics></math></p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="lrm">LRM<a class="anchor" aria-label="anchor" href="#lrm"></a>
 </h3>
-<p><span class="citation">Bonett &amp; Price (<a href="#ref-bonett2020interval" role="doc-biblioref">2020b</a>)</span>
-described the log ratio of medians (LRM) effect size, which can be used
-to quantify the change in medians from phase A to phase B. The LRM is
-the natural logarithm of the ratio of medians. This effect size is
-appropriate for outcomes that are skewed or right-censored <span class="citation">(<a href="#ref-bonett2020interval" role="doc-biblioref">Bonett &amp; Price, 2020b</a>)</span>. For an
-outcome where increase is desirable, the LRM parameter is defined as</p>
-<p><span class="math display">\[
+<p><span class="citation">Bonett &amp; Price (<a href="#ref-bonett2020interval">2020b</a>)</span> described the log ratio
+of medians (LRM) effect size, which can be used to quantify the change
+in medians from phase A to phase B. The LRM is the natural logarithm of
+the ratio of medians. This effect size is appropriate for outcomes that
+are skewed or right-censored <span class="citation">(<a href="#ref-bonett2020interval">Bonett &amp; Price, 2020b</a>)</span>.
+For an outcome where increase is desirable, the LRM parameter is defined
+as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>η</mi><mi>B</mi></msub><mi>/</mi><msub><mi>η</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>η</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>η</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \lambda = \ln\left(\eta_B / \eta_A\right) = \ln(\eta_B) - \ln(\eta_A),
-\]</span> where <span class="math inline">\(\eta_B\)</span> and <span class="math inline">\(\eta_A\)</span> are the population medians for
-phase B and phase A, respectively. For an outcome where decrease is
-desirable, the LRM parameter has the opposite sign:</p>
-<p><span class="math display">\[
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>η</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\eta_B</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>η</mi><mi>A</mi></msub><annotation encoding="application/x-tex">\eta_A</annotation></semantics></math>
+are the population medians for phase B and phase A, respectively. For an
+outcome where decrease is desirable, the LRM parameter has the opposite
+sign:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>η</mi><mi>A</mi></msub><mi>/</mi><msub><mi>η</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>η</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>η</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \lambda = \ln\left(\eta_A / \eta_B\right) = \ln(\eta_A) - \ln(\eta_B).
-\]</span></p>
+</annotation></semantics></math></p>
 <div class="section level4">
 <h4 id="estimation-10">Estimation<a class="anchor" aria-label="anchor" href="#estimation-10"></a>
 </h4>
-<p>A natural estimator of the <span class="math inline">\(\lambda\)</span> is given by</p>
-<p><span class="math display">\[
+<p>A natural estimator of the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
+is given by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>R</mi><mi>M</mi><mo>=</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>m</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>m</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
 LRM = \ln\left(m_B\right) - \ln\left(m_A\right),
-\]</span> where <span class="math inline">\(m_B\)</span> and <span class="math inline">\(m_A\)</span> are the sample medians for phase B
-and phase A, respectively. Note that the sample median might be zero for
-either phase B and phase A in some single-case design data, resulting in
-infinite LRM.</p>
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mi>B</mi></msub><annotation encoding="application/x-tex">m_B</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mi>A</mi></msub><annotation encoding="application/x-tex">m_A</annotation></semantics></math>
+are the sample medians for phase B and phase A, respectively. Note that
+the sample median might be zero for either phase B and phase A in some
+single-case design data, resulting in infinite LRM.</p>
 </div>
 <div class="section level4">
 <h4 id="standard-errors-4">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-4"></a>
@@ -932,93 +1045,108 @@ infinite LRM.</p>
 under the assumption that the outcome data within each phase are
 mutually independent and follow a common distribution. Using the fact
 that the logarithm of the median is the same or close to the median of
-the log-transformed outcomes, the standard error for <span class="math inline">\(LRM\)</span> can be calculated using the order
-statistics within each phase <span class="citation">(<a href="#ref-bonett2020confidence" role="doc-biblioref">Bonett &amp;
-Price, 2020a</a>)</span>. Let <span class="math display">\[
+the log-transformed outcomes, the standard error for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>R</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">LRM</annotation></semantics></math>
+can be calculated using the order statistics within each phase <span class="citation">(<a href="#ref-bonett2020confidence">Bonett &amp;
+Price, 2020a</a>)</span>. Let
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>l</mi><mi>A</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mfrac><mi>m</mi><mn>2</mn></mfrac><mo>−</mo><msqrt><mi>m</mi></msqrt><mo stretchy="true" form="postfix">}</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace></mtd><mtd columnalign="right" style="text-align: right"><msub><mi>u</mi><mi>A</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mi>m</mi><mo>−</mo><msub><mi>l</mi><mi>A</mi></msub><mo>+</mo><mn>1</mn><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>l</mi><mi>B</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">{</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mfrac><mi>n</mi><mn>2</mn></mfrac><mo>−</mo><msqrt><mi>n</mi></msqrt><mo stretchy="true" form="postfix">}</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace></mtd><mtd columnalign="right" style="text-align: right"><msub><mi>u</mi><mi>B</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mi>n</mi><mo>−</mo><msub><mi>l</mi><mi>B</mi></msub><mo>+</mo><mn>1</mn><mo>,</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
-l_A &amp;= \text{max}\left\{1, \ \frac{m}{2} - \sqrt{m}\right\}, \quad
-&amp;u_A &amp;= m - l_A + 1, \\
-l_B &amp;= \text{max}\left\{1, \ \frac{n}{2} - \sqrt{n}\right\}, \quad
-&amp;u_B &amp;= n - l_B + 1,
+l_A &amp;= \text{max}\left\{1, \ \frac{m}{2} - \sqrt{m}\right\}, \quad &amp;u_A &amp;= m - l_A + 1, \\
+l_B &amp;= \text{max}\left\{1, \ \frac{n}{2} - \sqrt{n}\right\}, \quad &amp;u_B &amp;= n - l_B + 1,
 \end{aligned}
-\]</span> and find <span class="math display">\[
-q_A = \Phi^{-1}\left(\frac{1}{2^m}\sum_{i=0}^{l_A - 1} \frac{m!}{i!(m -
-i)!}\right) \quad \text{and} \quad q_B =
-\Phi^{-1}\left(\frac{1}{2^n}\sum_{j=0}^{l_B - 1} \frac{n!}{j!(n -
-j)!}\right).
-\]</span> The standard error of LRM is then <span class="math display">\[
-SE_{LRM} =
-\sqrt{\left(\frac{\ln\left(y^B_{(u_B)}\right)-\ln\left(y^B_{(l_B)}\right)}{2\
-q_B}\right)^2 +
-\left(\frac{\ln\left(y^A_{(u_A)}\right)-\ln\left(y^A_{(l_A)}\right)}{2\
-q_A}\right)^2},
-\]</span> <span class="citation">(<a href="#ref-bonett2020confidence" role="doc-biblioref">Bonett &amp; Price, 2020a</a>)</span> where <span class="math inline">\(y^A_{(l_A)}, y^A_{(u_A)}\)</span> are the <span class="math inline">\(l_A\)</span> and <span class="math inline">\(u_A\)</span> order statistics of the phase A
-outcomes and <span class="math inline">\(y^B_{(l_B)},
-y^B_{(u_B)}\)</span> are the <span class="math inline">\(l_B\)</span>
-and <span class="math inline">\(u_B\)</span> order statistics of the
-phase B outcomes.</p>
+</annotation></semantics></math> and find
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>q</mi><mi>A</mi></msub><mo>=</mo><msup><mi>Φ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>1</mn><msup><mn>2</mn><mi>m</mi></msup></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><msub><mi>l</mi><mi>A</mi></msub><mo>−</mo><mn>1</mn></mrow></munderover><mfrac><mrow><mi>m</mi><mi>!</mi></mrow><mrow><mi>i</mi><mi>!</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mi>i</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>!</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="1.0em"></mspace><mtext mathvariant="normal">and</mtext><mspace width="1.0em"></mspace><msub><mi>q</mi><mi>B</mi></msub><mo>=</mo><msup><mi>Φ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>1</mn><msup><mn>2</mn><mi>n</mi></msup></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><msub><mi>l</mi><mi>B</mi></msub><mo>−</mo><mn>1</mn></mrow></munderover><mfrac><mrow><mi>n</mi><mi>!</mi></mrow><mrow><mi>j</mi><mi>!</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>−</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>!</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+q_A = \Phi^{-1}\left(\frac{1}{2^m}\sum_{i=0}^{l_A - 1} \frac{m!}{i!(m - i)!}\right) \quad \text{and} \quad q_B = \Phi^{-1}\left(\frac{1}{2^n}\sum_{j=0}^{l_B - 1} \frac{n!}{j!(n - j)!}\right).
+</annotation></semantics></math> The standard error of LRM is then
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mrow><mi>L</mi><mi>R</mi><mi>M</mi></mrow></msub><mo>=</mo><msqrt><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>u</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>l</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>2</mn><mspace width="0.222em"></mspace><msub><mi>q</mi><mi>B</mi></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>u</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>ln</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>l</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>2</mn><mspace width="0.222em"></mspace><msub><mi>q</mi><mi>A</mi></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mo>,</mo></mrow><annotation encoding="application/x-tex">
+SE_{LRM} = \sqrt{\left(\frac{\ln\left(y^B_{(u_B)}\right)-\ln\left(y^B_{(l_B)}\right)}{2\ q_B}\right)^2 + \left(\frac{\ln\left(y^A_{(u_A)}\right)-\ln\left(y^A_{(l_A)}\right)}{2\ q_A}\right)^2},
+</annotation></semantics></math><span class="citation">(<a href="#ref-bonett2020confidence">Bonett &amp; Price, 2020a</a>)</span>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>l</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup><mo>,</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>u</mi><mi>A</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi></msubsup></mrow><annotation encoding="application/x-tex">y^A_{(l_A)}, y^A_{(u_A)}</annotation></semantics></math>
+are the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>l</mi><mi>A</mi></msub><annotation encoding="application/x-tex">l_A</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>u</mi><mi>A</mi></msub><annotation encoding="application/x-tex">u_A</annotation></semantics></math>
+order statistics of the phase A outcomes and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>l</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup><mo>,</mo><msubsup><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>u</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>B</mi></msubsup></mrow><annotation encoding="application/x-tex">y^B_{(l_B)}, y^B_{(u_B)}</annotation></semantics></math>
+are the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>l</mi><mi>B</mi></msub><annotation encoding="application/x-tex">l_B</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>u</mi><mi>B</mi></msub><annotation encoding="application/x-tex">u_B</annotation></semantics></math>
+order statistics of the phase B outcomes.</p>
 </div>
 <div class="section level4">
 <h4 id="confidence-intervals-4">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-4"></a>
 </h4>
-<p>An approximate confidence interval for <span class="math inline">\(\lambda\)</span> is <span class="math display">\[
-\left[LRM - z_{\alpha/2} \times SE_{LRM},\quad LRM + z_{\alpha/2} \times
-SE_{LRM}\right],
-\]</span> where <span class="math inline">\(z_{\alpha/2}\)</span> is
-<span class="math inline">\(1 - \alpha/2\)</span> critical value from a
-standard normal distribution.</p>
+<p>An approximate confidence interval for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
+is
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>L</mi><mi>R</mi><mi>M</mi><mo>−</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mrow><mi>L</mi><mi>R</mi><mi>M</mi></mrow></msub><mo>,</mo><mspace width="1.0em"></mspace><mi>L</mi><mi>R</mi><mi>M</mi><mo>+</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mrow><mi>L</mi><mi>R</mi><mi>M</mi></mrow></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\left[LRM - z_{\alpha/2} \times SE_{LRM},\quad LRM + z_{\alpha/2} \times SE_{LRM}\right],
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><annotation encoding="application/x-tex">z_{\alpha/2}</annotation></semantics></math>
+is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">1 - \alpha/2</annotation></semantics></math>
+critical value from a standard normal distribution.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="pogo">PoGO<a class="anchor" aria-label="anchor" href="#pogo"></a>
 </h3>
-<p><span class="citation">Ferron, Goldstein, Olszewski, &amp; Rohrer (<a href="#ref-ferron2020indexing" role="doc-biblioref">2020</a>)</span>
-proposed a percent of goal obtained (PoGO) effect size metric for use in
-single-case designs. Let <span class="math inline">\(\gamma\)</span>
+<p><span class="citation">Ferron, Goldstein, Olszewski, &amp; Rohrer (<a href="#ref-ferron2020indexing">2020</a>)</span> proposed a percent of
+goal obtained (PoGO) effect size metric for use in single-case designs.
+Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>
 denote the goal level of behavior, which must be specified by the
 analyst or researcher. Percent of goal obtained quantifies the change in
 the mean level of behavior relative to the goal. The PoGO parameter
-<span class="math inline">\(\theta\)</span> is defined as: <span class="math display">\[
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+is defined as:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><mfrac><mrow><msub><mi>μ</mi><mi>B</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>A</mi></msub></mrow><mrow><mi>γ</mi><mo>−</mo><msub><mi>μ</mi><mi>A</mi></msub></mrow></mfrac><mo>×</mo><mn>100</mn><mi>%</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \theta = \frac{\mu_B - \mu_A}{\gamma - \mu_A} \times 100\%.
-\]</span></p>
+</annotation></semantics></math></p>
 <div class="section level4">
 <h4 id="estimation-11">Estimation<a class="anchor" aria-label="anchor" href="#estimation-11"></a>
 </h4>
 <p>Approaches for estimation of PoGO depend on one’s assumption about
 the stability of the observations in phases A and B. Under the
 assumption that the observations are temporally stable, a natural
-estimator of PoGO is <span class="math display">\[
+estimator of PoGO is
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>o</mi><mi>G</mi><mi>O</mi><mo>=</mo><mfrac><mrow><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>B</mi></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub></mrow><mrow><mi>γ</mi><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub></mrow></mfrac><mo>×</mo><mn>100</mn><mi>%</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">
 PoGO = \frac{\bar{y}_B - \bar{y}_A}{\gamma - \bar{y}_A} \times 100\%.
-\]</span></p>
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="standard-errors-5">Standard errors<a class="anchor" aria-label="anchor" href="#standard-errors-5"></a>
 </h4>
 <p><span class="citation">Patrona, Ferron, Olszewski, Kelley, &amp;
-Goldstein (<a href="#ref-patrona2022effects" role="doc-biblioref">2022</a>)</span> proposed a method for calculating
-a standard error for the PoGO estimator under the assumptions that the
-observations within each phase are mutually independent. The standard
-error uses an approximation for the standard error of two independent,
-normally distributed random variables due to <span class="citation">Dunlap &amp; Silver (<a href="#ref-dunlap1986confidence" role="doc-biblioref">1986</a>)</span>.
-It is calculated as <span class="math display">\[
-SE_{PoGO} = \frac{1}{\gamma - \bar{y}_A} \sqrt{\frac{s_A^2}{n_A} +
-\frac{s_B^2}{n_B} + \left(\frac{\bar{y}_B - \bar{y}_A}{\gamma -
-\bar{y}_A}\right)^2 \frac{s_A^2}{n_A}}.
-\]</span> <span class="citation">Patrona et al. (<a href="#ref-patrona2022effects" role="doc-biblioref">2022</a>)</span>
-also provided a more general approximation, which can be applied when
-PoGO is estimated using regressions that control for time trends or
-auto-correlation. However, these methods are not implemented in
-<code>SingleCaseES</code>.</p>
+Goldstein (<a href="#ref-patrona2022effects">2022</a>)</span> proposed a
+method for calculating a standard error for the PoGO estimator under the
+assumptions that the observations within each phase are mutually
+independent. The standard error uses an approximation for the standard
+error of two independent, normally distributed random variables due to
+<span class="citation">Dunlap &amp; Silver (<a href="#ref-dunlap1986confidence">1986</a>)</span>. It is calculated as
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>E</mi><mrow><mi>P</mi><mi>o</mi><mi>G</mi><mi>O</mi></mrow></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mi>γ</mi><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub></mrow></mfrac><msqrt><mrow><mfrac><msubsup><mi>s</mi><mi>A</mi><mn>2</mn></msubsup><msub><mi>n</mi><mi>A</mi></msub></mfrac><mo>+</mo><mfrac><msubsup><mi>s</mi><mi>B</mi><mn>2</mn></msubsup><msub><mi>n</mi><mi>B</mi></msub></mfrac><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>B</mi></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub></mrow><mrow><mi>γ</mi><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mi>A</mi></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mfrac><msubsup><mi>s</mi><mi>A</mi><mn>2</mn></msubsup><msub><mi>n</mi><mi>A</mi></msub></mfrac></mrow></msqrt><mi>.</mi></mrow><annotation encoding="application/x-tex">
+SE_{PoGO} = \frac{1}{\gamma - \bar{y}_A} \sqrt{\frac{s_A^2}{n_A} + \frac{s_B^2}{n_B} + \left(\frac{\bar{y}_B - \bar{y}_A}{\gamma - \bar{y}_A}\right)^2 \frac{s_A^2}{n_A}}.
+</annotation></semantics></math><span class="citation">Patrona et al.
+(<a href="#ref-patrona2022effects">2022</a>)</span> also provided a more
+general approximation, which can be applied when PoGO is estimated using
+regressions that control for time trends or auto-correlation. However,
+these methods are not implemented in <code>SingleCaseES</code>.</p>
 </div>
 <div class="section level4">
 <h4 id="confidence-intervals-5">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-5"></a>
 </h4>
-<p>An approximate confidence interval for <span class="math inline">\(PoGO\)</span> is given by <span class="math display">\[
-[PoGO - z_{\alpha / 2} \times SE_{PoGO},\quad PoGO + z_{\alpha / 2}
-\times SE_{PoGO}],
-\]</span> where <span class="math inline">\(z_{\alpha / 2}\)</span> is
-the <span class="math inline">\(1 - \alpha / 2\)</span> critical value
-from a standard normal distribution <span class="citation">(<a href="#ref-patrona2022effects" role="doc-biblioref">Patrona et al.,
+<p>An approximate confidence interval for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>o</mi><mi>G</mi><mi>O</mi></mrow><annotation encoding="application/x-tex">PoGO</annotation></semantics></math>
+is given by
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>P</mi><mi>o</mi><mi>G</mi><mi>O</mi><mo>−</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mrow><mi>P</mi><mi>o</mi><mi>G</mi><mi>O</mi></mrow></msub><mo>,</mo><mspace width="1.0em"></mspace><mi>P</mi><mi>o</mi><mi>G</mi><mi>O</mi><mo>+</mo><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><mo>×</mo><mi>S</mi><msub><mi>E</mi><mrow><mi>P</mi><mi>o</mi><mi>G</mi><mi>O</mi></mrow></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+[PoGO - z_{\alpha / 2} \times SE_{PoGO},\quad PoGO + z_{\alpha / 2} \times SE_{PoGO}],
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><annotation encoding="application/x-tex">z_{\alpha / 2}</annotation></semantics></math>
+is the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">1 - \alpha / 2</annotation></semantics></math>
+critical value from a standard normal distribution <span class="citation">(<a href="#ref-patrona2022effects">Patrona et al.,
 2022</a>)</span>.</p>
 </div>
 </div>
@@ -1026,7 +1154,7 @@ from a standard normal distribution <span class="citation">(<a href="#ref-patron
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0" line-spacing="2">
 <div id="ref-Acion2006probabilistic" class="csl-entry">
 Acion, L., Peterson, J. J., Temple, S., &amp; Arndt, S. (2006). <span class="nocase">Probabilistic index: An intuitive non-parametric approach
 to measuring the size of treatment effects</span>. <em>Statistics in
@@ -1155,9 +1283,11 @@ validation. <em>Remedial and Special Education</em>, <em>8</em>(2),
 </div>
 <div id="ref-sen1967note" class="csl-entry">
 Sen, P. K. (1967). A note on asymptotically distribution-free confidence
-bounds for p <span class="math inline">\(\{\)</span>x&lt; y<span class="math inline">\(\}\)</span>, based on two independent samples.
-<em>Sankhy<span>ā</span>: The Indian Journal of Statistics, Series
-A</em>, 95–102.
+bounds for p
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo stretchy="false" form="prefix">{</mo><annotation encoding="application/x-tex">\{</annotation></semantics></math>x&lt;
+y<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo stretchy="false" form="postfix">}</mo><annotation encoding="application/x-tex">\}</annotation></semantics></math>,
+based on two independent samples. <em>Sankhy<span>ā</span>: The Indian
+Journal of Statistics, Series A</em>, 95–102.
 </div>
 <div id="ref-Swan2018gradual" class="csl-entry">
 Swan, D. M., &amp; Pustejovsky, J. E. (2018). <span class="nocase">A
@@ -1181,9 +1311,7 @@ Statistics</em>, <em>25</em>(2), 101–132. <a href="https://doi.org/10.2307/116
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -1196,17 +1324,17 @@ Statistics</em>, <em>25</em>(2), 101–132. <a href="https://doi.org/10.2307/116
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '',
     indexName: 'SingleCaseES',
     inputSelector: 'input#search-input.form-control',
