@@ -106,7 +106,7 @@ single-case research: Nonoverlap of all pairs. \emph{Behavior Therapy,
 40}(4), 357--67. doi:\doi{10.1016/j.beth.2008.10.006}
 
 Sen, P. K. (1967). A note on asymptotically distribution-free confidence
-bounds for P{X<Y}, based on two independent samples. \emph{The Annals of
+bounds for P\{X<Y\}, based on two independent samples. \emph{The Annals of
 Mathematical Statistics, 29}(1), 95-102.
 \href{https://www.jstor.org/stable/25049448}{https://www.jstor.org/stable/25049448}
 }
