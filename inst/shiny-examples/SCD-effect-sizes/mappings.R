@@ -53,3 +53,4 @@ exampleMapping <- list(
   
 )
 
+single_series_min_data_points_msg <- "Please enter at least three data points in each phase."

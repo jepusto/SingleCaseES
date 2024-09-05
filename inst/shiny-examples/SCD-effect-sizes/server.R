@@ -56,6 +56,10 @@ shinyServer(function(input, output, session) {
         geom_vline(xintercept = m + 0.5, linetype = "dashed") + 
         scale_color_brewer(type = "qual", palette = 2) + 
         theme_minimal() + theme(legend.position = "bottom")
+    } else {
+      ggplot() + 
+        geom_text(aes(x = 0, y = 0, label = single_series_min_data_points_msg), size = 6) + 
+        theme_void()
     }
   })
   
@@ -197,6 +201,8 @@ shinyServer(function(input, output, session) {
         Est_txt <- paste("Effect size estimate:", fmt(est$Est))
         HTML(Est_txt)
       }
+    } else {
+      HTML(single_series_min_data_points_msg)
     }
   })
   
