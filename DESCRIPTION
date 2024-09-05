@@ -31,7 +31,6 @@ Imports:
 Suggests:
     spelling,
     shiny,
-    shinytest,
     stringr,
     rvest,
     xml2,
