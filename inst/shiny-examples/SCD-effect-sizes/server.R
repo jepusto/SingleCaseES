@@ -562,19 +562,21 @@ shinyServer(function(input, output, session) {
                    choices = facet_vars, selected = NULL, multiple = FALSE)
   })
   
+  grouping_vars <- reactive({
+    setdiff(c(input$b_clusters, input$b_aggregate), input$bfacetSelector)
+  })
+  
   output$graph_filters <- renderUI({
     
-    grouping_vars <- setdiff(c(input$b_clusters, input$b_aggregate), input$bfacetSelector)
-    
-    if (length(grouping_vars) > 0) {
+    if (length(grouping_vars()) > 0) {
       
-      grouping_vals <- lapply(grouping_vars, function(x) levels(as.factor(datClean2()[,x])))
-      names(grouping_vals) <- grouping_vars
+      grouping_vals <- lapply(grouping_vars(), function(x) sort(unique(datClean2()[[x]])))
+      names(grouping_vals) <- grouping_vars()
       
       header <- strong("Select a value for each grouping variable.")
       
-      grouping_selects <- lapply(grouping_vars, function(x) 
-        selectizeInput(paste0("grouping_",x), label = x, choices = grouping_vals[[x]], 
+      grouping_selects <- lapply(grouping_vars(), function(x) 
+        selectizeInput(paste("grouping",x, sep = "_"), label = x, choices = grouping_vals[[x]], 
                        selected = grouping_vals[[x]][1], multiple = FALSE))
       
       grouping_selects <- list(header, column(12, br()), grouping_selects)
@@ -585,16 +587,41 @@ shinyServer(function(input, output, session) {
     
   })
   
+  # vector of selected filter variables
+  grouping_selected <- reactive({
+    if (length(grouping_vars()) > 0) {
+      lapply(grouping_vars(), \(x) input[[paste("grouping", x, sep = "_")]])
+    }
+  })
+  
+  # update the filter variable inputs
+  observeEvent(grouping_selected(), {
+    n_grouping <- length(grouping_vars())
+    if (n_grouping > 0) {
+      dat <- datClean2()
+      for (i in 1:n_grouping) {
+        grp_var <- grouping_vars()[i]
+        inputId <- paste("grouping", grp_var, sep = "_")
+        grp_val <- grouping_selected()[[i]]
+        grouping_vals <- sort(unique(dat[[grp_var]]))
+        selected_val <- if (!is.null(grp_val) && grp_val %in% grouping_vals) grp_val else grouping_vals[1]
+        subset_vals <- dat[[grp_var]] == selected_val
+        dat <- dat[subset_vals,]
+        if (inputId %in% names(input)) {
+          updateSelectizeInput(session, inputId = inputId, choices = grouping_vals, selected = selected_val)
+        }
+      }
+    }
+  })
+  
   datGraph <- reactive({
     
     dat <- datClean2()
     
     if (!is.null(input$b_clusters) | !is.null(input$b_aggregate)) {
 
-      grouping_vars <- setdiff(c(input$b_clusters, input$b_aggregate), input$bfacetSelector)
-      
-      if (length(grouping_vars) > 0) {
-        subset_vals <- sapply(grouping_vars, function(x) datClean2()[[x]] %in% input[[paste0("grouping_",x)]])
+      if (length(grouping_vars()) > 0) {
+        subset_vals <- sapply(grouping_vars(), function(x) datClean2()[[x]] %in% input[[paste0("grouping_",x)]])
         dat <- dat[apply(subset_vals, 1, all),]
       } 
       
@@ -987,7 +1014,8 @@ shinyServer(function(input, output, session) {
   })
 
   output$clip <- renderUI({
-    rclipboard::rclipButton("clipbtn", "Copy", batch_syntax(), modal = FALSE, icon("clipboard"))
+    rclipboard::rclipButton("clipbtn", "Copy", batch_syntax(), modal = FALSE, icon = icon("clipboard"),
+                            tooltip = "Click me to copy the code to your clipboard!",)
   })
 
   session$onSessionEnded(function() {
