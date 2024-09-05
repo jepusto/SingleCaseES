@@ -1,6 +1,10 @@
-# SingleCaseES 0.7.2.9999
+# SingleCaseES 0.7.3
 
-* Corrected a bug in the single-series calculator that caused an error when showing the graphed data.
+* In the SCD_effect_sizes Shiny app:
+  * Corrected a bug in the single-series calculator that caused an error when showing the graphed data.
+  * Added a message in the single-series calculator to clarify minimum number of data points.
+  * In the multiple-series calculator, redesigned the plotting interface the available choices for each filtering variable are calculated after applying the previous filters. 
+
 
 # SingleCaseES 0.7.2
 
