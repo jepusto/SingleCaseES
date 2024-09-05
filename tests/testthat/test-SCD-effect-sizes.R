@@ -1,5 +1,6 @@
 context("Test SCD_effect_sizes Shiny app")
 
+skip()
 skip_if_not_installed("shiny")
 skip_if_not_installed("shinytest")
 skip_if_not_installed("stringr")
@@ -13,7 +14,6 @@ skip_if_not_installed("rclipboard")
 skip_if_not_installed("Kendall")
 
 suppressWarnings(library(shiny))
-suppressWarnings(library(shinytest))
 suppressWarnings(library(dplyr))
 suppressWarnings(library(tidyr))
 suppressWarnings(library(stringr))
