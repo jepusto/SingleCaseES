@@ -15,12 +15,7 @@ This is minor release that includes small bug-fixes in package functions and in 
 
 There were no ERRORs or WARNINGs. 
 
-There were 2 NOTEs:
-
-Possibly mis-spelled words in DESCRIPTION:
-  Pustejovsky (15:15)
-
-  The flagged word is spelled correctly.
+There was 1 NOTE:
 
 Found the following (possibly) invalid URLs:
   URL: https://www.jstor.org/stable/25049448
@@ -28,7 +23,7 @@ Found the following (possibly) invalid URLs:
     Status: 403
     Message: Forbidden
     
-  The flagged URL are correct.
+  The flagged URL is correct.
 
 ## revdepcheck results
 
