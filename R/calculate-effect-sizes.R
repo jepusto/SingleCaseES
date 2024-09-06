@@ -34,21 +34,21 @@ convert_to_wide <- function(res, ES_names) {
   val <- rlang::sym("val")
   
   res <- 
-    res %>%
-    tidyr::gather("q", !!val, !!!sym_val_names) %>%
-    tidyr::unite("q", ES, q) %>%
-    dplyr::filter(!is.na(val)) %>%
+    res |>
+    tidyr::gather("q", !!val, !!!sym_val_names) |>
+    tidyr::unite("q", ES, q) |>
+    dplyr::filter(!is.na(val)) |>
     tidyr::spread("q", !!val) 
   
   # re-order names
   long_names <- 
-    tidyr::expand_grid(ES_names, val_names) %>%
-    dplyr::mutate(ES_names = paste(ES_names, val_names, sep = "_")) %>%
-    dplyr::pull(ES_names) %>%
-    intersect(names(res)) %>%
+    tidyr::expand_grid(ES_names, val_names) |>
+    dplyr::mutate(ES_names = paste(ES_names, val_names, sep = "_")) |>
+    dplyr::pull(ES_names) |>
+    intersect(names(res)) |>
     rlang::syms()
   
-  res <- res %>% dplyr::relocate(!!!long_names, .after = tidyselect::last_col())
+  res <- res |> dplyr::relocate(!!!long_names, .after = tidyselect::last_col())
   
   return(res)
 }
@@ -111,7 +111,6 @@ convert_to_wide <- function(res, ES_names) {
 #' yB <- c(5, 9, 7, 9, 7, 5, 9, 11, 11, 10, 9)
 #' calc_ES(yA, yB)
 #'
-#' @importFrom magrittr %>%
 #' @importFrom rlang !!!
 #' @importFrom rlang !!
 #' @importFrom rlang :=
@@ -455,8 +454,8 @@ batch_calc_ES <- function(dat,
   
   ES_ests_long <-
     if (utils::packageVersion("dplyr") >= '1.1.0') {
-      dat %>%
-      dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) %>%
+      dat |>
+      dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) |>
       dplyr::reframe(
         calc_ES(
           condition = .data[[condition]],
@@ -476,8 +475,8 @@ batch_calc_ES <- function(dat,
         )
       ) 
     } else {
-      dat %>%
-      dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) %>%
+      dat |>
+      dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) |>
       dplyr::summarise(
         calc_ES(
           condition = .data[[condition]],
@@ -511,7 +510,7 @@ batch_calc_ES <- function(dat,
     
     # determine unique condition labels
     
-    conditions <- dat %>% dplyr::pull({{condition}}) %>% unique()
+    conditions <- dat |> dplyr::pull({{condition}}) |> unique()
     
     if (is.null(baseline_phase)) baseline_phase <- conditions[1]
     
@@ -531,7 +530,7 @@ batch_calc_ES <- function(dat,
       }
       
       ES_weights <- 
-        ES_ests_long %>%
+        ES_ests_long |>
         dplyr::mutate(
           weights = 1 / SE^2
         )
@@ -539,7 +538,7 @@ batch_calc_ES <- function(dat,
     } else if (weighting %in% c("equal","Equal")) {
       
       ES_weights <- 
-        ES_ests_long %>%
+        ES_ests_long |>
         dplyr::mutate(
           weights = 1L
         )
@@ -547,13 +546,13 @@ batch_calc_ES <- function(dat,
     } else if (weighting %in% weights_args[-(1:3)]) {
       
       n_weights <- 
-        dat %>% 
-        dplyr::filter(!!rlang::sym(condition) %in% c(baseline_phase, intervention_phase)) %>% 
-        dplyr::mutate(!!rlang::sym(condition) := ifelse(!!rlang::sym(condition) == baseline_phase, "A", "B")) %>% 
-        dplyr::group_by(!!!rlang::syms(c(grouping, aggregate, condition))) %>% 
-        dplyr::summarise(n = dplyr::n(), .groups = "drop") %>% 
-        tidyr::pivot_wider(names_from = !!rlang::sym(condition), values_from = n) %>%
-        dplyr::ungroup() %>% 
+        dat |> 
+        dplyr::filter(!!rlang::sym(condition) %in% c(baseline_phase, intervention_phase)) |> 
+        dplyr::mutate(!!rlang::sym(condition) := ifelse(!!rlang::sym(condition) == baseline_phase, "A", "B")) |> 
+        dplyr::group_by(!!!rlang::syms(c(grouping, aggregate, condition))) |> 
+        dplyr::summarise(n = dplyr::n(), .groups = "drop") |> 
+        tidyr::pivot_wider(names_from = !!rlang::sym(condition), values_from = n) |>
+        dplyr::ungroup() |> 
         dplyr::mutate(
           weights = dplyr::case_when(
             weighting %in% c("nA", "n_A") ~ as.numeric(A),
@@ -561,11 +560,11 @@ batch_calc_ES <- function(dat,
             weighting %in% c("nAnB", "nA*nB", "nA * nB", "n_A*n_B", "n_A * n_B") ~ as.numeric(A*B),
             weighting %in% c("1/nA+1/nB", "1/nA + 1/nB", "1/n_A+1/n_B", "1/n_A + 1/n_B") ~ as.numeric(1/A + 1/B)
           )
-        ) %>% 
+        ) |> 
         dplyr::select(-c(A,B))
       
       ES_weights <- 
-        ES_ests_long %>% 
+        ES_ests_long |> 
         dplyr::left_join(n_weights, by = c(grouping, aggregate))
       
     }
@@ -575,8 +574,8 @@ batch_calc_ES <- function(dat,
     if ("SE" %in% ES_long_names) {
       
       res <- 
-        ES_weights %>% 
-        dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
+        ES_weights |> 
+        dplyr::group_by(!!!rlang::syms(grouping), ES) |>
         dplyr::summarise(
           Est = sum(Est * weights) / sum(weights),
           SE = sqrt(sum(weights^2 * SE^2) / (sum(weights)^2)),
@@ -585,7 +584,7 @@ batch_calc_ES <- function(dat,
       
       if (!is.null(confidence)) {
         res <-
-          res %>%
+          res |>
           dplyr::mutate(
             CI_lower = Est - qnorm(1 - (1 - confidence) / 2) * SE,
             CI_upper = Est + qnorm(1 - (1 - confidence) / 2) * SE
@@ -595,8 +594,8 @@ batch_calc_ES <- function(dat,
     } else {
       
       res <- 
-        ES_weights %>% 
-        dplyr::group_by(!!!rlang::syms(grouping), ES) %>%
+        ES_weights |> 
+        dplyr::group_by(!!!rlang::syms(grouping), ES) |>
         dplyr::summarise(
           Est = sum(Est * weights) / sum(weights),
           .groups = "drop"

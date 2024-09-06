@@ -236,7 +236,7 @@ shinyServer(function(input, output, session) {
 
       read.table(inFile$datapath, header=input$header,
                  sep=input$sep, quote=input$quote,
-                 stringsAsFactors = FALSE, check.names = FALSE) %>%
+                 stringsAsFactors = FALSE, check.names = FALSE) |>
         janitor::clean_names(case = "parsed")
 
     } else if (input$dat_type == "xlsx") {
@@ -245,8 +245,8 @@ shinyServer(function(input, output, session) {
 
       if (is.null(inFile) || is.null(input$inSelect) || nchar(input$inSelect) == 0) return(NULL)
 
-      readxl::read_xlsx(inFile$datapath, col_names = input$col_names, sheet = input$inSelect) %>%
-        janitor::clean_names(case = "parsed") %>%
+      readxl::read_xlsx(inFile$datapath, col_names = input$col_names, sheet = input$inSelect) |>
+        janitor::clean_names(case = "parsed") |>
         as.data.frame()
       
     }
@@ -486,12 +486,12 @@ shinyServer(function(input, output, session) {
       phase_var <- input$b_phase
       
       dat <- 
-        dat %>% 
-        dplyr::group_by(!!!rlang::syms(grouping_vars)) %>% 
+        dat |> 
+        dplyr::group_by(!!!rlang::syms(grouping_vars)) |> 
         dplyr::mutate(
           phase_pair_calculated = calc_phase_pairs(!!rlang::sym(phase_var), session = !!rlang::sym(session_var))
-        ) %>% 
-        dplyr::ungroup() %>% 
+        ) |> 
+        dplyr::ungroup() |> 
         as.data.frame() 
     }
     
@@ -651,14 +651,14 @@ shinyServer(function(input, output, session) {
     if (is.null(input$bfacetSelector) || input$bfacetSelector == "None"){
       
       dat_graph <-
-        data.frame(session = session_dat, outcome = outcome_dat, phase = as.factor(phase_dat)) %>%
+        data.frame(session = session_dat, outcome = outcome_dat, phase = as.factor(phase_dat)) |>
         dplyr::filter(phase %in% c(input$b_base, input$b_treat))
       
       phase_change <-
-        dat_graph %>%
-        dplyr::filter(phase == phase_code[2]) %>%
-        dplyr::mutate(treat_change = suppressWarnings(min(session)) - 0.5) %>%
-        dplyr::select(treat_change) %>%
+        dat_graph |>
+        dplyr::filter(phase == phase_code[2]) |>
+        dplyr::mutate(treat_change = suppressWarnings(min(session)) - 0.5) |>
+        dplyr::select(treat_change) |>
         unique()
       
     } else {
@@ -666,15 +666,15 @@ shinyServer(function(input, output, session) {
       facet_dat <- dat[[input$bfacetSelector]]
       
       dat_graph <-
-        data.frame(facet = facet_dat, session = session_dat, outcome = outcome_dat, phase = as.factor(phase_dat)) %>%
+        data.frame(facet = facet_dat, session = session_dat, outcome = outcome_dat, phase = as.factor(phase_dat)) |>
         dplyr::filter(phase %in% c(input$b_base, input$b_treat))
       
       phase_change <-
-        dat_graph %>%
-        group_by(facet) %>%
-        dplyr::filter(phase == phase_code[2]) %>%
-        dplyr::mutate(treat_change = suppressWarnings(min(session)) - 0.5) %>%
-        dplyr::select(facet, treat_change) %>%
+        dat_graph |>
+        group_by(facet) |>
+        dplyr::filter(phase == phase_code[2]) |>
+        dplyr::mutate(treat_change = suppressWarnings(min(session)) - 0.5) |>
+        dplyr::select(facet, treat_change) |>
         unique()
       
     }

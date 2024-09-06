@@ -22,7 +22,6 @@ License: GPL-3
 Imports:
   stats, 
   purrr,
-  magrittr,
   dplyr,
   tidyr,
   rlang,
