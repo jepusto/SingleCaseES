@@ -21,37 +21,37 @@ effect sizes indices with known sampling distributions.
 
 The available **non-overlap indices** are:
 
--   Percentage of non-overlapping data (PND)
--   Percentage of all non-overlapping data (PAND)
--   Robust improvement rate difference (IRD)
--   Percentage exceeding the median (PEM)
--   Non-overlap of all pairs (NAP)
--   Tau non-overlap (Tau)
--   Baseline-corrected Tau (Tau-BC)
--   Tau-U (including baseline trend adjustment)
+- Percentage of non-overlapping data (PND)
+- Percentage of all non-overlapping data (PAND)
+- Robust improvement rate difference (IRD)
+- Percentage exceeding the median (PEM)
+- Non-overlap of all pairs (NAP)
+- Tau non-overlap (Tau)
+- Baseline-corrected Tau (Tau-BC)
+- Tau-U (including baseline trend adjustment)
 
 The available **parametric effect sizes** are:
 
--   Within-case standardized mean difference
--   Log response ratio (decreasing and increasing)
--   Log odds ratio
--   Log ratio of medians
--   Percent of goal obtained
--   The gradual effects model, which can be used to estimate log
-    response ratios or log odds ratios in the presence of time trends
-    during treatment and return-to-baseline phases.
+- Within-case standardized mean difference
+- Log response ratio (decreasing and increasing)
+- Log odds ratio
+- Log ratio of medians
+- Percent of goal obtained
+- The gradual effects model, which can be used to estimate log response
+  ratios or log odds ratios in the presence of time trends during
+  treatment and return-to-baseline phases.
 
 The package also includes two graphical user interfaces (designed using
 [Shiny](https://shiny.rstudio.com/)) for interactive use, both of which
 are also available as web apps hosted through
 [shinyapps.io](https://www.shinyapps.io/):
 
--   `SCD_effect_sizes()` opens an interactive calculator for the basic
-    non-overlap indices and parametric effect sizes. It is also
-    available at <https://jepusto.shinyapps.io/SCD-effect-sizes>
--   `shine_gem_scd()` opens an interactive calculator for the gradual
-    effects model. It is also available at
-    <https://jepusto.shinyapps.io/gem-scd>
+- `SCD_effect_sizes()` opens an interactive calculator for the basic
+  non-overlap indices and parametric effect sizes. It is also available
+  at <https://jepusto.shinyapps.io/SCD-effect-sizes/>.
+- `shine_gem_scd()` opens an interactive calculator for the gradual
+  effects model. It is also available at
+  <https://jepusto.shinyapps.io/gem-scd/>.
 
 ***Please note that the web apps should only be used for demonstration
 purposes***. For research purposes, please install the R package and run
@@ -72,15 +72,15 @@ of Education.
 
 Please cite this R package as follows:
 
-> Pustejovsky, J. E., Chen, M., Grekov, P., & Swan, D. M. (2023).
+> Pustejovsky, J. E., Chen, M., Grekov, P., & Swan, D. M. (2024).
 > SingleCaseES: A calculator for single-case effect size indices
-> (Version 0.7.2) \[R package\].
+> (Version 0.7.3) \[R package\].
 > <https://jepusto.github.io/SingleCaseES/>
 
 Please cite the web applications as follows:
 
-> Pustejovsky, J. E., Chen, M., Grekov, P., & Swan, D. M. (2023).
-> Single-case effect size calculator (Version 0.7.2) \[Web
+> Pustejovsky, J. E., Chen, M., Grekov, P., & Swan, D. M. (2024).
+> Single-case effect size calculator (Version 0.7.3) \[Web
 > application\]. <https://jepusto.shinyapps.io/SCD-effect-sizes>
 
 > Swan, D. M. & Pustejovsky, J. E. (2017). gem_scd: A web-based

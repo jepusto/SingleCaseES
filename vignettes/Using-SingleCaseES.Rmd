@@ -44,10 +44,10 @@ are also available as web apps hosted through
 
 -   `SCD_effect_sizes()` opens an interactive calculator for the basic
     non-overlap indices and parametric effect sizes. It is also
-    available at <https://jepusto.shinyapps.io/SCD-effect-sizes>
+    available at <https://jepusto.shinyapps.io/SCD-effect-sizes/>
 -   `shine_gem_scd()` opens an interactive calculator for the gradual
     effects model. It is also available at
-    <https://jepusto.shinyapps.io/gem-scd>
+    <https://jepusto.shinyapps.io/gem-scd/>
 
 In this vignette, we introduce the package's primary functions for carrying out effect size calculations. We demonstrate how to use the functions for calculating an effect size from a single data series, how to use the `calc_ES()` function for calculating multiple effect sizes from a single data series, and how to use `batch_calc_ES()` for calculating one or multiple effect sizes from multiple data series.
 

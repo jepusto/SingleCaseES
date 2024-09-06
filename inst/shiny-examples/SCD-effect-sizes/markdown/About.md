@@ -5,7 +5,7 @@ knit: (knitr::knit)
 
 # Single-case effect size calculator
 
-Version 0.7.2.9999
+Version 0.7.3
 
 Designed and built by James E. Pustejovsky, Man Chen, Paulina Grekov, & Daniel M. Swan.
 
@@ -26,7 +26,7 @@ The development of this application was supported in part by the Institute of Ed
 
 Please cite this software as follows:
 
-> Pustejovsky, J. E, Chen, M., Grekov, P., & Swan, D. M. (2023). 
-> Single-case effect size calculator (Version 0.7.2.9999) 
+> Pustejovsky, J. E, Chen, M., Grekov, P., & Swan, D. M. (2024). 
+> Single-case effect size calculator (Version 0.7.3) 
 > [Web application]. 
 > <https://jepusto.shinyapps.io/SCD-effect-sizes/>

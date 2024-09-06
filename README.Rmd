@@ -2,7 +2,7 @@
 title: "README"
 output: 
   md_document:
-    variant: markdown_github
+    variant: gfm
 ---
 
 <!-- badges: start -->
@@ -39,8 +39,8 @@ The available __parametric effect sizes__ are:
 
 The package also includes two graphical user interfaces (designed using [Shiny](https://shiny.rstudio.com/)) for interactive use, both of which are also available as web apps hosted through [shinyapps.io](https://www.shinyapps.io/): 
 
-* `SCD_effect_sizes()` opens an interactive calculator for the basic non-overlap indices and parametric effect sizes. It is also available at https://jepusto.shinyapps.io/SCD-effect-sizes
-* `shine_gem_scd()` opens an interactive calculator for the gradual effects model. It is also available at https://jepusto.shinyapps.io/gem-scd
+* `SCD_effect_sizes()` opens an interactive calculator for the basic non-overlap indices and parametric effect sizes. It is also available at https://jepusto.shinyapps.io/SCD-effect-sizes/.
+* `shine_gem_scd()` opens an interactive calculator for the gradual effects model. It is also available at https://jepusto.shinyapps.io/gem-scd/.
 
 __*Please note that the web apps should only be used for demonstration purposes*__. For research purposes, please install the R package and run the GUI through RStudio.
 
