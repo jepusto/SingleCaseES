@@ -1,19 +1,21 @@
 # Batch calculation
-res <- batch_calc_ES(dat = dat,
-                     grouping = {user_grouping},
-                     condition = {user_condition},
-                     outcome = {user_outcome},
-                     session_number = {user_session_number},
-                     baseline_phase = "{user_baseline_phase}",
-                     intervention_phase = "{user_intervention_phase}",
-                     ES = {user_ES},{user_improvement}
-                     pct_change = {user_pct_change},{user_scale}
-                     intervals = {user_intervals},
-                     observation_length = {user_obslength},
-                     D_const = {user_D_const},
-                     goal = {user_goal},
-                     std_dev = "{user_std_dev}",
-                     confidence = {user_confidence},
-                     Kendall = {user_Kendall},
-                     pretest_trend = {user_pretest_trend},
-                     format = "{user_format}")
+res <- batch_calc_ES(
+  dat = dat,
+  grouping = {user_grouping},
+  condition = {user_condition},
+  outcome = {user_outcome},
+  session_number = {user_session_number},
+  baseline_phase = "{user_baseline_phase}",
+  intervention_phase = "{user_intervention_phase}",
+  ES = {user_ES},{user_improvement}
+  pct_change = {user_pct_change},{user_scale}
+  intervals = {user_intervals},
+  observation_length = {user_obslength},
+  D_const = {user_D_const},
+  goal = {user_goal},
+  std_dev = "{user_std_dev}",
+  confidence = {user_confidence},
+  Kendall = {user_Kendall},
+  pretest_trend = {user_pretest_trend},
+  format = "{user_format}"
+)

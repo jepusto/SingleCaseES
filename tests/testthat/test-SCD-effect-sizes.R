@@ -1,6 +1,6 @@
 context("Test SCD_effect_sizes Shiny app")
 
-skip()
+skip("Need to refactor Shiny app tests using shinytest2.")
 skip_if_not_installed("shiny")
 skip_if_not_installed("shinytest")
 skip_if_not_installed("stringr")

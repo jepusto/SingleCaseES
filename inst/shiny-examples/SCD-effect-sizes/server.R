@@ -878,14 +878,14 @@ shinyServer(function(input, output, session) {
     if (any(input$bESpar %in% c("LRRi", "LRRd", "LOR"))) {
       
       scale_val <- switch(input$boutScale,
-        "series" = paste0("\n         scale = ", as.symbol(input$bscalevar), ","),
-        "percentage" = '\n            scale = "percentage",',
-        "proportion" = '\n            scale = "proportion",',
-        "count" = '\n                 scale = "count",',
-        "rate" = '\n                  scale = "rate",',
-        "other" = '\n                 scale = "other",',
+        "series" = paste0("\n  scale = ", as.symbol(input$bscalevar), ","),
+        "percentage" = '\n  scale = "percentage",',
+        "proportion" = '\n  scale = "proportion",',
+        "count" = '\n  scale = "count",',
+        "rate" = '\n  scale = "rate",',
+        "other" = '\n  scale = "other",',
         c()
-      )
+      )  
       
       intervals <- if (input$bintervals == "NA") NA else input$bintervals
       obslength <- if (input$bobslength == "NA") NA else input$bobslength
@@ -893,7 +893,7 @@ shinyServer(function(input, output, session) {
       
     } else {
       # scale_val <- "other"
-      scale_val <- '\n                scale = "other",'
+      scale_val <- '\n  scale = "other",'
       intervals <- obslength <- D_const <- NA
     }
     
@@ -915,9 +915,9 @@ shinyServer(function(input, output, session) {
     
     
     improvement <- switch(input$bimprovement,
-                          "series" = paste0("\n                     improvement = ", as.symbol(input$bseldir), ","),
-                          "increase" = '\n                     improvement = "increase",',
-                          "decrease" = '\n                     improvement = "decrease",',
+                          "series" = paste0("\n  improvement = ", as.symbol(input$bseldir), ","),
+                          "increase" = '\n  improvement = "increase",',
+                          "decrease" = '\n  improvement = "decrease",',
                           c()
     )
     
