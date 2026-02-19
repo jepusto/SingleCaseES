@@ -1,9 +1,5 @@
-library(testthat)
 data("McKissick", package = "SingleCaseES")
-#context("Test SCD_effect_sizes Shiny app")
 #skip("Need to refactor Shiny app tests using shinytest2.")
-testthat::skip_if_not_installed("shinytest2")
-testthat::skip_if_not_installed("SingleCaseES")
 skip_if_not_installed("shiny")
 skip_if_not_installed("shinytest2")
 skip_if_not_installed("stringr")
@@ -182,6 +178,7 @@ test_that("Single-entry calculator works properly", {
   
   expect_equal(Kendall_app_res, Kendall_pkg_res, check.attributes = FALSE)
 })
+
 check_batch <- function(app, example_dat, ES, digits = 4, goal = NULL, Kendall = FALSE) {
   NOMs <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U")
   Parametrics <- c("LOR", "LRRd", "LRRi", "LRM", "PoGO", "SMD")
@@ -228,6 +225,7 @@ check_batch <- function(app, example_dat, ES, digits = 4, goal = NULL, Kendall =
   tbl
   
 }
+
 test_that("Batch calculator is correct", {
   skip_on_cran()
   
@@ -462,6 +460,7 @@ test_that("Batch calculator is correct", {
   expect_equal(Wright_pkg_Kendall, Wright_app_Kendall, check.attributes = FALSE)
   expect_equal(Olszewski_pkg_Kendall, Olszewski_app_Kendall, check.attributes = FALSE)
 })
+
 check_load <- function(app, file, digits = 4, Kendall = FALSE) {
   
   data_path <- testthat::test_path("..", "testdata", file)
@@ -508,6 +507,9 @@ check_load <- function(app, file, digits = 4, Kendall = FALSE) {
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
 }
+
+debug(check_load)
+
 test_that("Data are uploaded correctly.", {
   
   skip_on_cran()
@@ -547,17 +549,19 @@ test_that("Data are uploaded correctly.", {
                   format = "long",
                   warn = FALSE
     )
+  
   output_csv <- output_csv %>% 
     mutate(across(Est:baseline_SD, ~ round(as.numeric(.), 4L)))
-  McKissick_pkg <- McKissick_pkg %>% 
-    mutate(across(Est:baseline_SD, ~ round(as.numeric(.), 4L)))
-  # I use expect_equal and set a smaller tolerance.
+  
+  McKissick_pkg <- 
+    McKissick_pkg %>% 
+    mutate(across(Est:baseline_SD, ~ round(as.numeric(.), 4L))) %>%
+    as.data.frame()
+  
   expect_equal(output_csv, McKissick_pkg, ignore_attr = TRUE, tolerance = 1e-4)
   expect_equal(output_xlsx, McKissick_pkg, ignore_attr = TRUE, tolerance = 1e-4)
-  # It will throw an error, but I don't understand the reason for the error.
-  diff_rows <- output_csv[is.na(output_csv$Est) & !is.na(McKissick_pkg$Est), ]
-  print(diff_rows$ES)
 })
+
 test_that("calcPhasePair works in the app.", {
   skip_on_cran()
   

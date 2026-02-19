@@ -30,6 +30,7 @@ Imports:
 Suggests:
     spelling,
     shiny,
+    shinytest2 (>= 0.5.0),
     stringr,
     rvest,
     xml2,
@@ -48,7 +49,7 @@ Suggests:
     janitor,
     rclipboard
 LazyData: TRUE
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 Language: en-US
 VignetteBuilder: knitr, rmarkdown, cleanrmd
