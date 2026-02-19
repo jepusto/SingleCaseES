@@ -1,4 +1,1 @@
-library(testthat)
-library(SingleCaseES)
-
-test_check("SingleCaseES")
+shinytest2::test_app()

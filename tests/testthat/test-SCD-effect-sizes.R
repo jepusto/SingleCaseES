@@ -1,5 +1,7 @@
 data("McKissick", package = "SingleCaseES")
 #skip("Need to refactor Shiny app tests using shinytest2.")
+skip_if_not_installed("shinytest2")
+skip_if_not_installed("SingleCaseES")
 skip_if_not_installed("shiny")
 skip_if_not_installed("shinytest2")
 skip_if_not_installed("stringr")
@@ -508,7 +510,8 @@ check_load <- function(app, file, digits = 4, Kendall = FALSE) {
     mutate(across(Est:CI_upper, as.numeric))
 }
 
-debug(check_load)
+
+#block 8
 
 test_that("Data are uploaded correctly.", {
   
