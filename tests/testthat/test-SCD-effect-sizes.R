@@ -1,7 +1,5 @@
 data("McKissick", package = "SingleCaseES")
 #skip("Need to refactor Shiny app tests using shinytest2.")
-skip_if_not_installed("shinytest2")
-skip_if_not_installed("SingleCaseES")
 skip_if_not_installed("shiny")
 skip_if_not_installed("shinytest2")
 skip_if_not_installed("stringr")
@@ -75,9 +73,7 @@ check_single <- function(app, ES, ES_family, A_data, B_data, Kendall = FALSE, go
   }
   
   app$set_inputs(improvement = improvement, digits = 5)
-  app$wait_for_idle()
   # CHANGED: getValue(name=) -> get_value(output=)
-  Sys.sleep(0.5)
   output_ES_name <- app$get_value(output = "ES_name")
   output_ES_value <- app$get_value(output = "result")
   
@@ -128,11 +124,11 @@ test_that("Single-entry calculator works properly", {
     mutate(ES_value = str_remove(ES_value, "(<br>){4,}.*")) %>%
     separate(ES_value, c("Est","SE","CI","baseline_SD"), "<br\\s*/?>", fill = "right", extra = "drop")%>%
     mutate(
-        Est = as.numeric(na_if(gsub("[^0-9.-]", "", Est), "")),
-        SE  = as.numeric(na_if(gsub("[^0-9.-]", "", SE), "")),
-        CI  = str_remove(CI, "95% CI: "),
-        baseline_SD = as.numeric(na_if(gsub("[^0-9.-]", "", baseline_SD), ""))
-      )%>%
+      Est = as.numeric(na_if(gsub("[^0-9.-]", "", Est), "")),
+      SE  = as.numeric(na_if(gsub("[^0-9.-]", "", SE), "")),
+      CI  = str_remove(CI, "95% CI: "),
+      baseline_SD = as.numeric(na_if(gsub("[^0-9.-]", "", baseline_SD), ""))
+    )%>%
     arrange(ES_name) %>%
     rename(ES = ES_name)
   
@@ -163,10 +159,10 @@ test_that("Single-entry calculator works properly", {
     check_single(app, ES = "Tau_BC", ES_family = "Non-overlap", A_data = A_dat, B_data = B_dat, Kendall = TRUE) %>%
     mutate(ES_value = str_remove(ES_value, "(<br>){4,}.*")) %>%
     separate(ES_value, c("Est", "SE", "CI"), "<br\\s*/?>", fill = "right", extra = "drop") %>%
-      mutate(
-        Est = as.numeric(gsub("[^0-9.-]", "", Est)),
-        SE  = as.numeric(gsub("[^0-9.-]", "", SE)),
-        CI  = str_remove(CI, "95% CI: ")
+    mutate(
+      Est = as.numeric(gsub("[^0-9.-]", "", Est)),
+      SE  = as.numeric(gsub("[^0-9.-]", "", SE)),
+      CI  = str_remove(CI, "95% CI: ")
     )
   Kendall_pkg_res <-
     calc_ES(A_data = A_dat, B_data = B_dat, ES = "Tau_BC", Kendall = TRUE) %>%
@@ -217,9 +213,10 @@ check_batch <- function(app, example_dat, ES, digits = 4, goal = NULL, Kendall =
   
   app$set_inputs(batchest = "click")
   
-  Sys.sleep(2)
+  app$wait_for_idle()
   
   output_app <- app$get_value(output = "batchTable")
+  
   tbl <- rvest::html_table(rvest::read_html(output_app), fill = TRUE)[[1]]
   tbl[tbl == "-"] <- NA
   tbl[, intersect(c("Est","SE","CI_lower","CI_upper","baseline_SD"), names(tbl))] <-
@@ -239,7 +236,7 @@ test_that("Batch calculator is correct", {
   )
   
   expect_error(check_batch(app, example_dat = "McKissick", ES = all_names, Kendall = FALSE, goal = NULL))
-
+  
   
   McKissick_app <-
     check_batch(app, example_dat = "McKissick", ES = all_names, Kendall = FALSE, goal = 1) %>%
@@ -468,7 +465,7 @@ check_load <- function(app, file, digits = 4, Kendall = FALSE) {
   data_path <- testthat::test_path("..", "testdata", file)
   
   app$set_inputs(SCD_es_calculator = "Multiple-Series Calculator")
-# can't read the data file
+  
   if (str_detect(file, "csv")) {
     app$set_inputs(dat_type = "dat")
     app$upload_file(dat = data_path)
@@ -480,6 +477,7 @@ check_load <- function(app, file, digits = 4, Kendall = FALSE) {
   app$wait_for_idle()
   
   app$set_inputs(BatchEntryTabs = "Variables")
+  app$wait_for_idle()
   
   app$set_inputs(
     b_clusters = "Case_pseudonym",
@@ -490,7 +488,7 @@ check_load <- function(app, file, digits = 4, Kendall = FALSE) {
   )
   
   app$set_inputs(BatchEntryTabs = "Estimate")
-  
+  app$wait_for_idle()
   app$set_inputs(
     bESno = c("IRD","NAP","PAND","PEM","PND","Tau","Tau_BC","Tau_U"),
     bESpar = c("LOR","LRRd","LRRi","LRM","SMD")
@@ -499,7 +497,6 @@ check_load <- function(app, file, digits = 4, Kendall = FALSE) {
   app$set_inputs(btau_calculation = if (Kendall) "Kendall" else "Nlap")
   
   app$set_inputs(batchest = "click")
-  Sys.sleep(2)
   
   output_app <- app$get_value(output = "batchTable")
   
@@ -509,9 +506,6 @@ check_load <- function(app, file, digits = 4, Kendall = FALSE) {
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
 }
-
-
-#block 8
 
 test_that("Data are uploaded correctly.", {
   
@@ -564,7 +558,7 @@ test_that("Data are uploaded correctly.", {
   expect_equal(output_csv, McKissick_pkg, ignore_attr = TRUE, tolerance = 1e-4)
   expect_equal(output_xlsx, McKissick_pkg, ignore_attr = TRUE, tolerance = 1e-4)
 })
-
+#block 19
 test_that("calcPhasePair works in the app.", {
   skip_on_cran()
   
@@ -572,16 +566,22 @@ test_that("calcPhasePair works in the app.", {
   Parametrics <- c("LRRd","LRRi","LRM","SMD")
   
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
+  on.exit(app$stop(), add = TRUE)
   data_path <- testthat::test_path("..", "testdata", "ex_issue73.csv")
   
   app$set_inputs(
     SCD_es_calculator = "Multiple-Series Calculator",
     dat_type = "dat"
   )
+  
   app$upload_file(dat = data_path)
   
   app$set_inputs(BatchEntryTabs = "Variables", calcPhasePair = TRUE)
-  app$set_inputs(b_clusters = c("Behavior_type", "Case_pseudonym"))
+  
+  app$set_inputs(
+    b_clusters = c("Behavior_type", "Case_pseudonym")
+  )
+  
   app$set_inputs(
     b_aggregate = "phase_pair_calculated",
     b_phase = "Condition",
@@ -589,14 +589,22 @@ test_that("calcPhasePair works in the app.", {
     b_out = "Outcome",
     bimprovement = "series"
   )
+  
   app$set_inputs(bseldir = "Direction")
   
-  app$set_inputs(BatchEntryTabs = "Estimate", bESno = NOMs, bESpar = Parametrics)
-  app$set_inputs(boutScale = "series")
-  app$set_inputs(bscalevar = "Metric", bdigits = 4)
-  app$set_inputs(batchest = "click")
+  app$set_inputs(
+    BatchEntryTabs = "Estimate",
+    bESno = NOMs,
+    bESpar = Parametrics
+  )
   
-  Sys.sleep(2)
+  app$set_inputs(
+    boutScale = "series",
+    bscalevar = "Metric",
+    bdigits = 4
+  )
+  
+  app$set_inputs(batchest = "click")
   
   output_app <- app$get_value(output = "batchTable")
   output_app_table <-
@@ -605,7 +613,6 @@ test_that("calcPhasePair works in the app.", {
     as.data.frame() %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
-  
   data <- read.csv(data_path)
   
   dat <-
@@ -637,33 +644,37 @@ test_that("calcPhasePair works in the app.", {
       pretest_trend = FALSE,
       format = "long"
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 4L)))
+    mutate(across(Est:CI_upper, ~ round(., 4L)))%>%
+    as.data.frame()
   
   expect_equal(output_app_table, output_pkg, check.attributes = FALSE)
 })
-
+#block 20
 check_bint_bobslen <- function(file, bint = NA, bobslen = NA) {
   
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
-  data_path <- file.path("..", "testdata", file)
+  data_path <- testthat::test_path("..", "testdata", file)
   # data_path <- paste0("tests/testdata/", file)
   
   app$set_inputs(SCD_es_calculator = "Multiple-Series Calculator")
   app$set_inputs(dat_type = "dat")
-  app$set_inputs(dat = upload_file(data_path))
+  app$upload_file(dat = data_path)
   app$set_inputs(BatchEntryTabs = "Variables")
   app$set_inputs(b_clusters = "Case_pseudonym")
   app$set_inputs(session_number = "Session_number")
   app$set_inputs(BatchEntryTabs = "Plot")
   app$set_inputs(BatchEntryTabs = "Estimate")
+  app$set_inputs(b_phase = "Condition")
+  app$set_inputs(b_out = "Outcome")
+  app$set_inputs(bimprovement = "increase")
+  app$set_inputs(boutScale = "Percentage")
   app$set_inputs(bESpar = c("LOR", "LRRi", "LRRd"))
   app$set_inputs(bintervals = bint)
   app$set_inputs(bobslength = bobslen)
   app$set_inputs(bdigits = 4)
   app$set_inputs(batchest = "click")
-  
-  Sys.sleep(2)
-  
+  #I tried this but it also comes out with error
+  #app$wait_for_idle()
   output_app <- app$get_value(output = "batchTable")
   
   output_app_table <-
@@ -676,7 +687,6 @@ check_bint_bobslen <- function(file, bint = NA, bobslen = NA) {
   return(output_app_table)
   
 }
-
 test_that("The bintervals and bobslength options work in the app.", {
   
   skip_on_cran()
@@ -685,7 +695,7 @@ test_that("The bintervals and bobslength options work in the app.", {
   out_app_1 <- check_bint_bobslen(file = "ex_issue74.csv", bint = "n_intervals1", bobslen = "Session_length1")
   out_app_2 <- check_bint_bobslen(file = "ex_issue74.csv", bint = "n_intervals2", bobslen = "Session_length2")
   
-  data <- read.csv("../testdata/ex_issue74.csv")
+  data <- read.csv(testthat::test_path("..", "testdata", "ex_issue74.csv"))
   out_pkg_1 <-
     batch_calc_ES(dat = data,
                   grouping = c(Case_pseudonym),
@@ -697,7 +707,7 @@ test_that("The bintervals and bobslength options work in the app.", {
                   ES = c("LOR", "LRRd", "LRRi"),
                   improvement = "increase",
                   pct_change = FALSE,
-                  scale = "percentage",
+                  scale = "Percentage",
                   intervals = n_intervals1,
                   observation_length = Session_length1,
                   D_const = NA,
@@ -707,7 +717,8 @@ test_that("The bintervals and bobslength options work in the app.", {
                   pretest_trend = FALSE,
                   format = "long"
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 4L))) 
+    mutate(across(Est:CI_upper, ~ round(., 4L)))%>%
+    as.data.frame()
   
   out_pkg_2 <-
     batch_calc_ES(dat = data,
@@ -720,7 +731,7 @@ test_that("The bintervals and bobslength options work in the app.", {
                   ES = c("LOR", "LRRd", "LRRi"),
                   improvement = "increase",
                   pct_change = FALSE,
-                  scale = "percentage",
+                  scale = "Percentage",
                   intervals = n_intervals2,
                   observation_length = Session_length2,
                   D_const = NA,
@@ -730,7 +741,9 @@ test_that("The bintervals and bobslength options work in the app.", {
                   pretest_trend = FALSE,
                   format = "long"
     ) %>%
-    mutate(across(Est:CI_upper, ~ round(., 4L))) 
+    mutate(across(Est:CI_upper, ~ round(., 4L)))%>%
+    as.data.frame()
+  # the results did not match,it might be calculation error?
   
   expect_error(expect_equal(out_app_NA, out_app_1, check.attributes = FALSE))
   expect_error(expect_equal(out_app_NA, out_app_2, check.attributes = FALSE))
@@ -738,46 +751,51 @@ test_that("The bintervals and bobslength options work in the app.", {
   expect_equal(out_app_2, out_pkg_2, check.attributes = FALSE)
   
 })
-
-
+#block 21
 check_PoGO <- function(file) {
   
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
-  data_path <- file.path("..", "testdata", file)
+  data_path <- testthat::test_path("..", "testdata", file)
   
   app$set_inputs(SCD_es_calculator = "Multiple-Series Calculator")
   
   if (str_detect(file, "csv")) {
     app$set_inputs(dat_type = "dat")
-    app$set_inputs(dat = upload_file(data_path))
+    app$upload_file(dat = data_path)
     app$wait_for_idle()
   } else if (str_detect(file, "xlsx")) {
     app$set_inputs(dat_type = "xlsx")
-    aapp$set_inputs(xlsx = upload_file(data_path))
+    app$upload_file(xlsx = data_path)
     app$wait_for_idle()
   }
   
   app$set_inputs(BatchEntryTabs = "Variables")
+  app$wait_for_idle()
   app$set_inputs(calcPhasePair = TRUE)
+  app$wait_for_idle()
   app$set_inputs(b_clusters = c("Study_ID", "Study_Case_ID"))
   app$set_inputs(b_aggregate = "phase_pair_calculated")
   app$set_inputs(b_phase = "Condition")
   app$set_inputs(session_number = "Session_number")
   app$set_inputs(b_out = "Outcome")
+  app$wait_for_idle()
   app$set_inputs(BatchEntryTabs = "Plot")
   app$set_inputs(BatchEntryTabs = "Estimate")
   app$set_inputs(bESpar = c("PoGO"))
+  app$wait_for_idle()
   app$set_inputs(bgoalLevel = c("goals"))
   app$set_inputs(bgoalvar = c("Goal_Level"))
+  app$wait_for_idle()
   app$set_inputs(bdigits = 4)
+  app$wait_for_idle()
   app$set_inputs(batchest = "click")
   
-  Sys.sleep(2)
+  app$wait_for_idle()
   
   output_app <- app$get_value(output = "batchTable")
   
   output_app_table <-
-    read_html(output_app) %>% 
+    read_html(output_app) %>%
     html_table(fill = TRUE) %>%
     as.data.frame() %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
@@ -786,7 +804,7 @@ check_PoGO <- function(file) {
   return(output_app_table)
   
 }
-
+#block 22
 test_that("The multiple series calculator works for PoGO.", {
   
   skip_on_cran()
@@ -799,10 +817,14 @@ test_that("The multiple series calculator works for PoGO.", {
     check_PoGO(file = "CSESdata.xlsx") %>%
     mutate(Study_ID = as.character(Study_ID))
   
-  data <- read.csv("../testdata/CSESdata.csv") %>%
+  data <- read.csv(
+    testthat::test_path("..", "testdata", "CSESdata.csv")
+  ) %>%
     janitor::clean_names(case = "parsed")
   
-  xlsx_data <- readxl::read_excel("../testdata/CSESdata.xlsx") %>%
+  xlsx_data <- readxl::read_excel(
+    testthat::test_path("..", "testdata", "CSESdata.xlsx")
+  ) %>%
     janitor::clean_names(case = "parsed")
   
   out_pkg_csv <-
@@ -868,18 +890,16 @@ test_that("The multiple series calculator works for PoGO.", {
   
   
 })
-
-
 test_that("The warning message is shown when an outcome measurement type is not acceptable.", {
   
   skip_on_cran()
   
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
-  data_path <- file.path("..", "testdata/warnings_issue.csv")
-  
+  data_path <- testthat::test_path("..", "testdata", "warnings_issue.csv")
   app$set_inputs(SCD_es_calculator = "Multiple-Series Calculator")
   app$set_inputs(dat_type = "dat")
-  app$set_inputs(dat = upload_file(data_path))
+  app$upload_file(dat = data_path)
+  
   
   app$set_inputs(BatchEntryTabs = "Variables")
   app$set_inputs(calcPhasePair = TRUE)
@@ -894,12 +914,12 @@ test_that("The warning message is shown when an outcome measurement type is not 
   app$set_inputs(boutScale = "series")
   app$set_inputs(bscalevar = "Procedure")
   
-  Sys.sleep(2)
+  app$wait_for_idle()
   
   warning_html <- app$get_value(output = "outcomeScale")
   warning <- sub(".*>The", "The", warning_html)
   warning <- sub("other.*", "other.", warning)
-  
+  warning <- warning[1]
   expect_equal(warning,
                "The scale variable contains non-acceptable types: blah. The acceptable scale types are: count, rate, proportion, percentage, or other.")
   
@@ -911,12 +931,11 @@ test_that("The warning message is shown when an improvement direction is not acc
   skip_on_cran()
   
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
-  data_path <- file.path("..", "testdata/warnings_issue.csv")
+  data_path <- testthat::test_path("..", "testdata", "warnings_issue.csv")
   
   app$set_inputs(SCD_es_calculator = "Multiple-Series Calculator")
   app$set_inputs(dat_type = "dat")
-  app$set_inputs(dat = upload_file(data_path))
-  
+  app$upload_file(dat = data_path)
   app$set_inputs(BatchEntryTabs = "Variables")
   app$set_inputs(calcPhasePair = TRUE)
   app$set_inputs(b_clusters = c("Study_ID", "Study_Case_ID"))
@@ -927,11 +946,13 @@ test_that("The warning message is shown when an improvement direction is not acc
   app$set_inputs(bimprovement = "series")
   app$set_inputs(bseldir = "Direction")
   
+  app$wait_for_idle()
   
   warning_html <- app$get_value(output = "improvementDir")
   warning <- sub(".*>The", "The", warning_html)
   warning <- sub("decrease.*", "decrease.", warning)
-  
+  # The warning output is returned  a “list()” with two elements, so its length is 2.
+  warning <- warning[1]
   expect_equal(warning,
                "The improvement direction variable contains non-acceptable types: incrase, direction. The acceptable improvement directions are: increase or decrease.")
   
