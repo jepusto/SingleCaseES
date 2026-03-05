@@ -460,7 +460,7 @@ test_that("Batch calculator is correct", {
   expect_equal(Olszewski_pkg_Kendall, Olszewski_app_Kendall, check.attributes = FALSE)
 })
 
-check_load <- function(app, file, digits = 4, Kendall = FALSE) {
+check_load <- function(app, file, digits = 6, Kendall = FALSE) {
   
   data_path <- testthat::test_path("..", "testdata", file)
   
@@ -493,9 +493,16 @@ check_load <- function(app, file, digits = 4, Kendall = FALSE) {
     bESno = c("IRD","NAP","PAND","PEM","PND","Tau","Tau_BC","Tau_U"),
     bESpar = c("LOR","LRRd","LRRi","LRM","SMD")
   )
-  app$set_inputs(boutScale = "count", bdigits = digits)
+  
+  app$wait_for_idle()
+  
+  app$set_inputs(
+    boutScale = "count", 
+    bdigits = digits
+  )
   app$set_inputs(btau_calculation = if (Kendall) "Kendall" else "Nlap")
   
+  # app$wait_for_idle()
   app$set_inputs(batchest = "click")
   
   output_app <- app$get_value(output = "batchTable")
@@ -545,19 +552,14 @@ test_that("Data are uploaded correctly.", {
                   pretest_trend = FALSE,
                   format = "long",
                   warn = FALSE
-    )
-  
-  output_csv <- output_csv %>% 
-    mutate(across(Est:baseline_SD, ~ round(as.numeric(.), 4L)))
-  
-  McKissick_pkg <- 
-    McKissick_pkg %>% 
-    mutate(across(Est:baseline_SD, ~ round(as.numeric(.), 4L))) %>%
+    ) %>% 
+    mutate(across(Est:baseline_SD, ~ round(as.numeric(.), 6L))) %>%
     as.data.frame()
   
   expect_equal(output_csv, McKissick_pkg, ignore_attr = TRUE, tolerance = 1e-4)
   expect_equal(output_xlsx, McKissick_pkg, ignore_attr = TRUE, tolerance = 1e-4)
 })
+
 #block 19
 test_that("calcPhasePair works in the app.", {
   skip_on_cran()
@@ -649,32 +651,32 @@ test_that("calcPhasePair works in the app.", {
   
   expect_equal(output_app_table, output_pkg, check.attributes = FALSE)
 })
+
 #block 20
 check_bint_bobslen <- function(file, bint = NA, bobslen = NA) {
   
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
   data_path <- testthat::test_path("..", "testdata", file)
-  # data_path <- paste0("tests/testdata/", file)
-  
+
   app$set_inputs(SCD_es_calculator = "Multiple-Series Calculator")
   app$set_inputs(dat_type = "dat")
   app$upload_file(dat = data_path)
   app$set_inputs(BatchEntryTabs = "Variables")
   app$set_inputs(b_clusters = "Case_pseudonym")
   app$set_inputs(session_number = "Session_number")
-  app$set_inputs(BatchEntryTabs = "Plot")
-  app$set_inputs(BatchEntryTabs = "Estimate")
   app$set_inputs(b_phase = "Condition")
   app$set_inputs(b_out = "Outcome")
+  app$set_inputs(BatchEntryTabs = "Estimate")
+  app$set_inputs(bESpar = c("LOR", "LRRi", "LRRd"))
+  app$wait_for_idle()
   app$set_inputs(bimprovement = "increase")
   app$set_inputs(boutScale = "Percentage")
-  app$set_inputs(bESpar = c("LOR", "LRRi", "LRRd"))
   app$set_inputs(bintervals = bint)
   app$set_inputs(bobslength = bobslen)
   app$set_inputs(bdigits = 4)
+  app$wait_for_idle()
   app$set_inputs(batchest = "click")
-  #I tried this but it also comes out with error
-  #app$wait_for_idle()
+  app$wait_for_idle()
   output_app <- app$get_value(output = "batchTable")
   
   output_app_table <-
@@ -687,6 +689,7 @@ check_bint_bobslen <- function(file, bint = NA, bobslen = NA) {
   return(output_app_table)
   
 }
+
 test_that("The bintervals and bobslength options work in the app.", {
   
   skip_on_cran()
