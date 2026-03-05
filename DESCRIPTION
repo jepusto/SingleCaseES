@@ -47,8 +47,7 @@ Suggests:
     readxl,
     glue,
     janitor,
-    rclipboard,
-    shinytest2
+    rclipboard
 LazyData: TRUE
 RoxygenNote: 7.3.3
 Encoding: UTF-8
