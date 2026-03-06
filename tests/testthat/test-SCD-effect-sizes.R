@@ -506,7 +506,7 @@ check_load <- function(app, file, digits = 4, Kendall = FALSE) {
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
 }
-
+#block 18
 test_that("Data are uploaded correctly.", {
   
   skip_on_cran()
@@ -744,7 +744,6 @@ test_that("The bintervals and bobslength options work in the app.", {
     mutate(across(Est:CI_upper, ~ round(., 4L)))%>%
     as.data.frame()
   # the results did not match,it might be calculation error?
-  
   expect_error(expect_equal(out_app_NA, out_app_1, check.attributes = FALSE))
   expect_error(expect_equal(out_app_NA, out_app_2, check.attributes = FALSE))
   expect_equal(out_app_1, out_pkg_1, check.attributes = FALSE)
