@@ -607,14 +607,16 @@ test_that("calcPhasePair works in the app.", {
   )
   
   app$set_inputs(batchest = "click")
-  
+  app$wait_for_idle()
   output_app <- app$get_value(output = "batchTable")
+  app$wait_for_idle()
   output_app_table <-
-    read_html(output_app) %>%
+    xml2::read_html(output_app)%>%
     html_table(fill = TRUE) %>%
     as.data.frame() %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
+  app$wait_for_idle()
   data <- read.csv(data_path)
   
   dat <-
@@ -945,16 +947,23 @@ test_that("The warning message is shown when an improvement direction is not acc
   app$set_inputs(dat_type = "dat")
   app$upload_file(dat = data_path)
   app$set_inputs(BatchEntryTabs = "Variables")
+  app$wait_for_idle()
   app$set_inputs(calcPhasePair = TRUE)
   app$set_inputs(b_clusters = c("Study_ID", "Study_Case_ID"))
   app$set_inputs(b_aggregate = "phase_pair_calculated")
+  app$wait_for_idle()
   app$set_inputs(b_phase = "Condition")
+  app$wait_for_idle()
   app$set_inputs(session_number = "Session_number")
+  app$wait_for_idle()
   app$set_inputs(b_out = "Outcome")
+  app$wait_for_idle()
   app$set_inputs(bimprovement = "series")
+  app$wait_for_idle()
   app$set_inputs(bseldir = "Direction")
   app$wait_for_idle()
   warning_html <- app$get_value(output = "improvementDir")
+  app$wait_for_idle()
   warning <- sub(".*>The", "The", warning_html)
   warning <- sub("decrease.*", "decrease.", warning)
   warning <- warning[1]
