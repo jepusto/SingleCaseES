@@ -899,10 +899,12 @@ test_that("The warning message is shown when an outcome measurement type is not 
   
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
   data_path <- testthat::test_path("..", "testdata", "warnings_issue.csv")
+  app$wait_for_idle()
   app$set_inputs(SCD_es_calculator = "Multiple-Series Calculator")
+  app$wait_for_idle()
   app$set_inputs(dat_type = "dat")
+  app$wait_for_idle()
   app$upload_file(dat = data_path)
-  
   
   app$set_inputs(BatchEntryTabs = "Variables")
   app$set_inputs(calcPhasePair = TRUE)
@@ -913,17 +915,20 @@ test_that("The warning message is shown when an outcome measurement type is not 
   app$set_inputs(b_out = "Outcome")
   app$set_inputs(BatchEntryTabs = "Plot")
   app$set_inputs(BatchEntryTabs = "Estimate")
+  app$wait_for_idle()
   app$set_inputs(bESpar = c("LRRi"))
+  app$wait_for_idle()
   app$set_inputs(boutScale = "series")
+  app$wait_for_idle()
   app$set_inputs(bscalevar = "Procedure")
-  
-  
+  app$wait_for_idle()
   warning_html <- app$get_value(output = "outcomeScale")
   app$wait_for_idle()
-  warning <- sub(".*>The", "The", warning_html)
-  warning <- sub("other.*", "other.", warning)
-  warning <- warning[1]
-  expect_equal(warning,
+  warning_msg <- sub(".*>The", "The", warning_html)
+  app$wait_for_idle()
+  warning_msg <- sub("other.*", "other.", warning_msg)
+  warning_msg <- warning_msg[1]
+  expect_equal(warning_msg,
                "The scale variable contains non-acceptable types: blah. The acceptable scale types are: count, rate, proportion, percentage, or other.")
   
   
@@ -948,12 +953,10 @@ test_that("The warning message is shown when an improvement direction is not acc
   app$set_inputs(b_out = "Outcome")
   app$set_inputs(bimprovement = "series")
   app$set_inputs(bseldir = "Direction")
-  
-  warning_html <- app$get_value(output = "improvementDir")
   app$wait_for_idle()
+  warning_html <- app$get_value(output = "improvementDir")
   warning <- sub(".*>The", "The", warning_html)
   warning <- sub("decrease.*", "decrease.", warning)
-  # The warning output is returned  a “list()” with two elements, so its length is 2.
   warning <- warning[1]
   expect_equal(warning,
                "The improvement direction variable contains non-acceptable types: incrase, direction. The acceptable improvement directions are: increase or decrease.")
