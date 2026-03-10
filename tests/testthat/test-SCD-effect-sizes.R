@@ -579,11 +579,11 @@ test_that("calcPhasePair works in the app.", {
   app$upload_file(dat = data_path)
   
   app$set_inputs(BatchEntryTabs = "Variables", calcPhasePair = TRUE)
-  
+  app$wait_for_idle()
   app$set_inputs(
     b_clusters = c("Behavior_type", "Case_pseudonym")
   )
-  
+  app$wait_for_idle()
   app$set_inputs(
     b_aggregate = "phase_pair_calculated",
     b_phase = "Condition",
@@ -591,15 +591,15 @@ test_that("calcPhasePair works in the app.", {
     b_out = "Outcome",
     bimprovement = "series"
   )
-  
+  app$wait_for_idle()
   app$set_inputs(bseldir = "Direction")
-  
+  app$wait_for_idle()
   app$set_inputs(
     BatchEntryTabs = "Estimate",
     bESno = NOMs,
     bESpar = Parametrics
   )
-  
+  app$wait_for_idle()
   app$set_inputs(
     boutScale = "series",
     bscalevar = "Metric",
@@ -609,10 +609,13 @@ test_that("calcPhasePair works in the app.", {
   app$set_inputs(batchest = "click")
   app$wait_for_idle()
   output_app <- app$get_value(output = "batchTable")
+  if (is.list(output_app)) {
+    output_app <- output_app[[1]]
+  }
   app$wait_for_idle()
   output_app_table <-
     xml2::read_html(output_app)%>%
-    rvest::html_table(fill = TRUE) %>%
+    html_table(fill = TRUE) %>%
     as.data.frame() %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
