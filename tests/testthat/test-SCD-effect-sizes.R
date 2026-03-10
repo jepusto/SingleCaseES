@@ -612,7 +612,7 @@ test_that("calcPhasePair works in the app.", {
   app$wait_for_idle()
   output_app_table <-
     xml2::read_html(output_app)%>%
-    html_table(fill = TRUE) %>%
+    rvest::html_table(fill = TRUE) %>%
     as.data.frame() %>%
     mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
     mutate(across(Est:CI_upper, as.numeric))
