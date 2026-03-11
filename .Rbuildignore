@@ -14,7 +14,7 @@ README.md
 ^docs$
 ^pkgdown$
 ^codecov\.yml$
-inst/shiny-examples/SCD-effect-sizes/rsconnect/shinyapps.io/jepusto/SCD-effect-sizes.dcf
+inst/shiny-examples/SCD-effect-sizes/rsconnect
 ^CRAN-SUBMISSION$
 ^init.R$
 ^run.R$
