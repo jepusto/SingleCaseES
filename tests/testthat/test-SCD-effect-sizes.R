@@ -1,5 +1,5 @@
+#Initializing the test environment
 data("McKissick", package = "SingleCaseES")
-#skip("Need to refactor Shiny app tests using shinytest2.")
 skip_if_not_installed("shiny")
 skip_if_not_installed("shinytest2")
 skip_if_not_installed("stringr")
@@ -22,14 +22,12 @@ suppressWarnings(library(xml2))
 suppressWarnings(library(purrr))
 suppressWarnings(library(shinytest2))
 
-#skip_if_not(dependenciesInstalled())
 
 appDir <- system.file("shiny-examples", "SCD-effect-sizes", package = "SingleCaseES")
-
+# Title and tabs
 test_that("Title and tabs are correct", {
   
   skip_on_cran()
-  #ShinyDriver$new -> AppDriver$new
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
   
   app$wait_for_idle()
@@ -44,11 +42,10 @@ test_that("Title and tabs are correct", {
 })
 
 
-
+#check_single function
 check_single <- function(app, ES, ES_family, A_data, B_data, Kendall = FALSE, goal = NULL) {
   
   improvement <- ifelse(ES == "LRRd", "decrease", "increase")
-  # CHANGED: setInputs -> set_inputs
   app$set_inputs(
     SCD_es_calculator = "Single-Series Calculator",
     A_dat = toString(A_data),
@@ -73,14 +70,13 @@ check_single <- function(app, ES, ES_family, A_data, B_data, Kendall = FALSE, go
   }
   
   app$set_inputs(improvement = improvement, digits = 5)
-  # CHANGED: getValue(name=) -> get_value(output=)
   output_ES_name <- app$get_value(output = "ES_name")
   output_ES_value <- app$get_value(output = "result")
   
   return(data.frame(ES_name = output_ES_name, ES_value = output_ES_value))
   
 }
-
+# test Single-entry calculator
 test_that("Single-entry calculator works properly", {
   skip_on_cran()
   
@@ -176,7 +172,7 @@ test_that("Single-entry calculator works properly", {
   
   expect_equal(Kendall_app_res, Kendall_pkg_res, check.attributes = FALSE)
 })
-
+#check_batch function
 check_batch <- function(app, example_dat, ES, digits = 4, goal = NULL, Kendall = FALSE) {
   NOMs <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U")
   Parametrics <- c("LOR", "LRRd", "LRRi", "LRM", "PoGO", "SMD")
@@ -209,22 +205,17 @@ check_batch <- function(app, example_dat, ES, digits = 4, goal = NULL, Kendall =
   )
   
   app$set_inputs(btau_calculation = if (Kendall) "Kendall" else "Nlap")
-  app$set_inputs(bcomgoal = goal)
-  
-  app$set_inputs(batchest = "click")
-  
   app$wait_for_idle()
-  
+  app$set_inputs(bcomgoal = goal)
+  app$wait_for_idle()
+  app$set_inputs(batchest = "click")
+  app$wait_for_idle()
   output_app <- app$get_value(output = "batchTable")
-  
-  tbl <- rvest::html_table(rvest::read_html(output_app), fill = TRUE)[[1]]
-  tbl[tbl == "-"] <- NA
-  tbl[, intersect(c("Est","SE","CI_lower","CI_upper","baseline_SD"), names(tbl))] <-
-    lapply(tbl[, intersect(c("Est","SE","CI_lower","CI_upper","baseline_SD"), names(tbl)), drop = FALSE], as.numeric)
-  tbl
-  
+  tbl <- read_html(output_app) %>%
+    html_table(fill = TRUE,convert = TRUE,na.strings = "-") %>%
+    .[[1]]
 }
-
+#test Batch calculator
 test_that("Batch calculator is correct", {
   skip_on_cran()
   
@@ -236,7 +227,6 @@ test_that("Batch calculator is correct", {
   )
   
   expect_error(check_batch(app, example_dat = "McKissick", ES = all_names, Kendall = FALSE, goal = NULL))
-  
   
   McKissick_app <-
     check_batch(app, example_dat = "McKissick", ES = all_names, Kendall = FALSE, goal = 1) %>%
@@ -275,7 +265,7 @@ test_that("Batch calculator is correct", {
       warn = FALSE
     ) %>%
     mutate(across(Est:CI_upper, ~ round(., 4L))) %>%
-    dplyr::select(-baseline_SD)
+    select(-baseline_SD)
   
   data(Schmidt2007)
   Schmidt_pkg <-
@@ -460,6 +450,7 @@ test_that("Batch calculator is correct", {
   expect_equal(Olszewski_pkg_Kendall, Olszewski_app_Kendall, check.attributes = FALSE)
 })
 
+#check_load function
 check_load <- function(app, file, digits = 6, Kendall = FALSE) {
   
   data_path <- testthat::test_path("..", "testdata", file)
@@ -502,18 +493,17 @@ check_load <- function(app, file, digits = 6, Kendall = FALSE) {
   )
   app$set_inputs(btau_calculation = if (Kendall) "Kendall" else "Nlap")
   
-  # app$wait_for_idle()
   app$set_inputs(batchest = "click")
   
   output_app <- app$get_value(output = "batchTable")
   
   read_html(output_app) %>%
-    html_table(fill = TRUE) %>%
-    as.data.frame() %>%
-    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
-    mutate(across(Est:CI_upper, as.numeric))
-}
+    html_table(fill = TRUE,convert = TRUE,na.strings = "-") %>%
+    .[[1]] %>%
+    as.data.frame()
 
+}
+# test data uploaded
 test_that("Data are uploaded correctly.", {
   
   skip_on_cran()
@@ -523,12 +513,13 @@ test_that("Data are uploaded correctly.", {
   # csv file
   output_csv <- 
     check_load(app, "McKissick.csv") %>% 
-    mutate(baseline_SD = as.numeric(if_else(baseline_SD == "-", NA_character_, baseline_SD)))
+    mutate(baseline_SD = as.numeric(baseline_SD))
+  
   
   # excel file
   output_xlsx <- 
     check_load(app, "McKissick.xlsx") %>% 
-    mutate(baseline_SD = as.numeric(if_else(baseline_SD == "-", NA_character_, baseline_SD)))
+    mutate(baseline_SD = as.numeric(baseline_SD))
   
   all_names <- c("IRD", "NAP", "PAND", "PEM", "PND", "Tau", "Tau_BC", "Tau_U",
                  "LOR", "LRRd", "LRRi", "LRM", "SMD")
@@ -559,8 +550,7 @@ test_that("Data are uploaded correctly.", {
   expect_equal(output_csv, McKissick_pkg, ignore_attr = TRUE, tolerance = 1e-4)
   expect_equal(output_xlsx, McKissick_pkg, ignore_attr = TRUE, tolerance = 1e-4)
 })
-
-#block 19
+# test calcPhasePair
 test_that("calcPhasePair works in the app.", {
   skip_on_cran()
   
@@ -614,11 +604,10 @@ test_that("calcPhasePair works in the app.", {
   }
   app$wait_for_idle()
   output_app_table <-
-    xml2::read_html(output_app)%>%
-    html_table(fill = TRUE) %>%
-    as.data.frame() %>%
-    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
-    mutate(across(Est:CI_upper, as.numeric))
+  read_html(output_app) %>%
+  html_table(fill = TRUE, convert = TRUE, na.strings = "-") %>%
+  .[[1]] %>%
+  as.data.frame()
   app$wait_for_idle()
   data <- read.csv(data_path)
   
@@ -656,8 +645,7 @@ test_that("calcPhasePair works in the app.", {
   
   expect_equal(output_app_table, output_pkg, check.attributes = FALSE)
 })
-
-#block 20
+# check_bint_bobslen function
 check_bint_bobslen <- function(file, bint = NA, bobslen = NA) {
   
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
@@ -685,16 +673,15 @@ check_bint_bobslen <- function(file, bint = NA, bobslen = NA) {
   output_app <- app$get_value(output = "batchTable")
   
   output_app_table <-
-    read_html(output_app) %>% 
-    html_table(fill = TRUE) %>%
-    as.data.frame() %>%
-    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
-    mutate(across(Est:CI_upper, as.numeric))
+    read_html(output_app) %>%
+    html_table(fill = TRUE, convert = TRUE, na.strings = "-") %>%
+    .[[1]] %>%
+    as.data.frame()
   
   return(output_app_table)
   
 }
-
+#test bintervals and bobslength
 test_that("The bintervals and bobslength options work in the app.", {
   
   skip_on_cran()
@@ -751,7 +738,6 @@ test_that("The bintervals and bobslength options work in the app.", {
     ) %>%
     mutate(across(Est:CI_upper, ~ round(., 4L)))%>%
     as.data.frame()
-  # the results did not match,it might be calculation error?
   
   expect_error(expect_equal(out_app_NA, out_app_1, check.attributes = FALSE))
   expect_error(expect_equal(out_app_NA, out_app_2, check.attributes = FALSE))
@@ -759,7 +745,7 @@ test_that("The bintervals and bobslength options work in the app.", {
   expect_equal(out_app_2, out_pkg_2, check.attributes = FALSE)
   
 })
-#block 21
+# check_PoGO function
 check_PoGO <- function(file) {
   
   app <- AppDriver$new(appDir, load_timeout = 6e+05)
@@ -804,15 +790,14 @@ check_PoGO <- function(file) {
   
   output_app_table <-
     read_html(output_app) %>%
-    html_table(fill = TRUE) %>%
-    as.data.frame() %>%
-    mutate(across(Est:CI_upper, ~ ifelse(. == "-", NA, .))) %>%
-    mutate(across(Est:CI_upper, as.numeric))
+    html_table(fill = TRUE, convert = TRUE, na.strings = "-") %>%
+    .[[1]] %>%
+    as.data.frame()
   
   return(output_app_table)
   
 }
-#block 22
+#test multiple series calculator
 test_that("The multiple series calculator works for PoGO.", {
   
   skip_on_cran()
@@ -898,6 +883,7 @@ test_that("The multiple series calculator works for PoGO.", {
   
   
 })
+#test warning message
 test_that("The warning message is shown when an outcome measurement type is not acceptable.", {
   
   skip_on_cran()
