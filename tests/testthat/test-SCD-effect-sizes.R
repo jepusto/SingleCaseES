@@ -797,7 +797,6 @@ check_PoGO <- function(file) {
   
   output_app <- app$get_value(output = "batchTable")
   
-  browser()
   output_app_table <-
     read_html(output_app) %>%
     html_table(fill = TRUE, convert = TRUE, na.strings = "-") %>%
