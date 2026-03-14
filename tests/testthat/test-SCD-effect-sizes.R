@@ -748,7 +748,6 @@ test_that("The bintervals and bobslength options work in the app.", {
     mutate(across(Est:CI_upper, ~ round(., 4L)))%>%
     as.data.frame()
   
-  browser()
   expect_error(expect_equal(out_app_NA, out_app_1, check.attributes = FALSE))
   expect_error(expect_equal(out_app_NA, out_app_2, check.attributes = FALSE))
   expect_equal(out_app_1, out_pkg_1, check.attributes = FALSE)
