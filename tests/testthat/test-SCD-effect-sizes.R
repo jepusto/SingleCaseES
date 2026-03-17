@@ -457,7 +457,7 @@ check_load <- function(app, file, digits = 6, Kendall = FALSE) {
   data_path <- testthat::test_path("..", "testdata", file)
   
   app$set_inputs(SCD_es_calculator = "Multiple-Series Calculator")
-  
+  app$wait_for_idle()
   if (str_detect(file, "csv")) {
     app$set_inputs(dat_type = "dat")
     app$upload_file(dat = data_path)
@@ -478,7 +478,7 @@ check_load <- function(app, file, digits = 6, Kendall = FALSE) {
     b_out = "Outcome",
     bimprovement = "decrease"
   )
-  
+  app$wait_for_idle()
   app$set_inputs(BatchEntryTabs = "Estimate")
   app$wait_for_idle()
   app$set_inputs(
@@ -493,9 +493,9 @@ check_load <- function(app, file, digits = 6, Kendall = FALSE) {
     bdigits = digits
   )
   app$set_inputs(btau_calculation = if (Kendall) "Kendall" else "Nlap")
-  
+  app$wait_for_idle()
   app$set_inputs(batchest = "click")
-  
+  app$wait_for_idle()
   output_app <- app$get_value(output = "batchTable")
   
   read_html(output_app) %>%
