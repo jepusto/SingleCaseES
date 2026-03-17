@@ -7,7 +7,7 @@ Authors@R: c(
   person("Man", "Chen", email = "manchen9005@gmail.com", role = "aut"),
   person(c("Daniel","M."), "Swan", email = "dms031000@gmail.com", role = "aut"),
   person("Paulina", "Grekov", email = "grekov.paulina@gmail.com", role = "ctb"),
-  person("Amy", "Cai", email = "", role = "ctb")
+  person("Amy", "Cai", email = "amycai2023@gmail.com", role = "ctb")
   )
 Description: 
   Provides R functions for calculating basic effect size indices for 
@@ -36,7 +36,6 @@ Suggests:
     shinytest2 (>= 0.5.0),
     stringr,
     rvest,
-    xml2,
     ggplot2,
     purrrlyr,
     testthat,
