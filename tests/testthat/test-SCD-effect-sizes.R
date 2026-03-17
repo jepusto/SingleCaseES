@@ -18,7 +18,6 @@ suppressWarnings(library(dplyr))
 suppressWarnings(library(tidyr))
 suppressWarnings(library(stringr))
 suppressWarnings(library(rvest))
-suppressWarnings(library(xml2))
 suppressWarnings(library(purrr))
 suppressWarnings(library(shinytest2))
 
