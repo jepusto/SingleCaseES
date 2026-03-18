@@ -6,7 +6,8 @@ Authors@R: c(
   person(c("James","E."), "Pustejovsky", email = "jepusto@gmail.com", role = c("aut", "cre")),
   person("Man", "Chen", email = "manchen9005@gmail.com", role = "aut"),
   person(c("Daniel","M."), "Swan", email = "dms031000@gmail.com", role = "aut"),
-  person("Paulina", "Grekov", email = "grekov.paulina@gmail.com", role = "ctb")
+  person("Paulina", "Grekov", email = "grekov.paulina@gmail.com", role = "ctb"),
+  person("Amy", "Cai", email = "amycai2023@gmail.com", role = "ctb")
   )
 Description: 
   Provides R functions for calculating basic effect size indices for 
@@ -19,6 +20,8 @@ Description:
 URL: https://jepusto.github.io/SingleCaseES/
 BugReports: https://github.com/jepusto/SingleCaseES/issues
 License: GPL-3
+Depends: 
+  R (>= 4.1.0)
 Imports:
   stats, 
   purrr,
@@ -30,9 +33,9 @@ Imports:
 Suggests:
     spelling,
     shiny,
+    shinytest2 (>= 0.5.0),
     stringr,
     rvest,
-    xml2,
     ggplot2,
     purrrlyr,
     testthat,
@@ -48,7 +51,7 @@ Suggests:
     janitor,
     rclipboard
 LazyData: TRUE
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 Language: en-US
 VignetteBuilder: knitr, rmarkdown, cleanrmd
