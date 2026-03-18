@@ -1,10 +1,10 @@
 ## Resubmission
 
-This is minor release that includes small bug-fixes in package functions and in the built-in shiny app.
+This is minor release that migrates the unit tests for the built-in shiny app to use the shinytest2 framework.
 
 ## Test environments
 
-* local Windows 11 x64, R 4.4.0
+* local Windows 11 x64, R 4.5.1
 * ubuntu 20.04.3 LTS (on Github), R devel, release, oldrelease
 * macOS-latest (on Github), R release
 * windows-latest (on Github), R release
