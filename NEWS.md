@@ -2,6 +2,8 @@
 
 * Migrated the unit tests for the built-in shiny app to use the shinytest2 framework.
 
+* Migrated the unit tests for the built-in shiny app to use the shinytest2 framework.
+
 # SingleCaseES 0.7.3
 
 * In the SCD_effect_sizes Shiny app:
