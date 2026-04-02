@@ -554,12 +554,7 @@ batch_calc_ES <- function(dat,
         tidyr::pivot_wider(names_from = !!rlang::sym(condition), values_from = n) |>
         dplyr::ungroup() |> 
         dplyr::mutate(
-          weights = dplyr::case_when(
-            weighting %in% c("nA", "n_A") ~ as.numeric(A),
-            weighting %in% c("nB", "n_B") ~ as.numeric(B),
-            weighting %in% c("nAnB", "nA*nB", "nA * nB", "n_A*n_B", "n_A * n_B") ~ as.numeric(A*B),
-            weighting %in% c("1/nA+1/nB", "1/nA + 1/nB", "1/n_A+1/n_B", "1/n_A + 1/n_B") ~ as.numeric(1/A + 1/B)
-          )
+          weights = calc_ES_weights(weighting, A = A, B = B)
         ) |> 
         dplyr::select(-c(A,B))
       
@@ -616,3 +611,18 @@ batch_calc_ES <- function(dat,
   
 }
 
+calc_ES_weights <- function(weighting, A, B) {
+  
+  if (weighting %in% c("nA", "n_A")) {
+    as.numeric(A)
+  }  else if (weighting %in% c("nB", "n_B")) {
+    as.numeric(B)
+  } else if (weighting %in% c("nAnB", "nA*nB", "nA * nB", "n_A*n_B", "n_A * n_B")) {
+    as.numeric(A*B)
+  } else if (weighting %in% c("1/nA+1/nB", "1/nA + 1/nB", "1/n_A+1/n_B", "1/n_A + 1/n_B")) {
+    as.numeric(1/A + 1/B)
+  } else {
+    NULL
+  }
+  
+}
