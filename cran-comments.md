@@ -13,21 +13,11 @@ This is minor release that migrates the unit tests for the built-in shiny app to
 
 ## R CMD check results
 
-There were no ERRORs or WARNINGs. 
-
-There was 1 NOTE:
-
-Found the following (possibly) invalid URLs:
-  URL: https://www.jstor.org/stable/25049448
-    From: man/NAP.Rd
-    Status: 403
-    Message: Forbidden
-    
-  The flagged URL is correct.
+There were no ERRORs or WARNINGs or NOTEs. 
 
 ## revdepcheck results
 
-We checked 1 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+We checked 1 reverse dependency, comparing R CMD check results across CRAN and dev versions of this package.
 
  * We saw 0 new problems
  * We failed to check 0 packages
