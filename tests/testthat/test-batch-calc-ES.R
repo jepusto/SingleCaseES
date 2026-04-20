@@ -598,4 +598,24 @@ test_that("Passing a variable to the scale argument works when the variable is a
   expect_identical(Shogren_DV_scale, Shogren_scale)
   expect_identical(Shogren_DV_scale, Shogren_mean)
 })
-
+test_that("batch_calc_ES() gives informative error when condition has only one level", {
+  
+  bad_dat <- data.frame(
+    case = "A",
+    phase = c("A", "A", "A"),
+    outcome = c(3, 4, 5)
+  )
+  
+  expect_error(
+    batch_calc_ES(
+      dat = bad_dat,
+      grouping = case,
+      condition = phase,
+      outcome = outcome,
+      baseline_phase = "A",
+      intervention_phase = "B",
+      ES = "NAP"
+    ),
+    "Effect size calculation failed"
+  )
+})

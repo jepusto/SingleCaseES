@@ -114,3 +114,24 @@ test_that("trunc_const() works for batched datasets.", {
   )
 
 })
+
+test_that("trunc_constant() handles NULL, scalar, vector, and NA", {
+  
+  res_null <- trunc_constant(NULL, scale = "count")
+  expect_equal(length(res_null), 1)
+  
+  res_scalar <- trunc_constant(5, scale = "count")
+  expect_equal(length(res_scalar), 1)
+  
+  x <- c(1, 2, 3)
+  res_vec <- trunc_constant(x, scale = "count")
+  expect_equal(length(res_vec), 1)
+  
+  res_na <- trunc_constant(NA, scale = "count")
+  expect_equal(length(res_na), 1)
+  
+  y <- c(1, NA, 3)
+  res_vec_na <- trunc_constant(y, scale = "count")
+  expect_equal(length(res_vec_na), 1)
+  
+})

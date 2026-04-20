@@ -456,46 +456,62 @@ batch_calc_ES <- function(dat,
     if (utils::packageVersion("dplyr") >= '1.1.0') {
       dat |>
       dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) |>
-      dplyr::reframe(
-        calc_ES(
-          condition = .data[[condition]],
-          outcome = .data[[outcome]],
-          baseline_phase = baseline_phase,
-          intervention_phase = intervention_phase,
-          ES = ES_names,
-          improvement = .data[[improvement]],
-          scale =  .data[[scale]],
-          intervals = .data[[intervals]],
-          observation_length = .data[[observation_length]],
-          goal = if ("PoGO" %in% ES_names) .data[[goal]] else NULL,
-          confidence = confidence,
-          format = "long",
-          ...,
-          warn = warn
+        dplyr::reframe(
+          tryCatch(
+            calc_ES(
+              condition = .data[[condition]],
+              outcome = .data[[outcome]],
+              baseline_phase = baseline_phase,
+              intervention_phase = intervention_phase,
+              ES = ES_names,
+              improvement = .data[[improvement]],
+              scale =  .data[[scale]],
+              intervals = .data[[intervals]],
+              observation_length = .data[[observation_length]],
+              goal = if ("PoGO" %in% ES_names) .data[[goal]] else NULL,
+              confidence = confidence,
+              format = "long",
+              ...,
+              warn = warn
+            ),
+            error = function(e) {
+              stop(
+                paste0("Effect size calculation failed: ", conditionMessage(e)),
+                call. = FALSE
+              )
+            }
+          )
         )
-      ) 
     } else {
       dat |>
-      dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) |>
-      dplyr::summarise(
-        calc_ES(
-          condition = .data[[condition]],
-          outcome = .data[[outcome]],
-          baseline_phase = baseline_phase,
-          intervention_phase = intervention_phase,
-          ES = ES_names,
-          improvement = .data[[improvement]],
-          scale =  .data[[scale]],
-          intervals = .data[[intervals]],
-          observation_length = .data[[observation_length]],
-          goal = if ("PoGO" %in% ES_names) .data[[goal]] else NULL,
-          confidence = confidence,
-          format = "long",
-          ...,
-          warn = warn
-        ),
-        .groups = "drop"
-      )
+        dplyr::group_by(!!!rlang::syms(c(grouping, aggregate))) |>
+        dplyr::summarise(
+          tryCatch(
+            calc_ES(
+              condition = .data[[condition]],
+              outcome = .data[[outcome]],
+              baseline_phase = baseline_phase,
+              intervention_phase = intervention_phase,
+              ES = ES_names,
+              improvement = .data[[improvement]],
+              scale = .data[[scale]],
+              intervals = .data[[intervals]],
+              observation_length = .data[[observation_length]],
+              goal = if ("PoGO" %in% ES_names) .data[[goal]] else NULL,
+              confidence = confidence,
+              format = "long",
+              ...,
+              warn = warn
+            ),
+            error = function(e) {
+              stop(
+                paste0("Effect size calculation failed: ", conditionMessage(e)),
+                call. = FALSE
+              )
+            }
+          ),
+          .groups = "drop"
+        )
     }
   
   ES_long_names <- names(ES_ests_long)
@@ -624,6 +640,19 @@ calc_ES_weights <- function(weighting, A, B) {
   } else {
     NULL
   }
+  
+  result <- result |>
+    dplyr::mutate(
+      ES = factor(
+        ES,
+        levels = c(
+          "LRRd", "Pct_Change_d",
+          "LRRi", "Pct_Change_i",
+          "NAP", "Tau", "SMD"
+        )
+      )
+    ) |>
+    dplyr::arrange(ES)
   
 }
 
