@@ -503,8 +503,6 @@ check_load <- function(app, file, digits = 6, Kendall = FALSE) {
     .[[1]] %>%
     as.data.frame()
 
-}
-
 
 test_that("Data are uploaded correctly.", {
   
@@ -607,10 +605,10 @@ test_that("calcPhasePair works in the app.", {
   }
   app$wait_for_idle()
   output_app_table <-
-  read_html(output_app) %>%
-  html_table(fill = TRUE, convert = TRUE, na.strings = "-") %>%
-  .[[1]] %>%
-  as.data.frame()
+    read_html(output_app) %>%
+    html_table(fill = TRUE, convert = TRUE, na.strings = "-") %>%
+    .[[1]] %>%
+    as.data.frame()
   app$wait_for_idle()
   data <- read.csv(data_path)
   
