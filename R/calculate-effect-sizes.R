@@ -579,8 +579,6 @@ batch_calc_ES <- function(dat,
         ) |>
         dplyr::ungroup() |> 
         dplyr::mutate(
-          A = ifelse(is.na(A), 0, A),
-          B = ifelse(is.na(B), 0, B),
           weights = calc_ES_weights(weighting, A = A, B = B)
         ) |> 
         dplyr::select(-dplyr::any_of(c("A", "B")))
@@ -641,18 +639,15 @@ batch_calc_ES <- function(dat,
 calc_ES_weights <- function(weighting, A, B) {
   
   if (weighting %in% c("nA", "n_A")) {
-    return(as.numeric(A))
-    
-  } else if (weighting %in% c("nB", "n_B")) {
-    return(as.numeric(B))
-    
+    as.numeric(A)
+  }  else if (weighting %in% c("nB", "n_B")) {
+    as.numeric(B)
   } else if (weighting %in% c("nAnB", "nA*nB", "nA * nB", "n_A*n_B", "n_A * n_B")) {
-    return(as.numeric(A * B))
-    
+    as.numeric(A*B)
   } else if (weighting %in% c("1/nA+1/nB", "1/nA + 1/nB", "1/n_A+1/n_B", "1/n_A + 1/n_B")) {
-    return(as.numeric(1 / A + 1 / B))
-    
+    as.numeric(1/A + 1/B)
   } else {
-    stop("Unsupported weighting argument in calc_ES_weights().")
+    NULL
   }
+  
 }
