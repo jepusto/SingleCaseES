@@ -211,6 +211,7 @@ check_batch <- function(app, example_dat, ES, digits = 4, goal = NULL, Kendall =
   app$set_inputs(batchest = "click")
   app$wait_for_idle()
   output_app <- app$get_value(output = "batchTable")
+  app$wait_for_idle()
   tbl <- read_html(output_app) %>%
     html_table(fill = TRUE,convert = TRUE,na.strings = "-") %>%
     .[[1]]
@@ -497,7 +498,9 @@ check_load <- function(app, file, digits = 6, Kendall = FALSE) {
   app$set_inputs(batchest = "click")
   app$wait_for_idle()
   output_app <- app$get_value(output = "batchTable")
-  
+  if (is.null(output_app)) {
+    stop("batchTable output is NULL after wait_for_idle().")
+  }
   read_html(output_app) %>%
     html_table(fill = TRUE,convert = TRUE,na.strings = "-") %>%
     .[[1]] %>%
@@ -676,7 +679,9 @@ check_bint_bobslen <- function(file, bint = NA, bobslen = NA) {
   app$set_inputs(batchest = "click")
   app$wait_for_idle()
   output_app <- app$get_value(output = "batchTable")
-  
+  if (is.null(output_app)) {
+    stop("batchTable output is NULL after wait_for_idle().")
+  }
   output_app_table <-
     read_html(output_app) %>%
     html_table(fill = TRUE, convert = TRUE, na.strings = "-") %>%
@@ -789,7 +794,6 @@ check_PoGO <- function(file) {
   app$set_inputs(bdigits = 4)
   app$wait_for_idle()
   app$set_inputs(batchest = "click")
-  
   app$wait_for_idle()
   
   output_app <- app$get_value(output = "batchTable")
