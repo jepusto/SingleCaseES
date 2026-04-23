@@ -1,4 +1,6 @@
-# SingleCaseES 0.7.3.9999
+# SingleCaseES 0.7.4
+
+* Migrated the unit tests for the built-in shiny app to use the shinytest2 framework.
 
 # SingleCaseES 0.7.3
 
