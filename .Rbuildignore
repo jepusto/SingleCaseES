@@ -16,3 +16,5 @@ README.md
 ^codecov\.yml$
 inst/shiny-examples/SCD-effect-sizes/rsconnect
 ^CRAN-SUBMISSION$
+^\.positai$
+^\.claude$
